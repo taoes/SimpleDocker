@@ -171,4 +171,46 @@ func init() {
             Filters: nil,
             Params: nil})
 
+    beego.GlobalControllerRouter["SimpleDocker/api:VolumeController"] = append(beego.GlobalControllerRouter["SimpleDocker/api:VolumeController"],
+        beego.ControllerComments{
+            Method: "GetVolumeList",
+            Router: "/api/volume",
+            AllowHTTPMethods: []string{"get"},
+            MethodParams: param.Make(),
+            Filters: nil,
+            Params: nil})
+
+    beego.GlobalControllerRouter["SimpleDocker/api:VolumeController"] = append(beego.GlobalControllerRouter["SimpleDocker/api:VolumeController"],
+        beego.ControllerComments{
+            Method: "NewVolume",
+            Router: "/api/volume/:name",
+            AllowHTTPMethods: []string{"put"},
+            MethodParams: param.Make(
+				param.New("name", param.InPath),
+			),
+            Filters: nil,
+            Params: nil})
+
+    beego.GlobalControllerRouter["SimpleDocker/api:VolumeController"] = append(beego.GlobalControllerRouter["SimpleDocker/api:VolumeController"],
+        beego.ControllerComments{
+            Method: "GetVolumeInfo",
+            Router: "/api/volume/:volumeId",
+            AllowHTTPMethods: []string{"get"},
+            MethodParams: param.Make(
+				param.New("volumeId", param.InPath),
+			),
+            Filters: nil,
+            Params: nil})
+
+    beego.GlobalControllerRouter["SimpleDocker/api:VolumeController"] = append(beego.GlobalControllerRouter["SimpleDocker/api:VolumeController"],
+        beego.ControllerComments{
+            Method: "RemoveVolume",
+            Router: "/api/volume/:volumeId",
+            AllowHTTPMethods: []string{"get"},
+            MethodParams: param.Make(
+				param.New("volumeId", param.InPath),
+			),
+            Filters: nil,
+            Params: nil})
+
 }

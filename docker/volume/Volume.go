@@ -1,27 +1,30 @@
-package container
+package volume
 
 import (
-	"context"
-	"fmt"
+	"SimpleDocker/context"
 	"github.com/docker/docker/api/types"
-	"github.com/docker/docker/client"
-	"strconv"
+	"github.com/docker/docker/api/types/filters"
+	"github.com/docker/docker/api/types/volume"
 )
 
-func GetVolumeList(ctx context.Context, cli *client.Client) []types.Container {
-	return nil
+/** 获取 Volume 列表  */
+func GetVolumeList() (volume.VolumeListOKBody, error) {
+	filter := filters.Args{}
+	return context.Cli.VolumeList(context.Ctx, filter)
 }
 
-func GetVolumeNames(ctx context.Context, cli *client.Client) []string {
-	containerList := GetVolumeList(ctx, cli)
-	var containerNames []string
-	for index, container := range containerList {
-		var containerName = ""
-		status := container.Status
-		for _, name := range container.Names {
-			containerName = fmt.Sprintf("[[%-3s]](fg:green)%-30s [%s](fg:blue) ", strconv.Itoa(index), name, status)
-		}
-		containerNames = append(containerNames, containerName)
-	}
-	return containerNames
+/** 创建新的 Volume  */
+func NewVolume(name string) (types.Volume, error) {
+	body := volume.VolumeCreateBody{Name: name}
+	return context.Cli.VolumeCreate(context.Ctx, body)
+}
+
+/** 查询 Volume 信息 */
+func VolumeInfo(volumeId string) (types.Volume, error) {
+	return context.Cli.VolumeInspect(context.Ctx, volumeId)
+}
+
+/** 移除 Volume */
+func RemoveVolume(volumeId string, force bool) error {
+	return context.Cli.VolumeRemove(context.Ctx, volumeId, force)
 }

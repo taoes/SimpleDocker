@@ -17,6 +17,7 @@ func main() {
 	beego.Include(&api.DockerController{})
 	beego.Include(&api.ContainerController{})
 	beego.Include(&api.ImageController{})
+	beego.Include(&api.VolumeController{})
 
 	// 添加CORS
 	beego.InsertFilter("*", beego.BeforeRouter, cors.Allow(&cors.Options{
