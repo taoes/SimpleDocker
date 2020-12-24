@@ -107,3 +107,4 @@ fabric.properties
 ./go.sum
 !/SimpleDocker
 !/lastupdate.tmp
+./ui/node_modules
