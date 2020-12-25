@@ -33,3 +33,8 @@ func GetVersion() Version {
 func Ping() (types.Ping, error) {
 	return context.Cli.Ping(context.Ctx)
 }
+
+// 磁盘使用
+func Disk() (types.DiskUsage, error) {
+	return context.Cli.DiskUsage(context.Ctx)
+}
