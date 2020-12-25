@@ -206,7 +206,7 @@ func init() {
         beego.ControllerComments{
             Method: "RemoveVolume",
             Router: "/api/volume/:volumeId",
-            AllowHTTPMethods: []string{"get"},
+            AllowHTTPMethods: []string{"delete"},
             MethodParams: param.Make(
 				param.New("volumeId", param.InPath),
 			),
