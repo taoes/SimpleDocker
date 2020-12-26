@@ -101,12 +101,12 @@
         }
       }
     }, mounted() {
-      this.$axios.get('http://localhost:8081/api/docker/info').then(res => {
+      this.$axios.get('/api/docker/info').then(res => {
         let {Data} = res.data;
         this.info = Data;
       });
 
-      this.$axios.get('http://localhost:8081/api/docker/version').then(res => {
+      this.$axios.get('/api/docker/version').then(res => {
         let {Data} = res.data;
         this.version = Data.server;
       });

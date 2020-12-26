@@ -97,7 +97,7 @@
         columns,
       };
     }, mounted() {
-      this.$axios.get('http://localhost:8081/api/container').then(res => {
+      this.$axios.get('/api/container').then(res => {
         let data = res.data;
         let newList = []
         for (let i = 0; i < data.length; i++) {

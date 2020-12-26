@@ -21,9 +21,16 @@
           反馈
         </a-menu-item>
 
-        <a-menu-item style="float: right;color: green;font-weight: bold">
-          <a-icon type="wifi" size="16"/>
-          <span style="font-weight: bold;color: white">连接正常</span>
+        <a-menu-item :class="{'apiStateNormal': apiState,'apiStateError':!apiState}">
+          <template v-if="apiState">
+            <a-icon type="api" size="16"/>
+            <span>连接正常</span>
+          </template>
+          <template v-else>
+            <a-icon type="disconnect" size="16"/>
+            <span>连接中断</span>
+          </template>
+
         </a-menu-item>
       </a-menu>
     </a-layout-header>
@@ -48,8 +55,19 @@
     data() {
       return {
         collapsed: false,
+        apiState: true
       };
+    }, mounted() {
+      setInterval(this.updateApiState, 5000);
     }, methods: {
+      updateApiState: function () {
+        this.$axios.get('/api/docker/ping').then((res) => {
+          let {Code} = res.data;
+          this.apiState = Code === 'OK';
+        }).catch(() => {
+          this.apiState = false;
+        });
+      },
       linkSelect: function ({key}) {
         window.open(key, '_target')
       }
@@ -77,6 +95,18 @@
     padding: 24px;
     margin: 0;
     minHeight: '280px';
+  }
+
+  .apiStateNormal {
+    float: right;
+    color: green !important;;
+    font-weight: bold
+  }
+
+  .apiStateError {
+    float: right;
+    color: red !important;
+    font-weight: bold
   }
 
 

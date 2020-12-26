@@ -5,8 +5,10 @@ import (
 	"SimpleDocker/utils"
 	"fmt"
 	"github.com/astaxie/beego"
+	"github.com/astaxie/beego/logs"
 	"io"
 	"os"
+	"strconv"
 )
 
 type ImageController struct {
@@ -40,9 +42,10 @@ func (c *ImageController) GetImageInfo(imageId string) {
 }
 
 /** 删除Image */
-// @router /api/image/:imageId [delete]
-func (c *ImageController) DeleteImage(imageId string) {
-	err := image.DeleteImage(imageId, false)
+// @router /api/image/:imageId/remove/:forge [get]
+func (c *ImageController) DeleteImage(imageId string, forge string) {
+	b, _ := strconv.ParseBool(forge)
+	err := image.DeleteImage(imageId, b)
 	if err != nil {
 		c.Data["json"] = utils.PackageError(err)
 		c.ServeJSON()
@@ -53,9 +56,14 @@ func (c *ImageController) DeleteImage(imageId string) {
 }
 
 /** 修改Image标签 */
-// @router /api/image/tag [post]
+// @router /api/image/tag [get]
 func (c *ImageController) TagImage() {
-	err := image.TagImage("123", "45")
+	source := c.Ctx.Input.Query("source")
+	tag := c.Ctx.Input.Query("tag")
+
+	logs.Info(source)
+	logs.Info(tag)
+	err := image.TagImage(source, tag)
 	if err != nil {
 		c.Data["json"] = utils.PackageError(err)
 		c.ServeJSON()
@@ -75,7 +83,8 @@ func (c *ImageController) SaveImage(imageId string) {
 		return
 	}
 
-	outFile, err := os.Create(fmt.Sprintf("/tmp/%s.tar.gz", imageId))
+	fileName := fmt.Sprintf("/tmp/%s.tar.gz", imageId)
+	outFile, err := os.Create(fileName)
 	if err != nil {
 		c.Data["json"] = utils.PackageErrorMsg("创建文件失败,请检查保存位置是否有权限")
 		c.ServeJSON()
@@ -84,8 +93,8 @@ func (c *ImageController) SaveImage(imageId string) {
 	defer outFile.Close()
 
 	_, _ = io.Copy(outFile, reader)
-	c.Data["json"] = utils.Success()
-	c.ServeJSON()
+
+	c.Ctx.Output.Download(fileName, fmt.Sprintf("%s.tar.gz", imageId))
 }
 
 /** 导入Image */

@@ -143,10 +143,11 @@ func init() {
     beego.GlobalControllerRouter["SimpleDocker/api:ImageController"] = append(beego.GlobalControllerRouter["SimpleDocker/api:ImageController"],
         beego.ControllerComments{
             Method: "DeleteImage",
-            Router: "/api/image/:imageId",
-            AllowHTTPMethods: []string{"delete"},
+            Router: "/api/image/:imageId/remove/:forge",
+            AllowHTTPMethods: []string{"get"},
             MethodParams: param.Make(
 				param.New("imageId", param.InPath),
+				param.New("forge", param.InPath),
 			),
             Filters: nil,
             Params: nil})

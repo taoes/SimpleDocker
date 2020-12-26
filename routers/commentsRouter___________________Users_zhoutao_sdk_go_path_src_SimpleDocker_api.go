@@ -51,6 +51,17 @@ func init() {
 
     beego.GlobalControllerRouter["SimpleDocker/api:ContainerController"] = append(beego.GlobalControllerRouter["SimpleDocker/api:ContainerController"],
         beego.ControllerComments{
+            Method: "RestartContainer",
+            Router: "/api/container/:containerId/restart",
+            AllowHTTPMethods: []string{"get"},
+            MethodParams: param.Make(
+				param.New("containerId", param.InPath),
+			),
+            Filters: nil,
+            Params: nil})
+
+    beego.GlobalControllerRouter["SimpleDocker/api:ContainerController"] = append(beego.GlobalControllerRouter["SimpleDocker/api:ContainerController"],
+        beego.ControllerComments{
             Method: "StartContainer",
             Router: "/api/container/:containerId/start",
             AllowHTTPMethods: []string{"get"},
@@ -132,10 +143,11 @@ func init() {
     beego.GlobalControllerRouter["SimpleDocker/api:ImageController"] = append(beego.GlobalControllerRouter["SimpleDocker/api:ImageController"],
         beego.ControllerComments{
             Method: "DeleteImage",
-            Router: "/api/image/:imageId",
-            AllowHTTPMethods: []string{"delete"},
+            Router: "/api/image/:imageId/remove/:forge",
+            AllowHTTPMethods: []string{"get"},
             MethodParams: param.Make(
 				param.New("imageId", param.InPath),
+				param.New("forge", param.InPath),
 			),
             Filters: nil,
             Params: nil})
@@ -155,8 +167,50 @@ func init() {
         beego.ControllerComments{
             Method: "TagImage",
             Router: "/api/image/tag",
-            AllowHTTPMethods: []string{"post"},
+            AllowHTTPMethods: []string{"get"},
             MethodParams: param.Make(),
+            Filters: nil,
+            Params: nil})
+
+    beego.GlobalControllerRouter["SimpleDocker/api:VolumeController"] = append(beego.GlobalControllerRouter["SimpleDocker/api:VolumeController"],
+        beego.ControllerComments{
+            Method: "GetVolumeList",
+            Router: "/api/volume",
+            AllowHTTPMethods: []string{"get"},
+            MethodParams: param.Make(),
+            Filters: nil,
+            Params: nil})
+
+    beego.GlobalControllerRouter["SimpleDocker/api:VolumeController"] = append(beego.GlobalControllerRouter["SimpleDocker/api:VolumeController"],
+        beego.ControllerComments{
+            Method: "NewVolume",
+            Router: "/api/volume/:name",
+            AllowHTTPMethods: []string{"put"},
+            MethodParams: param.Make(
+				param.New("name", param.InPath),
+			),
+            Filters: nil,
+            Params: nil})
+
+    beego.GlobalControllerRouter["SimpleDocker/api:VolumeController"] = append(beego.GlobalControllerRouter["SimpleDocker/api:VolumeController"],
+        beego.ControllerComments{
+            Method: "GetVolumeInfo",
+            Router: "/api/volume/:volumeId",
+            AllowHTTPMethods: []string{"get"},
+            MethodParams: param.Make(
+				param.New("volumeId", param.InPath),
+			),
+            Filters: nil,
+            Params: nil})
+
+    beego.GlobalControllerRouter["SimpleDocker/api:VolumeController"] = append(beego.GlobalControllerRouter["SimpleDocker/api:VolumeController"],
+        beego.ControllerComments{
+            Method: "RemoveVolume",
+            Router: "/api/volume/:volumeId",
+            AllowHTTPMethods: []string{"delete"},
+            MethodParams: param.Make(
+				param.New("volumeId", param.InPath),
+			),
             Filters: nil,
             Params: nil})
 

@@ -28,7 +28,7 @@ func TagImage(source string, target string) error {
 }
 
 func DeleteImage(imageId string, forge bool) error {
-	removeOption := types.ImageRemoveOptions{Force: forge}
+	removeOption := types.ImageRemoveOptions{Force: forge, PruneChildren: true}
 	_, err := context.Cli.ImageRemove(context.Ctx, imageId, removeOption)
 	if err != nil {
 		return err
