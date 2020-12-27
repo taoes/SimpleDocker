@@ -3,11 +3,10 @@ package api
 import (
 	"SimpleDocker/docker/image"
 	"SimpleDocker/utils"
+	"bytes"
 	"fmt"
 	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/logs"
-	"io"
-	"os"
 	"strconv"
 )
 
@@ -83,18 +82,13 @@ func (c *ImageController) SaveImage(imageId string) {
 		return
 	}
 
-	fileName := fmt.Sprintf("/tmp/%s.tar.gz", imageId)
-	outFile, err := os.Create(fileName)
-	if err != nil {
-		c.Data["json"] = utils.PackageErrorMsg("创建文件失败,请检查保存位置是否有权限")
-		c.ServeJSON()
-		return
-	}
-	defer outFile.Close()
-
-	_, _ = io.Copy(outFile, reader)
-
-	c.Ctx.Output.Download(fileName, fmt.Sprintf("%s.tar.gz", imageId))
+	buf := new(bytes.Buffer)
+	_, _ = buf.ReadFrom(reader)
+	i := buf.Bytes()
+	c.Ctx.Output.Header("Content-Type", "application/force-download")
+	c.Ctx.Output.Header("Content-Disposition", fmt.Sprintf("attachment;filename=%s.tar.gz", imageId))
+	c.Ctx.Output.Header("Content-Transfer-Encoding", "binary")
+	_, _ = c.Ctx.ResponseWriter.Write(i)
 }
 
 /** 导入Image */

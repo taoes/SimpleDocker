@@ -24,5 +24,22 @@ module.exports = {
       return "-";
     }
     return id.replace("sha256:", "").substring(0, 12);
+  }, download: function (data, fileName) {
+    if (window.navigator && window.navigator.msSaveOrOpenBlob) {
+      let blob = new Blob([data], {
+        type: 'application/vnd.ms-excel'
+      })
+      window.navigator.msSaveOrOpenBlob(blob, fileName)
+    } else {
+      let blob = new Blob([data])
+      let downloadElement = document.createElement('a')
+      let href = window.URL.createObjectURL(blob)
+      downloadElement.href = href
+      downloadElement.download = fileName
+      document.body.appendChild(downloadElement)
+      downloadElement.click()
+      document.body.removeChild(downloadElement)
+      window.URL.revokeObjectURL(href)
+    }
   }
 }

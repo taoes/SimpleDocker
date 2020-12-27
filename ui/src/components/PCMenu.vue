@@ -1,6 +1,7 @@
 <template>
   <a-menu
       mode="inline"
+      v-model="currentMenuKey"
       @select="selectItem"
       :default-selected-keys="['/']"
       :style="{ height: '100%', borderRight: 0 }"
@@ -48,10 +49,22 @@
 </template>
 
 <script>
+  import {mapMutations} from "vuex";
+
   export default {
-    name: "PCMenu", methods: {
+    name: "PCMenu",
+    computed: {
+      currentMenuKey: function () {
+        return this.$store.state.menu.currentMenuKey;
+      }
+    },
+    methods: {
+      ...mapMutations({
+        setCurrentMenuKey: 'setCurrentMenuKey'
+      }),
       selectItem: function ({key}) {
         this.$router.push(key)
+        this.setCurrentMenuKey(key)
       }
     }
   }

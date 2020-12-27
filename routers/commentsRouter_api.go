@@ -19,8 +19,8 @@ func init() {
     beego.GlobalControllerRouter["SimpleDocker/api:ContainerController"] = append(beego.GlobalControllerRouter["SimpleDocker/api:ContainerController"],
         beego.ControllerComments{
             Method: "RemoveContainer",
-            Router: "/api/container/:containerId",
-            AllowHTTPMethods: []string{"delete"},
+            Router: "/api/container/:containerId/delete",
+            AllowHTTPMethods: []string{"get"},
             MethodParams: param.Make(
 				param.New("containerId", param.InPath),
 			),
@@ -42,6 +42,17 @@ func init() {
         beego.ControllerComments{
             Method: "GetContainerLog",
             Router: "/api/container/:containerId/log",
+            AllowHTTPMethods: []string{"get"},
+            MethodParams: param.Make(
+				param.New("containerId", param.InPath),
+			),
+            Filters: nil,
+            Params: nil})
+
+    beego.GlobalControllerRouter["SimpleDocker/api:ContainerController"] = append(beego.GlobalControllerRouter["SimpleDocker/api:ContainerController"],
+        beego.ControllerComments{
+            Method: "GetContainerAllLog",
+            Router: "/api/container/:containerId/log/all",
             AllowHTTPMethods: []string{"get"},
             MethodParams: param.Make(
 				param.New("containerId", param.InPath),
@@ -85,11 +96,9 @@ func init() {
     beego.GlobalControllerRouter["SimpleDocker/api:ContainerController"] = append(beego.GlobalControllerRouter["SimpleDocker/api:ContainerController"],
         beego.ControllerComments{
             Method: "CreateNewContainer",
-            Router: "/api/container/:imageName",
-            AllowHTTPMethods: []string{"put"},
-            MethodParams: param.Make(
-				param.New("imageName", param.InPath),
-			),
+            Router: "/api/container/run",
+            AllowHTTPMethods: []string{"get"},
+            MethodParams: param.Make(),
             Filters: nil,
             Params: nil})
 
@@ -167,7 +176,7 @@ func init() {
         beego.ControllerComments{
             Method: "TagImage",
             Router: "/api/image/tag",
-            AllowHTTPMethods: []string{"post"},
+            AllowHTTPMethods: []string{"get"},
             MethodParams: param.Make(),
             Filters: nil,
             Params: nil})

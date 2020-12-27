@@ -14,6 +14,13 @@ Vue.config.productionTip = false
 Vue.prototype.$axios = axios
 Vue.use(Antd);
 
+// 自定义指令
+Vue.directive('focus', {
+  inserted: function (el) {
+    el.querySelector("input").focus()
+  }
+})
+
 new Vue({
   router,
   store,

@@ -3,6 +3,7 @@
     <a-form layout="inline">
       <a-form-item>
         <a-input placeholder="搜索关键词" v-model="searchKey" @change="searchKeyOnchange"
+                 v-focus
                  style="width: 400px">
           <a-icon slot="prefix" type="search" style="color:rgba(0,0,0,.25)"/>
         </a-input>
@@ -13,6 +14,11 @@
           <a-button html-type="reset" @click="refreshImageList">
             <a-icon type="reload"></a-icon>
             刷新
+          </a-button>
+
+          <a-button html-type="reset" @click="pullImage">
+            <a-icon type="download"></a-icon>
+            拉取
           </a-button>
         </a-space>
       </a-form-item>
@@ -31,7 +37,7 @@
               type="down"/> </a>
           <a-menu slot="overlay">
             <a-menu-item>
-                <a href="#">运行镜像</a>
+                <a href="#" @click="openNewContainerConfigModal(record.rep)">运行镜像</a>
             </a-menu-item>
             <a-menu-item>
               <a href="#" @click="exportImg(record.imageLongId)">导出镜像</a>
@@ -41,13 +47,12 @@
             </a-menu-item>
             </a-menu>
         </a-dropdown>
-
       </a-space>
     </span>
     </a-table>
 
 
-    <a-modal v-model="tagImageVisible" title="重新标记" okText="标记" cancelText="取消" @ok="tagImage">
+    <a-modal v-model="tagImageVisible" title="重新标记" okText="标记" cancelText="取消" @ok="callReTagApi">
       <a-form :label-col="{ span: 3 }" :wrapper-col="{ span: 21 }">
         <a-form-item label="原 Tag">
           <a-input v-model="oldTag" disabled/>
@@ -56,6 +61,40 @@
           <a-input @change="e=> this.newTag = e.target.value"/>
         </a-form-item>
       </a-form>
+    </a-modal>
+
+    <a-modal v-model="runImageVisible" title="运行新的容器" okText="运行" cancelText="取消"
+             @ok="callRunNewContainerApi">
+      <a-form-model :label-col="{ span: 4 }" :wrapper-col="{ span: 20 }"
+                    v-model="containerConfig">
+        <a-form-model-item label="镜像名称">
+          <a-input v-model="containerConfig.imageName" disabled=""/>
+        </a-form-model-item>
+
+        <a-form-model-item label="容器名称">
+          <a-input v-model="containerConfig.containerName" placeholder="请输入容器名称"/>
+        </a-form-model-item>
+
+        <a-form-model-item label="端口映射：">
+          <a-input v-model="containerConfig.bindPort" placeholder="请输入端口映射配置"/>
+        </a-form-model-item>
+
+        <a-form-model-item label="环境变量：">
+          <a-input v-model="containerConfig.env" placeholder="请输入容器的环境变量"/>
+        </a-form-model-item>
+
+      </a-form-model>
+    </a-modal>
+
+
+    <a-modal v-model="pullImageVisible" title="拉取新的镜像" okText="确定" cancelText="取消">
+      <a-form-model :label-col="{ span: 4 }" :wrapper-col="{ span: 20 }"
+                    v-model="containerConfig">
+        <a-form-model-item label="镜像名称">
+          <a-input v-model="pullImageConfig.imageName"/>
+        </a-form-model-item>
+
+      </a-form-model>
     </a-modal>
 
     <a-drawer
@@ -89,8 +128,7 @@
 
 
   import {mapActions} from "vuex";
-
-  const qs = require('qs');
+  import imageApi from "../api/ImageApi";
 
   const columns = [
     {
@@ -132,10 +170,14 @@
         currentImageId: '',
         currentRep: '',
         columns,
+        containerConfig: {imageName: '', containerName: '', bindPort: '', env: ''},
+        pullImageConfig: {imageName: ''},
+        pullImageVisible: false,
+        runImageVisible: false,
         tagImageVisible: false,
       };
     }, mounted() {
-      this.updateImage();
+      this.updateImage()
     },
     computed: {
       imageList: function () {
@@ -147,6 +189,8 @@
         .filter(i => i.rep.indexOf(this.searchKey) >= 0 || i.imageId.indexOf(this.searchKey) >= 0)
       }, imageInfo: function () {
         return this.$store.state.image.imageInfo;
+      }, containerList: function () {
+        return this.$store.state.container.containerList;
       }
     },
     methods: {
@@ -221,12 +265,20 @@
         this.searchKey = ''
         this.updateImage()
       },
+      pullImage: function () {
+        this.pullImageVisible = true;
+      },
       close: function (e) {
         this.showDetail = false;
-      }, exportImg: function (imageId) {
+      },
+      openNewContainerConfigModal: function (imageName) {
+        this.containerConfig.imageName = imageName;
+        this.runImageVisible = true;
+      },
+      exportImg: function (imageId) {
         const modal = this.$success({
           title: '正在导出,请稍等...',
-          content: '正在导出，稍后会自动下载.......',
+          content: '正在导出，稍后会自动下载.......'
         });
 
         let config = {
@@ -244,16 +296,21 @@
               modal.destroy()
             })
         .catch(e => {
-          this.$notification['info']({
-            message: '导出失败',
-            description: "镜像导出失败,请检查 Docker 服务是否正常",
-            duration: 10
-          });
+          this.$message.error("镜像导出失败,请检查 Docker 服务是否正常");
           modal.destroy()
         })
       }, openReTagModal: function (oldTag) {
         this.tagImageVisible = true
         this.oldTag = oldTag
+      }, async callRunNewContainerApi() {
+        let res = await imageApi.runNewContainer(this.containerConfig)
+        let {Code, Msg} = res.data
+        if (Code === 'OK') {
+          this.$message.info('新的容器启动完成!');
+          this.runImageVisible = false;
+        } else {
+          this.$message.error(Msg);
+        }
       },
       download: function (data, fileName) {
         if (window.navigator && window.navigator.msSaveOrOpenBlob) {
@@ -272,7 +329,7 @@
           document.body.removeChild(downloadElement)
           window.URL.revokeObjectURL(href)
         }
-      }, tagImage: function () {
+      }, callReTagApi: function () {
         if (this.newTag === '' || this.newTag.trim() === '') {
           this.tagImageVisible = false
           this.$notification['warning']({

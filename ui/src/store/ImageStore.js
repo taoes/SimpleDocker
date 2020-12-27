@@ -1,5 +1,4 @@
 import axios from "axios";
-import confirm from "ant-design-vue/lib/modal/confirm";
 import {formatDate, parseId} from "../utils/index";
 
 const imageStore = {
@@ -35,6 +34,7 @@ const imageStore = {
           let tags = image.RepoTags;
           for (let tagIndex in tags) {
             imageList.push({
+              key: parseId(image.Id),
               rep: tags[tagIndex],
               size: (image.Size / 1000000).toFixed(2) + 'Mb',
               imageLongId: parseId(image.Id),

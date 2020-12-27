@@ -5,6 +5,7 @@ import (
 	"bytes"
 	"github.com/docker/docker/api/types"
 	"github.com/docker/docker/api/types/container"
+	"github.com/docker/go-connections/nat"
 	"time"
 )
 
@@ -18,15 +19,12 @@ func GetContainerList() []types.Container {
 }
 
 /** 创建一个容器 */
-func NewContainer(imageName string) (containerId string, err error) {
-	_, err = context.Cli.ImagePull(context.Ctx, imageName, types.ImagePullOptions{})
-	if err != nil {
-		return "", err
-	}
+func NewContainer(imageName string, containerName string, env []string, portBinding map[nat.Port][]nat.PortBinding) (containerId string, err error) {
+	imageConfig := container.Config{Image: imageName, Env: env}
 
-	// 镜像配置
-	imageConfig := container.Config{Image: imageName}
-	resp, err := context.Cli.ContainerCreate(context.Ctx, &imageConfig, nil, nil, nil, "")
+	hostConfig := container.HostConfig{PortBindings: portBinding}
+
+	resp, err := context.Cli.ContainerCreate(context.Ctx, &imageConfig, &hostConfig, nil, nil, containerName)
 	if err != nil {
 		return "", err
 	}
@@ -56,8 +54,7 @@ func RestartContainer(containerId string) error {
 }
 
 /** 移除容器 */
-func RemoveContainer(containerId string, force bool) error {
-	options := types.ContainerRemoveOptions{Force: force}
+func RemoveContainer(containerId string, options types.ContainerRemoveOptions) error {
 	return context.Cli.ContainerRemove(context.Ctx, containerId, options)
 }
 
@@ -67,8 +64,11 @@ func GetContainerInfo(containerId string) (types.ContainerJSON, error) {
 }
 
 /** 查看日志数据 */
-func GetContainerLog(containerId string) (string, error) {
-	options := types.ContainerLogsOptions{ShowStdout: true, Tail: "100"}
+func GetContainerLog(containerId string, tail string) (string, error) {
+	options := types.ContainerLogsOptions{ShowStdout: true}
+	if tail != "" {
+		options.Tail = tail
+	}
 	logs, err := context.Cli.ContainerLogs(context.Ctx, containerId, options)
 	if err != nil {
 		return "", err
