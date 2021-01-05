@@ -21,7 +21,7 @@ Docker是目前一种非常主流的容器化方案，支持非常多的特性�
 > Tip: 您可以在Issues中提出需求和您发现的bug！[需求 & BUG 管理](https://github.com/taoes/SimpleDocker/issues)
 
 
-目前支持一下特性:
+目前支持以下特性:
 
 1. 容器管理、拉取镜像、**运行镜像**
 2. 容器管理、**容器启动，停止，运行**
@@ -30,29 +30,37 @@ Docker是目前一种非常主流的容器化方案，支持非常多的特性�
 
 ## 安装使用
 
+使用前，请先安装 unzip 命令用于解压压缩包 ubuntu系统下使用 `sudo apt-get install unzip`  centos 下使用 `yum install -y unzip`
+
 + Linux 
 
 ```sh
-$ npm install --global standard-readme-spec
+curl 'https://raw.githubusercontent.com/taoes/SimpleDocker/master/script/linux-deploy.sh' > /tmp/deploy-simple-docker.sh
+chmod +x /tmp/deploy-simple-docker.sh
+/tmp/deploy-simple-docker
 ```
 
 + Mac 
 ```sh
-$ npm install --global standard-readme-spec
+curl 'https://raw.githubusercontent.com/taoes/SimpleDocker/master/script/darwin-deploy.sh' > /tmp/deploy-simple-docker.sh
+chmod +x /tmp/deploy-simple-docker.sh
+/tmp/deploy-simple-docker
 ```
 
 + Windows 
 ```shell script
-# 暂不支持
+# 暂不支持window系统
 ```
 
 
 + 手动安装
-```shell script
-    # 下载 XXX
-    # 拷贝到指定目录
-    # 配置环境变量
-```
+
+1. 通过 [https://github.com/taoes/SimpleDocker/releases/](https://github.com/taoes/SimpleDocker/releases/) 下载最新发布的版本
+2. 创建文件夹`~/.local/simpleDocker` 并解压文件上文的压缩包到 `~/.local/simpleDocker`
+3. 将文件夹 `~/.local/simpleDocker` 配置到环境变量 PATH中
+4. 刷新环境变量设置后，使用命令`SimpleDocker` 启动应用(后台运行可使用 nohup 命令)
+5. 启动应用后，浏览器访问 `http://localhost:40093` 打开应用
+
 
 
 ## 相关依赖
@@ -65,7 +73,7 @@ $ npm install --global standard-readme-spec
 
 ## 预览
 
-[预览图片](./PREVIEW.md)
+您可以访问这里查看预览[预览图片](./PREVIEW.md)
 
 
 ## 维护者
