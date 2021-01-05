@@ -4,46 +4,47 @@
       v-model="currentMenuKey"
       @select="selectItem"
       :default-selected-keys="['/']"
+      :inline-collapsed="true"
       :style="{ height: '100%', borderRight: 0 }"
   >
     <a-menu-item key="/">
       <a-icon type="user"/>
-      系统信息
+      <span>系统信息</span>
     </a-menu-item>
 
 
     <a-menu-item key="/image">
       <a-icon type="laptop"/>
-      镜像管理
+      <span> 镜像管理</span>
     </a-menu-item>
 
 
     <a-menu-item key="/container">
       <a-icon type="container"/>
-      容器管理
+      <span> 容器管理</span>
     </a-menu-item>
 
 
     <a-menu-item key="/volume">
       <a-icon type="folder-open"/>
-      存储管理
+      <span>存储管理</span>
     </a-menu-item>
 
 
     <a-menu-item key="/network">
       <a-icon type="deployment-unit"/>
-      网络管理
+      <span> 网络管理</span>
     </a-menu-item>
 
 
-    <a-menu-item key="/secret">
-      <a-icon type="key"/>
-      安全认证
-    </a-menu-item>
+    <!--    <a-menu-item key="/secret">-->
+    <!--      <a-icon type="key"/>-->
+    <!--      <span> 安全认证</span>-->
+    <!--    </a-menu-item>-->
 
     <a-menu-item key="/setting">
       <a-icon type="setting"/>
-      系统设置
+      <span> 系统设置</span>
     </a-menu-item>
   </a-menu>
 </template>

@@ -1,7 +1,7 @@
 package api
 
 import (
-	"SimpleDocker/docker/container"
+	"SimpleDocker/docker"
 	"SimpleDocker/utils"
 	"fmt"
 	"github.com/astaxie/beego"
@@ -18,7 +18,7 @@ type ContainerController struct {
 /** 获取容器列表 */
 // @router /api/container [get]
 func (c *ContainerController) Get() {
-	containerList := container.GetContainerList()
+	containerList := docker.GetContainerList()
 	c.Data["json"] = containerList
 	c.ServeJSON()
 }
@@ -30,18 +30,22 @@ func (c *ContainerController) CreateNewContainer() {
 	containerName := c.Ctx.Input.Query("containerName")
 	port := c.Ctx.Input.Query("bindPort")
 	env := c.Ctx.Input.Query("env")
+	volume := c.Ctx.Input.Query("volume")
 
 	// 解析端口映射和环境变量
 	var envSplit []string
 	var portKeySplit []string
+	var volumePathSplit []string
 
+	// 解析环境变量
 	if env = strings.Trim(env, " "); env != "" {
 		envSplit = strings.Split(env, ";")
 	}
 
+	// 解析端口绑定
 	portBindings := map[nat.Port][]nat.PortBinding{}
 	if port = strings.Trim(port, " "); port != "" {
-		portKeySplit = strings.Split(port, " ")
+		portKeySplit = strings.Split(port, ";")
 
 		for portKeyIndex := range portKeySplit {
 			portKey := portKeySplit[portKeyIndex]
@@ -49,12 +53,17 @@ func (c *ContainerController) CreateNewContainer() {
 			if len(ports) != 2 {
 				continue
 			}
-			portBinding := nat.PortBinding{HostIP: "", HostPort: ports[1]}
-			portBindings[nat.Port(ports[0])] = []nat.PortBinding{portBinding}
+			portBinding := nat.PortBinding{HostIP: "", HostPort: ports[0]}
+			portBindings[nat.Port(ports[1]+"/tcp")] = []nat.PortBinding{portBinding}
 		}
 	}
 
-	containerId, err := container.NewContainer(imageName, containerName, envSplit, portBindings)
+	// 解析目录挂载
+	if volume = strings.Trim(volume, " "); volume != "" {
+		volumePathSplit = strings.Split(volume, ";")
+	}
+
+	containerId, err := docker.NewContainer(imageName, containerName, envSplit, portBindings, volumePathSplit)
 	if err != nil {
 		c.Data["json"] = utils.PackageError(err)
 		c.ServeJSON()
@@ -68,7 +77,7 @@ func (c *ContainerController) CreateNewContainer() {
 /** 启动容器 */
 // @router /api/container/:containerId/start [get]
 func (c *ContainerController) StartContainer(containerId string) {
-	err := container.StartContainer(containerId)
+	err := docker.StartContainer(containerId)
 	if err != nil {
 		c.Data["json"] = utils.PackageError(err)
 		c.ServeJSON()
@@ -82,7 +91,7 @@ func (c *ContainerController) StartContainer(containerId string) {
 /** 重启容器 */
 // @router /api/container/:containerId/restart [get]
 func (c *ContainerController) RestartContainer(containerId string) {
-	err := container.RestartContainer(containerId)
+	err := docker.RestartContainer(containerId)
 	if err != nil {
 		c.Data["json"] = utils.PackageError(err)
 		c.ServeJSON()
@@ -96,7 +105,7 @@ func (c *ContainerController) RestartContainer(containerId string) {
 /** 停止容器 */
 // @router /api/container/:containerId/stop [get]
 func (c *ContainerController) StopContainer(containerId string) {
-	err := container.StopContainer(containerId)
+	err := docker.StopContainer(containerId)
 	if err != nil {
 		c.Data["json"] = utils.PackageError(err)
 		c.ServeJSON()
@@ -116,7 +125,7 @@ func (c *ContainerController) RemoveContainer(containerId string) {
 	force, _ := strconv.ParseBool(c.Ctx.Input.Query("force"))
 
 	var options = types.ContainerRemoveOptions{RemoveVolumes: volume, RemoveLinks: link, Force: force}
-	err = container.RemoveContainer(containerId, options)
+	err = docker.RemoveContainer(containerId, options)
 	if err != nil {
 		c.Data["json"] = utils.PackageError(err)
 		c.ServeJSON()
@@ -130,7 +139,7 @@ func (c *ContainerController) RemoveContainer(containerId string) {
 /** 查看容器信息 */
 // @router /api/container/:containerId/info [get]
 func (c *ContainerController) GetContainerInfo(containerId string) {
-	info, err := container.GetContainerInfo(containerId)
+	info, err := docker.GetContainerInfo(containerId)
 	if err != nil {
 		c.Data["json"] = utils.PackageError(err)
 		c.ServeJSON()
@@ -144,7 +153,7 @@ func (c *ContainerController) GetContainerInfo(containerId string) {
 /** 查看容器日志 */
 // @router /api/container/:containerId/log [get]
 func (c *ContainerController) GetContainerLog(containerId string) {
-	logs, err := container.GetContainerLog(containerId, "200")
+	logs, err := docker.GetContainerLog(containerId, "200")
 	if err != nil {
 		c.Data["json"] = utils.PackageError(err)
 		c.ServeJSON()
@@ -158,7 +167,7 @@ func (c *ContainerController) GetContainerLog(containerId string) {
 // 下载全部日志
 // @router /api/container/:containerId/log/all [get]
 func (c *ContainerController) GetContainerAllLog(containerId string) {
-	logs, err := container.GetContainerLog(containerId, "")
+	logs, err := docker.GetContainerLog(containerId, "")
 	if err != nil {
 		c.Data["json"] = utils.PackageError(err)
 		c.ServeJSON()

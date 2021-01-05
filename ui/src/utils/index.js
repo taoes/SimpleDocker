@@ -13,7 +13,23 @@ module.exports = {
     let ss = (date.getSeconds() < 10 ? '0' + date.getSeconds()
         : date.getSeconds());
     return YY + MM + DD + " " + hh + mm + ss;
-  }, nullToLine: function (variable) {
+  }, formatUTCTime: function (utc) {
+    let date = new Date(utc)
+    let YY = date.getFullYear() + '-';
+    let MM = (date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1)
+        : date.getMonth() + 1)
+        + '-';
+    let DD = (date.getDate() < 10 ? '0' + (date.getDate()) : date.getDate());
+    let hh = (date.getHours() < 10 ? '0' + date.getHours() : date.getHours())
+        + ':';
+    let mm = (date.getMinutes() < 10 ? '0' + date.getMinutes()
+        : date.getMinutes()) + ':';
+    let ss = (date.getSeconds() < 10 ? '0' + date.getSeconds()
+        : date.getSeconds());
+    return YY + MM + DD + " " + hh + mm + ss;
+  },
+
+  nullToLine: function (variable) {
     if (variable) {
       return variable;
     } else {
@@ -24,6 +40,12 @@ module.exports = {
       return "-";
     }
     return id.replace("sha256:", "").substring(0, 12);
+  }, guid: function () {
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g,
+        function (c) {
+          let r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
+          return v.toString(16);
+        });
   }, download: function (data, fileName) {
     if (window.navigator && window.navigator.msSaveOrOpenBlob) {
       let blob = new Blob([data], {

@@ -1,4 +1,4 @@
-package image
+package docker
 
 import (
 	"SimpleDocker/context"
@@ -12,6 +12,11 @@ func GetImageList() ([]types.ImageSummary, error) {
 		return nil, err
 	}
 	return images, nil
+}
+
+func PullImage(refStr string) (io.ReadCloser, error) {
+	var options types.ImagePullOptions
+	return context.Cli.ImagePull(context.Ctx, refStr, options)
 }
 
 // 获取镜像信息

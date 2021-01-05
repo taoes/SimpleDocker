@@ -29,9 +29,9 @@
       </a-col>
 
       <a-col :span="6">
-        <a-statistic title="内存" :value="info.MemTotal >> 20" class="demo-class">
+        <a-statistic title="内存" :value="(info.MemTotal /1000000) .toFixed(2)" class="demo-class">
           <template #suffix>
-            <span> Mb</span>
+            <span> M</span>
           </template>
         </a-statistic>
       </a-col>

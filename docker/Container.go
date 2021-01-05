@@ -1,4 +1,4 @@
-package container
+package docker
 
 import (
 	"SimpleDocker/context"
@@ -19,19 +19,20 @@ func GetContainerList() []types.Container {
 }
 
 /** 创建一个容器 */
-func NewContainer(imageName string, containerName string, env []string, portBinding map[nat.Port][]nat.PortBinding) (containerId string, err error) {
+func NewContainer(imageName string, containerName string, env []string, portBinding map[nat.Port][]nat.PortBinding, pathBind []string) (containerId string, err error) {
 	imageConfig := container.Config{Image: imageName, Env: env}
 
-	hostConfig := container.HostConfig{PortBindings: portBinding}
-
+	hostConfig := container.HostConfig{PortBindings: portBinding, Binds: pathBind}
 	resp, err := context.Cli.ContainerCreate(context.Ctx, &imageConfig, &hostConfig, nil, nil, containerName)
 	if err != nil {
+		_ = RemoveContainer(resp.ID, types.ContainerRemoveOptions{Force: true})
 		return "", err
 	}
 
 	startConfig := types.ContainerStartOptions{}
 	if err := context.Cli.ContainerStart(context.Ctx, resp.ID, startConfig); err != nil {
-		panic(err)
+		_ = RemoveContainer(resp.ID, types.ContainerRemoveOptions{Force: true})
+		return resp.ID, err
 	}
 	return resp.ID, nil
 }

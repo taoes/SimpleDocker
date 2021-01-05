@@ -1,4 +1,4 @@
-package volume
+package docker
 
 import (
 	"SimpleDocker/context"
@@ -14,8 +14,8 @@ func GetVolumeList() (volume.VolumeListOKBody, error) {
 }
 
 /** 创建新的 Volume  */
-func NewVolume(name string) (types.Volume, error) {
-	body := volume.VolumeCreateBody{Name: name}
+func NewVolume(name string, driver string, labels map[string]string) (types.Volume, error) {
+	body := volume.VolumeCreateBody{Name: name, Driver: driver, Labels: labels}
 	return context.Cli.VolumeCreate(context.Ctx, body)
 }
 
@@ -27,4 +27,10 @@ func VolumeInfo(volumeId string) (types.Volume, error) {
 /** 移除 Volume */
 func RemoveVolume(volumeId string, force bool) error {
 	return context.Cli.VolumeRemove(context.Ctx, volumeId, force)
+}
+
+/** 移除无用的Volume */
+func PruneVolume() (types.VolumesPruneReport, error) {
+	var arg filters.Args
+	return context.Cli.VolumesPrune(context.Ctx, arg)
 }

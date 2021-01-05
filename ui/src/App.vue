@@ -35,7 +35,7 @@
       </a-menu>
     </a-layout-header>
     <a-layout>
-      <a-layout-sider width="200" style="background: #fff">
+      <a-layout-sider style="background: #fff;width: 256px">
         <PCMenu></PCMenu>
       </a-layout-sider>
       <a-layout style="padding: 0 24px 24px">
@@ -75,9 +75,7 @@
   };
 </script>
 
-<style>
-
-
+<style scoped>
   .ant-layout {
     height: 100%;
   }

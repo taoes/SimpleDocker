@@ -12,42 +12,38 @@
 
       <a-form-item>
         <a-space>
-          <a-button html-type="reset" @click="">
+          <a-button html-type="reset" @click="reloadContainer">
+            <a-icon type="reload"></a-icon>
             刷新
           </a-button>
 
-          <a-checkbox v-model="onlyRunContainer"
-                      @change="onlyRunContainerChanged">
-            仅查看运行中容器
+          <a-checkbox v-model="onlyRunContainer" @change="onlyRunContainerChanged">
+            仅运行中的容器
           </a-checkbox>
         </a-space>
       </a-form-item>
     </a-form>
 
-    <a-table :columns="columns" :data-source="containerList"
-             style="margin-top: 30px" size="default">
+    <a-table :columns="columns" :data-source="containerList" style="margin-top: 30px">
     <span slot="action" slot-scope="text, record">
       <a-space>
 
         <template v-if="record.state === '已停止' || record.state === '已创建'">
-          <a href="#" @click="controlContainer(record.containerId,'start')">
+          <a href="#" @click="callControlContainerApi(record.containerId,'start')">
             <span style="color: green">启动</span>
           </a>
           <a-divider type="vertical"></a-divider>
         </template>
 
         <template v-if="record.state === '运行中'">
-          <a href="#" @click="controlContainer(record.containerId,'stop')">
+          <a href="#" @click="callControlContainerApi(record.containerId,'stop')">
             <span style="color: red">停止</span>
           </a>
           <a-divider type="vertical"></a-divider>
         </template>
 
-
-
-        <a href="#" @click="openContainerLog(record.containerId)">日志</a>
+        <a href="#" @click="openContainerLogModal(record.containerId)">日志</a>
         <a-divider type="vertical"></a-divider>
-
 
         <a-dropdown>
           <a class="ant-dropdown-link" @click="e => e.preventDefault()">更多 <a-icon
@@ -56,9 +52,8 @@
             <a-menu-item>
                <a href="#" @click="openDetail(record.containerId)">容器详情</a>
             </a-menu-item>
-
             <a-menu-item>
-                <a href="#" @click="controlContainer(record.containerId,'restart')">重启容器</a>
+                <a href="#" @click="callControlContainerApi(record.containerId,'restart')">重启容器</a>
             </a-menu-item>
             <a-menu-item>
                 <a href="#" @click="openRemoveDetail(record.containerId)">删除容器</a>
@@ -66,10 +61,8 @@
             <a-menu-item>
               <a href="#">导出容器</a>
             </a-menu-item>
-
             </a-menu>
         </a-dropdown>
-
       </a-space>
     </span>
     </a-table>
@@ -92,21 +85,48 @@
         </a-collapse-panel>
 
         <a-collapse-panel key="webConfig" header="网络配置">
+          <p>端口映射表</p>
           <table class="configTable">
             <tr>
-              <td class="tagTd">网关地址</td>
-              <td class="contentTd" align="left"> {{containerNetworkInfo.Gateway}}</td>
+              <td>容器端口</td>
+              <td>宿主机端口</td>
             </tr>
-
-            <tr>
-              <td class="tagTd">IP 地址</td>
-              <td class="contentTd" align="left"> {{containerNetworkInfo.IPAddress}}</td>
-            </tr>
-            <tr>
-              <td class="tagTd">Mac 地址</td>
-              <td class="contentTd" align="left">{{containerNetworkInfo.MacAddress}}</td>
-            </tr>
+            <template v-for="port in this.containerPorts">
+              <tr>
+                <td>{{port.containerPort}}</td>
+                <td> {{port.portConfig}}</td>
+              </tr>
+            </template>
           </table>
+
+
+          <p>网络地址</p>
+          <template v-for="(network,key,index) in containerNetworkInfo">
+            <table class="configTable">
+              <tr>
+                <td class="tagTd">网络名</td>
+                <td class="contentTd" align="left"> {{key}}</td>
+              </tr>
+              <tr>
+                <td class="tagTd">网络ID</td>
+                <td class="contentTd" align="left"> {{network.NetworkID}}</td>
+              </tr>
+              <tr>
+                <td class="tagTd">网关地址</td>
+                <td class="contentTd" align="left"> {{network.Gateway}}</td>
+              </tr>
+
+              <tr>
+                <td class="tagTd">IP 地址</td>
+                <td class="contentTd" align="left"> {{network.IPAddress}}</td>
+              </tr>
+              <tr>
+                <td class="tagTd">Mac 地址</td>
+                <td class="contentTd" align="left">{{network.MacAddress}}</td>
+              </tr>
+            </table>
+          </template>
+
 
         </a-collapse-panel>
 
@@ -127,7 +147,11 @@
                 <td class="contentTd" align="left"> {{volume.RW}}</td>
               </tr>
               <tr>
-                <td class="tagTd">挂载位置</td>
+                <td class="tagTd">宿主目录</td>
+                <td class="contentTd" align="left"> {{volume.Source}}</td>
+              </tr>
+              <tr>
+                <td class="tagTd">容器目录</td>
                 <td class="contentTd" align="left"> {{volume.Destination}}</td>
               </tr>
             </table>
@@ -162,7 +186,7 @@
 <script>
   import {mapActions} from "vuex";
   import containerApi from '../api/ContainerApi'
-  import {download} from '../utils/index'
+  import {download, guid} from '../utils/index'
 
   const columns = [
     {
@@ -210,7 +234,7 @@
         containerLog: '',
         searchKey: '',
         columns,
-        onlyRunContainer: true,
+        onlyRunContainer: false,
         remove: {volume: true, link: false, force: true}
       };
     }, computed: {
@@ -237,8 +261,25 @@
         return !mounts ? [] : mounts;
       }, containerNetworkInfo: function () {
         let settings = this.containerInfo.NetworkSettings;
-        return !settings ? {} : settings;
-      }, formatLog: function () {
+        return !settings ? {} : settings.Networks;
+      }, containerPorts: function () {
+        let portMapping = []
+        let {PortBindings} = this.$store.state.container.containerInfo.HostConfig
+        if (!PortBindings) {
+          return portMapping
+        }
+        let keys = Object.keys(PortBindings)
+        for (let keyIndex in keys) {
+          let containerPort = keys[keyIndex]
+          let portList = PortBindings[containerPort]
+          for (let portIndex in portList) {
+            let portConfig = portList[portIndex]
+            portMapping.push({containerPort, portConfig: portConfig.HostPort})
+          }
+        }
+        return portMapping
+      },
+      formatLog: function () {
         let formatLog = ''
         formatLog = this.containerLog.replace('/\r\n/g', "<br/>")
         formatLog = formatLog.replace('\n/g', "<br/>");
@@ -260,6 +301,9 @@
         this.updateContainerInfo(containerId)
       }, onDrawClosed: function () {
         this.showContainerDetail = false;
+      }, reloadContainer: function () {
+        this.updateContainerList()
+        this.$message.info('刷新容器列表完成');
       }, async downloadAllLog() {
         this.showLogVisible = false
         const modal = this.$success({
@@ -269,11 +313,7 @@
         let containerId = this.currentContainerId
         try {
           let res = await containerApi.getContainerAllLog(containerId)
-          this.$notification['info']({
-            message: '导出成功',
-            description: "镜像已成功导出并下载....",
-            duration: 10
-          });
+          this.$message.info(`获取容器全部日志完成,正在下载，请稍后....`);
           download(res.data, `${containerId}-all.log`)
         } finally {
           modal.destroy()
@@ -299,38 +339,31 @@
           this.showRemoveVisible = false
           this.updateContainerList()
         } else {
-          this.$notification['error']({
-            message: '移除容器失败',
-            description: Msg
-          });
+          this.$message.error(Msg);
         }
 
-      }, async controlContainer(containerId, state) {
+      }, async callControlContainerApi(containerId, state) {
         if (!state) {
           return
         }
         this.currentContainerId = containerId
         let operateName = containerApi.getOperatorNameByState(state)
-        const modal = this.$success({
-          title: `正在${operateName} 容器`,
-          content: `正在${operateName}，请稍后.....`,
-        });
+        let key = guid()
+        let messageHide = this.$message.loading(
+            {content: `正在${operateName} 容器，请稍后.....`, key, duration: 0});
         try {
           let res = await containerApi.controlContainer(containerId, state, operateName);
           let {Code, Msg} = res.data
           if (Code === 'OK') {
-            this.$message.info(`${operateName}容器成功`);
+            this.$message.info({content: `${operateName} 容器成功`, key});
             this.updateContainerList()
           } else {
-            this.$notification['error']({
-              message: `${operateName}容器失败`,
-              description: Msg
-            });
+            this.$message.info({content: Msg, key});
           }
-        } finally {
-          modal.destroy()
+        } catch (e) {
+          this.$message.error({content: "服务连接失败，请检查服务是否正常启动", key});
         }
-      }, async openContainerLog(containerId) {
+      }, async openContainerLogModal(containerId) {
         this.showLogVisible = true
         this.currentContainerId = containerId
         let res = await containerApi.getContainerLog(containerId)
@@ -345,7 +378,7 @@
   ;
 </script>
 
-<style>
+<style scoped>
   .ant-drawer-body {
     padding: 0 !important;
   }
@@ -366,6 +399,7 @@
   }
 
   .contentTd {
+    overflow-wrap: anywhere;
     padding: 5px 0 5px 10px;
   }
 </style>

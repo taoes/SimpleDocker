@@ -1,13 +1,14 @@
 package api
 
 import (
-	"SimpleDocker/docker/image"
+	"SimpleDocker/docker"
 	"SimpleDocker/utils"
 	"bytes"
 	"fmt"
 	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/logs"
 	"strconv"
+	"strings"
 )
 
 type ImageController struct {
@@ -17,7 +18,7 @@ type ImageController struct {
 /** 查询全部Image */
 // @router /api/image [get]
 func (c *ImageController) GetImageList() {
-	imageList, err := image.GetImageList()
+	imageList, err := docker.GetImageList()
 	if err != nil {
 		c.Data["json"] = utils.PackageError(err)
 		c.ServeJSON()
@@ -30,7 +31,7 @@ func (c *ImageController) GetImageList() {
 /** 查询Image信息 */
 // @router /api/image/:imageId [get]
 func (c *ImageController) GetImageInfo(imageId string) {
-	imageInfo, err := image.GetImageInfo(imageId)
+	imageInfo, err := docker.GetImageInfo(imageId)
 	if err != nil {
 		c.Data["json"] = utils.PackageError(err)
 		c.ServeJSON()
@@ -44,7 +45,7 @@ func (c *ImageController) GetImageInfo(imageId string) {
 // @router /api/image/:imageId/remove/:forge [get]
 func (c *ImageController) DeleteImage(imageId string, forge string) {
 	b, _ := strconv.ParseBool(forge)
-	err := image.DeleteImage(imageId, b)
+	err := docker.DeleteImage(imageId, b)
 	if err != nil {
 		c.Data["json"] = utils.PackageError(err)
 		c.ServeJSON()
@@ -62,7 +63,7 @@ func (c *ImageController) TagImage() {
 
 	logs.Info(source)
 	logs.Info(tag)
-	err := image.TagImage(source, tag)
+	err := docker.TagImage(source, tag)
 	if err != nil {
 		c.Data["json"] = utils.PackageError(err)
 		c.ServeJSON()
@@ -75,7 +76,7 @@ func (c *ImageController) TagImage() {
 /** 导出Image到指定目录 */
 // @router /api/image/:imageId/save [get]
 func (c *ImageController) SaveImage(imageId string) {
-	reader, err := image.SaveImage(imageId)
+	reader, err := docker.SaveImage(imageId)
 	if err != nil {
 		c.Data["json"] = utils.PackageError(err)
 		c.ServeJSON()
@@ -89,6 +90,22 @@ func (c *ImageController) SaveImage(imageId string) {
 	c.Ctx.Output.Header("Content-Disposition", fmt.Sprintf("attachment;filename=%s.tar.gz", imageId))
 	c.Ctx.Output.Header("Content-Transfer-Encoding", "binary")
 	_, _ = c.Ctx.ResponseWriter.Write(i)
+}
+
+// @router /api/image/pull [get]
+func (c *ImageController) PullImage() {
+	refStr := c.Ctx.Input.Query("refStr")
+	refStr = strings.Trim(refStr, " ")
+	image, err := docker.PullImage(refStr)
+	if err != nil {
+		c.Data["json"] = utils.PackageError(err)
+		c.ServeJSON()
+		return
+	}
+	buf := new(bytes.Buffer)
+	_, _ = buf.ReadFrom(image)
+	c.Data["json"] = utils.PackageData(buf.String())
+	c.ServeJSON()
 }
 
 /** 导入Image */

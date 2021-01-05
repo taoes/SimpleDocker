@@ -32,11 +32,11 @@ const imageStore = {
         for (let i = 0; i < data.length; i++) {
           let image = data[i];
           let tags = image.RepoTags;
-          for (let tagIndex in tags) {
+          for (let index in tags) {
             imageList.push({
-              key: parseId(image.Id),
-              rep: tags[tagIndex],
-              size: (image.Size / 1000000).toFixed(2) + 'Mb',
+              key: tags[index],
+              rep: tags[index],
+              size: (image.Size / 1000000).toFixed(2) + 'M',
               imageLongId: parseId(image.Id),
               imageId: image.Id.split(":")[1].substring(0, 12),
               created: formatDate(image.Created)

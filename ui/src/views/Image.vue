@@ -11,12 +11,12 @@
 
       <a-form-item>
         <a-space>
-          <a-button html-type="reset" @click="refreshImageList">
+          <a-button html-type="reset" @click="reloadImageList">
             <a-icon type="reload"></a-icon>
             刷新
           </a-button>
 
-          <a-button html-type="reset" @click="pullImage">
+          <a-button type="primary" @click="pullImage">
             <a-icon type="download"></a-icon>
             拉取
           </a-button>
@@ -24,8 +24,7 @@
       </a-form-item>
     </a-form>
     <a-table :columns="columns" :data-source="imageList"
-             style="margin-top: 30px"
-             size="default">
+             style="margin-top: 30px">
     <span slot="action" slot-scope="text, record">
       <a-space>
         <a href="#" @click="detail(record.imageLongId)">详情</a>
@@ -75,27 +74,35 @@
           <a-input v-model="containerConfig.containerName" placeholder="请输入容器名称"/>
         </a-form-model-item>
 
-        <a-form-model-item label="端口映射：">
-          <a-input v-model="containerConfig.bindPort" placeholder="请输入端口映射配置"/>
+        <a-form-model-item label="端口映射">
+          <a-input v-model="containerConfig.bindPort" placeholder="宿主机端口:容器端口(多个挂载使用;分割)"/>
         </a-form-model-item>
 
-        <a-form-model-item label="环境变量：">
-          <a-input v-model="containerConfig.env" placeholder="请输入容器的环境变量"/>
+        <a-form-model-item label="环境变量">
+          <a-input v-model="containerConfig.env" placeholder="环境变量键=环境变量值(多个变量使用;分割)"/>
+        </a-form-model-item>
+
+        <a-form-model-item label="目录挂载">
+          <a-input v-model="containerConfig.volume" placeholder="宿主机目录:容器目录(多个挂载使用;分割)"/>
         </a-form-model-item>
 
       </a-form-model>
     </a-modal>
 
 
-    <a-modal v-model="pullImageVisible" title="拉取新的镜像" okText="确定" cancelText="取消">
-      <a-form-model :label-col="{ span: 4 }" :wrapper-col="{ span: 20 }"
+    <a-modal v-model="pullImageVisible" title="拉取新的镜像" okText="拉取" cancelText="关闭" width="800px"
+             @ok="callPullImageApi">
+      <a-form-model :label-col="{ span: 2 }" :wrapper-col="{ span: 22 }"
                     v-model="containerConfig">
-        <a-form-model-item label="镜像名称">
+        <a-form-model-item label="镜像">
           <a-input v-model="pullImageConfig.imageName"/>
         </a-form-model-item>
-
       </a-form-model>
+
+      <pre style="overflow-y: auto; overflow-x:auto;height: 300px;background-color: #EFEFEF">{{pullLog}}</pre>
+
     </a-modal>
+
 
     <a-drawer
         placement="right"
@@ -106,7 +113,7 @@
         <a-collapse-panel key="info" header="镜像信息">
           <p style="text-wrap: inherit">ID: {{ this.imageInfo.Id }}</p>
           <p style="text-wrap: inherit">父级 ID: {{ this.imageInfo.Parent }}</p>
-          <p>大小: {{ (this.imageInfo.Size / 1024 / 1024) .toFixed(2)}} Mb</p>
+          <p>大小: {{ (this.imageInfo.Size / 1024 / 1024) .toFixed(2)}} M</p>
           <p>架构: {{ this.imageInfo.Architecture }}</p>
           <p>系统: {{ this.imageInfo.Os }}</p>
           <p>驱动: {{ this.imageInfo.GraphDriver.Name }}</p>
@@ -129,15 +136,16 @@
 
   import {mapActions} from "vuex";
   import imageApi from "../api/ImageApi";
+  import {guid} from '../utils/index'
 
   const columns = [
     {
-      title: '镜像ID',
+      title: '镜像 Id',
       key: 'imageId',
       dataIndex: 'imageId',
     },
     {
-      title: '仓库',
+      title: '镜像 Tag',
       dataIndex: 'rep',
       key: 'rep',
     },
@@ -170,8 +178,16 @@
         currentImageId: '',
         currentRep: '',
         columns,
-        containerConfig: {imageName: '', containerName: '', bindPort: '', env: ''},
+        containerConfig: {
+          imageName: '',
+          containerName: '',
+          bindPort: '',
+          env: '',
+          volume: ''
+        },
         pullImageConfig: {imageName: ''},
+        pullLog: '',
+        pulling: false,
         pullImageVisible: false,
         runImageVisible: false,
         tagImageVisible: false,
@@ -243,27 +259,21 @@
       },
       forceRemove: function (imageId) {
         this.$axios.get(`/api/image/${imageId}/remove/true`).then(res => {
-              let data = res.data;
-              if (data.Code === 'OK') {
+              let {Code, Msg} = res.data;
+              if (Code === 'OK') {
                 this.$message.info('强制删除镜像完成!');
                 this.updateImage()
               } else {
-                this.$notification['error']({
-                  message: '强制删除镜像失败',
-                  description: data.Msg
-                });
+                this.$message.error(Msg);
               }
             }
         ).catch(e => {
-          this.$notification['error']({
-            message: '强制删除镜像失败',
-            description: "访问 Docker 镜像出现异常,请检查 Docker 服务是否正常启动",
-          });
+          this.$message.error("访问 Docker 镜像出现异常,请检查 Docker 服务是否正常启动");
         })
       },
-      refreshImageList: function () {
-        this.searchKey = ''
+      reloadImageList: function () {
         this.updateImage()
+        this.$message.info('刷新镜像列表完成');
       },
       pullImage: function () {
         this.pullImageVisible = true;
@@ -274,12 +284,40 @@
       openNewContainerConfigModal: function (imageName) {
         this.containerConfig.imageName = imageName;
         this.runImageVisible = true;
-      },
-      exportImg: function (imageId) {
-        const modal = this.$success({
-          title: '正在导出,请稍等...',
-          content: '正在导出，稍后会自动下载.......'
-        });
+      }, callPullImageApi() {
+        if (this.pulling) {
+          this.$message.error("正在拉去镜像,请等待当前任务完成")
+          return;
+        }
+
+        this.pulling = true
+        this.pullLog = "正在拉取镜像，请稍后！<br/> 具体时间取决于网络状态以及和镜像中心的连接速度..."
+        let imageName = this.pullImageConfig.imageName;
+        if (imageName.trim() === '') {
+          this.$message.error("镜像名称不能为空")
+          return
+        }
+
+        let key = guid()
+        this.$message.loading({content: "正在拉取镜像，请稍后....", key, duration: 0})
+        this.$axios.get(`/api/image/pull?refStr=${imageName}`)
+        .then(res => {
+          let {Data, Code, Msg} = res.data
+          if (Code === 'OK') {
+            this.pullLog = Data
+            this.$message.info({content: "拉取镜像完成", key})
+          } else {
+            this.pullLog = Msg
+            this.$message.warning({content: Msg, key})
+          }
+        }).catch(e => {
+          this.$message.error({content: '网络访问失败，请检查服务是否正常启动', key})
+          this.pullLog = "网络访问失败，请检查服务是否正常启动"
+        })
+        this.pulling = false
+      }, exportImg: function (imageId) {
+        let key = guid()
+        this.$message.loading({content: "正在导出镜像，请稍后....", key, duration: 0});
 
         let config = {
           withCredentials: true,
@@ -288,16 +326,10 @@
         this.$axios.create(config).get(`/api/image/${imageId}/save`, {responseType: 'blob'}).then(
             (res) => {
               this.download(res.data, `${imageId}.tar.gz`)
-              this.$notification['info']({
-                message: '导出成功',
-                description: "镜像已成功导出并下载....",
-                duration: 10
-              });
-              modal.destroy()
+              this.$message.info({content: "镜像已成功导出并下载....", key});
             })
         .catch(e => {
-          this.$message.error("镜像导出失败,请检查 Docker 服务是否正常");
-          modal.destroy()
+          this.$message.error({content: "镜像导出失败,请检查 Docker 服务是否正常", key});
         })
       }, openReTagModal: function (oldTag) {
         this.tagImageVisible = true
@@ -380,7 +412,7 @@
   ;
 </script>
 
-<style>
+<style scoped>
   .ant-drawer-body {
     padding: 0 !important;
   }

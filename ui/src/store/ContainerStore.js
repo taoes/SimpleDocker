@@ -14,6 +14,7 @@ export default {
   state: {
     containerList: [],
     containerInfo: {
+      HostConfig: {},
       State: {
         Status: ''
       }
