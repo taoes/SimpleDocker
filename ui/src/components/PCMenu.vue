@@ -9,31 +9,31 @@
   >
     <a-menu-item key="/">
       <a-icon type="user"/>
-      <span>系统信息</span>
+      <span class="menuItem">系统信息</span>
     </a-menu-item>
 
 
     <a-menu-item key="/image">
       <a-icon type="laptop"/>
-      <span> 镜像管理</span>
+      <span class="menuItem"> 镜像管理</span>
     </a-menu-item>
 
 
     <a-menu-item key="/container">
       <a-icon type="container"/>
-      <span> 容器管理</span>
+      <span class="menuItem"> 容器管理</span>
     </a-menu-item>
 
 
     <a-menu-item key="/volume">
       <a-icon type="folder-open"/>
-      <span>存储管理</span>
+      <span class="menuItem">存储管理</span>
     </a-menu-item>
 
 
     <a-menu-item key="/network">
       <a-icon type="deployment-unit"/>
-      <span> 网络管理</span>
+      <span class="menuItem"> 网络管理</span>
     </a-menu-item>
 
 
@@ -44,7 +44,7 @@
 
     <a-menu-item key="/setting">
       <a-icon type="setting"/>
-      <span> 系统设置</span>
+      <span class="menuItem"> 系统设置</span>
     </a-menu-item>
   </a-menu>
 </template>
@@ -70,6 +70,12 @@
     }
   }
 </script>
+
+<style>
+  .menuItem {
+    color: #000c17;
+  }
+</style>
 
 
 

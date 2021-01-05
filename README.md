@@ -69,11 +69,12 @@ $ npm install --global standard-readme-spec
 
 
 ## 维护者
-[@Taoes](https://github.com/taoes)
+
++ [@Taoes](https://github.com/taoes)
 
 ## 讨论
 
-Feel free to dive in! [Open an issue](https://github.com/RichardLitt/standard-readme/issues/new) or submit PRs.
+Feel free to dive in! [Open an issue](https://github.com/taoes/SimpleDocker/issues/new) or submit PRs.
 
 Standard Readme follows the [Contributor Covenant](http://contributor-covenant.org/version/1/3/0/) Code of Conduct.
 
@@ -81,4 +82,4 @@ Standard Readme follows the [Contributor Covenant](http://contributor-covenant.o
 
 ## 开源方案
 
-[MIT](LICENSE) © Richard Littauer
+[GPL](./LICENSE)

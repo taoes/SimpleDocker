@@ -1,26 +1,14 @@
 <template>
   <a-layout id="components-layout-demo-top-side-2">
     <a-layout-header class="header">
-      <div class="logo"></div>
+      <!--      <div class="logo"></div>-->
+      <h1 class="logo" style="color: white">SimpleDocker</h1>
       <a-menu
           theme="dark"
           mode="horizontal"
           :selectable="false"
           @click="linkSelect"
           :style="{ lineHeight: '64px' }">
-        <a-menu-item key="https://www.zhoutao123.com">
-          <a-icon type="book" theme="filled"/>
-          文档
-        </a-menu-item>
-        <a-menu-item key="https://github.com/taoes/SimpleDocker">
-          <a-icon type="code" theme="filled"/>
-          源码
-        </a-menu-item>
-        <a-menu-item key="https://github.com/taoes/SimpleDocker/issues">
-          <a-icon type="bug" theme="filled"/>
-          反馈
-        </a-menu-item>
-
         <a-menu-item :class="{'apiStateNormal': apiState,'apiStateError':!apiState}">
           <template v-if="apiState">
             <a-icon type="api" size="16"/>
@@ -30,8 +18,23 @@
             <a-icon type="disconnect" size="16"/>
             <span>连接中断</span>
           </template>
-
         </a-menu-item>
+
+
+        <a-menu-item key="https://www.zhoutao123.com" class="right">
+          <a-icon type="book" theme="filled"/>
+          博客
+        </a-menu-item>
+        <a-menu-item key="https://github.com/taoes/SimpleDocker" class="right">
+          <a-icon type="code" theme="filled"/>
+          源码
+        </a-menu-item>
+        <a-menu-item key="https://github.com/taoes/SimpleDocker/issues/new" class="right">
+          <a-icon type="bug" theme="filled"/>
+          反馈
+        </a-menu-item>
+
+
       </a-menu>
     </a-layout-header>
     <a-layout>
@@ -83,8 +86,7 @@
   #components-layout-demo-top-side-2 .logo {
     width: 120px;
     height: 31px;
-    background: rgba(255, 255, 255, 0.2);
-    margin: 16px 28px 16px 0;
+
     float: left;
   }
 
@@ -93,6 +95,10 @@
     padding: 24px;
     margin: 0;
     minHeight: '280px';
+  }
+
+  .right {
+    float: right;
   }
 
   .apiStateNormal {
