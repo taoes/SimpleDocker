@@ -7,118 +7,102 @@
 </div>
 
 
-
-A simple docker dashboard, it can be more convenient to use docker.
-
+一个简单的Docker控制面板，可以让你更方便的使用Docker
 
 
-This repository contains:
 
-1. [The specification](spec.md) for how a standard README should look.
-2. A link to a linter you can use to keep your README maintained ([work in progress](https://github.com/RichardLitt/standard-readme/issues/5)).
-3. A link to [a generator](https://github.com/RichardLitt/generator-standard-readme) you can use to create standard READMEs.
-4. [A badge](#badge) to point to this spec.
-5. [Examples of standard READMEs](example-readmes/) - such as this file you are reading.
+## 背景
 
-Standard Readme is designed for open source libraries. Although it’s [historically](#background) made for Node and npm projects, it also applies to libraries in other languages and package managers.
+Docker是目前一种非常主流的容器化方案，支持非常多的特性，给开发者带来便利，但是Docker 镜像以及容器管理复杂的参数让新手望而却步，基于此开发 SimpleDocker 控制面板，方便大家使用!!!
 
 
-## Table of Contents
+由于目前项目刚刚起步，欢迎大家踊跃提出需求!!!
 
-- [Background](#background)
-- [Install](#install)
-- [Usage](#usage)
-- [Preview](#badge)
-- [DemoOnline](#example-readmes)
-- [Related Efforts](#related-efforts)
-- [Maintainers](#maintainers)
-- [Contributing](#contributing)
-- [License](#license)
+> Tip: 您可以在Issues中提出需求和您发现的bug！[需求 & BUG 管理](https://github.com/taoes/SimpleDocker/issues)
 
-## Background
 
-Standard Readme started with the issue originally posed by [@maxogden](https://github.com/maxogden) over at [feross/standard](https://github.com/feross/standard) in [this issue](https://github.com/feross/standard/issues/141), about whether or not a tool to standardize readmes would be useful. A lot of that discussion ended up in [zcei's standard-readme](https://github.com/zcei/standard-readme/issues/1) repository. While working on maintaining the [IPFS](https://github.com/ipfs) repositories, I needed a way to standardize Readmes across that organization. This specification started as a result of that.
+目前支持一下特性:
 
-> Your documentation is complete when someone can use your module without ever
-having to look at its code. This is very important. This makes it possible for
-you to separate your module's documented interface from its internal
-implementation (guts). This is good because it means that you are free to
-change the module's internals as long as the interface remains the same.
+1. 容器管理、拉取镜像、**运行镜像**
+2. 容器管理、**容器启动，停止，运行**
+3. 挂载卷管理以及创还能
+4. 网络管理以及创建
 
-> Remember: the documentation, not the code, defines what a module does.
+## 安装使用
 
-~ [Ken Williams, Perl Hackers](http://mathforum.org/ken/perl_modules.html#document)
-
-Writing READMEs is way too hard, and keeping them maintained is difficult. By offloading this process - making writing easier, making editing easier, making it clear whether or not an edit is up to spec or not - you can spend less time worrying about whether or not your initial documentation is good, and spend more time writing and using code.
-
-By having a standard, users can spend less time searching for the information they want. They can also build tools to gather search terms from descriptions, to automatically run example code, to check licensing, and so on.
-
-The goals for this repository are:
-
-1. A well defined **specification**. This can be found in the [Spec document](spec.md). It is a constant work in progress; please open issues to discuss changes.
-2. **An example README**. This Readme is fully standard-readme compliant, and there are more examples in the `example-readmes` folder.
-3. A **linter** that can be used to look at errors in a given Readme. Please refer to the [tracking issue](https://github.com/RichardLitt/standard-readme/issues/5).
-4. A **generator** that can be used to quickly scaffold out new READMEs. See [generator-standard-readme](https://github.com/RichardLitt/generator-standard-readme).
-5. A **compliant badge** for users. See [the badge](#badge).
-
-## Install
-
-This project uses [node](http://nodejs.org) and [npm](https://npmjs.com). Go check them out if you don't have them locally installed.
++ Linux 
 
 ```sh
 $ npm install --global standard-readme-spec
 ```
 
-## Usage
-
-This is only a documentation package. You can print out [spec.md](spec.md) to your console:
-
++ Mac 
 ```sh
-$ standard-readme-spec
-# Prints out the standard-readme spec
+$ npm install --global standard-readme-spec
 ```
 
-### Generator
-
-To use the generator, look at [generator-standard-readme](https://github.com/RichardLitt/generator-standard-readme). There is a global executable to run the generator in that package, aliased as `standard-readme`.
-
-## Badge
-
-If your README is compliant with Standard-Readme and you're on GitHub, it would be great if you could add the badge. This allows people to link back to this Spec, and helps adoption of the README. The badge is **not required**.
-
-[![standard-readme compliant](https://img.shields.io/badge/readme%20style-standard-brightgreen.svg?style=flat-square)](https://github.com/RichardLitt/standard-readme)
-
-To add in Markdown format, use this code:
-
-```
-[![standard-readme compliant](https://img.shields.io/badge/readme%20style-standard-brightgreen.svg?style=flat-square)](https://github.com/RichardLitt/standard-readme)
++ Windows 
+```shell script
+# 暂不支持
 ```
 
-## Example Readmes
 
-To see how the specification has been applied, see the [example-readmes](example-readmes/).
++ 手动安装
+```shell script
+    # 下载 XXX
+    # 拷贝到指定目录
+    # 配置环境变量
+done
+```
 
-## Related Efforts
 
-- [Art of Readme](https://github.com/noffle/art-of-readme) - 💌 Learn the art of writing quality READMEs.
-- [open-source-template](https://github.com/davidbgk/open-source-template/) - A README template to encourage open-source contributions.
+## 相关依赖
 
-## Maintainers
+- [GoLang](https://golang.org/)
+- [Docker API Engine](https://docs.docker.com/engine/api/sdk/)
+- [VueJs 2.x](https://vuejs.org/)
+- [Vuex](https://vuex.vuejs.org/) 
+- [Ant Design Vue](https://www.antdv.com/docs/vue/introduce-cn/) 
 
+## 预览
+
++ Docker 信息
+![Docker 信息](./img/info.png)
+
+
++ Image 信息
+![Image 信息](./img/image.png)
+
++ 运行新的容器
+![Image 信息](./img/runContainer.png)
+
+
++ Container 信息
+![Container 信息](./img/container.png)
+
++ 容器日志以及日志下载
+![Image 信息](./img/containerLog.png)
+
+
++ Volume 信息
+![Volume 信息](./img/volume.png)
+
++ Network 信息
+![Network 信息](./img/network.png)
+
+
+
+## 维护者
 [@Taoes](https://github.com/taoes)
 
-## Contributing
+## 讨论
 
 Feel free to dive in! [Open an issue](https://github.com/RichardLitt/standard-readme/issues/new) or submit PRs.
 
 Standard Readme follows the [Contributor Covenant](http://contributor-covenant.org/version/1/3/0/) Code of Conduct.
 
-### Contributors
-
-This project exists thanks to all the people who contribute. 
-<a href="https://github.com/RichardLitt/standard-readme/graphs/contributors"><img src="https://opencollective.com/standard-readme/contributors.svg?width=890&button=false" /></a>
 
 
-## License
+## 开源方案
 
 [MIT](LICENSE) © Richard Littauer
