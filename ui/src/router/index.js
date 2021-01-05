@@ -2,6 +2,11 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
 
+const originalPush = VueRouter.prototype.push
+VueRouter.prototype.push = function push(location) {
+  return originalPush.call(this, location).catch(err => err)
+}
+
 Vue.use(VueRouter)
 
 const routes = [
@@ -13,17 +18,32 @@ const routes = [
   {
     path: '/image',
     name: 'Image',
-    component: () => import(/* webpackChunkName: "about" */ '../views/Image.vue')
+    component: () => import('../views/Image.vue')
   },
   {
     path: '/container',
-    name: 'Image',
-    component: () => import(/* webpackChunkName: "about" */ '../views/Container.vue')
+    name: 'Container',
+    component: () => import('../views/Container.vue')
   },
   {
-    path: '/about',
-    name: 'About',
-    component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
+    path: '/volume',
+    name: 'Volume',
+    component: () => import('../views/Volume.vue')
+  },
+  {
+    path: '/network',
+    name: 'Network',
+    component: () => import('../views/Netowork.vue')
+  },
+  {
+    path: '/secret',
+    name: 'Secret',
+    component: () => import('../views/Secret.vue')
+  },
+  {
+    path: '/setting',
+    name: 'Setting',
+    component: () => import('../views/Setting.vue')
   }
 ]
 

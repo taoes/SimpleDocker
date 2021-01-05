@@ -29,9 +29,9 @@
       </a-col>
 
       <a-col :span="6">
-        <a-statistic title="内存" :value="info.MemTotal >> 20" class="demo-class">
+        <a-statistic title="内存" :value="(info.MemTotal /1000000) .toFixed(2)" class="demo-class">
           <template #suffix>
-            <span> Mb</span>
+            <span> M</span>
           </template>
         </a-statistic>
       </a-col>
@@ -101,12 +101,12 @@
         }
       }
     }, mounted() {
-      this.$axios.get('http://localhost:8081/api/docker/info').then(res => {
+      this.$axios.get('/api/docker/info').then(res => {
         let {Data} = res.data;
         this.info = Data;
       });
 
-      this.$axios.get('http://localhost:8081/api/docker/version').then(res => {
+      this.$axios.get('/api/docker/version').then(res => {
         let {Data} = res.data;
         this.version = Data.server;
       });

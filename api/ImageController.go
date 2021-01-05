@@ -1,12 +1,14 @@
 package api
 
 import (
-	"SimpleDocker/docker/image"
+	"SimpleDocker/docker"
 	"SimpleDocker/utils"
+	"bytes"
 	"fmt"
 	"github.com/astaxie/beego"
-	"io"
-	"os"
+	"github.com/astaxie/beego/logs"
+	"strconv"
+	"strings"
 )
 
 type ImageController struct {
@@ -16,7 +18,7 @@ type ImageController struct {
 /** 查询全部Image */
 // @router /api/image [get]
 func (c *ImageController) GetImageList() {
-	imageList, err := image.GetImageList()
+	imageList, err := docker.GetImageList()
 	if err != nil {
 		c.Data["json"] = utils.PackageError(err)
 		c.ServeJSON()
@@ -29,7 +31,7 @@ func (c *ImageController) GetImageList() {
 /** 查询Image信息 */
 // @router /api/image/:imageId [get]
 func (c *ImageController) GetImageInfo(imageId string) {
-	imageInfo, err := image.GetImageInfo(imageId)
+	imageInfo, err := docker.GetImageInfo(imageId)
 	if err != nil {
 		c.Data["json"] = utils.PackageError(err)
 		c.ServeJSON()
@@ -40,9 +42,10 @@ func (c *ImageController) GetImageInfo(imageId string) {
 }
 
 /** 删除Image */
-// @router /api/image/:imageId [delete]
-func (c *ImageController) DeleteImage(imageId string) {
-	err := image.DeleteImage(imageId, false)
+// @router /api/image/:imageId/remove/:forge [get]
+func (c *ImageController) DeleteImage(imageId string, forge string) {
+	b, _ := strconv.ParseBool(forge)
+	err := docker.DeleteImage(imageId, b)
 	if err != nil {
 		c.Data["json"] = utils.PackageError(err)
 		c.ServeJSON()
@@ -53,9 +56,14 @@ func (c *ImageController) DeleteImage(imageId string) {
 }
 
 /** 修改Image标签 */
-// @router /api/image/tag [post]
+// @router /api/image/tag [get]
 func (c *ImageController) TagImage() {
-	err := image.TagImage("123", "45")
+	source := c.Ctx.Input.Query("source")
+	tag := c.Ctx.Input.Query("tag")
+
+	logs.Info(source)
+	logs.Info(tag)
+	err := docker.TagImage(source, tag)
 	if err != nil {
 		c.Data["json"] = utils.PackageError(err)
 		c.ServeJSON()
@@ -68,23 +76,35 @@ func (c *ImageController) TagImage() {
 /** 导出Image到指定目录 */
 // @router /api/image/:imageId/save [get]
 func (c *ImageController) SaveImage(imageId string) {
-	reader, err := image.SaveImage(imageId)
+	reader, err := docker.SaveImage(imageId)
 	if err != nil {
 		c.Data["json"] = utils.PackageError(err)
 		c.ServeJSON()
 		return
 	}
 
-	outFile, err := os.Create(fmt.Sprintf("/tmp/%s.tar.gz", imageId))
+	buf := new(bytes.Buffer)
+	_, _ = buf.ReadFrom(reader)
+	i := buf.Bytes()
+	c.Ctx.Output.Header("Content-Type", "application/force-download")
+	c.Ctx.Output.Header("Content-Disposition", fmt.Sprintf("attachment;filename=%s.tar.gz", imageId))
+	c.Ctx.Output.Header("Content-Transfer-Encoding", "binary")
+	_, _ = c.Ctx.ResponseWriter.Write(i)
+}
+
+// @router /api/image/pull [get]
+func (c *ImageController) PullImage() {
+	refStr := c.Ctx.Input.Query("refStr")
+	refStr = strings.Trim(refStr, " ")
+	image, err := docker.PullImage(refStr)
 	if err != nil {
-		c.Data["json"] = utils.PackageErrorMsg("创建文件失败,请检查保存位置是否有权限")
+		c.Data["json"] = utils.PackageError(err)
 		c.ServeJSON()
 		return
 	}
-	defer outFile.Close()
-
-	_, _ = io.Copy(outFile, reader)
-	c.Data["json"] = utils.Success()
+	buf := new(bytes.Buffer)
+	_, _ = buf.ReadFrom(image)
+	c.Data["json"] = utils.PackageData(buf.String())
 	c.ServeJSON()
 }
 

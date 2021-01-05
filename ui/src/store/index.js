@@ -1,15 +1,20 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 
-Vue.use(Vuex)
+Vue.use(Vuex);
+
+import imageStore from './ImageStore'
+import ContainerStore from './ContainerStore'
+import menuStore from './MenuStore'
+import networkStore from './NetworkStore'
+import volumeStore from './VolumeStore'
 
 export default new Vuex.Store({
-  state: {
-  },
-  mutations: {
-  },
-  actions: {
-  },
   modules: {
+    image: imageStore,
+    container: ContainerStore,
+    menu: menuStore,
+    network: networkStore,
+    volume: volumeStore
   }
-})
+});

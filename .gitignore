@@ -108,3 +108,13 @@ fabric.properties
 !/SimpleDocker
 !/lastupdate.tmp
 ./ui/node_modules
+
+.idea/
+
+lastupdate.tmp
+
+SimpleDocker
+
+yarn.lock
+
+static/
