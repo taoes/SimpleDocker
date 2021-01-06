@@ -66,7 +66,7 @@ chmod +x /tmp/deploy-simple-docker.sh
 ```sh
 docker run  -d -p 8080:40093 -v /var/run/docker.sock:/var/run/docker.sock --name SimpleDocker  registry.cn-shanghai.aliyuncs.com/seven-tao/simple-docker:0.0.1-beta
 // 浏览器访问 http://localhost:8080  
-``
+```
 
 + 手动安装
 
