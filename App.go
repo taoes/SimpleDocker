@@ -4,11 +4,38 @@ import (
 	"SimpleDocker/api"
 	_ "SimpleDocker/context"
 	_ "SimpleDocker/routers"
+	"flag"
+	"fmt"
 	"github.com/astaxie/beego"
+	"github.com/astaxie/beego/logs"
 	"github.com/astaxie/beego/plugins/cors"
+	"io/ioutil"
+	"os/exec"
+	"strconv"
 )
 
+var port = flag.Int("port", 4040, "help message for flagname")
+
+func stopCommand() {
+	// 读取PID
+	file, err := ioutil.ReadFile("/tmp/lock.simple.docker")
+	if err != nil {
+		return
+	}
+	pid, err := strconv.Atoi(string(file))
+	if err != nil {
+		logs.Info("PID 读取失败，无法关闭进程")
+		return
+	}
+
+	// 执行Kill
+	command := fmt.Sprintf("kill -9 %d", pid)
+	logs.Info("Command = %s", command)
+	exec.Command(command)
+}
+
 func main() {
+	flag.Parse()
 
 	// 配置静态资源
 	beego.SetStaticPath("/", "./static")
@@ -29,5 +56,5 @@ func main() {
 		AllowCredentials: true}))
 
 	// 启动服务
-	beego.Run()
+	beego.Run(":" + strconv.Itoa(*port))
 }

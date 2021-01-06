@@ -1,6 +1,7 @@
 echo "正在准备安装 SimpleDocker...."
 
 wget 'https://gitee.com/taoes_admin/SimpleDocker/attach_files/576037/download/SimpleDocker-linux.zip' -O '/tmp/simpleDocker.zip'
+rm -rf ~/.local/simpleDocker
 mkdir -p ~/.local/simpleDocker
 unzip /tmp/simpleDocker.zip -d ~/.local/simpleDocker
 echo "export PATH=\$PATH:~/.local/simpleDocker" >> ~/.bashrc
