@@ -36,21 +36,24 @@ Docker是目前一种非常主流的容器化方案，支持非常多的特性�
 5. DockerSwarm 集群管理(V4)
 
 ## 应用安装
-使用前，请先安装 unzip 命令用于解压压缩包 ubuntu系统下使用 `sudo apt-get install unzip`  centos 下使用 `yum install -y unzip`
+使用前，请先安装 unzip 命令用于解压压缩包 
+
+> + ubuntu系统下使用 `sudo apt-get install unzip`  
+> + centos 下使用 `yum install -y unzip`
 
 + Linux 
 
 ```sh
 curl 'https://gitee.com/taoes_admin/SimpleDocker/raw/master/script/linux-deploy.sh' > /tmp/deploy-simple-docker.sh
 chmod +x /tmp/deploy-simple-docker.sh
-/tmp/deploy-simple-docker
+/tmp/deploy-simple-docker.sh
 ```
 
 + MacOS 
 ```sh
 curl 'https://gitee.com/taoes_admin/SimpleDocker/raw/master/script/darwin-deploy.sh' > /tmp/deploy-simple-docker.sh
 chmod +x /tmp/deploy-simple-docker.sh
-/tmp/deploy-simple-docker
+/tmp/deploy-simple-docker.sh
 ```
 
 + Windows 
