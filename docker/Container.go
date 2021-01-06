@@ -6,6 +6,7 @@ import (
 	"github.com/docker/docker/api/types"
 	"github.com/docker/docker/api/types/container"
 	"github.com/docker/go-connections/nat"
+	"io"
 	"time"
 )
 
@@ -83,6 +84,7 @@ func GetContainerLog(containerId string, tail string) (string, error) {
 	return buf.String(), nil
 }
 
-func GetContainer() {
-
+/** 导出容器 */
+func ExportContainer(containerId string) (io.ReadCloser, error) {
+	return context.Cli.ContainerExport(context.Ctx, containerId)
 }

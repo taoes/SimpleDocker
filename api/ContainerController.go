@@ -3,6 +3,7 @@ package api
 import (
 	"SimpleDocker/docker"
 	"SimpleDocker/utils"
+	"bytes"
 	"fmt"
 	"github.com/astaxie/beego"
 	"github.com/docker/docker/api/types"
@@ -175,10 +176,29 @@ func (c *ContainerController) GetContainerAllLog(containerId string) {
 	}
 
 	// 准备下载文件
-
 	logsByte := []byte(logs)
 	c.Ctx.Output.Header("Content-Type", "application/force-download")
 	c.Ctx.Output.Header("Content-Disposition", fmt.Sprintf("attachment;filename=%s-all.log", containerId))
 	c.Ctx.Output.Header("Content-Transfer-Encoding", "binary")
 	_, _ = c.Ctx.ResponseWriter.Write(logsByte)
+}
+
+// 容器导出
+// @router /api/container/:containerId/export [get]
+func (c *ContainerController) ExportContainer(containerId string) {
+	info, err := docker.ExportContainer(containerId)
+	if err != nil {
+		c.Data["json"] = utils.PackageError(err)
+		c.ServeJSON()
+		return
+	}
+
+	// 转换为文件下载
+	buf := new(bytes.Buffer)
+	_, _ = buf.ReadFrom(info)
+	bytesData := buf.Bytes()
+	c.Ctx.Output.Header("Content-Type", "application/force-download")
+	c.Ctx.Output.Header("Content-Disposition", fmt.Sprintf("attachment;filename=%s.tar.gz", containerId))
+	c.Ctx.Output.Header("Content-Transfer-Encoding", "binary")
+	_, _ = c.Ctx.ResponseWriter.Write(bytesData)
 }

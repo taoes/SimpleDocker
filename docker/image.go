@@ -3,7 +3,9 @@ package docker
 import (
 	"SimpleDocker/context"
 	"github.com/docker/docker/api/types"
+	"github.com/pkg/errors"
 	"io"
+	"os"
 )
 
 func GetImageList() ([]types.ImageSummary, error) {
@@ -43,4 +45,13 @@ func DeleteImage(imageId string, forge bool) error {
 
 func SaveImage(imageId string) (io.ReadCloser, error) {
 	return context.Cli.ImageSave(context.Ctx, []string{imageId})
+}
+
+/** 导入镜像 */
+func ImportImage(filePath string) (types.ImageLoadResponse, error) {
+	open, err := os.OpenFile(filePath, os.O_RDWR, 666)
+	if err != nil {
+		return types.ImageLoadResponse{}, errors.New("读取文件失败")
+	}
+	return context.Cli.ImageLoad(context.Ctx, open, false)
 }

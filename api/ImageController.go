@@ -9,6 +9,7 @@ import (
 	"github.com/astaxie/beego/logs"
 	"strconv"
 	"strings"
+	"time"
 )
 
 type ImageController struct {
@@ -109,8 +110,29 @@ func (c *ImageController) PullImage() {
 }
 
 /** 导入Image */
-// @router
+// @router /api/image/import
 func (c *ImageController) ImportImage() {
-	c.Data["json"] = utils.PackageErrorMsg("暂不支持导入镜像,请期待后续版本")
+	file, _, err := c.GetFile("file")
+	if err != nil {
+		c.Data["json"] = "获取文件失败,请重新上传文件"
+		c.ServeJSON()
+		return
+	}
+	defer file.Close()
+	saveFilePath := "/tmp/" + strconv.FormatInt(time.Now().Unix(), 10)
+	err = c.SaveToFile("file", saveFilePath)
+	if err != nil {
+		c.Data["json"] = "保存文件失败，请检查文件是否存在"
+		c.ServeJSON()
+		return
+	}
+	_, err = docker.ImportImage(saveFilePath)
+	if err != nil {
+		c.Data["json"] = utils.PackageError(err)
+		c.ServeJSON()
+		return
+	}
+
+	c.Data["json"] = utils.Success()
 	c.ServeJSON()
 }

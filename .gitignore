@@ -118,3 +118,5 @@ SimpleDocker
 yarn.lock
 
 static/
+
+SimpleDocker.tar.gz
