@@ -1,6 +1,6 @@
 echo "正在准备安装 SimpleDocker...."
 
-wget 'https://github.com/taoes/SimpleDocker/releases/download/V0.0.1-Beta/SimpleDocker-darwin.zip' -O '/tmp/simpleDocker.zip'
+wget 'https://gitee.com/taoes_admin/SimpleDocker/attach_files/576036/download/SimpleDocker-darwin.zip' -O '/tmp/simpleDocker.zip'
 mkdir -p ~/.local/simpleDocker
 unzip /tmp/simpleDocker.zip -d ~/.local/simpleDocker
 echo "export PATH=\$PATH:~/.local/simpleDocker" >> ~/.bashrc

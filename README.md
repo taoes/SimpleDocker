@@ -21,28 +21,34 @@ Docker是目前一种非常主流的容器化方案，支持非常多的特性�
 > Tip: 您可以在Issues中提出需求和您发现的bug！[需求 & BUG 管理](https://github.com/taoes/SimpleDocker/issues)
 
 
-目前支持以下特性:
-
-1. 容器管理、拉取镜像、**运行镜像**
-2. 容器管理、**容器启动，停止，运行**
-3. 挂载卷管理以及创还能
+**目前支持以下特性:**
+1. 容器管理、拉取镜像、运行镜像
+2. 容器管理、容器启动/停止/运行
+3. 挂载卷管理以及创建
 4. 网络管理以及创建
 
-## 安装使用
 
+**计划支持的特性:**
+1. 容器网络管理与连接(V2)
+2. 私有仓库的镜像拉取(V2)
+3. 授权安全认证管理(V2)
+4. DockerCompose 镜像编排管理(V3)
+5. DockerSwarm 集群管理(V4)
+
+## 应用安装
 使用前，请先安装 unzip 命令用于解压压缩包 ubuntu系统下使用 `sudo apt-get install unzip`  centos 下使用 `yum install -y unzip`
 
 + Linux 
 
 ```sh
-curl 'https://raw.githubusercontent.com/taoes/SimpleDocker/master/script/linux-deploy.sh' > /tmp/deploy-simple-docker.sh
+curl 'https://gitee.com/taoes_admin/SimpleDocker/raw/master/script/linux-deploy.sh' > /tmp/deploy-simple-docker.sh
 chmod +x /tmp/deploy-simple-docker.sh
 /tmp/deploy-simple-docker
 ```
 
-+ Mac 
++ MacOS 
 ```sh
-curl 'https://raw.githubusercontent.com/taoes/SimpleDocker/master/script/darwin-deploy.sh' > /tmp/deploy-simple-docker.sh
+curl 'https://gitee.com/taoes_admin/SimpleDocker/raw/master/script/darwin-deploy.sh' > /tmp/deploy-simple-docker.sh
 chmod +x /tmp/deploy-simple-docker.sh
 /tmp/deploy-simple-docker
 ```
@@ -58,8 +64,21 @@ chmod +x /tmp/deploy-simple-docker.sh
 1. 通过 [https://github.com/taoes/SimpleDocker/releases/](https://github.com/taoes/SimpleDocker/releases/) 下载最新发布的版本
 2. 创建文件夹`~/.local/simpleDocker` 并解压文件上文的压缩包到 `~/.local/simpleDocker`
 3. 将文件夹 `~/.local/simpleDocker` 配置到环境变量 PATH中
-4. 刷新环境变量设置后，使用命令`SimpleDocker` 启动应用(后台运行可使用 nohup 命令)
-5. 启动应用后，浏览器访问 `http://localhost:40093` 打开应用
+
+
+## 应用启动
+1. 刷新环境变量设置后，使用命令`SimpleDocker` 启动应用(后台运行可使用 `nohup SimpleDocker &` 命令启动)
+2. 启动应用后，浏览器访问 `http://localhost:40093` 打开应用
+
+
+
+## Q & A
+1. 修改启动端口
+> 如果您需要修改启动端口，您可以打开应用目录(默认是 ~/.local/simpleDocker )下的 conf/app.conf 文件，修改 httpport 的值
+
+
+2. 保持后台运行以及关闭后台运行
+> 您可以使用 `nohup SimpleDocker &` 命令后台启动 SimpleDocker ，如果关闭应用可以使用 `ps -ef | grep 'SimpleDocker'`  查找到PID，然后通过  `kill -9 pid` 关闭应用
 
 
 
