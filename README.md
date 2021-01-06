@@ -36,6 +36,7 @@ Docker是目前一种非常主流的容器化方案，支持非常多的特性�
 5. DockerSwarm 集群管理(V4)
 
 ## 应用安装
+
 使用前，请先安装 unzip 命令用于解压压缩包 
 
 > + ubuntu系统下使用 `sudo apt-get install unzip`  
@@ -61,6 +62,11 @@ chmod +x /tmp/deploy-simple-docker.sh
 # 暂不支持window系统
 ```
 
++ Docker 安装
+```sh
+docker run  -d -p 8080:40093 -v /var/run/docker.sock:/var/run/docker.sock --name SimpleDocker  registry.cn-shanghai.aliyuncs.com/seven-tao/simple-docker:0.0.1-beta
+// 浏览器访问 http://localhost:8080  
+``
 
 + 手动安装
 
