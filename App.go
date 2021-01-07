@@ -14,7 +14,7 @@ import (
 	"strconv"
 )
 
-var port = flag.Int("port", 4040, "help message for flagname")
+var port = flag.Int("port", 4050, "help message for flagname")
 
 func stopCommand() {
 	// 读取PID

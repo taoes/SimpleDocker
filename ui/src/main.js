@@ -9,7 +9,7 @@ import 'ant-design-vue/dist/antd.css';
 import axios from 'axios'
 
 // axios.defaults.baseURL = 'http://10.0.30.78:8081';
-// axios.defaults.baseURL = 'http://localhost:8081';
+axios.defaults.baseURL = 'http://localhost:4050';
 Vue.prototype.$lodash = _
 Vue.config.productionTip = false
 Vue.prototype.$axios = axios

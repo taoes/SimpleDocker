@@ -29,6 +29,17 @@ func init() {
 
     beego.GlobalControllerRouter["SimpleDocker/api:ContainerController"] = append(beego.GlobalControllerRouter["SimpleDocker/api:ContainerController"],
         beego.ControllerComments{
+            Method: "ExportContainer",
+            Router: "/api/container/:containerId/export",
+            AllowHTTPMethods: []string{"get"},
+            MethodParams: param.Make(
+				param.New("containerId", param.InPath),
+			),
+            Filters: nil,
+            Params: nil})
+
+    beego.GlobalControllerRouter["SimpleDocker/api:ContainerController"] = append(beego.GlobalControllerRouter["SimpleDocker/api:ContainerController"],
+        beego.ControllerComments{
             Method: "GetContainerInfo",
             Router: "/api/container/:containerId/info",
             AllowHTTPMethods: []string{"get"},
@@ -180,6 +191,15 @@ func init() {
             MethodParams: param.Make(
 				param.New("imageId", param.InPath),
 			),
+            Filters: nil,
+            Params: nil})
+
+    beego.GlobalControllerRouter["SimpleDocker/api:ImageController"] = append(beego.GlobalControllerRouter["SimpleDocker/api:ImageController"],
+        beego.ControllerComments{
+            Method: "ImportImage",
+            Router: "/api/image/import",
+            AllowHTTPMethods: []string{"get"},
+            MethodParams: param.Make(),
             Filters: nil,
             Params: nil})
 

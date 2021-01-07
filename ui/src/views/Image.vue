@@ -20,6 +20,12 @@
             <a-icon type="download"></a-icon>
             拉取
           </a-button>
+
+          <a-button type="primary" @click="importImageVisible = true">
+            <a-icon type="import"></a-icon>
+            导入
+          </a-button>
+
         </a-space>
       </a-form-item>
     </a-form>
@@ -27,22 +33,24 @@
              style="margin-top: 30px">
     <span slot="action" slot-scope="text, record">
       <a-space>
-        <a href="#" @click="detail(record.imageLongId)">详情</a>
+        <a href="#" @click="openNewContainerConfigModal(record.rep)">运行</a>
         <a-divider type="vertical"></a-divider>
         <a href="#" @click="remove(record.imageLongId)">删除</a>
         <a-divider type="vertical"></a-divider>
         <a-dropdown>
-          <a class="ant-dropdown-link" @click="e => e.preventDefault()">更多 <a-icon
-              type="down"/> </a>
+          <a class="ant-dropdown-link" @click="e => e.preventDefault()">更多<a-icon type="down"/> </a>
           <a-menu slot="overlay">
             <a-menu-item>
-                <a href="#" @click="openNewContainerConfigModal(record.rep)">运行镜像</a>
+                <a href="#" @click="detail(record.imageLongId)">镜像详情</a>
             </a-menu-item>
             <a-menu-item>
               <a href="#" @click="exportImg(record.imageLongId)">导出镜像</a>
             </a-menu-item>
             <a-menu-item>
                 <a href="#" @click="openReTagModal(record.rep)">重新标记</a>
+            </a-menu-item>
+            <a-menu-item>
+                <a href="#" @click="detail(record.imageLongId)">推送镜像</a>
             </a-menu-item>
             </a-menu>
         </a-dropdown>
@@ -90,12 +98,41 @@
     </a-modal>
 
 
+    <a-modal v-model="importImageVisible" title="导入新的镜像" okText="导入" cancelText="取消"
+             @ok="callImportImageApi">
+      <a-form-model :label-col="{ span: 4 }" :wrapper-col="{ span: 20 }"
+                    v-model="containerConfig">
+        <a-upload
+            name="file"
+            :multiple="false"
+            action="https://www.mocky.io/v2/5cc8019d300000980a055e76">
+          <a-button>
+            <a-icon type="upload"/>
+            导入镜像
+          </a-button>
+        </a-upload>
+
+      </a-form-model>
+    </a-modal>
+
+
     <a-modal v-model="pullImageVisible" title="拉取新的镜像" okText="拉取" cancelText="关闭" width="800px"
              @ok="callPullImageApi">
       <a-form-model :label-col="{ span: 2 }" :wrapper-col="{ span: 22 }"
                     v-model="containerConfig">
         <a-form-model-item label="镜像">
           <a-input v-model="pullImageConfig.imageName"/>
+        </a-form-model-item>
+
+        <a-form-model-item label="授权">
+          <a-select v-model="pullImageConfig.auth">
+            <a-select-option value="无">无</a-select-option>
+            <a-select-option value="授权信息1">授权信息1</a-select-option>
+            <a-select-option value="授权信息2">授权信息2</a-select-option>
+            <a-select-option value="授权信息3">授权信息3</a-select-option>
+            <a-select-option value="授权信息4">授权信息4</a-select-option>
+            <a-select-option value="授权信息5">授权信息5</a-select-option>
+          </a-select>
         </a-form-model-item>
       </a-form-model>
 
@@ -136,7 +173,7 @@
 
   import {mapActions} from "vuex";
   import imageApi from "../api/ImageApi";
-  import {guid} from '../utils/index'
+  import {guid, download} from '../utils/index'
 
   const columns = [
     {
@@ -185,9 +222,10 @@
           env: '',
           volume: ''
         },
-        pullImageConfig: {imageName: ''},
+        pullImageConfig: {imageName: '', auth: ''},
         pullLog: '',
         pulling: false,
+        importImageVisible: false, // 导入Image的Modal
         pullImageVisible: false,
         runImageVisible: false,
         tagImageVisible: false,
@@ -325,7 +363,7 @@
         }
         this.$axios.create(config).get(`/api/image/${imageId}/save`, {responseType: 'blob'}).then(
             (res) => {
-              this.download(res.data, `${imageId}.tar.gz`)
+              download(res.data, `${imageId}.tar.gz`)
               this.$message.info({content: "镜像已成功导出并下载....", key});
             })
         .catch(e => {
@@ -343,24 +381,6 @@
         } else {
           this.$message.error(Msg);
         }
-      },
-      download: function (data, fileName) {
-        if (window.navigator && window.navigator.msSaveOrOpenBlob) {
-          let blob = new Blob([data], {
-            type: 'application/vnd.ms-excel'
-          })
-          window.navigator.msSaveOrOpenBlob(blob, fileName)
-        } else {
-          let blob = new Blob([data])
-          let downloadElement = document.createElement('a')
-          let href = window.URL.createObjectURL(blob)
-          downloadElement.href = href
-          downloadElement.download = fileName
-          document.body.appendChild(downloadElement)
-          downloadElement.click()
-          document.body.removeChild(downloadElement)
-          window.URL.revokeObjectURL(href)
-        }
       }, callReTagApi: function () {
         if (this.newTag === '' || this.newTag.trim() === '') {
           this.tagImageVisible = false
@@ -370,7 +390,6 @@
           });
           return
         }
-
         if (this.newTag.trim() === this.oldTag.trim()) {
           this.tagImageVisible = false
           this.$notification['warning']({
@@ -406,6 +425,8 @@
             description: "镜像标记失败,请检查 Docker 服务是否正常"
           });
         })
+      }, callImportImageApi() {
+
       }
     }
   }
