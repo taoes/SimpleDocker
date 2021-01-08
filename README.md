@@ -3,7 +3,7 @@
 [![standard-readme compliant](https://img.shields.io/badge/readme%20style-standard-brightgreen.svg?style=flat-square)](https://github.com/RichardLitt/standard-readme)
 
 <div style="text-align:center">
-    <img src="https://pic.zhoutao123.com/lib/simple-docker/logo.png" width="200" alt="""" >
+    <img src="https://pic.zhoutao123.com/lib/simple-docker/logo-tm.png" width="200" alt="""" >
 </div>
 
 
