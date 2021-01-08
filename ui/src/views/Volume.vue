@@ -34,9 +34,25 @@
     <a-table :columns="columns" :data-source="volumeList" style="margin-top: 30px">
     <span slot="action" slot-scope="text, record">
       <a-space>
-        <a @click="openVolumeDetail(record.LongName)">详情</a>
+        <a-tooltip>
+          <template slot="title">详情信息</template>
+          <a-icon type="profile" style="color:darkslategray;font-size: 18px"
+                  @click="openVolumeDetail(record.LongName)"/>
+        </a-tooltip>
         <a-divider type="vertical"></a-divider>
-        <a href="#" @click="openRemoveVolumeModal(record.LongName)">删除</a>
+
+        <a-tooltip>
+          <template slot="title">删除存储卷</template>
+          <a-icon type="delete" style="color:orangered;font-size: 18px"
+                  @click="openRemoveVolumeModal(record.LongName)"/>
+        </a-tooltip>
+        <a-divider type="vertical"></a-divider>
+
+        <a-tooltip>
+          <template slot="title">挂载存储卷</template>
+          <a-icon type="link" style="color:darkslategray;font-size: 18px"
+                  @click="openRemoveVolumeModal(record.LongName)"/>
+        </a-tooltip>
       </a-space>
     </span>
     </a-table>

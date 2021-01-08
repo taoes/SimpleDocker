@@ -29,37 +29,66 @@
       <a-space>
 
         <template v-if="record.state === '已停止' || record.state === '已创建'">
-          <a href="#" @click="callControlContainerApi(record.containerId,'start')">
-            <span style="color: green">启动</span>
-          </a>
+          <a-tooltip>
+            <template slot="title">启动</template>
+            <a-icon type="play-circle" style="color: #52c41a;font-size: 18px"
+                    @click="callControlContainerApi(record.containerId,'start')"/>
+          </a-tooltip>
+
           <a-divider type="vertical"></a-divider>
         </template>
 
         <template v-if="record.state === '运行中'">
-          <a href="#" @click="callControlContainerApi(record.containerId,'stop')">
-            <span style="color: red">停止</span>
-          </a>
+          <a-tooltip>
+          <template slot="title">停止</template>
+            <a-icon type="poweroff" style="color: orangered;font-size: 18px"
+                    @click="callControlContainerApi(record.containerId,'stop')"/>
+          </a-tooltip>
           <a-divider type="vertical"></a-divider>
         </template>
 
-        <a href="#" @click="openContainerLogModal(record.containerId)">日志</a>
+        <a-tooltip>
+          <template slot="title">网络管理</template>
+        <a-icon type="cluster" style="color:darkslategray;font-size: 18px"
+                @click="openNetworkConnectModal(record.containerId)"/>
+        </a-tooltip>
+
+        <a-divider type="vertical"></a-divider>
+
+        <a-tooltip>
+          <template slot="title">日志浏览</template>
+        <a-icon type="profile" style="color:darkslategray;font-size: 18px"
+                @click="openContainerLogModal(record.containerId)"/>
+        </a-tooltip>
         <a-divider type="vertical"></a-divider>
 
         <a-dropdown>
-          <a class="ant-dropdown-link" @click="e => e.preventDefault()">更多 <a-icon
-              type="down"/> </a>
+          <a class="ant-dropdown-link" @click="e => e.preventDefault()"> <a-icon type="down-circle"
+                                                                                 style="color: darkslategray;font-size: 18px"/> </a>
           <a-menu slot="overlay">
             <a-menu-item>
-               <a href="#" @click="openDetail(record.containerId)">容器详情</a>
+               <a href="#" @click="openDetail(record.containerId)">
+                 <a-icon type="container"/>&nbsp;
+                 容器详情
+               </a>
             </a-menu-item>
             <a-menu-item>
-                <a href="#" @click="callControlContainerApi(record.containerId,'restart')">重启容器</a>
+                <a href="#" @click="callControlContainerApi(record.containerId,'restart')">
+                  <a-icon type="reload"/>&nbsp;
+                  重启容器
+                </a>
             </a-menu-item>
             <a-menu-item>
-                <a href="#" @click="openRemoveDetail(record.containerId)">删除容器</a>
+                <a href="#" @click="openRemoveDetail(record.containerId)">
+                  <a-icon type="delete"/> &nbsp;
+                  删除容器
+                </a>
             </a-menu-item>
             <a-menu-item>
-              <a href="#">导出容器</a>
+              <a href="#" @click="exposeContainer(record.containerId)">
+                <a-icon type="download"/>&nbsp;
+                导出容器
+              </a>
             </a-menu-item>
             </a-menu>
         </a-dropdown>
@@ -126,8 +155,6 @@
               </tr>
             </table>
           </template>
-
-
         </a-collapse-panel>
 
 
@@ -171,6 +198,42 @@
     </a-modal>
 
 
+    <a-modal v-model="connectNetworkConnectModal" title="连接/断开 网络"
+             width="600px"
+             okText="确定"
+             :footer="null"
+             cancelText="关闭">
+      <a-form-model :label-col="{ span: 4 }" :wrapper-col="{ span: 20 }"
+                    style="overflow-y: scroll; overflow-x:auto;height: 350px;">
+        <template v-for="network in this.$store.state.network.list">
+          <div style="display: flex;justify-content: space-around;align-items: center">
+            <div>{{network.Id}}</div>
+            <div> {{network.Name}}</div>
+            <div style="padding: 5px">
+              <template v-if="connectNetworkList.indexOf(network.Name) !== -1">
+                <a-button type="danger"
+                          @click="operatorNetwork('disconnect',network.LongId)">
+                  <a-icon type="disconnect"></a-icon>
+                  断开
+                </a-button>
+              </template>
+              <template v-else>
+                <a-button type="primary"
+                          @click="operatorNetwork('connect',network.LongId)">
+                  <a-icon type="api"></a-icon>
+                  连接
+                </a-button>
+              </template>
+            </div>
+          </div>
+          <a-divider style="margin: 0"></a-divider>
+        </template>
+
+      </a-form-model>
+
+    </a-modal>
+
+
     <a-modal v-model="showRemoveVisible" title="删除容器选项"
              @ok="callRemoveContainerApi"
              okText="确定"
@@ -178,7 +241,6 @@
       <a-checkbox @change="removeVolume" :checked="remove.volume">移除 Volume</a-checkbox>
       <a-checkbox @change="removeLink" :checked="remove.link">移除 Links</a-checkbox>
       <a-checkbox @change="removeForce" :checked="remove.force">强制移除</a-checkbox>
-
     </a-modal>
 
   </div>
@@ -230,6 +292,7 @@
         showLogVisible: false,
         showContainerDetail: false,
         showRemoveVisible: false,
+        connectNetworkConnectModal: false,
         currentContainerId: '',
         containerLog: '',
         searchKey: '',
@@ -286,6 +349,8 @@
         formatLog = formatLog.replace('/\s/g', "&nbsp;");
 
         return formatLog;
+      }, connectNetworkList: function () {
+        return Object.keys(this.containerNetworkInfo)
       }
     },
     mounted() {
@@ -294,6 +359,7 @@
       ...mapActions({
         updateContainerList: 'updateContainerList',
         updateContainerInfo: 'updateContainerInfo',
+        updateNetworkList: 'updateNetworkList'
       }), onSearchKeyChange: function (e) {
         this.searchKey = e.target.value;
       }, openDetail: function (containerId) {
@@ -372,6 +438,44 @@
           this.containerLog = Data
           this.showLogVisible = true
         }
+      }, async exposeContainer(containerId) {
+        let key = guid()
+        this.$message.loading({content: "正在导出容器数据，请稍后....", key, duration: 0});
+
+        let config = {
+          withCredentials: true,
+          timeout: 600000
+        }
+        this.$axios.create(config).get(`/api/container/${containerId}/export`,
+            {responseType: 'blob'}).then(
+            (res) => {
+              download(res.data, `${containerId}.tar.gz`)
+              this.$message.info({content: "容器已成功导出并下载....", key});
+            })
+        .catch(e => {
+          this.$message.error({content: "容器导出失败,请检查 Docker 服务是否正常", key});
+        })
+      }, openNetworkConnectModal(containerId) {
+        this.connectNetworkConnectModal = true
+        this.updateContainerInfo(containerId)
+        this.updateNetworkList()
+        this.currentContainerId = containerId
+      }, operatorNetwork(operator, networkId) {
+        let operatorName = operator === 'connect' ? '连接' : '断开'
+        this.$axios.get(
+            `/api/network/${networkId}/container/${this.currentContainerId}/${operator}`)
+        .then(res => {
+          let {Code, Msg} = res.data;
+          if (Code === 'OK') {
+            this.$message.info(`${operatorName} 网络完成！`)
+          } else {
+            this.$message.warning(`${operatorName} 失败,${Msg}`)
+          }
+          this.updateContainerInfo(this.currentContainerId)
+        }).catch(e => {
+          this.$message.error({content: `${operatorName} 网络 失败, 请检查 Docker 服务是否正常`});
+        })
+
       }
     }
   }

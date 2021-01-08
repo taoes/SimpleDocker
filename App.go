@@ -5,39 +5,36 @@ import (
 	_ "SimpleDocker/context"
 	_ "SimpleDocker/routers"
 	"flag"
-	"fmt"
 	"github.com/astaxie/beego"
-	"github.com/astaxie/beego/logs"
+	"github.com/astaxie/beego/context"
 	"github.com/astaxie/beego/plugins/cors"
-	"io/ioutil"
-	"os/exec"
+	"net/http"
 	"strconv"
 )
 
 var port = flag.Int("port", 4050, "help message for flagname")
 
-func stopCommand() {
-	// 读取PID
-	file, err := ioutil.ReadFile("/tmp/lock.simple.docker")
-	if err != nil {
-		return
-	}
-	pid, err := strconv.Atoi(string(file))
-	if err != nil {
-		logs.Info("PID 读取失败，无法关闭进程")
-		return
-	}
+var success = []byte("SUPPORT OPTIONS")
 
-	// 执行Kill
-	command := fmt.Sprintf("kill -9 %d", pid)
-	logs.Info("Command = %s", command)
-	exec.Command(command)
+var corsFunc = func(ctx *context.Context) {
+	origin := ctx.Input.Header("Origin")
+	ctx.Output.Header("Access-Control-Allow-Methods", "OPTIONS,DELETE,POST,GET,PUT,PATCH")
+	ctx.Output.Header("Access-Control-Max-Age", "3600")
+	ctx.Output.Header("Access-Control-Allow-Headers", "x-requested-with,X-Custom-Header,accept,Content-Type,Access-Token")
+	ctx.Output.Header("Access-Control-Allow-Credentials", "true")
+	ctx.Output.Header("Access-Control-Allow-Origin", origin)
+	if ctx.Input.Method() == http.MethodOptions {
+		// options请求，返回200
+		ctx.Output.SetStatus(http.StatusOK)
+		_ = ctx.Output.Body(success)
+	}
 }
 
 func main() {
 	flag.Parse()
 
 	// 配置静态资源
+	beego.InsertFilter("/*", beego.BeforeRouter, corsFunc)
 	beego.SetStaticPath("/", "./static")
 
 	// 配置路由

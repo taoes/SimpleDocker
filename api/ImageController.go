@@ -110,7 +110,7 @@ func (c *ImageController) PullImage() {
 }
 
 /** 导入Image */
-// @router /api/image/import
+// @router /api/image/import [post]
 func (c *ImageController) ImportImage() {
 	file, _, err := c.GetFile("file")
 	if err != nil {
@@ -126,13 +126,13 @@ func (c *ImageController) ImportImage() {
 		c.ServeJSON()
 		return
 	}
-	_, err = docker.ImportImage(saveFilePath)
+	resp, err := docker.ImportImage(saveFilePath)
 	if err != nil {
 		c.Data["json"] = utils.PackageError(err)
 		c.ServeJSON()
 		return
 	}
 
-	c.Data["json"] = utils.Success()
+	c.Data["json"] = utils.PackageData(resp)
 	c.ServeJSON()
 }

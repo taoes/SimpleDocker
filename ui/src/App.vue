@@ -2,7 +2,9 @@
   <a-layout id="components-layout-demo-top-side-2">
     <a-layout-header class="header">
       <!--      <div class="logo"></div>-->
-      <h1 class="logo" style="color: white">SimpleDocker</h1>
+      <div style="display: inline;float: left;justify-items: center">
+        <img src="https://pic.zhoutao123.com/lib/simple-docker/logo-tm-white2.png" style="width: 150px"/>
+      </div>
       <a-menu
           theme="dark"
           mode="horizontal"

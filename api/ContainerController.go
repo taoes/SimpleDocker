@@ -174,8 +174,6 @@ func (c *ContainerController) GetContainerAllLog(containerId string) {
 		c.ServeJSON()
 		return
 	}
-
-	// 准备下载文件
 	logsByte := []byte(logs)
 	c.Ctx.Output.Header("Content-Type", "application/force-download")
 	c.Ctx.Output.Header("Content-Disposition", fmt.Sprintf("attachment;filename=%s-all.log", containerId))
@@ -193,7 +191,6 @@ func (c *ContainerController) ExportContainer(containerId string) {
 		return
 	}
 
-	// 转换为文件下载
 	buf := new(bytes.Buffer)
 	_, _ = buf.ReadFrom(info)
 	bytesData := buf.Bytes()

@@ -29,6 +29,9 @@ export default {
   },
   actions: {
     updateContainerInfo(context, containerId) {
+      if (!containerId) {
+        return
+      }
       axios.get(`/api/container/${containerId}/info`).then(res => {
         let {Data} = res.data
         context.commit('setContainerInfo', Data)

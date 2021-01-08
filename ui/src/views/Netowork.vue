@@ -28,11 +28,21 @@
     <a-table :columns="columns" :data-source="networkList" style="margin-top: 30px">
     <span slot="action" slot-scope="text, record">
       <a-space>
-        <a @click="openNetworkDetail(record.LongId)">详情</a>
+
+        <a-tooltip>
+          <template slot="title">详情信息</template>
+          <a-icon type="profile" style="color:darkslategray;font-size: 18px"
+                  @click="openNetworkDetail(record.LongId)"/>
+        </a-tooltip>
         <a-divider type="vertical"></a-divider>
-        <a @click="$message.info('很抱歉,该功能正在开发中,敬请期待....')">连接</a>
-        <a-divider type="vertical"></a-divider>
-        <a @click="openRemoveNetworkModal(record.LongId)">删除</a>
+
+
+        <a-tooltip>
+          <template slot="title">删除网络</template>
+          <a-icon type="delete" style="color:orangered;font-size: 18px"
+                  @click="openRemoveNetworkModal(record.LongId)"/>
+        </a-tooltip>
+
       </a-space>
     </span>
     </a-table>

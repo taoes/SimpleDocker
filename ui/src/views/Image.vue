@@ -33,24 +33,53 @@
              style="margin-top: 30px">
     <span slot="action" slot-scope="text, record">
       <a-space>
-        <a href="#" @click="openNewContainerConfigModal(record.rep)">运行</a>
+
+        <a-tooltip>
+            <template slot="title">启动镜像</template>
+            <a-icon type="play-circle" style="color: #52c41a;font-size: 18px"
+                    @click="openNewContainerConfigModal(record.rep)"/>
+        </a-tooltip>
+
         <a-divider type="vertical"></a-divider>
-        <a href="#" @click="remove(record.imageLongId)">删除</a>
+
+
+        <a-tooltip>
+            <template slot="title">删除镜像</template>
+            <a-icon type="delete" style="color:orangered;font-size: 18px"
+                    @click="remove(record.imageLongId)"/>
+        </a-tooltip>
         <a-divider type="vertical"></a-divider>
+
+
+        <a-tooltip>
+            <template slot="title">导出镜像</template>
+            <a-icon type="cloud-download" style="color:darkslategray;font-size: 18px"
+                    @click="exportImg(record.imageLongId)"/>
+        </a-tooltip>
+        <a-divider type="vertical"></a-divider>
+
+
         <a-dropdown>
-          <a class="ant-dropdown-link" @click="e => e.preventDefault()">更多<a-icon type="down"/> </a>
+          <a class="ant-dropdown-link" @click="e => e.preventDefault()">
+          <a-icon type="down-circle"
+                  style="color: darkslategray;font-size: 18px"/>
+          </a>
           <a-menu slot="overlay">
             <a-menu-item>
-                <a href="#" @click="detail(record.imageLongId)">镜像详情</a>
+                <a href="#" @click="detail(record.imageLongId)">
+                <a-icon type="profile"/>&nbsp;
+                  镜像详情
+                </a>
             </a-menu-item>
             <a-menu-item>
-              <a href="#" @click="exportImg(record.imageLongId)">导出镜像</a>
+                <a href="#" @click="openReTagModal(record.rep)">
+                  <a-icon type="tags"/>&nbsp;
+                  重新标记</a>
             </a-menu-item>
             <a-menu-item>
-                <a href="#" @click="openReTagModal(record.rep)">重新标记</a>
-            </a-menu-item>
-            <a-menu-item>
-                <a href="#" @click="detail(record.imageLongId)">推送镜像</a>
+                <a href="#" @click="detail(record.imageLongId)">
+                  <a-icon type="cloud-upload"/>&nbsp;
+                  推送镜像</a>
             </a-menu-item>
             </a-menu>
         </a-dropdown>
@@ -102,15 +131,26 @@
              @ok="callImportImageApi">
       <a-form-model :label-col="{ span: 4 }" :wrapper-col="{ span: 20 }"
                     v-model="containerConfig">
-        <a-upload
+        <a-upload-dragger
+            v-decorator="[
+            'dragger',
+            {
+              valuePropName: 'fileList',
+              getValueFromEvent: normFile,
+            },
+          ]"
             name="file"
-            :multiple="false"
-            action="https://www.mocky.io/v2/5cc8019d300000980a055e76">
-          <a-button>
-            <a-icon type="upload"/>
-            导入镜像
-          </a-button>
-        </a-upload>
+            :action="getFileUploadLink()">
+          <p class="ant-upload-drag-icon">
+            <a-icon type="inbox"/>
+          </p>
+          <p class="ant-upload-text">
+            点击此处或者选择文件上传
+          </p>
+          <p class="ant-upload-hint">
+            仅支持单个文件上传
+          </p>
+        </a-upload-dragger>
 
       </a-form-model>
     </a-modal>
@@ -174,6 +214,7 @@
   import {mapActions} from "vuex";
   import imageApi from "../api/ImageApi";
   import {guid, download} from '../utils/index'
+  import Config from '../api/Config'
 
   const columns = [
     {
@@ -253,6 +294,9 @@
         getImageInfo: "getImageInfo",
         removeImage: "removeImage"
       }),
+      getFileUploadLink() {
+        return `${Config.HOST}/api/image/import`
+      },
       searchKeyOnchange: function (e) {
         this.searchKey = e.target.value
       },
@@ -322,7 +366,8 @@
       openNewContainerConfigModal: function (imageName) {
         this.containerConfig.imageName = imageName;
         this.runImageVisible = true;
-      }, callPullImageApi() {
+      },
+      callPullImageApi() {
         if (this.pulling) {
           this.$message.error("正在拉去镜像,请等待当前任务完成")
           return;
@@ -353,7 +398,8 @@
           this.pullLog = "网络访问失败，请检查服务是否正常启动"
         })
         this.pulling = false
-      }, exportImg: function (imageId) {
+      },
+      exportImg: function (imageId) {
         let key = guid()
         this.$message.loading({content: "正在导出镜像，请稍后....", key, duration: 0});
 
@@ -369,10 +415,12 @@
         .catch(e => {
           this.$message.error({content: "镜像导出失败,请检查 Docker 服务是否正常", key});
         })
-      }, openReTagModal: function (oldTag) {
+      },
+      openReTagModal: function (oldTag) {
         this.tagImageVisible = true
         this.oldTag = oldTag
-      }, async callRunNewContainerApi() {
+      },
+      async callRunNewContainerApi() {
         let res = await imageApi.runNewContainer(this.containerConfig)
         let {Code, Msg} = res.data
         if (Code === 'OK') {
@@ -381,7 +429,8 @@
         } else {
           this.$message.error(Msg);
         }
-      }, callReTagApi: function () {
+      },
+      callReTagApi: function () {
         if (this.newTag === '' || this.newTag.trim() === '') {
           this.tagImageVisible = false
           this.$notification['warning']({
@@ -425,8 +474,9 @@
             description: "镜像标记失败,请检查 Docker 服务是否正常"
           });
         })
-      }, callImportImageApi() {
-
+      },
+      uploadFileChange(event) {
+        console.log(event)
       }
     }
   }
