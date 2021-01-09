@@ -24,7 +24,7 @@ func (c *NetworkController) GetNetworkList() {
 	c.ServeJSON()
 }
 
-/** 获取网络列表 */
+/** 获取网络信息 */
 // @router /api/network/:networkId/info [get]
 func (c *NetworkController) GetNetworkInfo(networkId string) {
 	networkList, err := docker.GetNetworkInfo(networkId)
@@ -59,7 +59,7 @@ func (c *NetworkController) CreateNetworkList() {
 }
 
 //@router /api/network/:networkId/delete [get]
-func (c *ContainerController) RemoveNetwork(networkId string) {
+func (c *NetworkController) RemoveNetwork(networkId string) {
 	networkId = strings.Trim(networkId, " ")
 	if networkId == "" {
 		c.Data["json"] = utils.PackageError(errors.New("网络名称不能为空"))
@@ -68,6 +68,18 @@ func (c *ContainerController) RemoveNetwork(networkId string) {
 	}
 
 	err := docker.RemoveNetwork(networkId)
+	if err != nil {
+		c.Data["json"] = utils.PackageError(err)
+	} else {
+		c.Data["json"] = utils.Success()
+	}
+	c.ServeJSON()
+}
+
+// 精简网络
+//@router /api/network/prune [delete]
+func (c *NetworkController) PruneNetwork() {
+	_, err := docker.PruneNetwork()
 	if err != nil {
 		c.Data["json"] = utils.PackageError(err)
 	} else {

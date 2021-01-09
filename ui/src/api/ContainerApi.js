@@ -1,14 +1,18 @@
 import axios from "axios";
 
+let operationMap =
+    {
+      "start": "启动",
+      "restart": "重启",
+      "stop": "停止",
+      "pause": "暂停",
+      "unpause": "继续",
+      "prune": "精简"
+    }
+
 function getOperatorNameByState(state) {
-  switch (state) {
-    case 'start':
-      return '启动';
-    case 'restart':
-      return '重启';
-    case 'stop':
-      return '停止';
-  }
+  let operatorName = operationMap[state]
+  return !operatorName ? "未知操作" : operatorName
 }
 
 /** 获取容器日志 */

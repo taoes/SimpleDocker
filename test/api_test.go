@@ -1,4 +1,4 @@
-package main
+package test
 
 import (
 	"context"
@@ -20,7 +20,6 @@ func TestDockerApi(t *testing.T) {
 
 	var response *http.Response
 	var err error
-
 
 	response, err = httpc.PostForm("http://unix/images/create?fromImage=python:latest", nil)
 

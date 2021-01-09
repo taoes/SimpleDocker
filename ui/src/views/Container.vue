@@ -17,8 +17,18 @@
             刷新
           </a-button>
 
+
+          <a-tooltip>
+            <template slot="title">删除未运行的容器</template>
+            <a-button html-type="reset" @click="callControlContainerApi('all','prune')">
+              <a-icon type="delete"></a-icon>
+              精简
+            </a-button>
+          </a-tooltip>
+
+
           <a-checkbox v-model="onlyRunContainer" @change="onlyRunContainerChanged">
-            仅运行中的容器
+            仅显示运行中的容器
           </a-checkbox>
         </a-space>
       </a-form-item>
@@ -28,11 +38,22 @@
     <span slot="action" slot-scope="text, record">
       <a-space>
 
-        <template v-if="record.state === '已停止' || record.state === '已创建'">
+        <template v-if="['已停止','已创建'].indexOf(record.state) !==-1">
           <a-tooltip>
             <template slot="title">启动</template>
             <a-icon type="play-circle" style="color: #52c41a;font-size: 18px"
                     @click="callControlContainerApi(record.containerId,'start')"/>
+          </a-tooltip>
+
+          <a-divider type="vertical"></a-divider>
+        </template>
+
+
+        <template v-if="['暂停中'].indexOf(record.state) !==-1">
+          <a-tooltip>
+            <template slot="title">继续</template>
+            <a-icon type="right-circle" style="color: #52c41a;font-size: 18px"
+                    @click="callControlContainerApi(record.containerId,'unpause')"/>
           </a-tooltip>
 
           <a-divider type="vertical"></a-divider>
@@ -62,6 +83,14 @@
         </a-tooltip>
         <a-divider type="vertical"></a-divider>
 
+        <a-tooltip>
+          <template slot="title">导出容器</template>
+          <a-icon type="download" style="color:darkslategray;font-size: 18px"
+                  @click="exposeContainer(record.containerId)"/>
+        </a-tooltip>
+        <a-divider type="vertical"></a-divider>
+
+
         <a-dropdown>
           <a class="ant-dropdown-link" @click="e => e.preventDefault()"> <a-icon type="down-circle"
                                                                                  style="color: darkslategray;font-size: 18px"/> </a>
@@ -78,17 +107,19 @@
                   重启容器
                 </a>
             </a-menu-item>
+
+            <a-menu-item>
+                <a href="#" @click="callControlContainerApi(record.containerId,'pause')">
+                  <a-icon type="pause"/>&nbsp;
+                  暂停容器
+                </a>
+            </a-menu-item>
+
             <a-menu-item>
                 <a href="#" @click="openRemoveDetail(record.containerId)">
                   <a-icon type="delete"/> &nbsp;
                   删除容器
                 </a>
-            </a-menu-item>
-            <a-menu-item>
-              <a href="#" @click="exposeContainer(record.containerId)">
-                <a-icon type="download"/>&nbsp;
-                导出容器
-              </a>
             </a-menu-item>
             </a-menu>
         </a-dropdown>
@@ -189,9 +220,9 @@
     </a-drawer>
 
 
-    <a-modal v-model="showLogVisible" title="最近日志"
+    <a-modal v-model="showLogVisible" title="最近日志(200行)"
              width="60%"
-             okText="下载全部日志"
+             okText="下载全部"
              @ok="downloadAllLog()"
              cancelText="关闭">
       <pre style="overflow-y: scroll; overflow-x:auto;height: 400px">{{this.formatLog}}</pre>

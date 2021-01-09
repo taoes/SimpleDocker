@@ -8,6 +8,7 @@ import ContainerStore from './ContainerStore'
 import menuStore from './MenuStore'
 import networkStore from './NetworkStore'
 import volumeStore from './VolumeStore'
+import dockerInfoStore from './DockerInfoStore'
 
 export default new Vuex.Store({
   modules: {
@@ -15,6 +16,7 @@ export default new Vuex.Store({
     container: ContainerStore,
     menu: menuStore,
     network: networkStore,
-    volume: volumeStore
+    volume: volumeStore,
+    dockerInfo: dockerInfoStore
   }
 });

@@ -5,13 +5,14 @@ import (
 	"bytes"
 	"github.com/docker/docker/api/types"
 	"github.com/docker/docker/api/types/container"
+	"github.com/docker/docker/api/types/filters"
 	"github.com/docker/go-connections/nat"
 	"io"
 	"time"
 )
 
 func GetContainerList() []types.Container {
-	containerList, err := context.Cli.ContainerList(context.Ctx, types.ContainerListOptions{All: true})
+	containerList, err := context.Cli.ContainerList(context.Ctx, types.ContainerListOptions{All: true, Latest: true})
 	if err != nil {
 		panic(err)
 		return []types.Container{}
@@ -38,21 +39,28 @@ func NewContainer(imageName string, containerName string, env []string, portBind
 	return resp.ID, nil
 }
 
-/** 停止容器 */
-func StopContainer(containerId string) error {
-	return context.Cli.ContainerStop(context.Ctx, containerId, nil)
-}
-
-/** 启动一个已存在容器 */
-func StartContainer(containerId string) error {
-	options := types.ContainerStartOptions{}
-	return context.Cli.ContainerStart(context.Ctx, containerId, options)
-}
-
-/** 重启启动一个已存在容器 */
-func RestartContainer(containerId string) error {
-	duration := time.Second * 20
-	return context.Cli.ContainerRestart(context.Ctx, containerId, &duration)
+/** 操作容器 */
+func OperatorContainer(containerId string, operator string) error {
+	switch operator {
+	case "start":
+		options := types.ContainerStartOptions{}
+		return context.Cli.ContainerStart(context.Ctx, containerId, options)
+	case "stop":
+		return context.Cli.ContainerStop(context.Ctx, containerId, nil)
+	case "restart":
+		duration := time.Second * 20
+		return context.Cli.ContainerRestart(context.Ctx, containerId, &duration)
+	case "pause":
+		return context.Cli.ContainerPause(context.Ctx, containerId)
+	case "unpause":
+		return context.Cli.ContainerUnpause(context.Ctx, containerId)
+	case "prune":
+		var filter filters.Args
+		_, err := context.Cli.ContainersPrune(context.Ctx, filter)
+		return err
+	default:
+		return nil
+	}
 }
 
 /** 移除容器 */

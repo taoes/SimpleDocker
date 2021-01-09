@@ -3,6 +3,7 @@ package docker
 import (
 	"SimpleDocker/context"
 	"github.com/docker/docker/api/types"
+	"github.com/docker/docker/api/types/filters"
 	"github.com/pkg/errors"
 	"io"
 	"os"
@@ -43,8 +44,14 @@ func DeleteImage(imageId string, forge bool) error {
 	return nil
 }
 
+/** 导出镜像 */
 func SaveImage(imageId string) (io.ReadCloser, error) {
 	return context.Cli.ImageSave(context.Ctx, []string{imageId})
+}
+
+func PruneImage() (types.ImagesPruneReport, error) {
+	var filter filters.Args
+	return context.Cli.ImagesPrune(context.Ctx, filter)
 }
 
 /** 导入镜像 */

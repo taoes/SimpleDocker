@@ -75,38 +75,10 @@ func (c *ContainerController) CreateNewContainer() {
 	c.ServeJSON()
 }
 
-/** 启动容器 */
-// @router /api/container/:containerId/start [get]
-func (c *ContainerController) StartContainer(containerId string) {
-	err := docker.StartContainer(containerId)
-	if err != nil {
-		c.Data["json"] = utils.PackageError(err)
-		c.ServeJSON()
-		return
-	}
-
-	c.Data["json"] = utils.Success()
-	c.ServeJSON()
-}
-
-/** 重启容器 */
-// @router /api/container/:containerId/restart [get]
-func (c *ContainerController) RestartContainer(containerId string) {
-	err := docker.RestartContainer(containerId)
-	if err != nil {
-		c.Data["json"] = utils.PackageError(err)
-		c.ServeJSON()
-		return
-	}
-
-	c.Data["json"] = utils.Success()
-	c.ServeJSON()
-}
-
-/** 停止容器 */
-// @router /api/container/:containerId/stop [get]
-func (c *ContainerController) StopContainer(containerId string) {
-	err := docker.StopContainer(containerId)
+/** 启动/重启/停止/暂停/清空 容器 */
+// @router /api/container/:containerId/:operator [get]
+func (c *ContainerController) StartContainer(containerId string, operator string) {
+	err := docker.OperatorContainer(containerId, operator)
 	if err != nil {
 		c.Data["json"] = utils.PackageError(err)
 		c.ServeJSON()

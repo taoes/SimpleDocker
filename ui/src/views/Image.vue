@@ -16,15 +16,23 @@
             刷新
           </a-button>
 
-          <a-button type="primary" @click="pullImage">
-            <a-icon type="download"></a-icon>
+          <a-button @click="pullImage">
+            <a-icon type="cloud-download"></a-icon>
             拉取
           </a-button>
 
-          <a-button type="primary" @click="importImageVisible = true">
-            <a-icon type="import"></a-icon>
+          <a-button @click="importImageVisible = true">
+            <a-icon type="cloud-upload"></a-icon>
             导入
           </a-button>
+
+          <a-tooltip>
+            <template slot="title">删除无用镜像</template>
+            <a-button @click="callPruneImageApi()">
+              <a-icon type="cloud-upload"></a-icon>
+              精简
+            </a-button>
+          </a-tooltip>
 
         </a-space>
       </a-form-item>
@@ -53,8 +61,8 @@
 
         <a-tooltip>
             <template slot="title">导出镜像</template>
-            <a-icon type="cloud-download" style="color:darkslategray;font-size: 18px"
-                    @click="exportImg(record.imageLongId)"/>
+            <a-icon type="download" style="color:darkslategray;font-size: 18px"
+                    @click="exportImg(record.imageLongId,record.rep)"/>
         </a-tooltip>
         <a-divider type="vertical"></a-divider>
 
@@ -186,24 +194,79 @@
         width="35%"
         @close="close"
         :visible="showDetail">
-      <a-collapse :activeKey="['info','config']">
-        <a-collapse-panel key="info" header="镜像信息">
-          <p style="text-wrap: inherit">ID: {{ this.imageInfo.Id }}</p>
-          <p style="text-wrap: inherit">父级 ID: {{ this.imageInfo.Parent }}</p>
-          <p>大小: {{ (this.imageInfo.Size / 1024 / 1024) .toFixed(2)}} M</p>
-          <p>架构: {{ this.imageInfo.Architecture }}</p>
-          <p>系统: {{ this.imageInfo.Os }}</p>
-          <p>驱动: {{ this.imageInfo.GraphDriver.Name }}</p>
-          <p>Docker版本 : {{ this.imageInfo.DockerVersion }}</p>
+
+      <a-collapse :activeKey="['imageInfo','imageConfig']">
+        <a-collapse-panel key="imageInfo" header="镜像信息">
+          <table class="configTable">
+            <tr>
+              <td class="tagTd">ID</td>
+              <td class="contentTd" align="left"> {{this.imageInfo.Id}}</td>
+            </tr>
+            <tr v-if="this.imageInfo.Parent">
+              <td class="tagTd">父级Id</td>
+              <td class="contentTd" align="left"> {{this.imageInfo.Parent}}</td>
+            </tr>
+            <tr>
+              <td class="tagTd">镜像大小</td>
+              <td class="contentTd" align="left"> {{(this.imageInfo.Size / 1000000) .toFixed(2)}}
+              </td>
+            </tr>
+
+            <tr>
+              <td class="tagTd">镜像架构</td>
+              <td class="contentTd" align="left"> {{this.imageInfo.Architecture}}</td>
+            </tr>
+
+            <tr>
+              <td class="tagTd">镜像系统</td>
+              <td class="contentTd" align="left"> {{this.imageInfo.Os}}</td>
+            </tr>
+
+            <tr>
+              <td class="tagTd">镜像模式</td>
+              <td class="contentTd" align="left"> {{this.imageInfo.GraphDriver.Name}}</td>
+            </tr>
+
+            <tr>
+              <td class="tagTd">构建版本</td>
+              <td class="contentTd" align="left"> {{this.imageInfo.DockerVersion}}</td>
+            </tr>
+          </table>
         </a-collapse-panel>
-        <a-collapse-panel key="config" header="镜像配置">
-          <p>主机: {{ this.imageInfo.Config.Host }}</p>
-          <p>域名: {{ this.imageInfo.Config.Domainname }}</p>
-          <p>端口暴露: {{ this.imageInfo.Config.ExposedPorts}}</p>
-          <p>环境变量：{{ this.imageInfo.Config.Env}}</p>
-          <p>程序入口: {{ this.imageInfo.Config.Cmd}} </p>
-          <p>工作目录: {{ this.imageInfo.Config.WorkingDir}} </p>
+
+        <a-collapse-panel key="imageConfig" header="镜像配置">
+          <table class="configTable">
+            <tr v-if="this.imageInfo.Config.Host">
+              <td class="tagTd">主机名</td>
+              <td class="contentTd" align="left"> {{this.imageInfo.Config.Host}}</td>
+            </tr>
+            <tr v-if="this.imageInfo.Config.Domainname">
+              <td class="tagTd">域名</td>
+              <td class="contentTd" align="left"> {{this.imageInfo.Config.Domainname}}</td>
+            </tr>
+            <tr v-if="this.imageInfo.Config.ExposedPorts">
+              <td class="tagTd">端口</td>
+              <td class="contentTd" align="left"> {{this.imageInfo.Config.ExposedPorts}}
+              </td>
+            </tr>
+
+            <tr>
+              <td class="tagTd">环境变量</td>
+              <td class="contentTd" align="left"> {{this.imageInfo.Config.Env}}</td>
+            </tr>
+
+            <tr>
+              <td class="tagTd">入口命令</td>
+              <td class="contentTd" align="left"> {{this.imageInfo.Config.Cmd}}</td>
+            </tr>
+
+            <tr v-if="this.imageInfo.Config.WorkingDir">
+              <td class="tagTd">工作目录</td>
+              <td class="contentTd" align="left"> {{this.imageInfo.Config.WorkingDir}}</td>
+            </tr>
+          </table>
         </a-collapse-panel>
+
       </a-collapse>
     </a-drawer>
   </div>
@@ -266,7 +329,7 @@
         pullImageConfig: {imageName: '', auth: ''},
         pullLog: '',
         pulling: false,
-        importImageVisible: false, // 导入Image的Modal
+        importImageVisible: false,
         pullImageVisible: false,
         runImageVisible: false,
         tagImageVisible: false,
@@ -399,20 +462,20 @@
         })
         this.pulling = false
       },
-      exportImg: function (imageId) {
+      exportImg: function (imageId, imageTag) {
         let key = guid()
         this.$message.loading({content: "正在导出镜像，请稍后....", key, duration: 0});
-
         let config = {
           withCredentials: true,
           timeout: 600000
         }
         this.$axios.create(config).get(`/api/image/${imageId}/save`, {responseType: 'blob'}).then(
             (res) => {
-              download(res.data, `${imageId}.tar.gz`)
+              download(res.data, `${imageTag}.tar.gz`)
               this.$message.info({content: "镜像已成功导出并下载....", key});
             })
         .catch(e => {
+          console.error(e);
           this.$message.error({content: "镜像导出失败,请检查 Docker 服务是否正常", key});
         })
       },
@@ -433,18 +496,12 @@
       callReTagApi: function () {
         if (this.newTag === '' || this.newTag.trim() === '') {
           this.tagImageVisible = false
-          this.$notification['warning']({
-            message: '标记失败',
-            description: "新的镜像tag 不能为空字符串"
-          });
+          this.$message.warning("新的镜像tag 不能为空字符串");
           return
         }
         if (this.newTag.trim() === this.oldTag.trim()) {
           this.tagImageVisible = false
-          this.$notification['warning']({
-            message: '标记失败',
-            description: "新的镜像tag不能和原镜像重复"
-          });
+          this.$message.warning("新的镜像tag不能和原镜像重复");
           return
         }
 
@@ -452,32 +509,32 @@
           source: this.oldTag,
           tag: this.newTag
         }
-        this.$axios.get(
-            `/api/image/tag`, {params: data}
-        )
+        this.$axios.get(`/api/image/tag`, {params: data})
         .then((res) => {
-          let data = res.data;
-          if (data.Code === 'OK') {
+          let {Code, Msg} = res.data;
+          if (Code === 'OK') {
             this.$message.info('标记镜像完成!');
             this.tagImageVisible = false
             this.updateImage()
           } else {
-            this.$notification['warning']({
-              message: '标记镜像失败',
-              description: data.Msg
-            });
+            this.$message.warning(Msg);
           }
         })
         .catch(e => {
-          this.$notification['warning']({
-            message: '标记镜像失败',
-            description: "镜像标记失败,请检查 Docker 服务是否正常"
-          });
+          this.$message.error("镜像标记失败,请检查 Docker 服务是否正常");
         })
       },
       uploadFileChange(event) {
         console.log(event)
+      }, callPruneImageApi() {
+        imageApi.pruneImage().then(res => {
+          let {Code, Data} = res.data
+          if (Code === 'OK') {
+            this.$message.info(`精简镜像完成!!`);
+          }
+        })
       }
+
     }
   }
   ;
@@ -486,5 +543,26 @@
 <style scoped>
   .ant-drawer-body {
     padding: 0 !important;
+  }
+
+
+  .configTable, .configTable tr th, .configTable tr td {
+    border: 1px solid lightgrey;
+  }
+
+  .configTable .tagTd {
+    width: 100px;
+  }
+
+  .configTable {
+    width: 100%;
+    margin-top: 20px;
+    text-align: center;
+    border-collapse: collapse;
+  }
+
+  .contentTd {
+    overflow-wrap: anywhere;
+    padding: 5px 0 5px 10px;
   }
 </style>

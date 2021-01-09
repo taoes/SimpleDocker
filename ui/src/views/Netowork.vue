@@ -17,10 +17,19 @@
             刷新
           </a-button>
 
-          <a-button type="primary" @click="showNewNetworkModal = true">
+          <a-button @click="showNewNetworkModal = true">
             <a-icon type="plus-circle"></a-icon>
             创建
           </a-button>
+
+
+          <a-tooltip>
+            <template slot="title">删除无用网络</template>
+            <a-button @click="callPruneNetworkApi()">
+              <a-icon type="delete"></a-icon>
+              精简
+            </a-button>
+          </a-tooltip>
         </a-space>
       </a-form-item>
     </a-form>
@@ -37,12 +46,19 @@
         <a-divider type="vertical"></a-divider>
 
 
-        <a-tooltip>
-          <template slot="title">删除网络</template>
-          <a-icon type="delete" style="color:orangered;font-size: 18px"
-                  @click="openRemoveNetworkModal(record.LongId)"/>
-        </a-tooltip>
-
+        <template v-if="notRemoveNetworkList.indexOf(record.Name) ===-1">
+          <a-tooltip>
+            <template slot="title">删除网络</template>
+              <a-icon type="delete" style="color:orangered;font-size: 18px"
+                      @click="openRemoveNetworkModal(record.LongId)"/>
+          </a-tooltip>
+        </template>
+        <template v-else>
+                    <a-tooltip>
+            <template slot="title">不可删除</template>
+              <a-icon type="stop" style="color:darkcyan;font-size: 18px"/>
+          </a-tooltip>
+        </template>
       </a-space>
     </span>
     </a-table>
@@ -133,17 +149,14 @@
       是否确认删除该网络 ?
     </a-modal>
 
-
     <a-modal v-model="showNewNetworkModal" title="创建新的网络" okText="创建" cancelText="取消"
              @ok="callCreateNewNetworkApi">
       <a-form-model :form="newNetwork">
         <a-form-model-item label="网络名称">
           <a-input placeholder="请输入网络名称" v-model="newNetwork.name"></a-input>
         </a-form-model-item>
-
-
         <a-form-model-item label="网络模式">
-          <a-select v-model="newNetwork.driver">
+          <a-select v-model="newNetwork.driver" default-value="bridge">
             <template v-for="driver in networkDriverList">
               <a-select-option :value="driver" :key="driver">
                 {{driver}}
@@ -160,6 +173,7 @@
 </template>
 <script>
   import {mapActions} from "vuex";
+  import netWorkApi from '../api/NetworkApi'
   import {guid} from '../utils/index'
 
   const columns = [
@@ -200,6 +214,7 @@
     data() {
       return {
         form: {},
+        notRemoveNetworkList: ["none", "host", "bridge"],
         showNewNetworkModal: false,
         showNetworkDrawer: false,
         showRemoveNetworkModal: false,
@@ -207,7 +222,6 @@
         currentNetworkId: '',
         searchKey: '',
         columns,
-        networkDriverList: ['bridge', 'overlay', 'host'],
         newNetwork: {name: '', driver: ''},
         remove: {volume: true, link: false, force: true}
       };
@@ -226,15 +240,20 @@
       }, containerList() {
         let info = this.$store.state.network.info;
         return this.$lodash.get(info, 'Containers', {})
+      }, networkDriverList() {
+        let plugins = this.$store.state.dockerInfo.dockerPlugins;
+        return plugins.Network;
       }
     },
     mounted() {
       this.updateNetworkList()
+      this.updateDockerInfo()
     },
     methods: {
       ...mapActions({
         updateNetworkList: 'updateNetworkList',
-        updateNetworkInfo: 'updateNetworkInfo'
+        updateNetworkInfo: 'updateNetworkInfo',
+        updateDockerInfo: 'updateDockerInfo'
       }), openNetworkDetail: function (networkId) {
         this.showNetworkDrawer = true
         this.currentNetworkId = networkId
@@ -267,19 +286,26 @@
         }
         let key = guid()
         this.$message.loading({content: "正在创建网络, 请稍后...", key, duration: 10});
-        this.$axios.get(`/api/network/new`, {params: this.newNetwork}).then(res => {
-          let {Code, Msg} = res.data;
+        netWorkApi.newNetwork(this.newNetwork).then(res => {
+          let {Code} = res.data;
           if (Code === 'OK') {
             this.$message.info({content: '创建网络完成', key});
             this.showNewNetworkModal = false;
             this.updateNetworkList()
           } else {
-            this.$message.warning({content: Msg, key});
+            this.$message.info({content: '创建网络完成', key});
           }
         }).catch(e => {
-          this.$message.error({content: '服务连接失败，请检查服务是否正常启动', key});
+          this.$message.info({content: '服务连接失败，请检查服务是否正常启动', key});
         })
-
+      }, callPruneNetworkApi() {
+        netWorkApi.pruneNetwork().then(res => {
+          let {Code} = res.data
+          if (Code === 'OK') {
+            this.$message.info('精简网络完成');
+            this.updateNetworkList()
+          }
+        })
       }
     }
   };

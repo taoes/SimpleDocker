@@ -109,6 +109,18 @@ func (c *ImageController) PullImage() {
 	c.ServeJSON()
 }
 
+/** 清除无用镜像 */
+// @router /api/image/prune [delete]
+func (c *ImageController) PruneImage() {
+	report, err := docker.PruneImage()
+	if err != nil {
+		c.Data["json"] = "获取文件失败,请重新上传文件"
+	} else {
+		c.Data["json"] = utils.PackageData(report)
+	}
+	c.ServeJSON()
+}
+
 /** 导入Image */
 // @router /api/image/import [post]
 func (c *ImageController) ImportImage() {

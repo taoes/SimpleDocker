@@ -1,18 +1,17 @@
 import axios from "axios";
-import notification from "ant-design-vue/lib/notification";
 import message from "ant-design-vue/lib/message";
+import notification from "ant-design-vue/lib/notification";
 
-function runNewContainer(containerConfig) {
-  let promise = axios.get(`/api/container/run`, {params: containerConfig})
+function newNetwork(params) {
+  let promise = axios.get(`/api/network/new`, {params: params});
   handleError(promise)
   return promise
-
 }
 
-function pruneImage() {
-  let promise = axios.delete('/api/image/prune');
-  handleError(promise)
-  return promise;
+function pruneNetwork() {
+  let apiResp = axios.delete(`/api/network/prune`,)
+  handleError(apiResp)
+  return apiResp
 }
 
 function handleError(promise) {
@@ -30,6 +29,5 @@ function handleError(promise) {
 }
 
 export default {
-  runNewContainer: runNewContainer,
-  pruneImage: pruneImage
+  newNetwork,pruneNetwork
 }

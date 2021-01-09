@@ -7,7 +7,6 @@ import (
 	"flag"
 	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/context"
-	"github.com/astaxie/beego/plugins/cors"
 	"net/http"
 	"strconv"
 )
@@ -34,7 +33,7 @@ func main() {
 	flag.Parse()
 
 	// 配置静态资源
-	beego.InsertFilter("/*", beego.BeforeRouter, corsFunc)
+
 	beego.SetStaticPath("/", "./static")
 
 	// 配置路由
@@ -45,12 +44,7 @@ func main() {
 	beego.Include(&api.NetworkController{})
 
 	// 添加CORS
-	beego.InsertFilter("*", beego.BeforeRouter, cors.Allow(&cors.Options{
-		AllowOrigins:     []string{"*"},
-		AllowMethods:     []string{"*"},
-		AllowHeaders:     []string{"*"},
-		ExposeHeaders:    []string{"Content-Length"},
-		AllowCredentials: true}))
+	beego.InsertFilter("/*", beego.BeforeRouter, corsFunc)
 
 	// 启动服务
 	beego.Run(":" + strconv.Itoa(*port))

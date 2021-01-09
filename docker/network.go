@@ -3,6 +3,7 @@ package docker
 import (
 	"SimpleDocker/context"
 	"github.com/docker/docker/api/types"
+	"github.com/docker/docker/api/types/filters"
 	"github.com/docker/docker/api/types/network"
 )
 
@@ -34,4 +35,10 @@ func ConnectNetwork(containerId string, networkId string) error {
 /** 容器断开网络 */
 func DisconnectNetwork(containerId string, networkId string, force bool) error {
 	return context.Cli.NetworkDisconnect(context.Ctx, networkId, containerId, force)
+}
+
+/** 精简网络 */
+func PruneNetwork() (types.NetworksPruneReport, error) {
+	var filter filters.Args
+	return context.Cli.NetworksPrune(context.Ctx, filter)
 }

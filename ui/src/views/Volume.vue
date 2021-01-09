@@ -17,16 +17,19 @@
             刷新
           </a-button>
 
-          <a-button type="primary" @click="openNewVolumeModal">
+          <a-button @click="openNewVolumeModal">
             <a-icon type="plus-circle"></a-icon>
             创建
           </a-button>
 
 
-          <a-button type="danger" @click="openPruneVolumeModal = true">
-            <a-icon type="delete"></a-icon>
-            清空无用卷
-          </a-button>
+          <a-tooltip>
+            <template slot="title">清空无用卷</template>
+            <a-button @click="openPruneVolumeModal = true">
+              <a-icon type="delete"></a-icon>
+              精简
+            </a-button>
+          </a-tooltip>
         </a-space>
       </a-form-item>
     </a-form>
@@ -35,23 +38,22 @@
     <span slot="action" slot-scope="text, record">
       <a-space>
         <a-tooltip>
-          <template slot="title">详情信息</template>
+          <template slot="title">详情</template>
           <a-icon type="profile" style="color:darkslategray;font-size: 18px"
                   @click="openVolumeDetail(record.LongName)"/>
         </a-tooltip>
         <a-divider type="vertical"></a-divider>
 
         <a-tooltip>
-          <template slot="title">删除存储卷</template>
+          <template slot="title">删除</template>
           <a-icon type="delete" style="color:orangered;font-size: 18px"
                   @click="openRemoveVolumeModal(record.LongName)"/>
         </a-tooltip>
         <a-divider type="vertical"></a-divider>
 
         <a-tooltip>
-          <template slot="title">挂载存储卷</template>
-          <a-icon type="link" style="color:darkslategray;font-size: 18px"
-                  @click="openRemoveVolumeModal(record.LongName)"/>
+          <template slot="title">挂载</template>
+          <a-icon type="link" style="color:darkslategray;font-size: 18px"/>
         </a-tooltip>
       </a-space>
     </span>
@@ -99,10 +101,14 @@
         <a-form-model-item>
           <a-input placeholder="请输入存储卷名称" v-model="newVolumeConfig.name"></a-input>
         </a-form-model-item>
-
-
         <a-form-model-item>
-          <a-input placeholder="请输入存储卷模式" v-model="newVolumeConfig.driver"></a-input>
+          <a-select v-model="newVolumeConfig.driver">
+            <template v-for="driver in supportVolumeMode">
+              <a-select-option :value="driver" :key="driver">
+                {{driver}}
+              </a-select-option>
+            </template>
+          </a-select>
         </a-form-model-item>
       </a-form-model>
 
@@ -183,10 +189,14 @@
         return allVolume;
       }, volumeInfo() {
         return this.$store.state.volume.info;
+      }, supportVolumeMode() {
+        let plugins = this.$store.state.dockerInfo.dockerPlugins;
+        return plugins.Volume;
       }
     },
     mounted() {
       this.updateVolumeList()
+      this.updateDockerInfo()
     },
     methods: {
       ...mapActions({
