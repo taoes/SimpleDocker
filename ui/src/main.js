@@ -11,6 +11,20 @@ import Config from './api/Config'
 
 // axios.defaults.baseURL = 'http://10.0.30.78:8081';
 axios.defaults.baseURL = Config.HOST
+axios.interceptors.request.use(config => {
+
+  if (config.url === '/api/system/login') {
+    return config
+  }
+  if (!localStorage.token) {
+    router.push("/")
+  } else {
+    config.headers.Authorization = localStorage.token;
+  }
+  return config
+})
+;
+
 Vue.prototype.$lodash = _
 Vue.config.productionTip = false
 Vue.prototype.$axios = axios

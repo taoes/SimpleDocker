@@ -139,6 +139,7 @@
       <a-form-model :label-col="{ span: 4 }" :wrapper-col="{ span: 20 }" v-model="containerConfig">
         <a-upload
             name="file"
+            :headers="uploadFileHeader"
             @change="importStatusChange"
             :action="getFileUploadLink()">
           选择文件上传
@@ -325,6 +326,11 @@
       this.updateImageList()
     },
     computed: {
+      uploadFileHeader: function () {
+        return {
+          "authorization": localStorage.token
+        }
+      },
       imageList: function () {
         let allImageList = this.$store.state.image.imageList;
         if (this.searchKey === '' || this.searchKey.trim() === '') {

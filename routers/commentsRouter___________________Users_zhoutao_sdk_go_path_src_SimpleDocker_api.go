@@ -196,6 +196,33 @@ func init() {
             Filters: nil,
             Params: nil})
 
+    beego.GlobalControllerRouter["SimpleDocker/api:LoginController"] = append(beego.GlobalControllerRouter["SimpleDocker/api:LoginController"],
+        beego.ControllerComments{
+            Method: "Login",
+            Router: "/api/docker/login",
+            AllowHTTPMethods: []string{"get"},
+            MethodParams: param.Make(),
+            Filters: nil,
+            Params: nil})
+
+    beego.GlobalControllerRouter["SimpleDocker/api:LoginController"] = append(beego.GlobalControllerRouter["SimpleDocker/api:LoginController"],
+        beego.ControllerComments{
+            Method: "SystemLogin",
+            Router: "/api/system/login",
+            AllowHTTPMethods: []string{"post"},
+            MethodParams: param.Make(),
+            Filters: nil,
+            Params: nil})
+
+    beego.GlobalControllerRouter["SimpleDocker/api:LoginController"] = append(beego.GlobalControllerRouter["SimpleDocker/api:LoginController"],
+        beego.ControllerComments{
+            Method: "SystemLogout",
+            Router: "/api/system/logout",
+            AllowHTTPMethods: []string{"get"},
+            MethodParams: param.Make(),
+            Filters: nil,
+            Params: nil})
+
     beego.GlobalControllerRouter["SimpleDocker/api:NetworkController"] = append(beego.GlobalControllerRouter["SimpleDocker/api:NetworkController"],
         beego.ControllerComments{
             Method: "GetNetworkList",

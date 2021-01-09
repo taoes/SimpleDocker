@@ -153,17 +153,6 @@ func init() {
 
     beego.GlobalControllerRouter["SimpleDocker/api:ImageController"] = append(beego.GlobalControllerRouter["SimpleDocker/api:ImageController"],
         beego.ControllerComments{
-            Method: "SaveImage",
-            Router: "/api/image/:imageId/save",
-            AllowHTTPMethods: []string{"get"},
-            MethodParams: param.Make(
-				param.New("imageId", param.InPath),
-			),
-            Filters: nil,
-            Params: nil})
-
-    beego.GlobalControllerRouter["SimpleDocker/api:ImageController"] = append(beego.GlobalControllerRouter["SimpleDocker/api:ImageController"],
-        beego.ControllerComments{
             Method: "ImportImage",
             Router: "/api/image/import",
             AllowHTTPMethods: []string{"post"},
@@ -191,8 +180,44 @@ func init() {
 
     beego.GlobalControllerRouter["SimpleDocker/api:ImageController"] = append(beego.GlobalControllerRouter["SimpleDocker/api:ImageController"],
         beego.ControllerComments{
+            Method: "SaveImage",
+            Router: "/api/image/save",
+            AllowHTTPMethods: []string{"post"},
+            MethodParams: param.Make(),
+            Filters: nil,
+            Params: nil})
+
+    beego.GlobalControllerRouter["SimpleDocker/api:ImageController"] = append(beego.GlobalControllerRouter["SimpleDocker/api:ImageController"],
+        beego.ControllerComments{
             Method: "TagImage",
             Router: "/api/image/tag",
+            AllowHTTPMethods: []string{"get"},
+            MethodParams: param.Make(),
+            Filters: nil,
+            Params: nil})
+
+    beego.GlobalControllerRouter["SimpleDocker/api:LoginController"] = append(beego.GlobalControllerRouter["SimpleDocker/api:LoginController"],
+        beego.ControllerComments{
+            Method: "Login",
+            Router: "/api/docker/login",
+            AllowHTTPMethods: []string{"get"},
+            MethodParams: param.Make(),
+            Filters: nil,
+            Params: nil})
+
+    beego.GlobalControllerRouter["SimpleDocker/api:LoginController"] = append(beego.GlobalControllerRouter["SimpleDocker/api:LoginController"],
+        beego.ControllerComments{
+            Method: "SystemLogin",
+            Router: "/api/system/login",
+            AllowHTTPMethods: []string{"post"},
+            MethodParams: param.Make(),
+            Filters: nil,
+            Params: nil})
+
+    beego.GlobalControllerRouter["SimpleDocker/api:LoginController"] = append(beego.GlobalControllerRouter["SimpleDocker/api:LoginController"],
+        beego.ControllerComments{
+            Method: "SystemLogout",
+            Router: "/api/system/logout",
             AllowHTTPMethods: []string{"get"},
             MethodParams: param.Make(),
             Filters: nil,

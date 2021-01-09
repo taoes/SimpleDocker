@@ -64,7 +64,7 @@
         setCurrentMenuKey: 'setCurrentMenuKey'
       }),
       selectItem: function ({key}) {
-        this.$router.push(key)
+        this.$router.push(`/content${key}`)
         this.setCurrentMenuKey(key)
       }
     }

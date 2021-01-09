@@ -238,9 +238,9 @@
                     style="overflow-y: scroll; overflow-x:auto;height: 350px;">
         <template v-for="network in this.$store.state.network.list">
           <div style="display: flex;justify-content: space-around;align-items: center">
-            <div>{{network.Id}}</div>
-            <div> {{network.Name}}</div>
-            <div style="padding: 5px">
+            <div style="flex-grow: 1">{{network.Id}}</div>
+            <div style="flex-grow: 2"> {{network.Name}}</div>
+            <div style="padding: 5px;">
               <template v-if="connectNetworkList.indexOf(network.Name) !== -1">
                 <a-button type="danger"
                           @click="operatorNetwork('disconnect',network.LongId)">
@@ -338,7 +338,6 @@
           let idFit = (i) => i.containerLongId.indexOf(this.searchKey) >= 0;
           let nameFit = (i) => i.containerName.indexOf(this.searchKey) >= 0;
           let imageFit = (i) => i.imageName.indexOf(this.searchKey) >= 0;
-
           allContainer = allContainer.filter(i => idFit(i) || nameFit(i) || imageFit(i))
         }
 
