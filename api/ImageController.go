@@ -4,6 +4,7 @@ import (
 	"SimpleDocker/docker"
 	"SimpleDocker/utils"
 	"bytes"
+	"encoding/json"
 	"fmt"
 	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/logs"
@@ -14,6 +15,11 @@ import (
 
 type ImageController struct {
 	beego.Controller
+}
+
+type ImportImageInfo struct {
+	ImageId  string `json:"imageId"`
+	ImageTag string `json:"imageTag"`
 }
 
 /** 查询全部Image */
@@ -75,9 +81,13 @@ func (c *ImageController) TagImage() {
 }
 
 /** 导出Image到指定目录 */
-// @router /api/image/:imageId/save [get]
-func (c *ImageController) SaveImage(imageId string) {
-	reader, err := docker.SaveImage(imageId)
+// @router /api/image/save [post]
+func (c *ImageController) SaveImage() {
+
+	var requestBody ImportImageInfo
+	_ = json.Unmarshal(c.Ctx.Input.RequestBody, &requestBody)
+
+	reader, err := docker.SaveImage(requestBody.ImageTag)
 	if err != nil {
 		c.Data["json"] = utils.PackageError(err)
 		c.ServeJSON()
@@ -88,7 +98,7 @@ func (c *ImageController) SaveImage(imageId string) {
 	_, _ = buf.ReadFrom(reader)
 	i := buf.Bytes()
 	c.Ctx.Output.Header("Content-Type", "application/force-download")
-	c.Ctx.Output.Header("Content-Disposition", fmt.Sprintf("attachment;filename=%s.tar.gz", imageId))
+	c.Ctx.Output.Header("Content-Disposition", fmt.Sprintf("attachment;filename=%s.tar.gz", requestBody.ImageId))
 	c.Ctx.Output.Header("Content-Transfer-Encoding", "binary")
 	_, _ = c.Ctx.ResponseWriter.Write(i)
 }
@@ -133,6 +143,7 @@ func (c *ImageController) ImportImage() {
 	defer file.Close()
 	saveFilePath := "/tmp/" + strconv.FormatInt(time.Now().Unix(), 10)
 	err = c.SaveToFile("file", saveFilePath)
+
 	if err != nil {
 		c.Data["json"] = "保存文件失败，请检查文件是否存在"
 		c.ServeJSON()

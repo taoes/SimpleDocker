@@ -32,6 +32,8 @@ var corsFunc = func(ctx *context.Context) {
 func main() {
 	flag.Parse()
 
+	beego.BConfig.CopyRequestBody = true
+
 	// 配置静态资源
 
 	beego.SetStaticPath("/", "./static")

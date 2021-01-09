@@ -2,6 +2,7 @@ package docker
 
 import (
 	"SimpleDocker/context"
+	"bytes"
 	"github.com/docker/docker/api/types"
 	"github.com/docker/docker/api/types/filters"
 	"github.com/pkg/errors"
@@ -45,8 +46,8 @@ func DeleteImage(imageId string, forge bool) error {
 }
 
 /** 导出镜像 */
-func SaveImage(imageId string) (io.ReadCloser, error) {
-	return context.Cli.ImageSave(context.Ctx, []string{imageId})
+func SaveImage(imageTag string) (io.ReadCloser, error) {
+	return context.Cli.ImageSave(context.Ctx, []string{imageTag})
 }
 
 func PruneImage() (types.ImagesPruneReport, error) {
@@ -55,10 +56,16 @@ func PruneImage() (types.ImagesPruneReport, error) {
 }
 
 /** 导入镜像 */
-func ImportImage(filePath string) (types.ImageLoadResponse, error) {
+func ImportImage(filePath string) (string, error) {
 	open, err := os.OpenFile(filePath, os.O_RDWR, 666)
 	if err != nil {
-		return types.ImageLoadResponse{}, errors.New("读取文件失败")
+		return "", errors.New("读取文件失败")
 	}
-	return context.Cli.ImageLoad(context.Ctx, open, false)
+
+	load, err := context.Cli.ImageLoad(context.Ctx, open, false)
+
+	buf := new(bytes.Buffer)
+	_, _ = buf.ReadFrom(load.Body)
+
+	return buf.String(), err
 }

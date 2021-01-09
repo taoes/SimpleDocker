@@ -50,7 +50,6 @@
 
         <a-divider type="vertical"></a-divider>
 
-
         <a-tooltip>
             <template slot="title">删除镜像</template>
             <a-icon type="delete" style="color:orangered;font-size: 18px"
@@ -134,32 +133,19 @@
       </a-form-model>
     </a-modal>
 
-
     <a-modal v-model="importImageVisible" title="导入新的镜像" okText="导入" cancelText="取消"
-             @ok="callImportImageApi">
-      <a-form-model :label-col="{ span: 4 }" :wrapper-col="{ span: 20 }"
-                    v-model="containerConfig">
-        <a-upload-dragger
-            v-decorator="[
-            'dragger',
-            {
-              valuePropName: 'fileList',
-              getValueFromEvent: normFile,
-            },
-          ]"
+             :footer="null"
+             @ok="closeImportImageVisible()">
+      <a-form-model :label-col="{ span: 4 }" :wrapper-col="{ span: 20 }" v-model="containerConfig">
+        <a-upload
             name="file"
+            @change="importStatusChange"
             :action="getFileUploadLink()">
-          <p class="ant-upload-drag-icon">
-            <a-icon type="inbox"/>
-          </p>
-          <p class="ant-upload-text">
-            点击此处或者选择文件上传
-          </p>
-          <p class="ant-upload-hint">
-            仅支持单个文件上传
-          </p>
-        </a-upload-dragger>
+          选择文件上传
+        </a-upload>
 
+        <a-divider></a-divider>
+        <span style="color:darkslategray">导入结果: {{importResp}}</span>
       </a-form-model>
     </a-modal>
 
@@ -326,6 +312,7 @@
           env: '',
           volume: ''
         },
+        importResp: '',
         pullImageConfig: {imageName: '', auth: ''},
         pullLog: '',
         pulling: false,
@@ -335,7 +322,7 @@
         tagImageVisible: false,
       };
     }, mounted() {
-      this.updateImage()
+      this.updateImageList()
     },
     computed: {
       imageList: function () {
@@ -353,17 +340,25 @@
     },
     methods: {
       ...mapActions({
-        updateImage: "updateImageList",
+        updateImageList: "updateImageList",
         getImageInfo: "getImageInfo",
         removeImage: "removeImage"
       }),
       getFileUploadLink() {
         return `${Config.HOST}/api/image/import`
-      },
-      searchKeyOnchange: function (e) {
+      }, closeImportImageVisible() {
+        this.importImageVisible = false
+        this.updateImageList()
+      }, importStatusChange(event) {
+        let {file} = event;
+        if (file.status === 'done') {
+          this.$message.info(`文件:${file.name} 导入完毕`)
+          let {Data} = file.response
+          this.importResp = Data
+        }
+      }, searchKeyOnchange: function (e) {
         this.searchKey = e.target.value
-      },
-      detail: function (imageId) {
+      }, detail: function (imageId) {
         this.showDetail = true;
         this.currentImageId = imageId;
         this.getImageInfo({imageId})
@@ -379,7 +374,7 @@
               let data = res.data;
               if (data.Code === 'OK') {
                 context.$message.info('镜像删除完成!');
-                this.updateImage()
+                this.updateImageList()
               } else {
                 context.$confirm({
                   title: `删除镜像失败，是否强制删除?`,
@@ -407,7 +402,7 @@
               let {Code, Msg} = res.data;
               if (Code === 'OK') {
                 this.$message.info('强制删除镜像完成!');
-                this.updateImage()
+                this.updateImageList()
               } else {
                 this.$message.error(Msg);
               }
@@ -417,7 +412,7 @@
         })
       },
       reloadImageList: function () {
-        this.updateImage()
+        this.updateImageList()
         this.$message.info('刷新镜像列表完成');
       },
       pullImage: function () {
@@ -469,9 +464,13 @@
           withCredentials: true,
           timeout: 600000
         }
-        this.$axios.create(config).get(`/api/image/${imageId}/save`, {responseType: 'blob'}).then(
+        this.$axios.create(config).post(
+            `/api/image/save`,
+            {imageTag, imageId},
+            {responseType: 'blob'}
+        ).then(
             (res) => {
-              download(res.data, `${imageTag}.tar.gz`)
+              download(res.data, `${imageId}.tar.gz`)
               this.$message.info({content: "镜像已成功导出并下载....", key});
             })
         .catch(e => {
@@ -515,7 +514,7 @@
           if (Code === 'OK') {
             this.$message.info('标记镜像完成!');
             this.tagImageVisible = false
-            this.updateImage()
+            this.updateImageList()
           } else {
             this.$message.warning(Msg);
           }
@@ -523,9 +522,6 @@
         .catch(e => {
           this.$message.error("镜像标记失败,请检查 Docker 服务是否正常");
         })
-      },
-      uploadFileChange(event) {
-        console.log(event)
       }, callPruneImageApi() {
         imageApi.pruneImage().then(res => {
           let {Code, Data} = res.data
