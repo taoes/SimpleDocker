@@ -1,7 +1,7 @@
 package docker
 
 import (
-	"SimpleDocker/context"
+	"SimpleDocker/src/context"
 	"bytes"
 	"github.com/docker/docker/api/types"
 	"github.com/docker/docker/api/types/filters"

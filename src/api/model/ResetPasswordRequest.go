@@ -1,6 +1,6 @@
 package model
 
-type LoginRequest struct {
-	OldPassword string `json:"username"`
-	NewPassword string `json:"password"`
+type ResetPasswordRequest struct {
+	OldPassword string `json:"oldPassword"`
+	NewPassword string `json:"newPassword"`
 }
