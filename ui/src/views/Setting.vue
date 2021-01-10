@@ -2,7 +2,7 @@
   <div>
     <a-tabs default-active-key="1" @change="callback">
       <a-tab-pane key="1" tab="安全设置">
-        Content of Tab Pane 1
+        <ResetPassword/>
       </a-tab-pane>
       <a-tab-pane key="3" tab="关于软件">
         Content of Tab Pane 3
@@ -11,7 +11,10 @@
   </div>
 </template>
 <script>
+  import ResetPassword from "../components/ResetPassword";
+
   export default {
+    components: {ResetPassword},
     data() {
       return {};
     },

@@ -471,12 +471,7 @@
       }, async exposeContainer(containerId) {
         let key = guid()
         this.$message.loading({content: "正在导出容器数据，请稍后....", key, duration: 0});
-
-        let config = {
-          withCredentials: true,
-          timeout: 600000
-        }
-        this.$axios.create(config).get(`/api/container/${containerId}/export`,
+        this.$axios.get(`/api/container/${containerId}/export`,
             {responseType: 'blob'}).then(
             (res) => {
               download(res.data, `${containerId}.tar.gz`)

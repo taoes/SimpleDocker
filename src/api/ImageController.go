@@ -1,8 +1,8 @@
 package api
 
 import (
-	"SimpleDocker/docker"
-	"SimpleDocker/utils"
+	"SimpleDocker/src/docker"
+	"SimpleDocker/src/utils"
 	"bytes"
 	"encoding/json"
 	"fmt"

@@ -7,23 +7,31 @@ import _ from 'lodash'
 import 'ant-design-vue/dist/antd.css';
 
 import axios from 'axios'
+import jwtDecode from 'jwt-decode'
 import Config from './api/Config'
+import {formatUTCTime} from './utils/index'
 
-// axios.defaults.baseURL = 'http://10.0.30.78:8081';
 axios.defaults.baseURL = Config.HOST
 axios.interceptors.request.use(config => {
-
   if (config.url === '/api/system/login') {
     return config
   }
   if (!localStorage.token) {
     router.push("/")
   } else {
-    config.headers.Authorization = localStorage.token;
+    let tokenStr = localStorage.token;
+    let token = jwtDecode(tokenStr)
+    console.log(token)
+    if (new Date(token.exp).getTime() < new Date().getTime()) {
+      console.log("token 过期")
+      localStorage.setItem("token", "")
+      router.push("/")
+    } else {
+      config.headers.Authorization = localStorage.token;
+      return config
+    }
   }
-  return config
-})
-;
+});
 
 Vue.prototype.$lodash = _
 Vue.config.productionTip = false

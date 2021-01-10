@@ -3,7 +3,7 @@
 
 
     <div id="loginForm">
-      <img src="https://pic.zhoutao123.com/lib/simple-docker/logo-tm.png" alt="" width="300">
+      <img src="../assets/logo-tm.png" alt="" width="300">
       <a-form-model :form="loginForm">
         <a-input placeholder="请输入账号" class="loginInput" type="text" :allowClear="true" v-focus
                  v-model="loginForm.username">
@@ -50,12 +50,10 @@
       login() {
         authApi.login(this.loginForm)
         .then(res => {
-          let {Code, Data, Msg} = res.data
+          let {Code, Data} = res.data
           if (Code === 'OK') {
             localStorage.setItem('token', `Bearer ${Data}`)
             this.$router.push("/content")
-          } else {
-            this.$message.error(Msg)
           }
         })
       },

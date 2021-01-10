@@ -1,11 +1,13 @@
 package api
 
 import (
-	"SimpleDocker/api/model"
-	"SimpleDocker/auth"
-	"SimpleDocker/docker"
-	"SimpleDocker/utils"
+	"SimpleDocker/src/api/model"
+	"SimpleDocker/src/auth"
+	"SimpleDocker/src/docker"
+	"SimpleDocker/src/utils"
+	"crypto/md5"
 	"encoding/json"
+	"fmt"
 	"github.com/astaxie/beego"
 	"strings"
 )
@@ -62,8 +64,10 @@ func (c *LoginController) SystemLogin() {
 		return
 	}
 
-	if name == "admin" && password == "123" {
-		token, _ := auth.GeneratorToken()
+	authInfo, _ := auth.ReadAuthFile()
+	passwordMd5 := fmt.Sprintf("%X", md5.Sum([]byte(password+"+"+authInfo.SaltValue)))
+	if name == authInfo.Username && passwordMd5 == authInfo.Password {
+		token, _ := auth.GeneratorToken(name)
 		c.Data["json"] = utils.PackageData(token)
 	} else {
 		c.Data["json"] = utils.PackageErrorMsg("账号或密码错误")
@@ -75,5 +79,33 @@ func (c *LoginController) SystemLogin() {
 func (c *LoginController) SystemLogout() {
 	c.DestroySession()
 	c.Data["json"] = utils.PackageData("退出成功")
+	c.ServeJSON()
+}
+
+// @router /api/system/update/password [post]
+func (c *LoginController) UpdatePassword() {
+	var resetReq model.ResetPasswordRequest
+	_ = json.Unmarshal(c.Ctx.Input.RequestBody, &resetReq)
+	nP := resetReq.NewPassword
+	oP := resetReq.OldPassword
+
+	if oP = strings.Trim(oP, " "); oP == "" {
+		c.Data["json"] = utils.PackageErrorMsg("登录失败,原密码错误")
+		c.ServeJSON()
+		return
+	}
+
+	if nP = strings.Trim(nP, " "); nP == "" {
+		c.Data["json"] = utils.PackageErrorMsg("登录失败,新密码无效")
+		c.ServeJSON()
+		return
+	}
+
+	err := auth.UpdatePassword(oP, nP)
+	if err != nil {
+		c.Data["json"] = utils.PackageError(err)
+	} else {
+		c.Data["json"] = utils.PackageData("密码更新成功")
+	}
 	c.ServeJSON()
 }

@@ -3,7 +3,7 @@
     <a-layout-header class="header">
       <!--      <div class="logo"></div>-->
       <div style="display: inline;float: left;justify-items: center">
-        <img src="https://pic.zhoutao123.com/lib/simple-docker/logo-tm-white2.png"
+        <img src="../assets/logo-tm-white2.png"
              style="width: 150px" alt=""/>
       </div>
       <a-menu
@@ -28,6 +28,11 @@
             <a-icon type="user"></a-icon>
             账户
           </template>
+
+          <a-menu-item key="updatePassword">
+            <a-icon type="lock"></a-icon>
+            修改密码
+          </a-menu-item>
 
           <a-menu-item key="logout">
             <a-icon type="logout"></a-icon>
@@ -63,19 +68,43 @@
         </a-layout-content>
       </a-layout>
     </a-layout>
+
+    <a-modal :visible="showResetPasswordModal" title="修改登录密码" okText="确定" cancelText="取消"
+             @ok="callResetPassword()">
+      <a-form-model :form="updatePasswordForm">
+        <a-input class="input" placeholder="请输入原密码" type="password"
+                 v-model="updatePasswordForm.oP"/>
+        <br>
+        <a-input class="input" placeholder="请输入新密码" type="password"
+                 v-model="updatePasswordForm.nP"/>
+        <br>
+        <a-input class="input" placeholder="请再次输入新密码" type="password"
+                 v-model="updatePasswordForm.cP"/>
+      </a-form-model>
+    </a-modal>
+
+
   </a-layout>
 </template>
 <script>
   import PCMenu from "../components/PCMenu";
+  import ResetPassword from "../components/ResetPassword";
+  import AuthApi from "../api/AuthApi";
 
   let intervalId = null
 
   export default {
-    components: {PCMenu},
+    components: {ResetPassword, PCMenu},
     data() {
       return {
         collapsed: false,
-        apiState: true
+        apiState: true,
+        showResetPasswordModal: false,
+        updatePasswordForm: {
+          oP: '',
+          nP: '',
+          cP: ''
+        }
       };
     }, mounted() {
       setInterval(this.updateApiState, 5000);
@@ -97,9 +126,22 @@
         if (key === 'logout') {
           localStorage.setItem('token', '')
           this.$router.push("/")
+        } else if (key === 'updatePassword') {
+          this.showResetPasswordModal = true
         } else {
           window.open(key, '_target')
         }
+      }, callResetPassword() {
+        AuthApi.resetPassword(this.updatePasswordForm)
+        .then(res => {
+          let {Code} = res.data
+          if (Code === 'OK') {
+            this.showResetPasswordModal = false
+            this.$message.info("密码更新成功，请退出重新登录!")
+            localStorage.setItem("token", "")
+            this.$router.push("/")
+          }
+        })
       }
     }
   };
@@ -140,5 +182,9 @@
     font-weight: bold
   }
 
+
+  .input {
+    margin-top: 20px;
+  }
 
 </style>
