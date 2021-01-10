@@ -12,7 +12,7 @@
           :selectable="false"
           @click="linkSelect"
           :style="{ lineHeight: '64px' }">
-        <a-menu-item :class="{'apiStateNormal': apiState,'apiStateError':!apiState}">
+        <a-menu-item :class="{'apiStateNormal': apiState,'apiStateError':!apiState}" key="noAction">
           <template v-if="apiState">
             <a-icon type="api" size="16"/>
             <span>连接正常</span>
@@ -45,16 +45,14 @@
           <a-icon type="book" theme="filled"/>
           博客
         </a-menu-item>
-        <a-menu-item key="https://github.com/taoes/SimpleDocker" class="right">
+        <a-menu-item key="https://gitee.com/taoes_admin/SimpleDocker" class="right">
           <a-icon type="code" theme="filled"/>
           源码
         </a-menu-item>
-        <a-menu-item key="https://github.com/taoes/SimpleDocker/issues/new" class="right">
+        <a-menu-item key="https://gitee.com/taoes_admin/SimpleDocker/issues" class="right">
           <a-icon type="bug" theme="filled"/>
           反馈
         </a-menu-item>
-
-
       </a-menu>
     </a-layout-header>
     <a-layout>
@@ -70,6 +68,7 @@
     </a-layout>
 
     <a-modal :visible="showResetPasswordModal" title="修改登录密码" okText="确定" cancelText="取消"
+             @cancel="showResetPasswordModal = false"
              @ok="callResetPassword()">
       <a-form-model :form="updatePasswordForm">
         <a-input class="input" placeholder="请输入原密码" type="password"
@@ -82,8 +81,6 @@
                  v-model="updatePasswordForm.cP"/>
       </a-form-model>
     </a-modal>
-
-
   </a-layout>
 </template>
 <script>
@@ -123,6 +120,9 @@
         });
       },
       linkSelect: function ({key}) {
+        if (key && key.startsWith("no")) {
+          return
+        }
         if (key === 'logout') {
           localStorage.setItem('token', '')
           this.$router.push("/")
@@ -130,6 +130,7 @@
           this.showResetPasswordModal = true
         } else {
           window.open(key, '_target')
+
         }
       }, callResetPassword() {
         AuthApi.resetPassword(this.updatePasswordForm)
@@ -144,7 +145,8 @@
         })
       }
     }
-  };
+  }
+  ;
 </script>
 
 <style scoped>

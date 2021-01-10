@@ -26,19 +26,23 @@ Docker是目前一种非常主流的容器化方案，支持非常多的特性�
 2. 容器管理、容器启动/停止/运行
 3. 挂载卷管理以及创建
 4. 网络管理以及创建
+5. 镜像导入功能
+6. 安全登录功能
+7. 容器导出功能
 
 
-**✏️ 正在开发的功能(预计 2021.01.10 发布 0.0.2 版本)**
-1. 安全登录功能
-2. 容器导出功能
-3. 镜像导入功能
-4. 界面操作逻辑优化
+** 正在开发的任务**
+0. 优化导出&导入&拉取等阻塞性任务的操作体验
+1. 容器命令行操作
+2. 容器文件管理、文件上传以及文件下载
 
 **🛠 计划支持的特性:**
+
 1. 容器网络管理与连接(V2)
 2. 私有仓库的镜像拉取(V2)
 3. DockerCompose 镜像编排管理(V3)
 4. DockerSwarm 集群管理(V4)
+
 
 ## 应用安装
 
@@ -69,7 +73,7 @@ chmod +x /tmp/deploy-simple-docker.sh
 
 + Docker 安装
 ```sh
-docker run  -d -p 8080:40093 -v /var/run/docker.sock:/var/run/docker.sock --name SimpleDocker  registry.cn-shanghai.aliyuncs.com/seven-tao/simple-docker:0.0.1-beta
+docker run  -d -p 8080:4050 -v /var/run/docker.sock:/var/run/docker.sock --name SimpleDocker  registry.cn-shanghai.aliyuncs.com/seven-tao/simple-docker:0.0.2
 // 浏览器访问 http://localhost:8080  
 ```
 
@@ -82,17 +86,21 @@ docker run  -d -p 8080:40093 -v /var/run/docker.sock:/var/run/docker.sock --name
 
 ## 应用启动
 1. 刷新环境变量设置后，使用命令`SimpleDocker` 启动应用(后台运行可使用 `nohup SimpleDocker &` 命令启动)
-2. 启动应用后，浏览器访问 `http://localhost:40093` 打开应用
+2. 启动应用后，浏览器访问 `http://localhost:4050` 打开应用
+3. 账户名：admin 密码: SimpleDocker2020 您可以在登录后修改密码
 
 
 
 ## Q & A
 1. 修改启动端口
-> 如果您需要修改启动端口，您可以打开应用目录(默认是 ~/.local/simpleDocker )下的 conf/app.conf 文件，修改 httpport 的值
+> 如果您需要修改启动端口,可以使用 `SimpleDocker -p xxx` 的方式启动即可在指定端口启动
 
 
 2. 保持后台运行以及关闭后台运行
 > 您可以使用 `nohup SimpleDocker &` 命令后台启动 SimpleDocker ，如果关闭应用可以使用 `ps -ef | grep 'SimpleDocker'`  查找到PID，然后通过  `kill -9 pid` 关闭应用
+
+3. 忘记密码
+> 忘记密码时候，你可以切换到`~/.local/simpleDocker` 目录，修改auth.json 文件，将password值修改为`B923E7672631F71B510FEDB20A77EA8A` 即可恢复默认密码 `SimpleDocker2020` 
 
 
 

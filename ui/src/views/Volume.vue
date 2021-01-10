@@ -208,68 +208,65 @@
       }, openNewVolumeModal: function () {
         // 打开创建volume的模态框
         this.showNewVolumeModal = true
-      }, async callCreateNewVolumeApi() {
+      }, callCreateNewVolumeApi() {
         let key = guid()
         this.$message.loading({content: '创建存储卷中，请稍后...', key});
-        let res = await volumeApi.createNewVolume(this.newVolumeConfig)
-        let {Code, Msg} = res.data
-        if (Code === 'OK') {
-          this.$message.info({content: '存储卷创建完成!', key, duration: 2});
-          this.updateVolumeList()
-          this.showNewVolumeModal = false
-        } else {
-          this.$notification['error']({
-            message: '存储卷创建失败',
-            description: Msg,
-          });
-
-          this.showNewVolumeModal = false
-        }
-
-      }, openRemoveVolumeModal: function (volumeName) {
-        this.showRemoveVolumeModal = true
-        this.currentVolumeName = volumeName
-      }, openVolumeDetail: function (volumeName) {
-        this.showVolumeDrawer = true
-        this.updateVolumeInfo(volumeName)
-      }, async callRemoveVolumeApi() {
-        let key = guid()
-        this.$message.loading({content: '删除存储卷中，请稍后...', key});
-        let res = await volumeApi.removeVolume(this.currentVolumeName, this.forceRemoveVolume);
-        let {Code, Msg} = res.data
-        if (Code === 'OK') {
-          this.$message.info({content: '存储卷删除完成!', key, duration: 2});
-          this.updateVolumeList()
-          this.showRemoveVolumeModal = false
-        } else {
-          this.$notification['error']({
-            message: '存储卷删除失败',
-            description: Msg,
-          });
-          this.showRemoveVolumeModal = false
-        }
-      }, async callPruneVolumeApi() {
-        let key = guid()
-        this.$message.loading({content: '无用删除存储卷中，请稍后...', key});
-        let res = await volumeApi.pruneVolume();
-        let {Code, Msg} = res.data
-        if (Code === 'OK') {
-          this.$message.info({content: '无用存储卷删除完成!', key, duration: 2});
-          this.updateVolumeList()
-          this.openPruneVolumeModal = false
-        } else {
-          this.$notification['error']({
-            message: '无用存储卷删除失败',
-            description: Msg,
-          });
-          this.openPruneVolumeModal = false
-        }
-      }, async reloadVolumeList() {
-        this.updateVolumeList()
-        this.$message.info('存储卷列表刷新完成');
+        volumeApi.createNewVolume(this.newVolumeConfig).then(res => {
+          let {Code, Msg} = res.data
+          if (Code === 'OK') {
+            this.$message.info({content: '存储卷创建完成!', key, duration: 2});
+            this.updateVolumeList()
+            this.showNewVolumeModal = false
+          } else {
+            this.$message.error({content: Msg, key});
+            this.showNewVolumeModal = false
+          }
+        });
       }
+    }, openRemoveVolumeModal: function (volumeName) {
+      this.showRemoveVolumeModal = true
+      this.currentVolumeName = volumeName
+    }, openVolumeDetail: function (volumeName) {
+      this.showVolumeDrawer = true
+      this.updateVolumeInfo(volumeName)
+    }, async callRemoveVolumeApi() {
+      let key = guid()
+      this.$message.loading({content: '删除存储卷中，请稍后...', key});
+      let res = await volumeApi.removeVolume(this.currentVolumeName, this.forceRemoveVolume);
+      let {Code, Msg} = res.data
+      if (Code === 'OK') {
+        this.$message.info({content: '存储卷删除完成!', key, duration: 2});
+        this.updateVolumeList()
+        this.showRemoveVolumeModal = false
+      } else {
+        this.$notification['error']({
+          message: '存储卷删除失败',
+          description: Msg,
+        });
+        this.showRemoveVolumeModal = false
+      }
+    }, async callPruneVolumeApi() {
+      let key = guid()
+      this.$message.loading({content: '无用删除存储卷中，请稍后...', key});
+      let res = await volumeApi.pruneVolume();
+      let {Code, Msg} = res.data
+      if (Code === 'OK') {
+        this.$message.info({content: '无用存储卷删除完成!', key, duration: 2});
+        this.updateVolumeList()
+        this.openPruneVolumeModal = false
+      } else {
+        this.$notification['error']({
+          message: '无用存储卷删除失败',
+          description: Msg,
+        });
+        this.openPruneVolumeModal = false
+      }
+    }, async reloadVolumeList() {
+      this.updateVolumeList()
+      this.$message.info('存储卷列表刷新完成');
     }
-  };
+  }
+  ;
 </script>
 
 <style scoped>

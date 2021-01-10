@@ -84,7 +84,7 @@
                   重新标记</a>
             </a-menu-item>
             <a-menu-item>
-                <a href="#" @click="detail(record.imageLongId)">
+                <a href="#" @click="push(record.imageLongId)">
                   <a-icon type="cloud-upload"/>&nbsp;
                   推送镜像</a>
             </a-menu-item>
@@ -162,11 +162,6 @@
         <a-form-model-item label="授权">
           <a-select v-model="pullImageConfig.auth">
             <a-select-option value="无">无</a-select-option>
-            <a-select-option value="授权信息1">授权信息1</a-select-option>
-            <a-select-option value="授权信息2">授权信息2</a-select-option>
-            <a-select-option value="授权信息3">授权信息3</a-select-option>
-            <a-select-option value="授权信息4">授权信息4</a-select-option>
-            <a-select-option value="授权信息5">授权信息5</a-select-option>
           </a-select>
         </a-form-model-item>
       </a-form-model>
@@ -253,7 +248,6 @@
             </tr>
           </table>
         </a-collapse-panel>
-
       </a-collapse>
     </a-drawer>
   </div>
@@ -368,6 +362,8 @@
         this.showDetail = true;
         this.currentImageId = imageId;
         this.getImageInfo({imageId})
+      }, push: function (imageId) {
+        this.$message.warning("暂不支持推送镜像，请期待后续版本")
       },
       remove: function (imageId) {
         let context = this;

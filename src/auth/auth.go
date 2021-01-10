@@ -35,7 +35,7 @@ func initConfig() {
 		os.Exit(-1)
 	}
 
-	authInfo := model.AuthInfo{Username: "admin", Password: "0EF43B13CD66DC66C4074382ECD9F3A8", SaltValue: "SimpleDocker"}
+	authInfo := model.AuthInfo{Username: "admin", Password: "B923E7672631F71B510FEDB20A77EA8A", SaltValue: "SimpleDocker"}
 	data, _ := json.Marshal(authInfo)
 	_, _ = create.Write(data)
 	create.Close()
@@ -92,7 +92,7 @@ func ReadAuthFile() (model.AuthInfo, string) {
 		os.Exit(-1)
 	}
 
-	authInfo := model.AuthInfo{Username: "admin", Password: "0EF43B13CD66DC66C4074382ECD9F3A8", SaltValue: "SimpleDocker"}
+	authInfo := model.AuthInfo{Username: "admin", Password: "B923E7672631F71B510FEDB20A77EA8A", SaltValue: "SimpleDocker"}
 	data, _ := json.Marshal(authInfo)
 	_, _ = create.Write(data)
 	create.Close()

@@ -86,40 +86,6 @@
 
       </a-descriptions-item>
     </a-descriptions>
-
-
-    <div style="margin-top: 40px"></div>
-
-
-    <a-descriptions title="SimpleDocker 信息" bordered size="small">
-      <a-descriptions-item label="版本" :span="1">
-        {{simpleDocker.Version}}
-      </a-descriptions-item>
-      <a-descriptions-item label="架构" :span="1">
-        {{version.Arch}}
-      </a-descriptions-item>
-      <a-descriptions-item label="Go版本">
-        {{version.GoVersion}}
-      </a-descriptions-item>
-      <a-descriptions-item label="内核版本">
-        {{version.KernelVersion}}
-      </a-descriptions-item>
-      <a-descriptions-item label="平台信息" :span="3">
-        {{version.Platform.Name}}
-      </a-descriptions-item>
-      <a-descriptions-item label="组件版本" :span="1">
-
-        <template v-for="component of version.Components">
-          <p>
-            <span>{{component.Name}} </span>
-            <span style="margin-left: 0"> - {{component.Version}}</span>
-          </p>
-
-        </template>
-
-      </a-descriptions-item>
-    </a-descriptions>
-
   </div>
 </template>
 
