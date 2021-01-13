@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+</head>
+<body>
+
+<input id="input" type="text" style="width: 90%;height: 30px">
+<button onclick="send()">发送</button>
+<br>
+<textarea rows="40" style="width: 100%;margin-top: 40px" id="content"></textarea>
+
+<script>
+
+  let command = ''
+  let content = document.getElementById('content')
+  let ws;
+  if ("WebSocket" in window) {
+    ws = new WebSocket('ws://localhost:9999/web');
+    ws.onopen = function () {
+      console.log("连接OK...");
+    };
+
+    ws.onmessage = function (evt) {
+      var received_msg = evt.data;
+      console.log("数据已接收..." + received_msg);
+      content.innerHTML = content.innerHTML + JSON.parse(received_msg).msg;
+    };
+
+    ws.onclose = function () {
+      console.log("连接已关闭...");
+    };
+  } else {
+    alert("不支持WebSocket")
+  }
+
+  function send() {
+    let input = document.getElementById('input')
+    console.log("发送:" + input.value)
+    ws.send(input.value)
+  }
+
+</script>
+
+
+</body>
+</html>

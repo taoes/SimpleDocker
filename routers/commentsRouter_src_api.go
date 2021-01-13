@@ -344,4 +344,13 @@ func init() {
             Filters: nil,
             Params: nil})
 
+    beego.GlobalControllerRouter["SimpleDocker/src/api:WebSocketController"] = append(beego.GlobalControllerRouter["SimpleDocker/src/api:WebSocketController"],
+        beego.ControllerComments{
+            Method: "Get",
+            Router: "/ws/web",
+            AllowHTTPMethods: []string{"get"},
+            MethodParams: param.Make(),
+            Filters: nil,
+            Params: nil})
+
 }
