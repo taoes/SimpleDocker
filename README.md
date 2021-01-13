@@ -132,6 +132,9 @@ docker run  -d -p 8080:4050 -v /var/run/docker.sock:/var/run/docker.sock --name 
 
 + Container 信息
 ![Container 信息](./img/container.png)
+  
++ 容器终端在线管理
+![终端管理](./img/terminal.png)
 
 + 容器日志以及日志下载
 ![Image 信息](./img/containerLog.png)
