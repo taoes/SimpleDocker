@@ -1711,8 +1711,7 @@ arch@^2.1.1:
 
 argparse@^1.0.7:
   version "1.0.10"
-  resolved "https://registry.npm.taobao.org/argparse/download/argparse-1.0.10.tgz#bcd6791ea5ae09725e17e5ad988134cd40b3d911"
-  integrity sha1-vNZ5HqWuCXJeF+WtmIE0zUCz2RE=
+  resolved "https://codeload.github.com/jsmith/argparse/tar.gz/0c0faed0623e14400021f3ffbd9068d77aa92cc8"
   dependencies:
     sprintf-js "~1.0.2"
 
@@ -4746,6 +4745,11 @@ jest-worker@^25.4.0:
     merge-stream "^2.0.0"
     supports-color "^7.0.0"
 
+jquery@^3.3.1:
+  version "3.5.1"
+  resolved "https://registry.npm.taobao.org/jquery/download/jquery-3.5.1.tgz#d7b4d08e1bfdb86ad2f1a3d039ea17304717abb5"
+  integrity sha1-17TQjhv9uGrS8aPQOeoXMEcXq7U=
+
 js-message@1.0.7:
   version "1.0.7"
   resolved "https://registry.npm.taobao.org/js-message/download/js-message-1.0.7.tgz#fbddd053c7a47021871bb8b2c95397cc17c20e47"
@@ -4858,6 +4862,11 @@ jsprim@^1.2.2:
     extsprintf "1.3.0"
     json-schema "0.2.3"
     verror "1.10.0"
+
+jwt-decode@^3.1.2:
+  version "3.1.2"
+  resolved "https://registry.npm.taobao.org/jwt-decode/download/jwt-decode-3.1.2.tgz#3fb319f3675a2df0c2895c8f5e9fa4b67b04ed59"
+  integrity sha1-P7MZ82daLfDCiVyPXp+ktnsE7Vk=
 
 killable@^1.0.1:
   version "1.0.1"
@@ -7543,7 +7552,7 @@ ts-pnp@^1.1.6:
 
 tslib@^1.9.0:
   version "1.14.1"
-  resolved "https://registry.npm.taobao.org/tslib/download/tslib-1.14.1.tgz#cf2d38bdc34a134bcaf1091c41f6619e2f672d00"
+  resolved "https://registry.npm.taobao.org/tslib/download/tslib-1.14.1.tgz?cache=0&sync_timestamp=1609887438976&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Ftslib%2Fdownload%2Ftslib-1.14.1.tgz#cf2d38bdc34a134bcaf1091c41f6619e2f672d00"
   integrity sha1-zy04vcNKE0vK8QkcQfZhni9nLQA=
 
 tty-browserify@0.0.0:
@@ -7861,7 +7870,15 @@ vue-template-es2015-compiler@^1.9.0:
   resolved "https://registry.npm.taobao.org/vue-template-es2015-compiler/download/vue-template-es2015-compiler-1.9.1.tgz#1ee3bc9a16ecbf5118be334bb15f9c46f82f5825"
   integrity sha1-HuO8mhbsv1EYvjNLsV+cRvgvWCU=
 
-vue@^2.6.11:
+vue-terminal-ui@^0.1.6:
+  version "0.1.6"
+  resolved "https://registry.npm.taobao.org/vue-terminal-ui/download/vue-terminal-ui-0.1.6.tgz#2474648a5aa3e1177af0de9a1c14c9061499201d"
+  integrity sha1-JHRkilqj4Rd68N6aHBTJBhSZIB0=
+  dependencies:
+    jquery "^3.3.1"
+    vue "^2.5.16"
+
+vue@^2.5.16, vue@^2.6.11:
   version "2.6.12"
   resolved "https://registry.npm.taobao.org/vue/download/vue-2.6.12.tgz?cache=0&sync_timestamp=1606946259454&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fvue%2Fdownload%2Fvue-2.6.12.tgz#f5ebd4fa6bd2869403e29a896aed4904456c9123"
   integrity sha1-9evU+mvShpQD4pqJau1JBEVskSM=
@@ -8120,6 +8137,21 @@ xtend@^4.0.0, xtend@~4.0.1:
   version "4.0.2"
   resolved "https://registry.npm.taobao.org/xtend/download/xtend-4.0.2.tgz#bb72779f5fa465186b1f438f674fa347fdb5db54"
   integrity sha1-u3J3n1+kZRhrH0OPZ0+jR/2121Q=
+
+xterm-addon-attach@^0.6.0:
+  version "0.6.0"
+  resolved "https://registry.npm.taobao.org/xterm-addon-attach/download/xterm-addon-attach-0.6.0.tgz#220c23addd62ab88c9914e2d4c06f7407e44680e"
+  integrity sha1-Igwjrd1iq4jJkU4tTAb3QH5EaA4=
+
+xterm-addon-fit@^0.4.0:
+  version "0.4.0"
+  resolved "https://registry.npm.taobao.org/xterm-addon-fit/download/xterm-addon-fit-0.4.0.tgz#06e0c5d0a6aaacfb009ef565efa1c81e93d90193"
+  integrity sha1-BuDF0KaqrPsAnvVl76HIHpPZAZM=
+
+xterm@^4.9.0:
+  version "4.9.0"
+  resolved "https://registry.npm.taobao.org/xterm/download/xterm-4.9.0.tgz#7a4c097a433d565339b5533b468bbc60c6c87969"
+  integrity sha1-ekwJekM9VlM5tVM7Rou8YMbIeWk=
 
 y18n@^4.0.0:
   version "4.0.1"

@@ -3,6 +3,8 @@ import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
 import Login from "../views/Login";
 import Content from "../views/Content";
+import Terminal from "@/views/Terminal";
+import TerminalContainer from "@/views/TerminalContainer";
 
 const originalPush = VueRouter.prototype.push
 VueRouter.prototype.push = function push(location) {
@@ -17,6 +19,18 @@ const routes = [
     name: 'Login',
     component: Login
   }, {
+    path: '/terminal',
+    name: 'Terminal',
+    component: TerminalContainer,
+    children: [
+      {
+        path: '/terminal/console',
+        name: 'Console',
+        component: Terminal
+      }
+    ]
+  },
+  {
     path: '/content',
     name: 'Content',
     component: Content,
@@ -56,7 +70,7 @@ const routes = [
         path: '/content/setting',
         name: 'Setting',
         component: () => import('../views/Setting.vue')
-      }
+      },
     ]
   }
 

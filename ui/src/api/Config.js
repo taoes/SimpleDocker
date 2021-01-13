@@ -1,4 +1,4 @@
 export default {
-  // HOST: "http://localhost:4050",
-  HOST: "/"
+  HOST: "http://localhost:4050",
+  // HOST: "/"
 }

@@ -68,25 +68,24 @@
           <a-divider type="vertical"></a-divider>
         </template>
 
-        <a-tooltip>
-          <template slot="title">网络管理</template>
-        <a-icon type="cluster" style="color:darkslategray;font-size: 18px"
-                @click="openNetworkConnectModal(record.containerId)"/>
+                <a-tooltip>
+          <template slot="title">终端命令</template>
+        <a-icon type="code" style="color:darkslategray;font-size: 18px"
+                @click="openTerminal(record.containerId)"/>
         </a-tooltip>
+        <a-divider type="vertical"></a-divider>
 
+                <a-tooltip>
+          <template slot="title">文件管理</template>
+        <a-icon type="file-pdf" style="color:darkslategray;font-size: 18px"
+                @click="openContainerLogModal(record.containerId)"/>
+        </a-tooltip>
         <a-divider type="vertical"></a-divider>
 
         <a-tooltip>
           <template slot="title">日志浏览</template>
         <a-icon type="profile" style="color:darkslategray;font-size: 18px"
                 @click="openContainerLogModal(record.containerId)"/>
-        </a-tooltip>
-        <a-divider type="vertical"></a-divider>
-
-        <a-tooltip>
-          <template slot="title">导出容器</template>
-          <a-icon type="download" style="color:darkslategray;font-size: 18px"
-                  @click="exposeContainer(record.containerId)"/>
         </a-tooltip>
         <a-divider type="vertical"></a-divider>
 
@@ -101,6 +100,15 @@
                  容器详情
                </a>
             </a-menu-item>
+
+
+            <a-menu-item>
+               <a href="#" @click="exposeContainer(record.containerId)">
+                 <a-icon type="download"/>&nbsp;
+                 导出容器
+               </a>
+            </a-menu-item>
+
             <a-menu-item>
                 <a href="#" @click="callControlContainerApi(record.containerId,'restart')">
                   <a-icon type="reload"/>&nbsp;
@@ -121,6 +129,13 @@
                   删除容器
                 </a>
             </a-menu-item>
+
+            <a-menu-item>
+               <a href="#" @click="openNetworkConnectModal(record.containerId)">
+                 <a-icon type="container"/>&nbsp;
+                 网络管理
+               </a>
+            </a-menu-item>
             </a-menu>
         </a-dropdown>
       </a-space>
@@ -135,13 +150,13 @@
         :visible="showContainerDetail">
       <a-collapse :activeKey="['info']">
         <a-collapse-panel key="info" header="容器信息">
-          <p>Id: {{containerInfo.Id}}</p>
-          <p>名称: {{containerInfo.Name}}</p>
-          <p>平台: {{containerInfo.Platform}}</p>
-          <p>启动参数: {{containerInfo.Args}}</p>
-          <p>容器状态: {{containerInfo.State.Status}}</p>
-          <p>存储驱动: {{containerInfo.Driver}}</p>
-          <p>重启次数: {{containerInfo.RestartCount}}</p>
+          <p>Id: {{ containerInfo.Id }}</p>
+          <p>名称: {{ containerInfo.Name }}</p>
+          <p>平台: {{ containerInfo.Platform }}</p>
+          <p>启动参数: {{ containerInfo.Args }}</p>
+          <p>容器状态: {{ containerInfo.State.Status }}</p>
+          <p>存储驱动: {{ containerInfo.Driver }}</p>
+          <p>重启次数: {{ containerInfo.RestartCount }}</p>
         </a-collapse-panel>
 
         <a-collapse-panel key="webConfig" header="网络配置">
@@ -153,8 +168,8 @@
             </tr>
             <template v-for="port in this.containerPorts">
               <tr>
-                <td>{{port.containerPort}}</td>
-                <td> {{port.portConfig}}</td>
+                <td>{{ port.containerPort }}</td>
+                <td> {{ port.portConfig }}</td>
               </tr>
             </template>
           </table>
@@ -165,24 +180,24 @@
             <table class="configTable">
               <tr>
                 <td class="tagTd">网络名</td>
-                <td class="contentTd" align="left"> {{key}}</td>
+                <td class="contentTd" align="left"> {{ key }}</td>
               </tr>
               <tr>
                 <td class="tagTd">网络ID</td>
-                <td class="contentTd" align="left"> {{network.NetworkID}}</td>
+                <td class="contentTd" align="left"> {{ network.NetworkID }}</td>
               </tr>
               <tr>
                 <td class="tagTd">网关地址</td>
-                <td class="contentTd" align="left"> {{network.Gateway}}</td>
+                <td class="contentTd" align="left"> {{ network.Gateway }}</td>
               </tr>
 
               <tr>
                 <td class="tagTd">IP 地址</td>
-                <td class="contentTd" align="left"> {{network.IPAddress}}</td>
+                <td class="contentTd" align="left"> {{ network.IPAddress }}</td>
               </tr>
               <tr>
                 <td class="tagTd">Mac 地址</td>
-                <td class="contentTd" align="left">{{network.MacAddress}}</td>
+                <td class="contentTd" align="left">{{ network.MacAddress }}</td>
               </tr>
             </table>
           </template>
@@ -194,23 +209,23 @@
             <table class="configTable">
               <tr>
                 <td class="tagTd">名称</td>
-                <td class="contentTd" align="left"> {{volume.Name}}</td>
+                <td class="contentTd" align="left"> {{ volume.Name }}</td>
               </tr>
               <tr>
                 <td class="tagTd">类型</td>
-                <td class="contentTd" align="left"> {{volume.Type}}</td>
+                <td class="contentTd" align="left"> {{ volume.Type }}</td>
               </tr>
               <tr>
                 <td class="tagTd">可读写</td>
-                <td class="contentTd" align="left"> {{volume.RW}}</td>
+                <td class="contentTd" align="left"> {{ volume.RW }}</td>
               </tr>
               <tr>
                 <td class="tagTd">宿主目录</td>
-                <td class="contentTd" align="left"> {{volume.Source}}</td>
+                <td class="contentTd" align="left"> {{ volume.Source }}</td>
               </tr>
               <tr>
                 <td class="tagTd">容器目录</td>
-                <td class="contentTd" align="left"> {{volume.Destination}}</td>
+                <td class="contentTd" align="left"> {{ volume.Destination }}</td>
               </tr>
             </table>
           </template>
@@ -225,7 +240,7 @@
              okText="下载全部"
              @ok="downloadAllLog()"
              cancelText="关闭">
-      <pre style="overflow-y: scroll; overflow-x:auto;height: 400px">{{this.formatLog}}</pre>
+      <pre style="overflow-y: scroll; overflow-x:auto;height: 400px">{{ this.formatLog }}</pre>
     </a-modal>
 
 
@@ -238,8 +253,8 @@
                     style="overflow-y: scroll; overflow-x:auto;height: 350px;">
         <template v-for="network in this.$store.state.network.list">
           <div style="display: flex;justify-content: space-around;align-items: center">
-            <div style="flex-grow: 1">{{network.Id}}</div>
-            <div style="flex-grow: 2"> {{network.Name}}</div>
+            <div style="flex-grow: 1">{{ network.Id }}</div>
+            <div style="flex-grow: 2"> {{ network.Name }}</div>
             <div style="padding: 5px;">
               <template v-if="connectNetworkList.indexOf(network.Name) !== -1">
                 <a-button type="danger"
@@ -277,258 +292,263 @@
   </div>
 </template>
 <script>
-  import {mapActions} from "vuex";
-  import containerApi from '../api/ContainerApi'
-  import {download, guid} from '../utils/index'
+import {mapActions} from "vuex";
+import containerApi from '../api/ContainerApi'
+import {download, guid} from '../utils/index'
 
-  const columns = [
-    {
-      title: '容器ID',
-      key: 'containerId',
-      dataIndex: 'containerId',
-    },
-    {
-      title: '容器名称',
-      dataIndex: 'containerName',
-      key: 'containerName',
-    },
+const columns = [
+  {
+    title: '容器ID',
+    key: 'containerId',
+    dataIndex: 'containerId',
+  },
+  {
+    title: '容器名称',
+    dataIndex: 'containerName',
+    key: 'containerName',
+  },
 
-    {
-      title: '镜像',
-      dataIndex: 'imageName',
-      key: 'imageName',
-    },
-    {
-      title: '状态',
-      dataIndex: 'state',
-      key: 'state',
-    },
-    {
-      title: '创建时间',
-      key: 'created',
-      dataIndex: 'created'
+  {
+    title: '镜像',
+    dataIndex: 'imageName',
+    key: 'imageName',
+  },
+  {
+    title: '状态',
+    dataIndex: 'state',
+    key: 'state',
+  },
+  {
+    title: '创建时间',
+    key: 'created',
+    dataIndex: 'created'
 
-    },
-    {
-      title: '操作',
-      key: 'action',
-      scopedSlots: {customRender: 'action'},
-    },
-  ];
+  },
+  {
+    title: '操作',
+    key: 'action',
+    scopedSlots: {customRender: 'action'},
+  },
+];
 
-  export default {
-    data() {
-      return {
-        form: {},
-        showLogVisible: false,
-        showContainerDetail: false,
-        showRemoveVisible: false,
-        connectNetworkConnectModal: false,
-        currentContainerId: '',
-        containerLog: '',
-        searchKey: '',
-        columns,
-        onlyRunContainer: false,
-        remove: {volume: true, link: false, force: true}
-      };
-    }, computed: {
-      containerList() {
-        let allContainer = this.$store.state.container.containerList;
-        if (this.searchKey !== '' && this.searchKey.trim() !== '') {
-          let idFit = (i) => i.containerLongId.indexOf(this.searchKey) >= 0;
-          let nameFit = (i) => i.containerName.indexOf(this.searchKey) >= 0;
-          let imageFit = (i) => i.imageName.indexOf(this.searchKey) >= 0;
-          allContainer = allContainer.filter(i => idFit(i) || nameFit(i) || imageFit(i))
-        }
-
-        if (this.onlyRunContainer) {
-          return allContainer.filter(c => c.state === '运行中')
-        } else {
-          return allContainer;
-        }
-
-      }, containerInfo: function () {
-        return this.$store.state.container.containerInfo
-      }, containerMountInfo: function () {
-        let mounts = this.containerInfo.Mounts;
-        return !mounts ? [] : mounts;
-      }, containerNetworkInfo: function () {
-        let settings = this.containerInfo.NetworkSettings;
-        return !settings ? {} : settings.Networks;
-      }, containerPorts: function () {
-        let portMapping = []
-        let {PortBindings} = this.$store.state.container.containerInfo.HostConfig
-        if (!PortBindings) {
-          return portMapping
-        }
-        let keys = Object.keys(PortBindings)
-        for (let keyIndex in keys) {
-          let containerPort = keys[keyIndex]
-          let portList = PortBindings[containerPort]
-          for (let portIndex in portList) {
-            let portConfig = portList[portIndex]
-            portMapping.push({containerPort, portConfig: portConfig.HostPort})
-          }
-        }
-        return portMapping
-      },
-      formatLog: function () {
-        let formatLog = ''
-        formatLog = this.containerLog.replace('/\r\n/g', "<br/>")
-        formatLog = formatLog.replace('\n/g', "<br/>");
-        formatLog = formatLog.replace('/\s/g', "&nbsp;");
-
-        return formatLog;
-      }, connectNetworkList: function () {
-        return Object.keys(this.containerNetworkInfo)
+export default {
+  data() {
+    return {
+      form: {},
+      showLogVisible: false,
+      showContainerDetail: false,
+      showRemoveVisible: false,
+      connectNetworkConnectModal: false,
+      currentContainerId: '',
+      containerLog: '',
+      searchKey: '',
+      columns,
+      onlyRunContainer: false,
+      remove: {volume: true, link: false, force: true}
+    };
+  }, computed: {
+    containerList() {
+      let allContainer = this.$store.state.container.containerList;
+      if (this.searchKey !== '' && this.searchKey.trim() !== '') {
+        let idFit = (i) => i.containerLongId.indexOf(this.searchKey) >= 0;
+        let nameFit = (i) => i.containerName.indexOf(this.searchKey) >= 0;
+        let imageFit = (i) => i.imageName.indexOf(this.searchKey) >= 0;
+        allContainer = allContainer.filter(i => idFit(i) || nameFit(i) || imageFit(i))
       }
-    },
-    mounted() {
-      this.updateContainerList()
-    }, methods: {
-      ...mapActions({
-        updateContainerList: 'updateContainerList',
-        updateContainerInfo: 'updateContainerInfo',
-        updateNetworkList: 'updateNetworkList'
-      }), onSearchKeyChange: function (e) {
-        this.searchKey = e.target.value;
-      }, openDetail: function (containerId) {
-        this.showContainerDetail = true;
-        this.updateContainerInfo(containerId)
-      }, onDrawClosed: function () {
-        this.showContainerDetail = false;
-      }, reloadContainer: function () {
-        this.updateContainerList()
-        this.$message.info('刷新容器列表完成');
-      }, async downloadAllLog() {
-        this.showLogVisible = false
-        const modal = this.$success({
-          title: '正在导出,请稍等...',
-          content: '正在导出，稍后会自动下载.......'
-        });
-        let containerId = this.currentContainerId
-        try {
-          let res = await containerApi.getContainerAllLog(containerId)
-          this.$message.info(`获取容器全部日志完成,正在下载，请稍后....`);
-          download(res.data, `${containerId}-all.log`)
-        } finally {
-          modal.destroy()
-        }
 
-      }, removeVolume: function (e) {
-        this.remove.volume = e.target.checked
-      }, removeLink: function (e) {
-        this.remove.link = e.target.checked
-      }, removeForce: function (e) {
-        this.remove.force = e.target.checked
-      }, openRemoveDetail: function (containerId) {
-        this.showRemoveVisible = true;
-        this.currentContainerId = containerId
-      }, onlyRunContainerChanged: function (e) {
-        this.onlyRunContainer = e.target.checked;
-      },
-      async callRemoveContainerApi() {
-        let res = await containerApi.removeContainer(this.currentContainerId, this.remove)
-        let {Code, Msg} = res.data;
+      if (this.onlyRunContainer) {
+        return allContainer.filter(c => c.state === '运行中')
+      } else {
+        return allContainer;
+      }
+
+    }, containerInfo: function () {
+      return this.$store.state.container.containerInfo
+    }, containerMountInfo: function () {
+      let mounts = this.containerInfo.Mounts;
+      return !mounts ? [] : mounts;
+    }, containerNetworkInfo: function () {
+      let settings = this.containerInfo.NetworkSettings;
+      return !settings ? {} : settings.Networks;
+    }, containerPorts: function () {
+      let portMapping = []
+      let {PortBindings} = this.$store.state.container.containerInfo.HostConfig
+      if (!PortBindings) {
+        return portMapping
+      }
+      let keys = Object.keys(PortBindings)
+      for (let keyIndex in keys) {
+        let containerPort = keys[keyIndex]
+        let portList = PortBindings[containerPort]
+        for (let portIndex in portList) {
+          let portConfig = portList[portIndex]
+          portMapping.push({containerPort, portConfig: portConfig.HostPort})
+        }
+      }
+      return portMapping
+    },
+    formatLog: function () {
+      let formatLog = ''
+      formatLog = this.containerLog.replace('/\r\n/g', "<br/>")
+      formatLog = formatLog.replace('\n/g', "<br/>");
+      formatLog = formatLog.replace('/\s/g', "&nbsp;");
+
+      return formatLog;
+    }, connectNetworkList: function () {
+      return Object.keys(this.containerNetworkInfo)
+    }
+  },
+  mounted() {
+    this.updateContainerList()
+  }, methods: {
+    ...mapActions({
+      updateContainerList: 'updateContainerList',
+      updateContainerInfo: 'updateContainerInfo',
+      updateNetworkList: 'updateNetworkList'
+    }), onSearchKeyChange: function (e) {
+      this.searchKey = e.target.value;
+    }, openDetail: function (containerId) {
+      this.showContainerDetail = true;
+      this.updateContainerInfo(containerId)
+    }, onDrawClosed: function () {
+      this.showContainerDetail = false;
+    }, reloadContainer: function () {
+      this.updateContainerList()
+      this.$message.info('刷新容器列表完成');
+    }, async downloadAllLog() {
+      this.showLogVisible = false
+      const modal = this.$success({
+        title: '正在导出,请稍等...',
+        content: '正在导出，稍后会自动下载.......'
+      });
+      let containerId = this.currentContainerId
+      try {
+        let res = await containerApi.getContainerAllLog(containerId)
+        this.$message.info(`获取容器全部日志完成,正在下载，请稍后....`);
+        download(res.data, `${containerId}-all.log`)
+      } finally {
+        modal.destroy()
+      }
+
+    }, removeVolume: function (e) {
+      this.remove.volume = e.target.checked
+    }, removeLink: function (e) {
+      this.remove.link = e.target.checked
+    }, removeForce: function (e) {
+      this.remove.force = e.target.checked
+    }, openRemoveDetail: function (containerId) {
+      this.showRemoveVisible = true;
+      this.currentContainerId = containerId
+    }, onlyRunContainerChanged: function (e) {
+      this.onlyRunContainer = e.target.checked;
+    },
+    async callRemoveContainerApi() {
+      let res = await containerApi.removeContainer(this.currentContainerId, this.remove)
+      let {Code, Msg} = res.data;
+      if (Code === 'OK') {
+        this.$message.info(`移除容器成功`);
+        this.showRemoveVisible = false
+        this.updateContainerList()
+      } else {
+        this.$message.error(Msg);
+      }
+
+    }, async callControlContainerApi(containerId, state) {
+      if (!state) {
+        return
+      }
+      this.currentContainerId = containerId
+      let operateName = containerApi.getOperatorNameByState(state)
+      let key = guid()
+      let messageHide = this.$message.loading(
+          {content: `正在${operateName} 容器，请稍后.....`, key, duration: 0});
+      try {
+        let res = await containerApi.controlContainer(containerId, state, operateName);
+        let {Code, Msg} = res.data
         if (Code === 'OK') {
-          this.$message.info(`移除容器成功`);
-          this.showRemoveVisible = false
+          this.$message.info({content: `${operateName} 容器成功`, key});
           this.updateContainerList()
         } else {
-          this.$message.error(Msg);
+          this.$message.info({content: Msg, key});
         }
-
-      }, async callControlContainerApi(containerId, state) {
-        if (!state) {
-          return
-        }
-        this.currentContainerId = containerId
-        let operateName = containerApi.getOperatorNameByState(state)
-        let key = guid()
-        let messageHide = this.$message.loading(
-            {content: `正在${operateName} 容器，请稍后.....`, key, duration: 0});
-        try {
-          let res = await containerApi.controlContainer(containerId, state, operateName);
-          let {Code, Msg} = res.data
-          if (Code === 'OK') {
-            this.$message.info({content: `${operateName} 容器成功`, key});
-            this.updateContainerList()
-          } else {
-            this.$message.info({content: Msg, key});
-          }
-        } catch (e) {
-          this.$message.error({content: "服务连接失败，请检查服务是否正常启动", key});
-        }
-      }, async openContainerLogModal(containerId) {
-        this.showLogVisible = true
-        this.currentContainerId = containerId
-        let res = await containerApi.getContainerLog(containerId)
-        let {Code, Data} = res.data
-        if (Code === 'OK') {
-          this.containerLog = Data
-          this.showLogVisible = true
-        }
-      }, async exposeContainer(containerId) {
-        let key = guid()
-        this.$message.loading({content: "正在导出容器数据，请稍后....", key, duration: 0});
-        this.$axios.get(`/api/container/${containerId}/export`,
-            {responseType: 'blob'}).then(
-            (res) => {
-              download(res.data, `${containerId}.tar.gz`)
-              this.$message.info({content: "容器已成功导出并下载....", key});
-            })
-        .catch(e => {
-          this.$message.error({content: "容器导出失败,请检查 Docker 服务是否正常", key});
-        })
-      }, openNetworkConnectModal(containerId) {
-        this.connectNetworkConnectModal = true
-        this.updateContainerInfo(containerId)
-        this.updateNetworkList()
-        this.currentContainerId = containerId
-      }, operatorNetwork(operator, networkId) {
-        let operatorName = operator === 'connect' ? '连接' : '断开'
-        this.$axios.get(
-            `/api/network/${networkId}/container/${this.currentContainerId}/${operator}`)
-        .then(res => {
-          let {Code, Msg} = res.data;
-          if (Code === 'OK') {
-            this.$message.info(`${operatorName} 网络完成！`)
-          } else {
-            this.$message.warning(`${operatorName} 失败,${Msg}`)
-          }
-          this.updateContainerInfo(this.currentContainerId)
-        }).catch(e => {
-          this.$message.error({content: `${operatorName} 网络 失败, 请检查 Docker 服务是否正常`});
-        })
-
+      } catch (e) {
+        this.$message.error({content: "服务连接失败，请检查服务是否正常启动", key});
       }
+    }, async openContainerLogModal(containerId) {
+      this.showLogVisible = true
+      this.currentContainerId = containerId
+      let res = await containerApi.getContainerLog(containerId)
+      let {Code, Data} = res.data
+      if (Code === 'OK') {
+        this.containerLog = Data
+        this.showLogVisible = true
+      }
+    }, async exposeContainer(containerId) {
+      let key = guid()
+      this.$message.loading({content: "正在导出容器数据，请稍后....", key, duration: 0});
+      this.$axios.get(`/api/container/${containerId}/export`,
+          {responseType: 'blob'}).then(
+          (res) => {
+            download(res.data, `${containerId}.tar.gz`)
+            this.$message.info({content: "容器已成功导出并下载....", key});
+          })
+      .catch(e => {
+        this.$message.error({content: "容器导出失败,请检查 Docker 服务是否正常", key});
+      })
+    }, openNetworkConnectModal(containerId) {
+      this.connectNetworkConnectModal = true
+      this.updateContainerInfo(containerId)
+      this.updateNetworkList()
+      this.currentContainerId = containerId
+    }, operatorNetwork(operator, networkId) {
+      let operatorName = operator === 'connect' ? '连接' : '断开'
+      this.$axios.get(
+          `/api/network/${networkId}/container/${this.currentContainerId}/${operator}`)
+      .then(res => {
+        let {Code, Msg} = res.data;
+        if (Code === 'OK') {
+          this.$message.info(`${operatorName} 网络完成！`)
+        } else {
+          this.$message.warning(`${operatorName} 失败,${Msg}`)
+        }
+        this.updateContainerInfo(this.currentContainerId)
+      }).catch(e => {
+        this.$message.error({content: `${operatorName} 网络 失败, 请检查 Docker 服务是否正常`});
+      })
+    }, openTerminal(containerId) {
+      let routeUrl = this.$router.resolve({
+        path: "/terminal/console",
+        query: {containerId: containerId}
+      });
+      window.open(routeUrl.href, '_blank');
     }
   }
-  ;
+}
+;
 </script>
 
 <style scoped>
-  .ant-drawer-body {
-    padding: 0 !important;
-  }
+.ant-drawer-body {
+  padding: 0 !important;
+}
 
-  .configTable, .configTable tr th, .configTable tr td {
-    border: 1px solid lightgrey;
-  }
+.configTable, .configTable tr th, .configTable tr td {
+  border: 1px solid lightgrey;
+}
 
-  .configTable .tagTd {
-    width: 100px;
-  }
+.configTable .tagTd {
+  width: 100px;
+}
 
-  .configTable {
-    width: 100%;
-    margin-top: 20px;
-    text-align: center;
-    border-collapse: collapse;
-  }
+.configTable {
+  width: 100%;
+  margin-top: 20px;
+  text-align: center;
+  border-collapse: collapse;
+}
 
-  .contentTd {
-    overflow-wrap: anywhere;
-    padding: 5px 0 5px 10px;
-  }
+.contentTd {
+  overflow-wrap: anywhere;
+  padding: 5px 0 5px 10px;
+}
 </style>
