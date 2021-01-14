@@ -21,9 +21,7 @@ axios.interceptors.request.use(config => {
   } else {
     let tokenStr = localStorage.token;
     let token = jwtDecode(tokenStr)
-    console.log(token)
     if (new Date(token.exp).getTime() < new Date().getTime()) {
-      console.log("token 过期")
       localStorage.setItem("token", "")
       router.push("/")
     } else {

@@ -1,24 +1,22 @@
 package main
 
 import (
-	_ "SimpleDocker/routers"
-	"SimpleDocker/src/api"
-	_ "SimpleDocker/src/auth"
-	_ "SimpleDocker/src/context"
-	"github.com/astaxie/beego"
+	"fmt"
+	"io/ioutil"
+	"os"
 )
 
-func main23() {
-
-	beego.BConfig.CopyRequestBody = true
-	beego.BConfig.WebConfig.Session.SessionOn = true
-
-	// 配置静态资源
-	beego.SetStaticPath("/", "./static")
-
-	// 配置路由
-	beego.Router("/container/", &api.TestController{})
-
-	// 启动服务
-	beego.Run(":8085")
+func main2() {
+	fileInfoList, err := ioutil.ReadDir(os.Args[1])
+	if err != nil {
+		fmt.Println("文件夹不存在")
+		return
+	}
+	for _, file := range fileInfoList {
+		fmt.Println(file.Name())    //打印当前文件或目录下的文件或目录名
+		fmt.Println(file.Size())    //打印当前文件或目录下的文件或目录名
+		fmt.Println(file.IsDir())   //打印当前文件或目录下的文件或目录名
+		fmt.Println(file.Mode())    //打印当前文件或目录下的文件或目录名
+		fmt.Println(file.ModTime()) //打印当前文件或目录下的文件或目录名
+	}
 }

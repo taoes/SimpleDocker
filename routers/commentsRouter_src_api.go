@@ -119,6 +119,26 @@ func init() {
             Filters: nil,
             Params: nil})
 
+    beego.GlobalControllerRouter["SimpleDocker/src/api:FileController"] = append(beego.GlobalControllerRouter["SimpleDocker/src/api:FileController"],
+        beego.ControllerComments{
+            Method: "UploadFileToHost",
+            Router: "/api/file/upload/:fileName",
+            AllowHTTPMethods: []string{"get"},
+            MethodParams: param.Make(
+				param.New("fileName", param.InPath),
+			),
+            Filters: nil,
+            Params: nil})
+
+    beego.GlobalControllerRouter["SimpleDocker/src/api:FileController"] = append(beego.GlobalControllerRouter["SimpleDocker/src/api:FileController"],
+        beego.ControllerComments{
+            Method: "CategoryInfo",
+            Router: "/ws/api/container/:containerId/file",
+            AllowHTTPMethods: []string{"get"},
+            MethodParams: param.Make(),
+            Filters: nil,
+            Params: nil})
+
     beego.GlobalControllerRouter["SimpleDocker/src/api:ImageController"] = append(beego.GlobalControllerRouter["SimpleDocker/src/api:ImageController"],
         beego.ControllerComments{
             Method: "GetImageList",
@@ -339,15 +359,6 @@ func init() {
         beego.ControllerComments{
             Method: "PruneVolume",
             Router: "/api/volume/prune",
-            AllowHTTPMethods: []string{"get"},
-            MethodParams: param.Make(),
-            Filters: nil,
-            Params: nil})
-
-    beego.GlobalControllerRouter["SimpleDocker/src/api:WebSocketController"] = append(beego.GlobalControllerRouter["SimpleDocker/src/api:WebSocketController"],
-        beego.ControllerComments{
-            Method: "Get",
-            Router: "/ws/web",
             AllowHTTPMethods: []string{"get"},
             MethodParams: param.Make(),
             Filters: nil,

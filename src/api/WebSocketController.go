@@ -3,8 +3,8 @@ package api
 import (
 	"SimpleDocker/src/context"
 	"github.com/astaxie/beego"
+	"github.com/astaxie/beego/logs"
 	"github.com/docker/docker/api/types"
-	"github.com/docker/docker/client"
 	"github.com/gorilla/websocket"
 	"net/http"
 	"time"
@@ -33,56 +33,51 @@ var leave = make(chan Client, 10)    // 用户退出通道
 var message = make(chan Message, 10) //
 
 func (c *WebSocketController) Get() {
+
 	containerId := c.Ctx.Input.Query("containerId")
 
 	// 检验http头中upgrader属性，若为websocket，则将http协议升级为websocket协议
 	conn, err := websocket.Upgrade(c.Ctx.ResponseWriter, c.Ctx.Request, nil, 1024, 1024)
 
 	if _, ok := err.(websocket.HandshakeError); ok {
-		beego.Error("Not a websocket connection")
+		logs.Error("Not a websocket connection")
 		http.Error(c.Ctx.ResponseWriter, "Not a websocket handshake", 400)
 		return
 	} else if err != nil {
-		beego.Error("Cannot setup WebSocket connection:", err)
+		logs.Error("Cannot setup WebSocket connection:", err)
 		return
 	}
+	// 打印终端Banner
+	printBanner(conn)
 
-	conn.WriteMessage(1, []byte("\033[36m   _____ _                 __        ____             __\r\n"))
-	conn.WriteMessage(1, []byte("\033[36m  / ___/(_)___ ___  ____  / /__     / __ \\____  _____/ /_____  _____\r\n"))
-	conn.WriteMessage(1, []byte("\033[36m  \\__ \\/ / __ `__ \\/ __ \\/ / _ \\   / / / / __ \\/ ___/ //_/ _ \\/ ___/\r\n"))
-	conn.WriteMessage(1, []byte("\033[36m ___/ / / / / / / / /_/ / /  __/  / /_/ / /_/ / /__/ ,< /  __/ /    \r\n"))
-	conn.WriteMessage(1, []byte("\033[36m/____/_/_/ /_/ /_/ .___/_/\\___/  /_____/\\____/\\___/_/|_|\\___/_/     \r\n"))
-	conn.WriteMessage(1, []byte("\033[36m                /_/                               						V0.0.2 \r\n\r\n"))
-	containerClient, _ := client.NewClientWithOpts(client.FromEnv, client.WithAPIVersionNegotiation())
-	create, err := containerClient.ContainerExecCreate(context.Ctx, containerId, types.ExecConfig{AttachStdin: true, AttachStdout: true, AttachStderr: true, Cmd: []string{"sh"}, Privileged: true, Tty: true})
+	create, err := context.Cli.ContainerExecCreate(context.Ctx, containerId, types.ExecConfig{AttachStdin: true, AttachStdout: true, AttachStderr: true, Cmd: []string{"sh"}, Privileged: true, Tty: true})
 	if err != nil {
-		conn.WriteMessage(1, []byte("\033[31m SimpleDocker提示您: 容器终端连接失败，请根据下面的信息排查错误 ............... FAIL \033[0m \r\n \r\n"))
-		conn.WriteMessage(1, []byte("\033[31m 容器报错信息: "+err.Error()+" \033[0m \r\n \r\n"))
-		conn.Close()
+		printConnectFail(conn, err)
+		_ = conn.Close()
 		return
 	}
 	id := create.ID
-
-	attach, err := containerClient.ContainerExecAttach(context.Ctx, id, types.ExecStartCheck{Detach: false, Tty: true})
+	attach, err := context.Cli.ContainerExecAttach(context.Ctx, id, types.ExecStartCheck{Detach: false, Tty: true})
 
 	var client Client
-	client.name = "ss"
+	client.name = containerId
 	client.conn = conn
-	conn.WriteMessage(1, []byte("\033[33m 欢迎您使用 SimpleDocker, 容器终端已为您连接成功 ............... OK \033[0m \r\n \r\n"))
-	conn.WriteMessage(1, []byte("\033[32m 程序默认使用 /bin/sh 连接，如有必要请手动切换带 /bin/bash 或者其他 shell 环境  \033[0m \r\n \r\n"))
 
 	// 如果用户列表中没有该用户
 	if !clients[client] {
+		// 连接成功后输出欢迎语句
+		printWelcome(conn)
 		join <- client
-		beego.Info("user:", client.name, "websocket connect success!")
+		logs.Info("容器ID:", client.name, "WebSocket 连接成功!")
 	}
 
 	// 当函数返回时，将该用户加入退出通道，并断开用户连接
 	defer func() {
 		leave <- client
-		client.conn.Close()
+		_ = client.conn.Close()
 	}()
 
+	// 持续读取消息
 	go func() {
 		for true {
 			// 如果没有错误，则把用户发送的信息放入message通道中
@@ -96,7 +91,7 @@ func (c *WebSocketController) Get() {
 		}
 	}()
 
-	// 由于WebSocket一旦连接，便可以保持长时间通讯，则该接口函数可以一直运行下去，直到连接断开
+	// 持续接收消息，并将消息发送到 容器的连接中
 	for {
 		// 读取消息。如果连接断开，则会返回错误
 		_, msgStr, _ := client.conn.ReadMessage()
@@ -105,5 +100,26 @@ func (c *WebSocketController) Get() {
 		}
 		_, _ = attach.Conn.Write(msgStr)
 	}
+}
 
+// 打印终端启动时候的欢迎消息
+func printBanner(conn *websocket.Conn) {
+	_ = conn.WriteMessage(websocket.TextMessage, []byte("\033[36m   _____ _                 __        ____             __\r\n"))
+	_ = conn.WriteMessage(websocket.TextMessage, []byte("\033[36m  / ___/(_)___ ___  ____  / /__     / __ \\____  _____/ /_____  _____\r\n"))
+	_ = conn.WriteMessage(websocket.TextMessage, []byte("\033[36m  \\__ \\/ / __ `__ \\/ __ \\/ / _ \\   / / / / __ \\/ ___/ //_/ _ \\/ ___/\r\n"))
+	_ = conn.WriteMessage(websocket.TextMessage, []byte("\033[36m ___/ / / / / / / / /_/ / /  __/  / /_/ / /_/ / /__/ ,< /  __/ /    \r\n"))
+	_ = conn.WriteMessage(websocket.TextMessage, []byte("\033[36m/____/_/_/ /_/ /_/ .___/_/\\___/  /_____/\\____/\\___/_/|_|\\___/_/     \r\n"))
+	_ = conn.WriteMessage(websocket.TextMessage, []byte("\033[36m                /_/                               						V0.0.2 \r\n\r\n"))
+}
+
+// 打印连接成功时候的欢迎消息
+func printWelcome(conn *websocket.Conn) {
+	_ = conn.WriteMessage(1, []byte("\033[33m 欢迎您使用 SimpleDocker, 容器终端已为您连接成功 ............... OK \033[0m \r\n \r\n"))
+	_ = conn.WriteMessage(1, []byte("\033[32m 程序默认使用 /bin/sh 连接，如有必要请手动切换带 /bin/bash 或者其他 shell 环境  \033[0m \r\n \r\n"))
+}
+
+// 打印连接失败消息
+func printConnectFail(conn *websocket.Conn, err error) {
+	_ = conn.WriteMessage(1, []byte("\033[31m SimpleDocker提示您: 容器终端连接失败，请根据下面的信息排查错误 ............... FAIL \033[0m \r\n \r\n"))
+	_ = conn.WriteMessage(1, []byte("\033[31m 容器报错信息: "+err.Error()+" \033[0m \r\n \r\n"))
 }

@@ -33,7 +33,6 @@
         </a-space>
       </a-form-item>
     </a-form>
-
     <a-table :columns="columns" :data-source="containerList" style="margin-top: 30px">
     <span slot="action" slot-scope="text, record">
       <a-space>
@@ -75,10 +74,10 @@
         </a-tooltip>
         <a-divider type="vertical"></a-divider>
 
-                <a-tooltip>
+        <a-tooltip>
           <template slot="title">文件管理</template>
         <a-icon type="file-pdf" style="color:darkslategray;font-size: 18px"
-                @click="openContainerLogModal(record.containerId)"/>
+                @click="openFileManagementModal(record.containerId)"/>
         </a-tooltip>
         <a-divider type="vertical"></a-divider>
 
@@ -143,6 +142,7 @@
     </a-table>
 
 
+    <!--    侧边栏-->
     <a-drawer
         placement="right"
         width="800px"
@@ -235,6 +235,7 @@
     </a-drawer>
 
 
+    <!--    日志模态框-->
     <a-modal v-model="showLogVisible" title="最近日志(200行)"
              width="60%"
              okText="下载全部"
@@ -243,7 +244,7 @@
       <pre style="overflow-y: scroll; overflow-x:auto;height: 400px">{{ this.formatLog }}</pre>
     </a-modal>
 
-
+    <!--    网络模态框-->
     <a-modal v-model="connectNetworkConnectModal" title="连接/断开 网络"
              width="600px"
              okText="确定"
@@ -280,6 +281,7 @@
     </a-modal>
 
 
+    <!--    容器删除模态框-->
     <a-modal v-model="showRemoveVisible" title="删除容器选项"
              @ok="callRemoveContainerApi"
              okText="确定"
@@ -291,6 +293,7 @@
 
   </div>
 </template>
+
 <script>
 import {mapActions} from "vuex";
 import containerApi from '../api/ContainerApi'
@@ -338,6 +341,7 @@ export default {
       showLogVisible: false,
       showContainerDetail: false,
       showRemoveVisible: false,
+      showFileModal: false,
       connectNetworkConnectModal: false,
       currentContainerId: '',
       containerLog: '',
@@ -521,6 +525,13 @@ export default {
         query: {containerId: containerId}
       });
       window.open(routeUrl.href, '_blank');
+    }, openFileManagementModal(containerId) {
+      this.currentContainerId = containerId
+      let routeUrl = this.$router.resolve({
+        path: "/terminal/file",
+        query: {containerId: containerId}
+      });
+      window.open(routeUrl.href, '_blank');
     }
   }
 }
@@ -529,6 +540,11 @@ export default {
 
 <style scoped>
 .ant-drawer-body {
+  padding: 0 !important;
+}
+
+
+.ant-modal-body {
   padding: 0 !important;
 }
 

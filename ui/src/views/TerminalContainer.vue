@@ -80,108 +80,101 @@
   </a-layout>
 </template>
 <script>
-  import PCMenu from "../components/PCMenu";
-  import ResetPassword from "../components/ResetPassword";
-  import AuthApi from "../api/AuthApi";
+import PCMenu from "../components/PCMenu";
+import ResetPassword from "../components/ResetPassword";
+import AuthApi from "../api/AuthApi";
 
-  let intervalId = null
+let intervalId = null
 
-  export default {
-    components: {ResetPassword, PCMenu},
-    data() {
-      return {
-        collapsed: false,
-        apiState: true,
-        showResetPasswordModal: false,
-        updatePasswordForm: {
-          oP: '',
-          nP: '',
-          cP: ''
-        }
-      };
-    }, mounted() {
-      setInterval(this.updateApiState, 5000);
-    }, beforeDestroy() {
-      if (intervalId != null) {
-        console.log("清除定时器")
-        clearInterval(intervalId)
+export default {
+  components: {ResetPassword, PCMenu},
+  data() {
+    return {
+      collapsed: false,
+      apiState: true,
+      showResetPasswordModal: false,
+      updatePasswordForm: {
+        oP: '',
+        nP: '',
+        cP: ''
       }
-    }, methods: {
-      updateApiState: function () {
-        this.$axios.get('/api/docker/ping').then((res) => {
-          let {Code} = res.data;
-          this.apiState = Code === 'OK';
-        }).catch(() => {
-          this.apiState = false;
-        });
-      },
-      linkSelect: function ({key}) {
-        if (key && key.startsWith("no")) {
-          return
-        }
-        if (key === 'logout') {
-          localStorage.setItem('token', '')
+    };
+  }, mounted() {
+    setInterval(this.updateApiState, 5000);
+  }, beforeDestroy() {
+    if (intervalId != null) {
+      console.log("清除定时器")
+      clearInterval(intervalId)
+    }
+  }, methods: {
+    updateApiState: function () {
+      this.$axios.get('/api/docker/ping').then((res) => {
+        let {Code} = res.data;
+        this.apiState = Code === 'OK';
+      }).catch(() => {
+        this.apiState = false;
+      });
+    },
+    linkSelect: function ({key}) {
+      if (key && key.startsWith("no")) {
+        return
+      }
+      if (key === 'logout') {
+        localStorage.setItem('token', '')
+        this.$router.push("/")
+      } else if (key === 'updatePassword') {
+        this.showResetPasswordModal = true
+      } else {
+        window.open(key, '_target')
+
+      }
+    }, callResetPassword() {
+      AuthApi.resetPassword(this.updatePasswordForm)
+      .then(res => {
+        let {Code} = res.data
+        if (Code === 'OK') {
+          this.showResetPasswordModal = false
+          this.$message.info("密码更新成功，请退出重新登录!")
+          localStorage.setItem("token", "")
           this.$router.push("/")
-        } else if (key === 'updatePassword') {
-          this.showResetPasswordModal = true
-        } else {
-          window.open(key, '_target')
-
         }
-      }, callResetPassword() {
-        AuthApi.resetPassword(this.updatePasswordForm)
-        .then(res => {
-          let {Code} = res.data
-          if (Code === 'OK') {
-            this.showResetPasswordModal = false
-            this.$message.info("密码更新成功，请退出重新登录!")
-            localStorage.setItem("token", "")
-            this.$router.push("/")
-          }
-        })
-      }
+      })
     }
   }
-  ;
+}
+;
 </script>
 
 <style scoped>
-  .ant-layout {
-    height: 100%;
-  }
+.ant-layout {
+  height: 100%;
+}
 
-  #components-layout-demo-top-side-2 .logo {
-    width: 120px;
-    height: 31px;
+#components-layout-demo-top-side-2 .logo {
+  width: 120px;
+  height: 31px;
+  float: left;
+}
 
-    float: left;
-  }
+.layoutContent {
+  margin: 0;
+  minHeight: '280px';
+}
 
-  .layoutContent {
-    background: #0a0a0a;
-    margin: 0;
-    minHeight: '280px';
-  }
+.right {
+  float: right;
+}
 
-  .right {
-    float: right;
-  }
+.apiStateNormal {
+  float: right;
+  color: green !important;;
+  font-weight: bold
+}
 
-  .apiStateNormal {
-    float: right;
-    color: green !important;;
-    font-weight: bold
-  }
-
-  .apiStateError {
-    float: right;
-    color: red !important;
-    font-weight: bold
-  }
-
-
-  .input {
-    margin-top: 20px;
-  }
+.apiStateError {
+  float: right;
+  color: red !important;
+  font-weight: bold
+}
 
 </style>

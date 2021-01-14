@@ -13,6 +13,7 @@ import (
 	"github.com/astaxie/beego/context"
 	"net/http"
 	"strconv"
+	"strings"
 )
 
 var port = flag.Int("port", 4050, "help message for flagname")
@@ -32,7 +33,7 @@ var beforeFilterHandleFunc = func(ctx *context.Context) {
 		_ = ctx.Output.Body([]byte("SUPPORT OPTIONS"))
 	} else {
 		url := ctx.Input.URL()
-		if url != "/api/system/login" && url != "/ws"{
+		if url != "/api/system/login" && !strings.HasPrefix(url, "/ws") {
 			header := ctx.Input.Header("Authorization")
 			if header == "" {
 				ctx.Output.Status = 200
@@ -60,7 +61,8 @@ func main() {
 	beego.Include(&api.VolumeController{})
 	beego.Include(&api.NetworkController{})
 	beego.Include(&api.LoginController{})
-	beego.Router("/ws",&api.WebSocketController{})
+	beego.Include(&api.FileController{})
+	beego.Router("/ws", &api.WebSocketController{})
 
 	// 添加CORS
 	beego.InsertFilter("/*", beego.BeforeRouter, beforeFilterHandleFunc)

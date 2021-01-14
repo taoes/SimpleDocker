@@ -5,6 +5,7 @@ import Login from "../views/Login";
 import Content from "../views/Content";
 import Terminal from "@/views/Terminal";
 import TerminalContainer from "@/views/TerminalContainer";
+import FileManagement from "@/views/FileManagement";
 
 const originalPush = VueRouter.prototype.push
 VueRouter.prototype.push = function push(location) {
@@ -27,6 +28,10 @@ const routes = [
         path: '/terminal/console',
         name: 'Console',
         component: Terminal
+      }, {
+        path: '/terminal/file',
+        name: 'FileManagement',
+        component: FileManagement
       }
     ]
   },
