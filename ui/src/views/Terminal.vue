@@ -29,20 +29,40 @@ var style = {
   white: '#bbbbbb',
   brightWhite: '#ffffff'
 }
+
+import containerApi from '../api/ContainerApi'
+
 export default {
   name: 'Xterm',
-  mounted() {
-    this.initSocket()
+  data() {
+    return {
+      execId: '',
+      screenWidth: '',
+      screenHeight: ''
+    }
+  }, async mounted() {
+    await this.initSocket()
+    this.screenWidth = document.body.clientWidth;
+    this.screenHeight = document.body.clientHeight;
+    this.resizeContainer()
+    window.onresize = () => {
+      return (() => {
+        this.screenWidth = document.body.clientWidth;
+        this.screenHeight = document.body.clientHeight;
+        this.resizeContainer()
+      })();
+    };
   },
   beforeDestroy() {
     this.socket.close()
     this.term.dispose()
-  },
+  }
+  ,
   methods: {
     initTerm() {
       const term = new Terminal({
         fontSize: 14,
-        cursorBlink: true,
+        cursorStyle: 'bar',
         theme: style
       });
       const attachAddon = new AttachAddon(this.socket);
@@ -53,32 +73,54 @@ export default {
       fitAddon.fit();
       term.focus();
       this.term = term
-    },
-    initSocket() {
+    }, async initSocket() {
       let token = localStorage.token;
       let {containerId} = this.$route.query
+      // 创建命令
+      let res = await containerApi.createNewContainerExec(containerId)
+      let {Code, Data, Msg} = res.data
+      if (Code !== 'OK') {
+        this.$error({
+          title: '创建命令失败',
+          content: Msg
+        });
+      }
+      this.execId = Data
       this.socket = new WebSocket(
-          `ws://127.0.0.1:4050/ws?containerId=${containerId}&command=/\bin/\sh&token=${token}`);
+          `ws://127.0.0.1:4050/ws/api/container/terminal/${Data}?containerId=${containerId}&token=${token}`);
+      this.socket.binaryType = 'arraybuffer'
       this.socketOnClose();
       this.socketOnOpen();
       this.socketOnError();
-    },
-    socketOnOpen() {
+    }
+    , socketOnOpen() {
       this.socket.onopen = () => {
         // 链接成功后
         this.initTerm()
       }
-    },
-    socketOnClose() {
+    }
+    , socketOnClose() {
       this.socket.onclose = () => {
-        console.log('close socket')
+        this.$error({
+          title: '连接已被关闭',
+          content: "终端远程服务已被关闭"
+        });
       }
-    },
-    socketOnError() {
+    }
+    , socketOnError() {
       this.socket.onerror = (e) => {
-        console.error(e)
-        console.log('socket 链接失败')
+        this.$error({
+          title: '连接时报',
+          content: "终端远程服务连接失败"
+        });
+
       }
+    }, resizeContainer() {
+      if (!this.execId) {
+        return
+      }
+      let {containerId} = this.$route.query
+      containerApi.resizeContainer(containerId, this.execId, this.screenWidth, this.screenHeight)
     }
   }
 }

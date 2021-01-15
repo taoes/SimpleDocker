@@ -62,9 +62,9 @@ func main() {
 	beego.Include(&api.NetworkController{})
 	beego.Include(&api.LoginController{})
 	beego.Include(&api.FileController{})
-	beego.Router("/ws", &api.WebSocketController{})
+	beego.Include(&api.TerminalController{})
 
-	// 添加CORS
+	// 添加CORS 以及权限校验
 	beego.InsertFilter("/*", beego.BeforeRouter, beforeFilterHandleFunc)
 
 	// 启动服务

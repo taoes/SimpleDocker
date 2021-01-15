@@ -70,14 +70,14 @@
                 <a-tooltip>
           <template slot="title">终端命令</template>
         <a-icon type="code" style="color:darkslategray;font-size: 18px"
-                @click="openTerminal(record.containerId)"/>
+                @click="openTerminal(record.state,record.containerId)"/>
         </a-tooltip>
         <a-divider type="vertical"></a-divider>
 
         <a-tooltip>
           <template slot="title">文件管理</template>
         <a-icon type="file-pdf" style="color:darkslategray;font-size: 18px"
-                @click="openFileManagementModal(record.containerId)"/>
+                @click="openFileManagementModal(record.state,record.containerId)"/>
         </a-tooltip>
         <a-divider type="vertical"></a-divider>
 
@@ -519,19 +519,56 @@ export default {
       }).catch(e => {
         this.$message.error({content: `${operatorName} 网络 失败, 请检查 Docker 服务是否正常`});
       })
-    }, openTerminal(containerId) {
-      let routeUrl = this.$router.resolve({
-        path: "/terminal/console",
-        query: {containerId: containerId}
+    }, openTerminal(state, containerId) {
+      if (state !== '运行中') {
+        this.$message.error("容器尚未运行，不能打开终端管理界面");
+        return
+      }
+
+      let router = this.$router;
+      let openUrl = function () {
+        let routeUrl = router.resolve({
+          path: "/terminal/console",
+          query: {containerId: containerId}
+        });
+        window.open(routeUrl.href, '_blank');
+      }
+
+      this.$confirm({
+        title: '运行提示',
+        content: '目前终端仅支持基于 Linux 平台的容器,在使用前请确认是否是Linux平台的容器，否则可能出现各种未知的错误 !!!',
+        okText: '确定',
+        cancelText: '取消',
+        onOk() {
+          openUrl()
+        }
       });
-      window.open(routeUrl.href, '_blank');
-    }, openFileManagementModal(containerId) {
-      this.currentContainerId = containerId
-      let routeUrl = this.$router.resolve({
-        path: "/terminal/file",
-        query: {containerId: containerId}
+
+    }, openFileManagementModal(state, containerId) {
+      if (state !== '运行中') {
+        this.$message.error("容器尚未运行，不能打开文件管理界面");
+        return
+      }
+
+      let router = this.$router;
+      let openUrl = function () {
+        this.currentContainerId = containerId
+        let routeUrl = router.resolve({
+          path: "/terminal/file",
+          query: {containerId: containerId}
+        });
+        window.open(routeUrl.href, '_blank');
+      }
+
+      this.$confirm({
+        title: '运行提示',
+        content: '目前文件管理仅支持基于 Linux/AM64 平台的容器,在使用前请确认容器是否是 Linux/AMD64 平台的容器，否则可能出现各种未知的错误 !!!',
+        okText: '确定',
+        cancelText: '取消',
+        onOk() {
+          openUrl()
+        }
       });
-      window.open(routeUrl.href, '_blank');
     }
   }
 }

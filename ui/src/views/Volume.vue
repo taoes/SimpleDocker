@@ -70,27 +70,27 @@
       <table class="configTable">
         <tr>
           <td class="tagTd">名称(Name)</td>
-          <td class="contentTd" align="left"> {{volumeInfo.Name}}</td>
+          <td class="contentTd" align="left"> {{ volumeInfo.Name }}</td>
         </tr>
         <tr>
           <td class="tagTd">卷模式(Driver)</td>
-          <td class="contentTd" align="left"> {{volumeInfo.Driver}}</td>
+          <td class="contentTd" align="left"> {{ volumeInfo.Driver }}</td>
         </tr>
         <tr>
           <td class="tagTd">选项(Options)</td>
-          <td class="contentTd" align="left"> {{volumeInfo.Options}}</td>
+          <td class="contentTd" align="left"> {{ volumeInfo.Options }}</td>
         </tr>
         <tr>
           <td class="tagTd">作用域(Scope)</td>
-          <td class="contentTd" align="left"> {{volumeInfo.Scope}}</td>
+          <td class="contentTd" align="left"> {{ volumeInfo.Scope }}</td>
         </tr>
         <tr>
           <td class="tagTd">创建时间(CreatedAt)</td>
-          <td class="contentTd" align="left"> {{volumeInfo.CreatedAt}}</td>
+          <td class="contentTd" align="left"> {{ volumeInfo.CreatedAt }}</td>
         </tr>
         <tr>
           <td class="tagTd">挂载点(MountPoint)</td>
-          <td class="contentTd" align="left"> {{volumeInfo.Mountpoint}}</td>
+          <td class="contentTd" align="left"> {{ volumeInfo.Mountpoint }}</td>
         </tr>
       </table>
     </a-drawer>
@@ -105,7 +105,7 @@
           <a-select v-model="newVolumeConfig.driver">
             <template v-for="driver in supportVolumeMode">
               <a-select-option :value="driver" :key="driver">
-                {{driver}}
+                {{ driver }}
               </a-select-option>
             </template>
           </a-select>
@@ -132,97 +132,96 @@
   </div>
 </template>
 <script>
-  import {mapActions} from "vuex";
-  import volumeApi from '../api/VolumeApi'
-  import {guid} from '../utils/index'
+import {mapActions} from "vuex";
+import volumeApi from '../api/VolumeApi'
+import {guid} from '../utils/index'
 
-  const columns = [
-    {
-      title: '卷名称',
-      dataIndex: 'Name',
-      key: 'Name',
-    },
+const columns = [
+  {
+    title: '卷名称',
+    dataIndex: 'Name',
+    key: 'Name',
+  },
 
-    {
-      title: '卷模式',
-      dataIndex: 'Driver',
-      key: 'Driver',
-    },
-    {
-      title: '卷范围',
-      dataIndex: 'Scope',
-      key: 'Scope',
-    },
-    {
-      title: '创建时间',
-      key: 'Created',
-      dataIndex: 'Created'
+  {
+    title: '卷模式',
+    dataIndex: 'Driver',
+    key: 'Driver',
+  },
+  {
+    title: '卷范围',
+    dataIndex: 'Scope',
+    key: 'Scope',
+  },
+  {
+    title: '创建时间',
+    key: 'Created',
+    dataIndex: 'Created'
 
-    },
-    {
-      title: '操作',
-      key: 'action',
-      scopedSlots: {customRender: 'action'},
-    },
-  ];
+  },
+  {
+    title: '操作',
+    key: 'action',
+    scopedSlots: {customRender: 'action'},
+  },
+];
 
-  export default {
-    data() {
-      return {
-        form: {},
-        showNewVolumeModal: false,
-        showRemoveVolumeModal: false,
-        showVolumeDrawer: false,
-        forceRemoveVolume: false,
-        openPruneVolumeModal: false,
-        searchKey: '',
-        columns,
-        currentVolumeName: '',
-        newVolumeConfig: {}
-      };
-    }, computed: {
-      volumeList() {
-        let allVolume = this.$store.state.volume.list;
-        if (this.searchKey !== '' && this.searchKey.trim() !== '') {
-          return allVolume.filter(i => i.LongName.indexOf(this.searchKey) >= 0)
+export default {
+  data() {
+    return {
+      form: {},
+      showNewVolumeModal: false,
+      showRemoveVolumeModal: false,
+      showVolumeDrawer: false,
+      forceRemoveVolume: false,
+      openPruneVolumeModal: false,
+      searchKey: '',
+      columns,
+      currentVolumeName: '',
+      newVolumeConfig: {}
+    };
+  }, computed: {
+    volumeList() {
+      let allVolume = this.$store.state.volume.list;
+      if (this.searchKey !== '' && this.searchKey.trim() !== '') {
+        return allVolume.filter(i => i.LongName.indexOf(this.searchKey) >= 0)
+      }
+      return allVolume;
+    }, volumeInfo() {
+      return this.$store.state.volume.info;
+    }, supportVolumeMode() {
+      let plugins = this.$store.state.dockerInfo.dockerPlugins;
+      return plugins.Volume;
+    }
+  },
+  mounted() {
+    this.updateVolumeList()
+    this.updateDockerInfo()
+  },
+  methods: {
+    ...mapActions({
+      updateVolumeList: 'updateVolumeList',
+      updateVolumeInfo: 'updateVolumeInfo',
+    }), forceRemoveChange: function (e) {
+      // 强制删除checked变动
+      this.forceRemoveVolume = e.target.checked;
+    }, openNewVolumeModal: function () {
+      // 打开创建volume的模态框
+      this.showNewVolumeModal = true
+    }, callCreateNewVolumeApi() {
+      let key = guid()
+      this.$message.loading({content: '创建存储卷中，请稍后...', key});
+      volumeApi.createNewVolume(this.newVolumeConfig).then(res => {
+        let {Code, Msg} = res.data
+        if (Code === 'OK') {
+          this.$message.info({content: '存储卷创建完成!', key, duration: 2});
+          this.updateVolumeList()
+          this.showNewVolumeModal = false
+        } else {
+          this.$message.error({content: Msg, key});
+          this.showNewVolumeModal = false
         }
-        return allVolume;
-      }, volumeInfo() {
-        return this.$store.state.volume.info;
-      }, supportVolumeMode() {
-        let plugins = this.$store.state.dockerInfo.dockerPlugins;
-        return plugins.Volume;
-      }
-    },
-    mounted() {
-      this.updateVolumeList()
-      this.updateDockerInfo()
-    },
-    methods: {
-      ...mapActions({
-        updateVolumeList: 'updateVolumeList',
-        updateVolumeInfo: 'updateVolumeInfo',
-      }), forceRemoveChange: function (e) {
-        // 强制删除checked变动
-        this.forceRemoveVolume = e.target.checked;
-      }, openNewVolumeModal: function () {
-        // 打开创建volume的模态框
-        this.showNewVolumeModal = true
-      }, callCreateNewVolumeApi() {
-        let key = guid()
-        this.$message.loading({content: '创建存储卷中，请稍后...', key});
-        volumeApi.createNewVolume(this.newVolumeConfig).then(res => {
-          let {Code, Msg} = res.data
-          if (Code === 'OK') {
-            this.$message.info({content: '存储卷创建完成!', key, duration: 2});
-            this.updateVolumeList()
-            this.showNewVolumeModal = false
-          } else {
-            this.$message.error({content: Msg, key});
-            this.showNewVolumeModal = false
-          }
-        });
-      }
+      });
     }, openRemoveVolumeModal: function (volumeName) {
       this.showRemoveVolumeModal = true
       this.currentVolumeName = volumeName
@@ -266,31 +265,31 @@
       this.$message.info('存储卷列表刷新完成');
     }
   }
-  ;
+}
 </script>
 
 <style scoped>
-  .ant-drawer-body {
-    padding: 0 !important;
-  }
+.ant-drawer-body {
+  padding: 0 !important;
+}
 
-  .configTable, .configTable tr th, .configTable tr td {
-    border: 1px solid lightgrey;
-  }
+.configTable, .configTable tr th, .configTable tr td {
+  border: 1px solid lightgrey;
+}
 
-  .configTable .tagTd {
-    width: 200px;
-  }
+.configTable .tagTd {
+  width: 200px;
+}
 
-  .configTable {
-    width: 100%;
-    margin-top: 20px;
-    text-align: center;
-    border-collapse: collapse;
-  }
+.configTable {
+  width: 100%;
+  margin-top: 20px;
+  text-align: center;
+  border-collapse: collapse;
+}
 
-  .contentTd {
-    overflow-wrap: anywhere;
-    padding: 5px 0 5px 10px;
-  }
+.contentTd {
+  overflow-wrap: anywhere;
+  padding: 5px 0 5px 10px;
+}
 </style>

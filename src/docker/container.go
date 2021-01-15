@@ -96,3 +96,9 @@ func GetContainerLog(containerId string, tail string) (string, error) {
 func ExportContainer(containerId string) (io.ReadCloser, error) {
 	return context.Cli.ContainerExport(context.Ctx, containerId)
 }
+
+func ResizeContainerTty(containerId string, execId string, w uint, h uint) error {
+	err := context.Cli.ContainerExecResize(context.Ctx, execId, types.ResizeOptions{Width: w, Height: h})
+	err = context.Cli.ContainerResize(context.Ctx, containerId, types.ResizeOptions{Width: w, Height: h})
+	return err
+}

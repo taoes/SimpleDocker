@@ -1,4 +1,6 @@
 import axios from "axios";
+import message from "ant-design-vue/lib/message";
+import notification from "ant-design-vue/lib/notification";
 
 let operationMap =
     {
@@ -56,7 +58,37 @@ function getContainerAllLog(containerId) {
       respConfig)
 }
 
+function resizeContainer(containerId, execId, w, h) {
+  let apiResp = axios.get(
+      `/api/container/${containerId}/exec/${execId}/${w}/${h}/resize`,)
+  handleError(apiResp)
+  return apiResp
+}
+
+// 创建Exec命令
+function createNewContainerExec(containerId) {
+  let apiResp = axios.get(`/api/container/${containerId}/command/exec`,)
+  handleError(apiResp)
+  return apiResp
+}
+
+function handleError(promise) {
+  promise.then(res => {
+    let {Code, Msg} = res.data
+    if (Code !== "OK") {
+      message.info(Msg)
+    }
+  }).catch(e => {
+    notification['error']({
+      message: `操作失败`,
+      description: `操作失败,请检查 Docker 服务是否正常`
+    });
+  });
+}
+
 export default {
+  resizeContainer,
+  createNewContainerExec,
   removeContainer,
   controlContainer,
   getContainerLog,

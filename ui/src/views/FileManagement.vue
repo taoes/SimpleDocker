@@ -55,6 +55,13 @@ export default {
       console.log(msg)
       let {data} = msg
       let {SubCategory} = JSON.parse(data)
+      SubCategory.sort(function (a, b) {
+        if (a.FileType === "true" && b.FileType !== 'true') {
+          return -1
+        } else {
+          return -0
+        }
+      });
       this.fileList = [{Name: '返回上一层'}, ...SubCategory]
     }, send: function () {
       if (!!this.socket) {

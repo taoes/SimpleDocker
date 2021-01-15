@@ -135,7 +135,9 @@ func init() {
             Method: "CategoryInfo",
             Router: "/ws/api/container/:containerId/file",
             AllowHTTPMethods: []string{"get"},
-            MethodParams: param.Make(),
+            MethodParams: param.Make(
+				param.New("containerId", param.InPath),
+			),
             Filters: nil,
             Params: nil})
 
@@ -311,6 +313,42 @@ func init() {
             Router: "/api/network/prune",
             AllowHTTPMethods: []string{"delete"},
             MethodParams: param.Make(),
+            Filters: nil,
+            Params: nil})
+
+    beego.GlobalControllerRouter["SimpleDocker/src/api:TerminalController"] = append(beego.GlobalControllerRouter["SimpleDocker/src/api:TerminalController"],
+        beego.ControllerComments{
+            Method: "CreateContainerExec",
+            Router: "/api/container/:containerId/command/exec",
+            AllowHTTPMethods: []string{"get"},
+            MethodParams: param.Make(
+				param.New("containerId", param.InPath),
+			),
+            Filters: nil,
+            Params: nil})
+
+    beego.GlobalControllerRouter["SimpleDocker/src/api:TerminalController"] = append(beego.GlobalControllerRouter["SimpleDocker/src/api:TerminalController"],
+        beego.ControllerComments{
+            Method: "ResizeContainerTerminal",
+            Router: "/api/container/:containerId/exec/:execId/:w/:h/resize",
+            AllowHTTPMethods: []string{"get"},
+            MethodParams: param.Make(
+				param.New("containerId", param.InPath),
+				param.New("execId", param.InPath),
+				param.New("w", param.InPath),
+				param.New("h", param.InPath),
+			),
+            Filters: nil,
+            Params: nil})
+
+    beego.GlobalControllerRouter["SimpleDocker/src/api:TerminalController"] = append(beego.GlobalControllerRouter["SimpleDocker/src/api:TerminalController"],
+        beego.ControllerComments{
+            Method: "ConnectContainer",
+            Router: "/ws/api/container/terminal/:execId",
+            AllowHTTPMethods: []string{"get"},
+            MethodParams: param.Make(
+				param.New("execId", param.InPath),
+			),
             Filters: nil,
             Params: nil})
 

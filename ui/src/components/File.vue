@@ -36,15 +36,24 @@ export default {
     }, getIcon(file) {
       if (file.Name === '返回上一层') {
         return require("../assets/file/back.png")
-      }
-      if (!!file.FileType && file.FileType === "true") {
+      } else if (file.FileType === "true") {
+        if (file.Name === 'home' || file.Name === 'root') {
+          return require("../assets/file/home.png")
+        }
         return require("../assets/file/category.png")
-      } else if (!!file.Permission && file.Permission.indexOf("x") !== -1) {
+      } else if (file.Permission.indexOf("x") !== -1) {
         return require("../assets/file/exe.png")
+      } else if (file.Permission.indexOf("L") !== -1) {
+        return require("../assets/file/link.png")
+      } else if (file.Name.endsWith(".png")) {
+        return require("../assets/file/pic.png")
+      } else if (file.Name.endsWith(".html")) {
+        return require("../assets/file/web.png")
+      } else if (file.Name.endsWith(".tar.gz")) {
+        return require("../assets/file/tar.png")
       } else {
         return require("../assets/file/unkonw.png")
       }
-
     }
   }
 }

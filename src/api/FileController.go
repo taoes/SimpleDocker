@@ -89,6 +89,7 @@ func (c *FileController) CategoryInfo(containerId string) {
 	// 当函数返回时，将该用户加入退出通道，并断开用户连接
 	defer func() {
 		leaveOfFile <- client
+		_ = conn.Close()
 		_ = client.conn.Close()
 	}()
 
