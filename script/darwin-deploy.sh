@@ -1,6 +1,6 @@
 echo "正在准备安装 SimpleDocker...."
 
-wget 'https://gitee.com/taoes_admin/SimpleDocker/attach_files/580160/download/SimpleDocker-0.0.2-drawin.zip' -O '/tmp/simpleDocker.zip'
+wget 'https://gitee.com/taoes_admin/SimpleDocker/attach_files/580160/download/SimpleDocker-0.0.3-drawin.zip' -O '/tmp/simpleDocker.zip'
 rm -rf ~/.local/simpleDocker
 mkdir -p ~/.local/simpleDocker
 unzip /tmp/simpleDocker.zip -d ~/.local/simpleDocker

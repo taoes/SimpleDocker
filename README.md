@@ -6,6 +6,9 @@
     <img src="https://pic.zhoutao123.com/lib/simple-docker/logo-tm.png" width="200" alt="" >
 </div>
 
+> 🎉 🔥 ✨  最新消息: 新发布的 V0.0.3 版本支持 容器在线终端、在线文件浏览及文件下载 、容器性能监控等新功能 ~ ~ ~
+
+
 SimpleDocker 是一个简单的Docker控制面板，致力于可以让你更方便，更无障碍的使用Docker,其界面简洁，操作便捷，  **后期将开发内部接口API**!
 
 ## 背景
@@ -20,26 +23,33 @@ Docker是目前一种非常主流的容器化方案，支持非常多的特性�
 
 **🎉 目前支持以下特性:**
 
-✅ 1. 镜像管理/拉取/运行/导出/导入/删除/详情
+✅ 1. 镜像管理
 
-✅ 2. 容器管理/启动/停止/运行/暂停/删除/精简/导出/终端/网络/日志导出 
++ 镜像拉取
++ 镜像运行、导出、导入、删除
++ 镜像详情
 
-✅ 3. 挂载卷管理/创建/删除/精简 
+✅ 2. 容器管理
 
-✅ 4. 网络管理/创建/精简 
++ 容器启动、停止、运行、暂停、删除、精简
++ 容器导出
++ 容器终端(Linux)
++ 网络连接管理
++ 日志导出、下载
++ 容器文件浏览、下载(Linux)
++ 容器性能监控
 
-✅ 5. 安全登录功能/密码重置 
+✅ 3. 挂载卷管理/创建/删除/精简
 
+✅ 4. 网络管理/创建/精简
+
+✅ 5. 安全登录功能/密码重置
 
 **✏️ 正在开发的任务**
 
-🎉 1. 优化导出&导入&拉取等阻塞性任务的操作体验 (进行中 🎉) 
+🎉 1. 优化导出&导入&拉取等阻塞性任务的操作体验 (进行中 🎉)
 
-🎉 2. 容器命令行操作(开发完成，待发布 🛠) 
-
-🛠 3. 容器文件管理(开发完成，待发布 🛠) 
-
-🧾 4. API 接口开放(文档整理中) 
+🧾 2. API 接口开放(文档整理中)
 
 **🛠 计划支持的特性:**
 
@@ -47,7 +57,6 @@ Docker是目前一种非常主流的容器化方案，支持非常多的特性�
 2. 私有仓库的镜像拉取(计划中)
 3. DockerCompose 镜像编排管理(计划中)
 4. DockerSwarm 集群管理(计划中)
-5. 容器性能曲线图 (计划中)
 
 ## 应用安装
 
@@ -81,7 +90,7 @@ chmod +x /tmp/deploy-simple-docker.sh
 + Docker 安装
 
 ```sh
-docker run  -d -p 8080:4050 -v /var/run/docker.sock:/var/run/docker.sock --name SimpleDocker  registry.cn-shanghai.aliyuncs.com/seven-tao/simple-docker:0.0.2
+docker run  -d -p 8080:4050 -v /var/run/docker.sock:/var/run/docker.sock --name SimpleDocker  registry.cn-shanghai.aliyuncs.com/seven-tao/simple-docker:0.0.3
 // 浏览器访问 http://localhost:8080  
 ```
 
@@ -92,9 +101,9 @@ docker run  -d -p 8080:4050 -v /var/run/docker.sock:/var/run/docker.sock --name 
 通过 [https://github.com/taoes/SimpleDocker/releases/](https://github.com/taoes/SimpleDocker/releases/)
 下载最新发布的版本
 
-2. 创建文件夹`~/.local/simpleDocker` 并解压文件上文的压缩包到 `~/.local/simpleDocker`
-3. 将文件夹 `~/.local/simpleDocker` 配置到环境变量 PATH中
-
+2. 创建文件夹`~/.local/simpleDocker` 并解压文件,将解压后的文件复制到 `~/.local/simpleDocker` 目录
+3. 将文件夹 `~/.local/simpleDocker` 配置到环境变量 PATH中(可选)
+4. 注意: **一定要解压后的文件放到 `~/.local/simpleDocker` 下，否则会出现容器文件浏览功能无法使用**
 
 + 手动编译
 
@@ -102,11 +111,12 @@ docker run  -d -p 8080:4050 -v /var/run/docker.sock:/var/run/docker.sock --name 
 
 ## 应用启动
 
-1. 刷新环境变量设置后，使用命令`SimpleDocker` 启动应用(后台运行可使用 `nohup SimpleDocker &` 命令启动)
+1. 刷新环境变量设置后，使用命令`simpleDocker` 启动应用(后台运行可使用 `nohup simpleDocker &` 命令启动)
 2. 启动应用后，浏览器访问 `http://localhost:4050` 打开应用
 3. 账户名：admin 密码: SimpleDocker2020 您可以在登录后修改密码
 
 ## 预览
+
 您可以访问这里查看预览[预览图片](./PREVIEW.md)
 
 + Docker 信息
@@ -121,12 +131,14 @@ docker run  -d -p 8080:4050 -v /var/run/docker.sock:/var/run/docker.sock --name 
 + Container 信息
   ![Container 信息](./img/container.png)
 
-+ 容器终端在线管理(V0.0.3中 即将发布)
++ 容器终端在线管理
   ![终端管理](./img/terminal.png)
 
-+ 容器文件在线管理(V0.0.3中 即将发布)
++ 容器文件在线管理
   ![终端管理](./img/file.png)
-
+  
++ 容器性能监控
+  ![终端监控](./img/monitor.png)
 
 + 容器日志以及日志下载
   ![Image 信息](./img/containerLog.png)
