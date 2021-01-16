@@ -6,10 +6,13 @@
     <img src="https://pic.zhoutao123.com/lib/simple-docker/logo-tm.png" width="200" alt="" >
 </div>
 
-> 🎉 🔥 ✨  最新消息: 新发布的 V0.0.3 版本支持 容器在线终端、在线文件浏览及文件下载 、容器性能监控等新功能 ~ ~ ~
 
 
-SimpleDocker 是一个简单的Docker控制面板，致力于可以让你更方便，更无障碍的使用Docker,其界面简洁，操作便捷，  **后期将开发内部接口API**!
+> 🎉 🔥 ✨ 新发布的 V0.0.3 版本支持 容器在线终端、在线文件浏览及文件下载 、容器性能监控等新功能
+
+
+SimpleDocker 是一个简单的Docker控制面板，致力于可以让你更方便，更无障碍的使用Docker,其界面简洁，操作便捷，  **后期将开发内部接口API**  *个人开发维护不易，麻烦给个
+Star ✨ 鼓励一下作者,您的鼓励是我最大的动力 😛！！！*
 
 ## 背景
 
@@ -96,18 +99,17 @@ docker run  -d -p 8080:4050 -v /var/run/docker.sock:/var/run/docker.sock --name 
 
 + 手动安装
 
-1.
-
-通过 [https://github.com/taoes/SimpleDocker/releases/](https://github.com/taoes/SimpleDocker/releases/)
+1.通过 [https://github.com/taoes/SimpleDocker/releases/](https://github.com/taoes/SimpleDocker/releases/)
 下载最新发布的版本
 
 2. 创建文件夹`~/.local/simpleDocker` 并解压文件,将解压后的文件复制到 `~/.local/simpleDocker` 目录
 3. 将文件夹 `~/.local/simpleDocker` 配置到环境变量 PATH中(可选)
 4. 注意: **一定要解压后的文件放到 `~/.local/simpleDocker` 下，否则会出现容器文件浏览功能无法使用**
 
+
 + 手动编译
 
-> 文档整理中
+1. 文档整理中
 
 ## 应用启动
 
@@ -116,8 +118,6 @@ docker run  -d -p 8080:4050 -v /var/run/docker.sock:/var/run/docker.sock --name 
 3. 账户名：admin 密码: SimpleDocker2020 您可以在登录后修改密码
 
 ## 预览
-
-您可以访问这里查看预览[预览图片](./PREVIEW.md)
 
 + Docker 信息
   ![Docker 信息](./img/info.png)
@@ -136,7 +136,7 @@ docker run  -d -p 8080:4050 -v /var/run/docker.sock:/var/run/docker.sock --name 
 
 + 容器文件在线管理
   ![终端管理](./img/file.png)
-  
+
 + 容器性能监控
   ![终端监控](./img/monitor.png)
 
@@ -173,8 +173,9 @@ docker run  -d -p 8080:4050 -v /var/run/docker.sock:/var/run/docker.sock --name 
 
 ## 我的信息
 
-+ [燕归来兮](https://github.com/taoes)
-+ [燕归来兮的个人网站](https://www.zhoutao123.com)
++ [燕归来兮的 Gitee ](https://github.com/taoes)
++ [燕归来兮的 Github](https://github.com/taoes)
++ [燕归来兮的技术博客](https://www.zhoutao123.com)
 
 ## 讨论
 
