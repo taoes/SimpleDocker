@@ -97,8 +97,14 @@ func ExportContainer(containerId string) (io.ReadCloser, error) {
 	return context.Cli.ContainerExport(context.Ctx, containerId)
 }
 
+// 调整TTYSize
 func ResizeContainerTty(containerId string, execId string, w uint, h uint) error {
 	err := context.Cli.ContainerExecResize(context.Ctx, execId, types.ResizeOptions{Width: w, Height: h})
 	err = context.Cli.ContainerResize(context.Ctx, containerId, types.ResizeOptions{Width: w, Height: h})
 	return err
+}
+
+// 容器监控信息
+func MonitorContainer(containerId string) (types.ContainerStats, error) {
+	return context.Cli.ContainerStats(context.Ctx, containerId, false)
 }

@@ -39,7 +39,7 @@ func (c *NetworkController) GetNetworkInfo(networkId string) {
 /** 创建新的网络 */
 //@router /api/network/new [get]
 func (c *NetworkController) CreateNetworkList() {
-	name := c.Ctx.Input.Query("name")
+	name := c.Ctx.Input.Query("Name")
 	driver := c.Ctx.Input.Query("driver")
 	name = strings.Trim(name, " ")
 

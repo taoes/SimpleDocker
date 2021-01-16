@@ -121,6 +121,24 @@ func init() {
 
     beego.GlobalControllerRouter["SimpleDocker/src/api:FileController"] = append(beego.GlobalControllerRouter["SimpleDocker/src/api:FileController"],
         beego.ControllerComments{
+            Method: "FileInfo",
+            Router: "/api/container/file",
+            AllowHTTPMethods: []string{"get"},
+            MethodParams: param.Make(),
+            Filters: nil,
+            Params: nil})
+
+    beego.GlobalControllerRouter["SimpleDocker/src/api:FileController"] = append(beego.GlobalControllerRouter["SimpleDocker/src/api:FileController"],
+        beego.ControllerComments{
+            Method: "DownloadFromContainer",
+            Router: "/api/container/fs",
+            AllowHTTPMethods: []string{"get"},
+            MethodParams: param.Make(),
+            Filters: nil,
+            Params: nil})
+
+    beego.GlobalControllerRouter["SimpleDocker/src/api:FileController"] = append(beego.GlobalControllerRouter["SimpleDocker/src/api:FileController"],
+        beego.ControllerComments{
             Method: "UploadFileToHost",
             Router: "/api/file/upload/:fileName",
             AllowHTTPMethods: []string{"get"},

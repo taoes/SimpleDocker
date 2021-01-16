@@ -53,9 +53,9 @@ function getContainerAllLog(containerId) {
     withCredentials: true,
     timeout: 600000
   }
-  let respConfig = {responseType: 'blob'};
+  let headers = {responseType: 'blob', Authorization: localStorage.token};
   return axios.create(config).get(`/api/container/${containerId}/log/all`,
-      respConfig)
+      {headers})
 }
 
 function resizeContainer(containerId, execId, w, h) {
@@ -70,6 +70,23 @@ function createNewContainerExec(containerId) {
   let apiResp = axios.get(`/api/container/${containerId}/command/exec`,)
   handleError(apiResp)
   return apiResp
+}
+
+// 下载容器文件
+function downloadFileFromContainer(containerId, filePath) {
+  let config = {
+    withCredentials: true,
+    timeout: 600000
+  }
+  let respConfig = {responseType: 'blob', Authorization: localStorage.token};
+  return axios.create(config).get(
+      `/api/container/fs?containerId=${containerId}&filePath=${filePath}`,
+      {headers: respConfig})
+}
+
+// 容器监控
+function monitorContainer(containerId) {
+  return axios.get(`/api/container/${containerId}/monitor/info`,)
 }
 
 function handleError(promise) {
@@ -87,11 +104,13 @@ function handleError(promise) {
 }
 
 export default {
+  monitorContainer,
   resizeContainer,
   createNewContainerExec,
   removeContainer,
   controlContainer,
   getContainerLog,
   getContainerAllLog,
-  getOperatorNameByState
+  getOperatorNameByState,
+  downloadFileFromContainer
 }

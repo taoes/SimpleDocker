@@ -8,6 +8,7 @@ import (
 	"github.com/astaxie/beego"
 	"github.com/docker/docker/api/types"
 	"github.com/docker/go-connections/nat"
+	"io/ioutil"
 	"strconv"
 	"strings"
 )
@@ -170,4 +171,19 @@ func (c *ContainerController) ExportContainer(containerId string) {
 	c.Ctx.Output.Header("Content-Disposition", fmt.Sprintf("attachment;filename=%s.tar.gz", containerId))
 	c.Ctx.Output.Header("Content-Transfer-Encoding", "binary")
 	_, _ = c.Ctx.ResponseWriter.Write(bytesData)
+}
+
+// 容器监控
+// @router /api/container/:containerId/monitor/info [get]
+func (c *ContainerController) Monitor(containerId string) {
+	container, err := docker.MonitorContainer(containerId)
+	if err != nil {
+		c.Data["json"] = utils.PackageError(err)
+		c.ServeJSON()
+	} else {
+		c.Ctx.Output.Header("Content-Type", "application/json")
+		all, _ := ioutil.ReadAll(container.Body)
+		_, _ = c.Ctx.ResponseWriter.Write(all)
+	}
+
 }

@@ -85,6 +85,17 @@ func init() {
 
     beego.GlobalControllerRouter["SimpleDocker/src/api:ContainerController"] = append(beego.GlobalControllerRouter["SimpleDocker/src/api:ContainerController"],
         beego.ControllerComments{
+            Method: "Monitor",
+            Router: "/api/container/:containerId/monitor/info",
+            AllowHTTPMethods: []string{"get"},
+            MethodParams: param.Make(
+				param.New("containerId", param.InPath),
+			),
+            Filters: nil,
+            Params: nil})
+
+    beego.GlobalControllerRouter["SimpleDocker/src/api:ContainerController"] = append(beego.GlobalControllerRouter["SimpleDocker/src/api:ContainerController"],
+        beego.ControllerComments{
             Method: "CreateNewContainer",
             Router: "/api/container/run",
             AllowHTTPMethods: []string{"get"},
@@ -114,6 +125,24 @@ func init() {
         beego.ControllerComments{
             Method: "GetVersion",
             Router: "/api/docker/version",
+            AllowHTTPMethods: []string{"get"},
+            MethodParams: param.Make(),
+            Filters: nil,
+            Params: nil})
+
+    beego.GlobalControllerRouter["SimpleDocker/src/api:FileController"] = append(beego.GlobalControllerRouter["SimpleDocker/src/api:FileController"],
+        beego.ControllerComments{
+            Method: "FileInfo",
+            Router: "/api/container/file",
+            AllowHTTPMethods: []string{"get"},
+            MethodParams: param.Make(),
+            Filters: nil,
+            Params: nil})
+
+    beego.GlobalControllerRouter["SimpleDocker/src/api:FileController"] = append(beego.GlobalControllerRouter["SimpleDocker/src/api:FileController"],
+        beego.ControllerComments{
+            Method: "DownloadFromContainer",
+            Router: "/api/container/fs",
             AllowHTTPMethods: []string{"get"},
             MethodParams: param.Make(),
             Filters: nil,

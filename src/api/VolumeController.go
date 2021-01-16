@@ -27,7 +27,7 @@ func (c *VolumeController) GetVolumeList() {
 // 创建新的卷
 // @router /api/volume/new [get]
 func (c *VolumeController) NewVolume() {
-	name := c.Ctx.Input.Query("name")
+	name := c.Ctx.Input.Query("Name")
 	driver := c.Ctx.Input.Query("driver")
 
 	newVolume, err := docker.NewVolume(name, driver, map[string]string{})

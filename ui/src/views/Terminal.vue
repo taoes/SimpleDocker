@@ -31,6 +31,7 @@ var style = {
 }
 
 import containerApi from '../api/ContainerApi'
+import config from '../api/Config'
 
 export default {
   name: 'Xterm',
@@ -87,7 +88,7 @@ export default {
       }
       this.execId = Data
       this.socket = new WebSocket(
-          `ws://127.0.0.1:4050/ws/api/container/terminal/${Data}?containerId=${containerId}&token=${token}`);
+          `${config.WS_HOST}/ws/api/container/terminal/${Data}?containerId=${containerId}&token=${token}`);
       this.socket.binaryType = 'arraybuffer'
       this.socketOnClose();
       this.socketOnOpen();
@@ -102,17 +103,13 @@ export default {
     , socketOnClose() {
       this.socket.onclose = () => {
         this.$error({
-          title: '连接已被关闭',
-          content: "终端远程服务已被关闭"
+          title: '连接断开',
+          content: "终端远程服务连接断开，请检查网络状态"
         });
       }
     }
     , socketOnError() {
       this.socket.onerror = (e) => {
-        this.$error({
-          title: '连接时报',
-          content: "终端远程服务连接失败"
-        });
 
       }
     }, resizeContainer() {

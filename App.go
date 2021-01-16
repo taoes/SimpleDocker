@@ -3,6 +3,7 @@ package main
 import (
 	_ "SimpleDocker/routers"
 	"SimpleDocker/src/api"
+	"SimpleDocker/src/auth"
 	_ "SimpleDocker/src/auth"
 	_ "SimpleDocker/src/context"
 	"SimpleDocker/src/utils"
@@ -23,7 +24,7 @@ var beforeFilterHandleFunc = func(ctx *context.Context) {
 	origin := ctx.Input.Header("Origin")
 	ctx.Output.Header("Access-Control-Allow-Methods", "OPTIONS,DELETE,POST,GET,PUT,PATCH")
 	ctx.Output.Header("Access-Control-Max-Age", "3600")
-	ctx.Output.Header("Access-Control-Allow-Headers", "x-requested-with,X-Custom-Header,accept,Content-Type,Access-Token,authorization")
+	ctx.Output.Header("Access-Control-Allow-Headers", "x-requested-with,X-Custom-Header,accept,Content-Type,Access-Token,authorization,responsetype")
 	ctx.Output.Header("Access-Control-Allow-Credentials", "true")
 	ctx.Output.Header("Access-Control-Allow-Origin", origin)
 
@@ -35,9 +36,19 @@ var beforeFilterHandleFunc = func(ctx *context.Context) {
 		url := ctx.Input.URL()
 		if url != "/api/system/login" && !strings.HasPrefix(url, "/ws") {
 			header := ctx.Input.Header("Authorization")
-			if header == "" {
-				ctx.Output.Status = 200
-				respData := utils.PackageError(errors.New("登录过期"))
+			err := auth.ParseToken(header)
+			if header == "" || err != nil {
+				ctx.Output.Status = 403
+				respData := utils.PackageError(errors.New("无效的Token"))
+				marshal, _ := json.Marshal(respData)
+				_ = ctx.Output.Body(marshal)
+			}
+		} else if strings.HasPrefix(url, "/ws") {
+			header := ctx.Input.Query("token")
+			err := auth.ParseToken(header)
+			if header == "" || err != nil {
+				ctx.Output.Status = 403
+				respData := utils.PackageError(errors.New("无效的Token"))
 				marshal, _ := json.Marshal(respData)
 				_ = ctx.Output.Body(marshal)
 			}

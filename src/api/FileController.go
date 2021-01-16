@@ -5,22 +5,28 @@ import (
 	"SimpleDocker/src/docker"
 	"SimpleDocker/src/utils"
 	"bytes"
+	"fmt"
 	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/logs"
 	"github.com/gorilla/websocket"
+	jsoniter "github.com/json-iterator/go"
 	"io/ioutil"
 	"net/http"
 	"os"
 	"time"
 )
 
-var clientsOfFile = make(map[Client]bool)
-var joinOfFile = make(chan Client, 10)  // 用户加入通道
-var leaveOfFile = make(chan Client, 10) // 用户退出通道
+var clientsOfFile = make(map[model.Client]bool)
+var joinOfFile = make(chan model.Client, 20)  // 用户加入通道
+var leaveOfFile = make(chan model.Client, 20) // 用户退出通道
 
 // 容器文件系统先关接口
 type FileController struct {
 	beego.Controller
+}
+
+func init() {
+	go broadcaster()
 }
 
 // @router /api/file/upload/:fileName
@@ -68,7 +74,7 @@ func (c *FileController) CategoryInfo(containerId string) {
 		return
 	}
 
-	attach, err := docker.ContainerFileSystem(containerId)
+	attach, execId, err := docker.ContainerFileSystem(containerId)
 	if err != nil {
 		logs.Info("发生错误")
 		logs.Error(err)
@@ -76,21 +82,21 @@ func (c *FileController) CategoryInfo(containerId string) {
 		return
 	}
 
-	var client Client
-	client.name = containerId
-	client.conn = conn
+	var client model.Client
+	client.Name = execId
+	client.Conn = conn
 
 	// 如果用户列表中没有该用户
 	if !clientsOfFile[client] {
 		joinOfFile <- client
-		logs.Info("容器ID:", client.name, "WebSocket 连接成功!")
+		logs.Info("容器ID:", client.Name, "WebSocket 连接成功!")
 	}
 
 	// 当函数返回时，将该用户加入退出通道，并断开用户连接
 	defer func() {
 		leaveOfFile <- client
 		_ = conn.Close()
-		_ = client.conn.Close()
+		_ = client.Conn.Close()
 	}()
 
 	// 持续读取消息
@@ -109,12 +115,22 @@ func (c *FileController) CategoryInfo(containerId string) {
 	// 持续接收消息，并将消息发送到 容器的连接中
 	for {
 		// 读取消息。如果连接断开，则会返回错误
-		_, msgStr, _ := client.conn.ReadMessage()
+		_, msgStr, err := client.Conn.ReadMessage()
+		if err != nil {
+			return
+		}
 		if msgStr == nil || len(msgStr) == 0 {
 			continue
 		}
 		_, _ = attach.Conn.Write([]byte(string(msgStr) + "\n"))
 	}
+}
+
+// 获取文件属性
+// @router /api/container/file
+func (c *FileController) FileInfo() {
+	var fileInfo model.FileInfoRequest
+	_ = jsoniter.Unmarshal(c.Ctx.Input.RequestBody, &fileInfo)
 }
 
 // 上传文件到容器
@@ -124,8 +140,18 @@ func (c *FileController) UploadToContainer() {
 }
 
 // 下载文件
-// router /api/container/fs [get]
+// @router /api/container/fs [get]
 func (c *FileController) DownloadFromContainer() {
+	filePath := c.Ctx.Input.Query("filePath")
+	containerId := c.Ctx.Input.Query("containerId")
+	reader, w, _ := docker.DownloadFileToContainer(containerId, filePath)
+
+	buf, _ := ioutil.ReadAll(reader)
+
+	c.Ctx.Output.Header("Content-Type", "application/force-download")
+	c.Ctx.Output.Header("Content-Disposition", fmt.Sprintf("attachment;filename=%s.tar.gz", w.Name))
+	c.Ctx.Output.Header("Content-Transfer-Encoding", "binary")
+	_, _ = c.Ctx.ResponseWriter.Write(buf)
 
 }
 
@@ -139,4 +165,20 @@ func (c *FileController) RenameFileOfContainer() {
 // router /api/container/fs [delete]
 func (c *FileController) DeleteFileOfContainer() {
 
+}
+
+func broadcaster() {
+	for {
+		select {
+		case client := <-joinOfFile:
+			clientsOfFile[client] = true
+			logs.Info("用户: %s加入", client.Name)
+		case client := <-leaveOfFile:
+			if !clientsOfFile[client] {
+				break
+			}
+			delete(clientsOfFile, client)
+			logs.Info("用户:%s离开", client.Name)
+		}
+	}
 }

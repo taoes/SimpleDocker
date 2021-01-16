@@ -1,7 +1,6 @@
 package model
 
 import (
-	"github.com/prometheus/common/log"
 	"strings"
 )
 
@@ -30,7 +29,6 @@ type ContainerCategoryModel struct {
 }
 
 func ParseForContainerCategoryModel(data string) (ContainerCategoryInfo, error) {
-	log.Info(data)
 	info := ContainerCategoryInfo{}
 	// 按照回车键划分
 	split := strings.Split(data, "\r\n")

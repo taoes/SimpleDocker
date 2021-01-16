@@ -82,19 +82,28 @@
         <a-divider type="vertical"></a-divider>
 
         <a-tooltip>
-          <template slot="title">日志浏览</template>
-        <a-icon type="profile" style="color:darkslategray;font-size: 18px"
-                @click="openContainerLogModal(record.containerId)"/>
+          <template slot="title">性能监控</template>
+        <a-icon type="bar-chart" style="color:darkslategray;font-size: 18px"
+                @click="openContainerMonitor(record.state,record.containerId)"/>
         </a-tooltip>
         <a-divider type="vertical"></a-divider>
 
-
         <a-dropdown>
-          <a class="ant-dropdown-link" @click="e => e.preventDefault()"> <a-icon type="down-circle"
-                                                                                 style="color: darkslategray;font-size: 18px"/> </a>
+          <a class="ant-dropdown-link" @click="e => e.preventDefault()">
+            <a-icon type="down-circle" style="color: darkslategray;font-size: 18px"/>
+          </a>
+
           <a-menu slot="overlay">
+
+            <a-menu-item key="containerLog">
+               <a @click="openContainerLogModal(record.containerId)">
+                 <a-icon type="profile"/>&nbsp;
+                 容器日志
+               </a>
+            </a-menu-item>
+
             <a-menu-item>
-               <a href="#" @click="openDetail(record.containerId)">
+               <a @click="openDetail(record.containerId)">
                  <a-icon type="container"/>&nbsp;
                  容器详情
                </a>
@@ -102,35 +111,35 @@
 
 
             <a-menu-item>
-               <a href="#" @click="exposeContainer(record.containerId)">
+               <a @click="exposeContainer(record.containerId)">
                  <a-icon type="download"/>&nbsp;
                  导出容器
                </a>
             </a-menu-item>
 
             <a-menu-item>
-                <a href="#" @click="callControlContainerApi(record.containerId,'restart')">
+                <a @click="callControlContainerApi(record.containerId,'restart')">
                   <a-icon type="reload"/>&nbsp;
                   重启容器
                 </a>
             </a-menu-item>
 
             <a-menu-item>
-                <a href="#" @click="callControlContainerApi(record.containerId,'pause')">
+                <a @click="callControlContainerApi(record.containerId,'pause')">
                   <a-icon type="pause"/>&nbsp;
                   暂停容器
                 </a>
             </a-menu-item>
 
             <a-menu-item>
-                <a href="#" @click="openRemoveDetail(record.containerId)">
+                <a @click="openRemoveDetail(record.containerId)">
                   <a-icon type="delete"/> &nbsp;
                   删除容器
                 </a>
             </a-menu-item>
 
             <a-menu-item>
-               <a href="#" @click="openNetworkConnectModal(record.containerId)">
+               <a @click="openNetworkConnectModal(record.containerId)">
                  <a-icon type="container"/>&nbsp;
                  网络管理
                </a>
@@ -490,8 +499,8 @@ export default {
     }, async exposeContainer(containerId) {
       let key = guid()
       this.$message.loading({content: "正在导出容器数据，请稍后....", key, duration: 0});
-      this.$axios.get(`/api/container/${containerId}/export`,
-          {responseType: 'blob'}).then(
+      let headers = {responseType: 'blob', Authorization: localStorage.token};
+      this.$axios.get(`/api/container/${containerId}/export`, {headers}).then(
           (res) => {
             download(res.data, `${containerId}.tar.gz`)
             this.$message.info({content: "容器已成功导出并下载....", key});
@@ -551,8 +560,8 @@ export default {
       }
 
       let router = this.$router;
+      this.currentContainerId = containerId
       let openUrl = function () {
-        this.currentContainerId = containerId
         let routeUrl = router.resolve({
           path: "/terminal/file",
           query: {containerId: containerId}
@@ -569,6 +578,18 @@ export default {
           openUrl()
         }
       });
+    }, openContainerMonitor(state, containerId) {
+
+      if (state !== '运行中') {
+        this.$message.error("容器尚未运行，不能打开性能监控界面");
+        return
+      }
+
+      let routeUrl = this.$router.resolve({
+        path: "/terminal/monitor",
+        query: {containerId: containerId}
+      });
+      window.open(routeUrl.href, '_blank');
     }
   }
 }

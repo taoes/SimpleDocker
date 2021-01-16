@@ -10,11 +10,13 @@ import (
 	"github.com/dgrijalva/jwt-go"
 	"io/ioutil"
 	"os"
+	"strings"
 	"time"
 )
 
 // 配置文件位置
 var configLocation = "/.local/simpleDocker"
+var SIGN_NAME_SCERET = "SimpleDocker2020-SimpleDocker2020"
 
 func init() {
 	initConfig()
@@ -50,11 +52,39 @@ func GeneratorToken(name string) (string, error) {
 	claims["iat"] = time.Now().Unix()           //用作和exp对比的时间
 	token.Claims = claims
 
-	tokenString, err := token.SignedString([]byte("SimpleDocker2020"))
+	tokenString, err := token.SignedString([]byte(SIGN_NAME_SCERET))
 	if err != nil {
 		return "", err
 	}
 	return tokenString, nil
+}
+
+// 解析Token
+func ParseToken(tokenStr string) error {
+	if strings.HasPrefix(tokenStr, "Bearer ") {
+		tokenStr = strings.ReplaceAll(tokenStr, "Bearer ", "")
+	}
+
+	token, err := jwt.Parse(tokenStr, func(token *jwt.Token) (interface{}, error) {
+		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
+			return nil, fmt.Errorf("无效的Token: %v", token.Header["alg"])
+		}
+
+		return []byte(SIGN_NAME_SCERET), nil
+	})
+
+	if err != nil {
+		return err
+	}
+
+	var ok bool
+
+	if _, ok = token.Claims.(jwt.MapClaims); ok && token.Valid {
+
+	} else {
+		return errors.New("无效的token")
+	}
+	return nil
 }
 
 func UpdatePassword(op string, np string) error {

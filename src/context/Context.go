@@ -11,7 +11,7 @@ import (
 
 var Ctx context.Context
 var Cli *client.Client
-var _ http.Client
+var Httpc http.Client
 var systemConfig SystemConfig
 
 type SystemConfig struct {
@@ -23,7 +23,7 @@ func init() {
 
 	Ctx = context.Background()
 	Cli, err = client.NewClientWithOpts(client.FromEnv, client.WithAPIVersionNegotiation())
-	_ = http.Client{
+	Httpc = http.Client{
 		Transport: &http.Transport{
 			DialContext: func(_ context.Context, _, _ string) (net.Conn, error) {
 				return net.Dial("unix", "/var/run/docker.sock")

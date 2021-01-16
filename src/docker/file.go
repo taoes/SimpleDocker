@@ -6,18 +6,18 @@ import (
 	"io"
 )
 
-func ContainerFileSystem(containerId string) (types.HijackedResponse, error) {
+func ContainerFileSystem(containerId string) (types.HijackedResponse, string, error) {
 	options := types.ExecConfig{AttachStdout: true, AttachStdin: true, AttachStderr: true, Privileged: true, Tty: true, Cmd: []string{"sh"}}
 	execResp, err := context.Cli.ContainerExecCreate(context.Ctx, containerId, options)
 	if err != nil {
-		return types.HijackedResponse{}, err
+		return types.HijackedResponse{}, "", err
 	}
 	id := execResp.ID
 	attach, err := context.Cli.ContainerExecAttach(context.Ctx, id, types.ExecStartCheck{Detach: false, Tty: true})
 	if err != nil {
-		return types.HijackedResponse{}, err
+		return types.HijackedResponse{}, "", err
 	}
-	return attach, nil
+	return attach, execResp.ID, nil
 }
 
 // 上传文件
@@ -27,6 +27,6 @@ func UploadFileToContainer(containerId string, dstPath string, content io.Reader
 }
 
 // 下载文件
-func downloadFileToContainer(containerId string, srcPath string) (io.ReadCloser, types.ContainerPathStat, error) {
+func DownloadFileToContainer(containerId string, srcPath string) (io.ReadCloser, types.ContainerPathStat, error) {
 	return context.Cli.CopyFromContainer(context.Ctx, containerId, srcPath)
 }

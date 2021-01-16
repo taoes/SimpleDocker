@@ -1,4 +1,6 @@
+let isProd = process.env.NODE_ENV === 'production'
+
 export default {
-  HOST: "http://localhost:4050",
-  // HOST: "/"
+  HOST: "",
+  WS_HOST: "ws://" + location.host
 }

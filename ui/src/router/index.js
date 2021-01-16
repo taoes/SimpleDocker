@@ -1,11 +1,5 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Home from '../views/Home.vue'
-import Login from "../views/Login";
-import Content from "../views/Content";
-import Terminal from "@/views/Terminal";
-import TerminalContainer from "@/views/TerminalContainer";
-import FileManagement from "@/views/FileManagement";
 
 const originalPush = VueRouter.prototype.push
 VueRouter.prototype.push = function push(location) {
@@ -18,32 +12,36 @@ const routes = [
   {
     path: '/',
     name: 'Login',
-    component: Login
+    component: () => import('../views/Login')
   }, {
     path: '/terminal',
     name: 'Terminal',
-    component: TerminalContainer,
+    component: () => import('../views/TerminalContainer'),
     children: [
       {
         path: '/terminal/console',
         name: 'Console',
-        component: Terminal
+        component: () => import('../views/Terminal')
       }, {
         path: '/terminal/file',
         name: 'FileManagement',
-        component: FileManagement
+        component: () => import('../views/FileManagement')
+      }, {
+        path: '/terminal/monitor',
+        name: 'Monitor',
+        component: () => import('../views/Monitor')
       }
     ]
   },
   {
     path: '/content',
     name: 'Content',
-    component: Content,
+    component: () => import('../views/Content'),
     children: [
       {
         path: '/content',
         name: 'Home',
-        component: Home
+        component: () => import('../views/Home.vue')
       },
 
       {
