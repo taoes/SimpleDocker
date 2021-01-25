@@ -9,6 +9,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/astaxie/beego"
+	"github.com/docker/docker/api/types"
 	"strings"
 )
 
@@ -16,32 +17,17 @@ type LoginController struct {
 	beego.Controller
 }
 
-// @router /api/docker/login
+// @router /api/docker/login [post]
 func (c *LoginController) Login() {
-
-	name := c.Ctx.Input.Query("username")
-	password := c.Ctx.Input.Query("password")
-
-	if name = strings.Trim(name, " "); name == "" {
-		c.Data["json"] = utils.PackageErrorMsg("登录失败,用户名无效")
-		c.ServeJSON()
-		return
-	}
-
-	if name = strings.Trim(password, " "); password == "" {
-		c.Data["json"] = utils.PackageErrorMsg("登录失败,密码无效")
-		c.ServeJSON()
-		return
-	}
-
-	_, err := docker.Login(name, password)
+	var authConfig types.AuthConfig
+	_ = json.Unmarshal(c.Ctx.Input.RequestBody, &authConfig)
+	authInfo, err := docker.Login(authConfig)
 	if err != nil {
 		c.Data["json"] = utils.PackageErrorMsg("登录失败,密码无效")
 		c.ServeJSON()
 		return
 	}
-
-	c.Data["json"] = utils.Success()
+	c.Data["json"] = utils.PackageData(authInfo)
 	c.ServeJSON()
 }
 
