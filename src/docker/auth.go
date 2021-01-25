@@ -9,8 +9,7 @@ import (
 type UsernamePassword map[string]string
 
 /** Docker 登录到镜像中心 */
-func Login(username string, password string) (registry.AuthenticateOKBody, error) {
-	authConfig := types.AuthConfig{Username: username, Password: password}
+func Login(authConfig types.AuthConfig) (registry.AuthenticateOKBody, error) {
 	return context.Cli.RegistryLogin(context.Ctx, authConfig)
 }
 

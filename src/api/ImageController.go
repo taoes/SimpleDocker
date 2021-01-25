@@ -22,7 +22,6 @@ type ImportImageInfo struct {
 	ImageTag string `json:"imageTag"`
 }
 
-/** 查询全部Image */
 // @router /api/image [get]
 func (c *ImageController) GetImageList() {
 	imageList, err := docker.GetImageList()
@@ -35,7 +34,6 @@ func (c *ImageController) GetImageList() {
 	c.ServeJSON()
 }
 
-/** 查询Image信息 */
 // @router /api/image/:imageId [get]
 func (c *ImageController) GetImageInfo(imageId string) {
 	imageInfo, err := docker.GetImageInfo(imageId)
@@ -48,7 +46,6 @@ func (c *ImageController) GetImageInfo(imageId string) {
 	c.ServeJSON()
 }
 
-/** 删除Image */
 // @router /api/image/:imageId/remove/:forge [get]
 func (c *ImageController) DeleteImage(imageId string, forge string) {
 	b, _ := strconv.ParseBool(forge)
@@ -62,7 +59,6 @@ func (c *ImageController) DeleteImage(imageId string, forge string) {
 	c.ServeJSON()
 }
 
-/** 修改Image标签 */
 // @router /api/image/tag [get]
 func (c *ImageController) TagImage() {
 	source := c.Ctx.Input.Query("source")
@@ -80,7 +76,6 @@ func (c *ImageController) TagImage() {
 	c.ServeJSON()
 }
 
-/** 导出Image到指定目录 */
 // @router /api/image/save [post]
 func (c *ImageController) SaveImage() {
 
@@ -109,9 +104,6 @@ func (c *ImageController) PullImage() {
 	refStr = strings.Trim(refStr, " ")
 	image, err := docker.PullImage(refStr)
 	if err != nil {
-		c.Data["json"] = utils.PackageError(err)
-		c.ServeJSON()
-		return
 	}
 	buf := new(bytes.Buffer)
 	_, _ = buf.ReadFrom(image)
@@ -119,7 +111,19 @@ func (c *ImageController) PullImage() {
 	c.ServeJSON()
 }
 
-/** 清除无用镜像 */
+// @router /api/image/push [get]
+func (c *ImageController) PushImage() {
+	refStr := c.Ctx.Input.Query("refStr")
+	refStr = strings.Trim(refStr, " ")
+	image, err := docker.PushImage(refStr)
+	if err != nil {
+	}
+	buf := new(bytes.Buffer)
+	_, _ = buf.ReadFrom(image)
+	c.Data["json"] = utils.PackageData(buf.String())
+	c.ServeJSON()
+}
+
 // @router /api/image/prune [delete]
 func (c *ImageController) PruneImage() {
 	report, err := docker.PruneImage()

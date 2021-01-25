@@ -18,14 +18,9 @@ func GetImageList() ([]types.ImageSummary, error) {
 	return images, nil
 }
 
-func PullImage(refStr string) (io.ReadCloser, error) {
-	var options types.ImagePullOptions
+func PullImage(refStr string, auth string) (io.ReadCloser, error) {
+	options := types.ImagePullOptions{RegistryAuth: auth}
 	return context.Cli.ImagePull(context.Ctx, refStr, options)
-}
-
-func PushImage(refStr string) (io.ReadCloser, error) {
-	var options types.ImagePushOptions
-	return context.Cli.ImagePush(context.Ctx, refStr, options)
 }
 
 // 获取镜像信息
