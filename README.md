@@ -63,7 +63,7 @@ Docker是目前一种非常主流的容器化方案，支持非常多的特性�
 
 ## 应用安装
 
-使用前，请先安装 unzip 命令用于解压压缩包
+使用前，请先安装 unzip 命令用于解压压缩包以及确保 Docker 服务正常
 
 > + ubuntu系统下使用 `sudo apt-get install unzip`
 > + centos 下使用 `yum install -y unzip`
@@ -109,7 +109,23 @@ docker run  -d -p 8080:4050 -v /var/run/docker.sock:/var/run/docker.sock --name 
 
 + 手动编译
 
-1. 文档整理中
+1. 克隆代码到本地，并启动 beego项目
+
+```shell
+git clone https://gitee.com/taoes_admin/SimpleDocker
+cd ./SimpleDocker
+bee run
+```
+
+2. 新建终端窗口，切换到 `ui` 目录下打开前端项目
+
+3. 修改 `ui/src/api/Config.js` 文件内容，确保请求前缀和 beego 端口一致
+```shell
+cd ui
+yarn install && yarn server
+```
+
+4. 打开相应的前端端口，即可访问，调试
 
 ## 应用启动
 
