@@ -12,12 +12,16 @@ import (
 	"flag"
 	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/context"
+	"github.com/astaxie/beego/logs"
 	"net/http"
+	"os"
+	"path/filepath"
 	"strconv"
 	"strings"
 )
 
-var port = flag.Int("port", 4050, "help message for flagname")
+var port = flag.Int("port", 4050, "service port of simpleDocker  ")
+var resPath = flag.String("res", "static", "static resource path of simpleDocker and relative to simpleDocker exec file")
 
 // 跨域配置
 var beforeFilterHandleFunc = func(ctx *context.Context) {
@@ -58,12 +62,18 @@ var beforeFilterHandleFunc = func(ctx *context.Context) {
 
 func main() {
 	flag.Parse()
+	ex, err := os.Executable()
+	if err != nil {
+		logs.Error(err)
+		return
+	}
+	exPath := filepath.Dir(ex)
 
 	beego.BConfig.CopyRequestBody = true
 	beego.BConfig.WebConfig.Session.SessionOn = true
 
 	// 配置静态资源
-	beego.SetStaticPath("/", "./static")
+	beego.SetStaticPath("/", exPath+"/"+*resPath)
 
 	// 配置路由
 	beego.Include(&api.DockerController{})
