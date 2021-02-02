@@ -2,7 +2,9 @@ package context
 
 import (
 	"context"
+	"encoding/json"
 	"github.com/astaxie/beego/logs"
+	"github.com/docker/docker/api/types"
 	"github.com/docker/docker/client"
 	"net"
 	"net/http"
@@ -44,5 +46,25 @@ func init() {
 	homeDir = homeDir + "/.local/simpleDocker"
 	systemConfig.Dir = homeDir
 
-	logs.Info("初始化Docker上下文....OK!")
+	logs.Info("初始化Docker上下文................OK!")
+
+	op := types.EventsOptions{}
+	events, errors := Cli.Events(Ctx, op)
+	go func() {
+		for true {
+
+			select {
+			case event := <-events:
+				logs.Error("监控到Docker事件")
+				marshal, _ := json.Marshal(event)
+				logs.Info(string(marshal))
+			case err := <-errors:
+				logs.Error("监控到Docker错误事件")
+				logs.Error(err)
+			}
+		}
+
+	}()
+	logs.Info("初始化Docker监控................OK!")
+
 }
