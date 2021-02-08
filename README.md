@@ -68,6 +68,13 @@ Docker是目前一种非常主流的容器化方案，支持非常多的特性�
 > + ubuntu系统下使用 `sudo apt-get install unzip`
 > + centos 下使用 `yum install -y unzip`
 
++ Docker 安装 (推荐👍🏻)
+
+```sh
+docker run  -d -p 8080:4050 -v /var/run/docker.sock:/var/run/docker.sock --name SimpleDocker  registry.cn-shanghai.aliyuncs.com/seven-tao/simple-docker:0.0.3
+// 浏览器访问 http://localhost:8080  
+```
+
 + Linux
 
 ```sh
@@ -90,12 +97,7 @@ chmod +x /tmp/deploy-simple-docker.sh
 # 暂不支持window系统
 ```
 
-+ Docker 安装
 
-```sh
-docker run  -d -p 8080:4050 -v /var/run/docker.sock:/var/run/docker.sock --name SimpleDocker  registry.cn-shanghai.aliyuncs.com/seven-tao/simple-docker:0.0.3
-// 浏览器访问 http://localhost:8080  
-```
 
 + 手动安装
 
