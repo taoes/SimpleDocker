@@ -3,62 +3,19 @@ package main
 import (
 	_ "SimpleDocker/routers"
 	"SimpleDocker/src/api"
-	"SimpleDocker/src/auth"
 	_ "SimpleDocker/src/auth"
+	"SimpleDocker/src/config"
 	_ "SimpleDocker/src/context"
-	"SimpleDocker/src/utils"
-	"encoding/json"
-	"errors"
 	"flag"
 	"github.com/astaxie/beego"
-	"github.com/astaxie/beego/context"
 	"github.com/astaxie/beego/logs"
-	"net/http"
 	"os"
 	"path/filepath"
 	"strconv"
-	"strings"
 )
 
-var port = flag.Int("port", 4050, "service port of simpleDocker  ")
-var resPath = flag.String("res", "static", "static resource path of simpleDocker and relative to simpleDocker exec file")
-
-// 跨域配置
-var beforeFilterHandleFunc = func(ctx *context.Context) {
-	origin := ctx.Input.Header("Origin")
-	ctx.Output.Header("Access-Control-Allow-Methods", "OPTIONS,DELETE,POST,GET,PUT,PATCH")
-	ctx.Output.Header("Access-Control-Max-Age", "3600")
-	ctx.Output.Header("Access-Control-Allow-Headers", "x-requested-with,X-Custom-Header,accept,Content-Type,Access-Token,authorization,responsetype")
-	ctx.Output.Header("Access-Control-Allow-Credentials", "true")
-	ctx.Output.Header("Access-Control-Allow-Origin", origin)
-
-	// options请求，返回200
-	if ctx.Input.Method() == http.MethodOptions {
-		ctx.Output.SetStatus(http.StatusOK)
-		_ = ctx.Output.Body([]byte("SUPPORT OPTIONS"))
-	} else {
-		url := ctx.Input.URL()
-		if url != "/api/system/login" && !strings.HasPrefix(url, "/ws") {
-			header := ctx.Input.Header("Authorization")
-			err := auth.ParseToken(header)
-			if header == "" || err != nil {
-				ctx.Output.Status = 403
-				respData := utils.PackageError(errors.New("无效的Token"))
-				marshal, _ := json.Marshal(respData)
-				_ = ctx.Output.Body(marshal)
-			}
-		} else if strings.HasPrefix(url, "/ws") {
-			header := ctx.Input.Query("token")
-			err := auth.ParseToken(header)
-			if header == "" || err != nil {
-				ctx.Output.Status = 403
-				respData := utils.PackageError(errors.New("无效的Token"))
-				marshal, _ := json.Marshal(respData)
-				_ = ctx.Output.Body(marshal)
-			}
-		}
-	}
-}
+var port = flag.Int("port", 4050, "服务启动端口,默认值 4050")
+var resPath = flag.String("res", "static", "静态资源的路径,默认值 static")
 
 func main() {
 	flag.Parse()
@@ -86,7 +43,7 @@ func main() {
 	beego.Include(&api.TerminalController{})
 
 	// 添加CORS 以及权限校验
-	beego.InsertFilter("/*", beego.BeforeRouter, beforeFilterHandleFunc)
+	beego.InsertFilter("/*", beego.BeforeRouter, config.Handler)
 
 	// 启动服务
 	beego.Run(":" + strconv.Itoa(*port))

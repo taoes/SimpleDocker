@@ -9,11 +9,11 @@ import (
 	"net"
 	"net/http"
 	"os"
+	"runtime"
 )
 
 var Ctx context.Context
 var Cli *client.Client
-var Httpc http.Client
 var systemConfig SystemConfig
 
 type SystemConfig struct {
@@ -25,10 +25,14 @@ func init() {
 
 	Ctx = context.Background()
 	Cli, err = client.NewClientWithOpts(client.FromEnv, client.WithAPIVersionNegotiation())
-	Httpc = http.Client{
+	_ = http.Client{
 		Transport: &http.Transport{
 			DialContext: func(_ context.Context, _, _ string) (net.Conn, error) {
-				return net.Dial("unix", "/var/run/docker.sock")
+				if runtime.GOOS == "darwin" || runtime.GOOS == "linux" {
+					return net.Dial("unix", "/var/run/docker.sock")
+				} else {
+					return net.Dial("unix", "/var/run/docker.sock")
+				}
 			},
 		},
 	}
@@ -52,12 +56,10 @@ func init() {
 	events, errors := Cli.Events(Ctx, op)
 	go func() {
 		for true {
-
 			select {
 			case event := <-events:
-				logs.Error("监控到Docker事件")
 				marshal, _ := json.Marshal(event)
-				logs.Info(string(marshal))
+				logs.Info("监控到Docker事件:%s", string(marshal))
 			case err := <-errors:
 				logs.Error("监控到Docker错误事件")
 				logs.Error(err)

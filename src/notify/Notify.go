@@ -1,1 +1,3 @@
 package notify
+
+func SendMessage() {}
