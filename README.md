@@ -133,6 +133,9 @@ yarn install && yarn server
 2. 启动应用后，浏览器访问 `http://localhost:4050` 打开应用
 3. 账户名：admin 密码: SimpleDocker2020 您可以在登录后修改密码
 
+> 目前存在一个BUG正在修复中，请在 `~/.local/simpleDocker` 目录下执行命令，否则可能报错
+
+
 ## 预览
 
 + Docker 信息
