@@ -9,20 +9,41 @@ import (
 	"net"
 	"net/http"
 	"os"
+	"path/filepath"
 	"runtime"
 )
 
 var Ctx context.Context
 var Cli *client.Client
-var systemConfig SystemConfig
+var Config SystemConfig
 
 type SystemConfig struct {
-	Dir string
+	HomeDir string `comment:"HOME 目录"`
+	ExecDir string `comment:"文件执行目录"`
 }
 
 func init() {
 	var err error
+	err = initContent()
+	if err != nil {
+		logs.Error("初始化Docker上下文失败")
+		logs.Error(err)
+		os.Exit(-1)
+	}
 
+	logs.Info("初始化Docker上下文................OK!")
+
+	reduceHomePath(Config)
+	reduceExecPath(Config)
+	logs.Info("推断运行目录信息  ................OK!")
+
+	monitorDockerEvent()
+	logs.Info("初始化Docker监控 ................OK!")
+
+}
+
+func initContent() error {
+	var err error
 	Ctx = context.Background()
 	Cli, err = client.NewClientWithOpts(client.FromEnv, client.WithAPIVersionNegotiation())
 	_ = http.Client{
@@ -36,24 +57,12 @@ func init() {
 			},
 		},
 	}
-	if err != nil {
-		logs.Error("初始化Docker上下文....FAIL!")
-		return
-	}
+	return err
+}
 
-	homeDir, err := os.Hostname()
-	if err != nil {
-		logs.Info("Home 目录获取失败....FAIL!")
-		homeDir = "/tmp"
-		return
-	}
-	homeDir = homeDir + "/.local/simpleDocker"
-	systemConfig.Dir = homeDir
-
-	logs.Info("初始化Docker上下文................OK!")
-
-	op := types.EventsOptions{}
-	events, errors := Cli.Events(Ctx, op)
+// 监控Docker事件
+func monitorDockerEvent() {
+	events, errors := Cli.Events(Ctx, types.EventsOptions{})
 	go func() {
 		for true {
 			select {
@@ -67,6 +76,26 @@ func init() {
 		}
 
 	}()
-	logs.Info("初始化Docker监控................OK!")
+}
 
+// 推断Home目录
+func reduceHomePath(config SystemConfig) {
+	homeDir, err := os.Hostname()
+	if err != nil {
+		logs.Info("Home 目录获取失败....FAIL!")
+		homeDir = "/tmp"
+	}
+	homeDir = homeDir + "/.local/simpleDocker"
+	config.HomeDir = homeDir
+}
+
+// 推断命令的目录
+func reduceExecPath(config SystemConfig) {
+	ex, err := os.Executable()
+	if err != nil {
+		logs.Error(err)
+		return
+	}
+	execDir := filepath.Dir(ex)
+	config.ExecDir = execDir
 }

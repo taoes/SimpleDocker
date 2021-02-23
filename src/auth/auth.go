@@ -16,7 +16,7 @@ import (
 
 // 配置文件位置
 var configLocation = "/.local/simpleDocker"
-var SIGN_NAME_SCERET = "SimpleDocker2020-SimpleDocker2020"
+var SignNameSceret = "SimpleDocker2020-SimpleDocker2020"
 
 func init() {
 	initConfig()
@@ -52,7 +52,7 @@ func GeneratorToken(name string) (string, error) {
 	claims["iat"] = time.Now().Unix()           //用作和exp对比的时间
 	token.Claims = claims
 
-	tokenString, err := token.SignedString([]byte(SIGN_NAME_SCERET))
+	tokenString, err := token.SignedString([]byte(SignNameSceret))
 	if err != nil {
 		return "", err
 	}
@@ -70,7 +70,7 @@ func ParseToken(tokenStr string) error {
 			return nil, fmt.Errorf("无效的Token: %v", token.Header["alg"])
 		}
 
-		return []byte(SIGN_NAME_SCERET), nil
+		return []byte(SignNameSceret), nil
 	})
 
 	if err != nil {

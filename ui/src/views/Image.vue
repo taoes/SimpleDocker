@@ -146,7 +146,7 @@
         </a-upload>
 
         <a-divider></a-divider>
-        <span style="color:darkslategray">导入结果: {{importResp}}</span>
+        <span style="color:darkslategray">导入结果: {{ importResp }}</span>
       </a-form-model>
     </a-modal>
 
@@ -166,7 +166,10 @@
         </a-form-model-item>
       </a-form-model>
 
-      <pre style="overflow-y: auto; overflow-x:auto;height: 300px;background-color: #EFEFEF">{{pullLog}}</pre>
+      <pre
+          style="overflow-y: auto; overflow-x:auto;height: 300px;background-color: #EFEFEF">{{
+          pullLog
+        }}</pre>
 
     </a-modal>
 
@@ -182,36 +185,36 @@
           <table class="configTable">
             <tr>
               <td class="tagTd">ID</td>
-              <td class="contentTd" align="left"> {{this.imageInfo.Id}}</td>
+              <td class="contentTd" align="left"> {{ this.imageInfo.Id }}</td>
             </tr>
             <tr v-if="this.imageInfo.Parent">
               <td class="tagTd">父级Id</td>
-              <td class="contentTd" align="left"> {{this.imageInfo.Parent}}</td>
+              <td class="contentTd" align="left"> {{ this.imageInfo.Parent }}</td>
             </tr>
             <tr>
               <td class="tagTd">镜像大小</td>
-              <td class="contentTd" align="left"> {{(this.imageInfo.Size / 1000000) .toFixed(2)}}
+              <td class="contentTd" align="left"> {{ (this.imageInfo.Size / 1000000).toFixed(2) }}
               </td>
             </tr>
 
             <tr>
               <td class="tagTd">镜像架构</td>
-              <td class="contentTd" align="left"> {{this.imageInfo.Architecture}}</td>
+              <td class="contentTd" align="left"> {{ this.imageInfo.Architecture }}</td>
             </tr>
 
             <tr>
               <td class="tagTd">镜像系统</td>
-              <td class="contentTd" align="left"> {{this.imageInfo.Os}}</td>
+              <td class="contentTd" align="left"> {{ this.imageInfo.Os }}</td>
             </tr>
 
             <tr>
               <td class="tagTd">镜像模式</td>
-              <td class="contentTd" align="left"> {{this.imageInfo.GraphDriver.Name}}</td>
+              <td class="contentTd" align="left"> {{ this.imageInfo.GraphDriver.Name }}</td>
             </tr>
 
             <tr>
               <td class="tagTd">构建版本</td>
-              <td class="contentTd" align="left"> {{this.imageInfo.DockerVersion}}</td>
+              <td class="contentTd" align="left"> {{ this.imageInfo.DockerVersion }}</td>
             </tr>
           </table>
         </a-collapse-panel>
@@ -220,31 +223,31 @@
           <table class="configTable">
             <tr v-if="this.imageInfo.Config.Host">
               <td class="tagTd">主机名</td>
-              <td class="contentTd" align="left"> {{this.imageInfo.Config.Host}}</td>
+              <td class="contentTd" align="left"> {{ this.imageInfo.Config.Host }}</td>
             </tr>
             <tr v-if="this.imageInfo.Config.Domainname">
               <td class="tagTd">域名</td>
-              <td class="contentTd" align="left"> {{this.imageInfo.Config.Domainname}}</td>
+              <td class="contentTd" align="left"> {{ this.imageInfo.Config.Domainname }}</td>
             </tr>
             <tr v-if="this.imageInfo.Config.ExposedPorts">
               <td class="tagTd">端口</td>
-              <td class="contentTd" align="left"> {{this.imageInfo.Config.ExposedPorts}}
+              <td class="contentTd" align="left"> {{ this.imageInfo.Config.ExposedPorts }}
               </td>
             </tr>
 
             <tr>
               <td class="tagTd">环境变量</td>
-              <td class="contentTd" align="left"> {{this.imageInfo.Config.Env}}</td>
+              <td class="contentTd" align="left"> {{ this.imageInfo.Config.Env }}</td>
             </tr>
 
             <tr>
               <td class="tagTd">入口命令</td>
-              <td class="contentTd" align="left"> {{this.imageInfo.Config.Cmd}}</td>
+              <td class="contentTd" align="left"> {{ this.imageInfo.Config.Cmd }}</td>
             </tr>
 
             <tr v-if="this.imageInfo.Config.WorkingDir">
               <td class="tagTd">工作目录</td>
-              <td class="contentTd" align="left"> {{this.imageInfo.Config.WorkingDir}}</td>
+              <td class="contentTd" align="left"> {{ this.imageInfo.Config.WorkingDir }}</td>
             </tr>
           </table>
         </a-collapse-panel>
@@ -255,191 +258,191 @@
 <script>
 
 
-  import {mapActions} from "vuex";
-  import imageApi from "../api/ImageApi";
-  import {guid, download} from '../utils/index'
-  import Config from '../api/Config'
+import {mapActions} from "vuex";
+import imageApi from "../api/ImageApi";
+import {guid, download} from '../utils/index'
+import Config from '../api/Config'
 
-  const columns = [
-    {
-      title: '镜像 Id',
-      key: 'imageId',
-      dataIndex: 'imageId',
-    },
-    {
-      title: '镜像 Tag',
-      dataIndex: 'rep',
-      key: 'rep',
-    },
+const columns = [
+  {
+    title: '镜像 Id',
+    key: 'imageId',
+    dataIndex: 'imageId',
+  },
+  {
+    title: '镜像 Tag',
+    dataIndex: 'rep',
+    key: 'rep',
+  },
 
-    {
-      title: '镜像大小',
-      dataIndex: 'size',
-      key: 'size',
-    },
-    {
-      title: '创建时间',
-      key: 'created',
-      dataIndex: 'created'
+  {
+    title: '镜像大小',
+    dataIndex: 'size',
+    key: 'size',
+  },
+  {
+    title: '创建时间',
+    key: 'created',
+    dataIndex: 'created'
 
-    },
-    {
-      title: '操作',
-      key: 'action',
-      scopedSlots: {customRender: 'action'},
-    },
-  ];
+  },
+  {
+    title: '操作',
+    key: 'action',
+    scopedSlots: {customRender: 'action'},
+  },
+];
 
-  export default {
-    data() {
-      return {
-        searchKey: '',
-        oldTag: '',
-        newTag: '',
-        showDetail: false,
-        currentImageId: '',
-        currentRep: '',
-        columns,
-        containerConfig: {
-          imageName: '',
-          containerName: '',
-          bindPort: '',
-          env: '',
-          volume: ''
-        },
-        importResp: '',
-        pullImageConfig: {imageName: '', auth: ''},
-        pullLog: '',
-        pulling: false,
-        importImageVisible: false,
-        pullImageVisible: false,
-        runImageVisible: false,
-        tagImageVisible: false,
-      };
-    }, mounted() {
-      this.updateImageList()
-    },
-    computed: {
-      uploadFileHeader: function () {
-        return {
-          "authorization": localStorage.token
-        }
+export default {
+  data() {
+    return {
+      searchKey: '',
+      oldTag: '',
+      newTag: '',
+      showDetail: false,
+      currentImageId: '',
+      currentRep: '',
+      columns,
+      containerConfig: {
+        imageName: '',
+        containerName: '',
+        bindPort: '',
+        env: '',
+        volume: ''
       },
-      imageList: function () {
-        let allImageList = this.$store.state.image.imageList;
-        if (this.searchKey === '' || this.searchKey.trim() === '') {
-          return allImageList
-        }
-        return allImageList
-        .filter(i => i.rep.indexOf(this.searchKey) >= 0 || i.imageId.indexOf(this.searchKey) >= 0)
-      }, imageInfo: function () {
-        return this.$store.state.image.imageInfo;
-      }, containerList: function () {
-        return this.$store.state.container.containerList;
+      importResp: '',
+      pullImageConfig: {imageName: '', auth: ''},
+      pullLog: '',
+      pulling: false,
+      importImageVisible: false,
+      pullImageVisible: false,
+      runImageVisible: false,
+      tagImageVisible: false,
+    };
+  }, mounted() {
+    this.updateImageList()
+  },
+  computed: {
+    uploadFileHeader: function () {
+      return {
+        "authorization": localStorage.token
       }
     },
-    methods: {
-      ...mapActions({
-        updateImageList: "updateImageList",
-        getImageInfo: "getImageInfo",
-        removeImage: "removeImage"
-      }),
-      getFileUploadLink() {
-        return `${Config.HOST}/api/image/import`
-      }, closeImportImageVisible() {
-        this.importImageVisible = false
-        this.updateImageList()
-      }, importStatusChange(event) {
-        let {file} = event;
-        if (file.status === 'done') {
-          this.$message.info(`文件:${file.name} 导入完毕`)
-          let {Data} = file.response
-          this.importResp = Data
-        }
-      }, searchKeyOnchange: function (e) {
-        this.searchKey = e.target.value
-      }, detail: function (imageId) {
-        this.showDetail = true;
-        this.currentImageId = imageId;
-        this.getImageInfo({imageId})
-      }, push: function (imageId) {
-        this.$message.warning("暂不支持推送镜像，请期待后续版本")
-      },
-      remove: function (imageId) {
-        let context = this;
-        this.$confirm({
-          title: `是否确认删除此镜像?`,
-          okText: '确认',
-          cancelText: '取消',
-          onOk: () => {
-            context.$axios.get(`/api/image/${imageId}/remove/false`).then(res => {
-              let data = res.data;
-              if (data.Code === 'OK') {
-                context.$message.info('镜像删除完成!');
-                this.updateImageList()
-              } else {
-                context.$confirm({
-                  title: `删除镜像失败，是否强制删除?`,
-                  content: data.Msg,
-                  okText: '确认',
-                  cancelText: '取消',
-                  onOk: () => this.forceRemove(imageId)
-                })
-              }
-            }).catch(e => {
-              this.$notification['error']({
-                message: '删除镜像失败',
-                description: "访问 Docker 镜像出现异常,请检查 Docker 服务是否正常启动",
-
-              });
-            })
-
-          },
-          class: 'test',
-        });
-
-      },
-      forceRemove: function (imageId) {
-        this.$axios.get(`/api/image/${imageId}/remove/true`).then(res => {
-              let {Code, Msg} = res.data;
-              if (Code === 'OK') {
-                this.$message.info('强制删除镜像完成!');
-                this.updateImageList()
-              } else {
-                this.$message.error(Msg);
-              }
+    imageList: function () {
+      let allImageList = this.$store.state.image.imageList;
+      if (this.searchKey === '' || this.searchKey.trim() === '') {
+        return allImageList
+      }
+      return allImageList
+      .filter(i => i.rep.indexOf(this.searchKey) >= 0 || i.imageId.indexOf(this.searchKey) >= 0)
+    }, imageInfo: function () {
+      return this.$store.state.image.imageInfo;
+    }, containerList: function () {
+      return this.$store.state.container.containerList;
+    }
+  },
+  methods: {
+    ...mapActions({
+      updateImageList: "updateImageList",
+      getImageInfo: "getImageInfo",
+      removeImage: "removeImage"
+    }),
+    getFileUploadLink() {
+      return `${Config.HOST}/api/image/import`
+    }, closeImportImageVisible() {
+      this.importImageVisible = false
+      this.updateImageList()
+    }, importStatusChange(event) {
+      let {file} = event;
+      if (file.status === 'done') {
+        this.$message.info(`文件:${file.name} 导入完毕`)
+        let {Data} = file.response
+        this.importResp = Data
+      }
+    }, searchKeyOnchange: function (e) {
+      this.searchKey = e.target.value
+    }, detail: function (imageId) {
+      this.showDetail = true;
+      this.currentImageId = imageId;
+      this.getImageInfo({imageId})
+    }, push: function (imageId) {
+      this.$message.warning("暂不支持推送镜像，请期待后续版本")
+    },
+    remove: function (imageId) {
+      let context = this;
+      this.$confirm({
+        title: `是否确认删除此镜像?`,
+        okText: '确认',
+        cancelText: '取消',
+        onOk: () => {
+          context.$axios.get(`/api/image/${imageId}/remove/false`).then(res => {
+            let data = res.data;
+            if (data.Code === 'OK') {
+              context.$message.info('镜像删除完成!');
+              this.updateImageList()
+            } else {
+              context.$confirm({
+                title: `删除镜像失败，是否强制删除?`,
+                content: data.Msg,
+                okText: '确认',
+                cancelText: '取消',
+                onOk: () => this.forceRemove(imageId)
+              })
             }
-        ).catch(e => {
-          this.$message.error("访问 Docker 镜像出现异常,请检查 Docker 服务是否正常启动");
-        })
-      },
-      reloadImageList: function () {
-        this.updateImageList()
-        this.$message.info('刷新镜像列表完成');
-      },
-      pullImage: function () {
-        this.pullImageVisible = true;
-      },
-      close: function (e) {
-        this.showDetail = false;
-      },
-      openNewContainerConfigModal: function (imageName) {
-        this.containerConfig.imageName = imageName;
-        this.runImageVisible = true;
-      },
-      callPullImageApi() {
-        if (this.pulling) {
-          this.$message.error("正在拉去镜像,请等待当前任务完成")
-          return;
-        }
+          }).catch(e => {
+            this.$notification['error']({
+              message: '删除镜像失败',
+              description: "访问 Docker 镜像出现异常,请检查 Docker 服务是否正常启动",
 
-        this.pulling = true
-        this.pullLog = "正在拉取镜像，请稍后！<br/> 具体时间取决于网络状态以及和镜像中心的连接速度..."
-        let imageName = this.pullImageConfig.imageName;
-        if (imageName.trim() === '') {
-          this.$message.error("镜像名称不能为空")
-          return
-        }
+            });
+          })
+
+        },
+        class: 'test',
+      });
+
+    },
+    forceRemove: function (imageId) {
+      this.$axios.get(`/api/image/${imageId}/remove/true`).then(res => {
+            let {Code, Msg} = res.data;
+            if (Code === 'OK') {
+              this.$message.info('强制删除镜像完成!');
+              this.updateImageList()
+            } else {
+              this.$message.error(Msg);
+            }
+          }
+      ).catch(e => {
+        this.$message.error("访问 Docker 镜像出现异常,请检查 Docker 服务是否正常启动");
+      })
+    },
+    reloadImageList: function () {
+      this.updateImageList()
+      this.$message.info('刷新镜像列表完成');
+    },
+    pullImage: function () {
+      this.pullImageVisible = true;
+    },
+    close: function (e) {
+      this.showDetail = false;
+    },
+    openNewContainerConfigModal: function (imageName) {
+      this.containerConfig.imageName = imageName;
+      this.runImageVisible = true;
+    },
+    callPullImageApi() {
+      if (this.pulling) {
+        this.$message.error("正在拉去镜像,请等待当前任务完成")
+        return;
+      }
+
+      this.pulling = true
+      this.pullLog = "正在拉取镜像，请稍后！<br/> 具体时间取决于网络状态以及和镜像中心的连接速度..."
+      let imageName = this.pullImageConfig.imageName;
+      if (imageName.trim() === '') {
+        this.$message.error("镜像名称不能为空")
+        return
+      }
 
         let key = guid()
         this.$message.loading({content: "正在拉取镜像，请稍后....", key, duration: 0})
@@ -506,61 +509,61 @@
           return
         }
 
-        let data = {
-          source: this.oldTag,
-          tag: this.newTag
-        }
-        this.$axios.get(`/api/image/tag`, {params: data})
-        .then((res) => {
-          let {Code, Msg} = res.data;
-          if (Code === 'OK') {
-            this.$message.info('标记镜像完成!');
-            this.tagImageVisible = false
-            this.updateImageList()
-          } else {
-            this.$message.warning(Msg);
-          }
-        })
-        .catch(e => {
-          this.$message.error("镜像标记失败,请检查 Docker 服务是否正常");
-        })
-      }, callPruneImageApi() {
-        imageApi.pruneImage().then(res => {
-          let {Code, Data} = res.data
-          if (Code === 'OK') {
-            this.$message.info(`精简镜像完成!!`);
-          }
-        })
+      let data = {
+        source: this.oldTag,
+        tag: this.newTag
       }
-
+      this.$axios.get(`/api/image/tag`, {params: data})
+      .then((res) => {
+        let {Code, Msg} = res.data;
+        if (Code === 'OK') {
+          this.$message.info('标记镜像完成!');
+          this.tagImageVisible = false
+          this.updateImageList()
+        } else {
+          this.$message.warning(Msg);
+        }
+      })
+      .catch(e => {
+        this.$message.error("镜像标记失败,请检查 Docker 服务是否正常");
+      })
+    }, callPruneImageApi() {
+      imageApi.pruneImage().then(res => {
+        let {Code, Data} = res.data
+        if (Code === 'OK') {
+          this.$message.info(`精简镜像完成!!`);
+        }
+      })
     }
+
   }
-  ;
+}
+;
 </script>
 
 <style scoped>
-  .ant-drawer-body {
-    padding: 0 !important;
-  }
+.ant-drawer-body {
+  padding: 0 !important;
+}
 
 
-  .configTable, .configTable tr th, .configTable tr td {
-    border: 1px solid lightgrey;
-  }
+.configTable, .configTable tr th, .configTable tr td {
+  border: 1px solid lightgrey;
+}
 
-  .configTable .tagTd {
-    width: 100px;
-  }
+.configTable .tagTd {
+  width: 100px;
+}
 
-  .configTable {
-    width: 100%;
-    margin-top: 20px;
-    text-align: center;
-    border-collapse: collapse;
-  }
+.configTable {
+  width: 100%;
+  margin-top: 20px;
+  text-align: center;
+  border-collapse: collapse;
+}
 
-  .contentTd {
-    overflow-wrap: anywhere;
-    padding: 5px 0 5px 10px;
-  }
+.contentTd {
+  overflow-wrap: anywhere;
+  padding: 5px 0 5px 10px;
+}
 </style>

@@ -20,7 +20,7 @@
 
           <a-tooltip>
             <template slot="title">删除未运行的容器</template>
-            <a-button html-type="reset" @click="callControlContainerApi('all','prune')">
+            <a-button html-type="reset" @click="cleanNotRunContainer('all')">
               <a-icon type="delete"></a-icon>
               精简
             </a-button>
@@ -165,7 +165,7 @@
           <p>启动参数: {{ containerInfo.Args }}</p>
           <p>容器状态: {{ containerInfo.State.Status }}</p>
           <p>存储驱动: {{ containerInfo.Driver }}</p>
-          <p>重启次数: {{ containerInfo.RestartCount }}</p>
+          <p>自动重启次数: {{ containerInfo.RestartCount }}</p>
         </a-collapse-panel>
 
         <a-collapse-panel key="webConfig" header="网络配置">
@@ -404,9 +404,7 @@ export default {
       let formatLog = ''
       formatLog = this.containerLog.replace('/\r\n/g', "<br/>")
       formatLog = formatLog.replace('\n/g', "<br/>");
-      formatLog = formatLog.replace('/\s/g', "&nbsp;");
-
-      return formatLog;
+      return formatLog.replace('/\s/g', "&nbsp;");
     }, connectNetworkList: function () {
       return Object.keys(this.containerNetworkInfo)
     }
@@ -465,16 +463,27 @@ export default {
       } else {
         this.$message.error(Msg);
       }
-
-    }, async callControlContainerApi(containerId, state) {
+    }, async cleanNotRunContainer(containerId) {
+      let that = this;
+      let state = 'prune';
+      let operateName = containerApi.getOperatorNameByState(state)
+      this.$confirm({
+        title: `${operateName}提示`,
+        content: '此操作将清空所有未处于运行中的容器，包含停止运行或者计划运行的容器，是否继续?',
+        okText: '好',
+        cancelText: '取消',
+        onOk() {
+          that.callControlContainerApi(containerId, state)
+        }
+      });
+    },
+    async callControlContainerApi(containerId, state) {
       if (!state) {
         return
       }
-      this.currentContainerId = containerId
       let operateName = containerApi.getOperatorNameByState(state)
       let key = guid()
-      let messageHide = this.$message.loading(
-          {content: `正在${operateName} 容器，请稍后.....`, key, duration: 0});
+      this.$message.loading({content: `正在${operateName} 容器，请稍后.....`, key, duration: 0});
       try {
         let res = await containerApi.controlContainer(containerId, state, operateName);
         let {Code, Msg} = res.data
@@ -571,7 +580,7 @@ export default {
 
       this.$confirm({
         title: '运行提示',
-        content: '目前文件管理仅支持基于 Linux/AM64 平台的容器,在使用前请确认容器是否是 Linux/AMD64 平台的容器，否则可能出现各种未知的错误 !!!',
+        content: '目前文件管理仅支持基于 Linux/64位 平台的容器,在使用前请确认容器是否是 Linux/64位平台的容器，否则可能出现各种未知的错误 !!!',
         okText: '确定',
         cancelText: '取消',
         onOk() {

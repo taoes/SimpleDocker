@@ -10,6 +10,8 @@ import (
 	"strings"
 )
 
+const WsPrefix = "/ws"
+
 // 跨域配置
 func Handler(ctx *context.Context) {
 	origin := ctx.Input.Header("Origin")
@@ -21,31 +23,31 @@ func Handler(ctx *context.Context) {
 	CheckAuth(ctx)
 }
 
+// 校验授权
 func CheckAuth(ctx *context.Context) {
-	// options请求，返回200
 	if ctx.Input.Method() == http.MethodOptions {
 		ctx.Output.SetStatus(http.StatusOK)
 		_ = ctx.Output.Body([]byte("SUPPORT OPTIONS"))
-	} else {
-		url := ctx.Input.URL()
-		if url != "/api/system/login" && !strings.HasPrefix(url, "/ws") {
-			header := ctx.Input.Header("Authorization")
-			err := auth.ParseToken(header)
-			if header == "" || err != nil {
-				ctx.Output.Status = 403
-				respData := utils.PackageError(errors.New("无效的Token"))
-				marshal, _ := json.Marshal(respData)
-				_ = ctx.Output.Body(marshal)
-			}
-		} else if strings.HasPrefix(url, "/ws") {
-			header := ctx.Input.Query("token")
-			err := auth.ParseToken(header)
-			if header == "" || err != nil {
-				ctx.Output.Status = 403
-				respData := utils.PackageError(errors.New("无效的Token"))
-				marshal, _ := json.Marshal(respData)
-				_ = ctx.Output.Body(marshal)
-			}
+		return
+	}
+	url := ctx.Input.URL()
+	if url != "/api/system/login" && !strings.HasPrefix(url, WsPrefix) {
+		header := ctx.Input.Header("Authorization")
+		err := auth.ParseToken(header)
+		if header == "" || err != nil {
+			ctx.Output.Status = 403
+			respData := utils.PackageError(errors.New("无效的Token"))
+			marshal, _ := json.Marshal(respData)
+			_ = ctx.Output.Body(marshal)
+		}
+	} else if strings.HasPrefix(url, WsPrefix) {
+		header := ctx.Input.Query("token")
+		err := auth.ParseToken(header)
+		if header == "" || err != nil {
+			ctx.Output.Status = 403
+			respData := utils.PackageError(errors.New("无效的Token"))
+			marshal, _ := json.Marshal(respData)
+			_ = ctx.Output.Body(marshal)
 		}
 	}
 }

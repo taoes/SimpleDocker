@@ -8,6 +8,7 @@ import (
 	"fmt"
 	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/logs"
+	"io"
 	"strconv"
 	"strings"
 	"time"
@@ -105,10 +106,8 @@ func (c *ImageController) PullImage() {
 	image, err := docker.PullImage(refStr)
 	if err != nil {
 	}
-	buf := new(bytes.Buffer)
-	_, _ = buf.ReadFrom(image)
-	c.Data["json"] = utils.PackageData(buf.String())
-	c.ServeJSON()
+	defer image.Close()
+	io.Copy(c.Ctx.Output.Context.ResponseWriter, image)
 }
 
 // @router /api/image/push [get]
