@@ -159,17 +159,17 @@
           <a-input v-model="pullImageConfig.imageName"/>
         </a-form-model-item>
 
-        <a-form-model-item label="授权">
+        <a-form-model-item label="授权" style="display: none">
           <a-select v-model="pullImageConfig.auth">
             <a-select-option value="无">无</a-select-option>
           </a-select>
         </a-form-model-item>
       </a-form-model>
 
-      <pre
+      <div
           style="overflow-y: auto; overflow-x:auto;height: 300px;background-color: #EFEFEF">{{
           pullLog
-        }}</pre>
+        }}</div>
 
     </a-modal>
 
@@ -435,7 +435,6 @@ export default {
         this.$message.error("正在拉去镜像,请等待当前任务完成")
         return;
       }
-
       this.pulling = true
       this.pullLog = "正在拉取镜像，请稍后！<br/> 具体时间取决于网络状态以及和镜像中心的连接速度..."
       let imageName = this.pullImageConfig.imageName;
@@ -444,70 +443,67 @@ export default {
         return
       }
 
-        let key = guid()
-        this.$message.loading({content: "正在拉取镜像，请稍后....", key, duration: 0})
-        this.$axios.get(`/api/image/pull?refStr=${imageName}`)
-        .then(res => {
-          let {Data, Code, Msg} = res.data
-          if (Code === 'OK') {
-            this.pullLog = Data
-            this.$message.info({content: "拉取镜像完成", key})
-          } else {
-            this.pullLog = Msg
-            this.$message.warning({content: Msg, key})
-          }
-        }).catch(e => {
-          this.$message.error({content: '网络访问失败，请检查服务是否正常启动', key})
-          this.pullLog = "网络访问失败，请检查服务是否正常启动"
-        })
-        this.pulling = false
-      },
-      exportImg: function (imageId, imageTag) {
-        let key = guid()
-        this.$message.loading({content: "正在导出镜像，请稍后....", key, duration: 0});
-        let config = {
-          withCredentials: true,
-          timeout: 600000
-        }
-        this.$axios.create(config).post(
-            `/api/image/save`,
-            {imageTag, imageId},
-            {responseType: 'blob'}
-        ).then(
-            (res) => {
-              download(res.data, `${imageId}.tar.gz`)
-              this.$message.info({content: "镜像已成功导出并下载....", key});
-            })
-        .catch(e => {
-          console.error(e);
-          this.$message.error({content: "镜像导出失败,请检查 Docker 服务是否正常", key});
-        })
-      },
-      openReTagModal: function (oldTag) {
-        this.tagImageVisible = true
-        this.oldTag = oldTag
-      },
-      async callRunNewContainerApi() {
-        let res = await imageApi.runNewContainer(this.containerConfig)
-        let {Code, Msg} = res.data
-        if (Code === 'OK') {
-          this.$message.info('新的容器启动完成!');
-          this.runImageVisible = false;
-        } else {
-          this.$message.error(Msg);
-        }
-      },
-      callReTagApi: function () {
-        if (this.newTag === '' || this.newTag.trim() === '') {
-          this.tagImageVisible = false
-          this.$message.warning("新的镜像tag 不能为空字符串");
-          return
-        }
-        if (this.newTag.trim() === this.oldTag.trim()) {
-          this.tagImageVisible = false
-          this.$message.warning("新的镜像tag不能和原镜像重复");
-          return
-        }
+      let key = guid()
+      this.$message.loading({content: "正在拉取镜像，请稍后....", key, duration: 0})
+      this.$axios.get(`/api/image/pull?refStr=${imageName}`,
+          {headers: {'Accept': '*/*', 'Content-Type': 'application/x-www-form-urlencoded'}})
+      .then(res => {
+        let data = res.data
+        this.pullLog = this.pullLog + data;
+        this.$message.info({content: '镜像获取完成', key})
+      }).catch(e => {
+        this.$message.error({content: '网络访问失败，请检查服务是否正常启动', key})
+        this.pullLog = "网络访问失败，请检查服务是否正常启动"
+      })
+      this.pulling = false
+    },
+    exportImg: function (imageId, imageTag) {
+      let key = guid()
+      let token = localStorage.token;
+      this.$message.loading({content: "正在导出镜像，请稍后....", key, duration: 0});
+      let config = {
+        withCredentials: true,
+        timeout: 600000,
+        responseType: 'blob', headers: {Authorization: token}
+      }
+      this.$axios.create(config).post(
+          `/api/image/save`,
+          {imageTag, imageId},
+      ).then(
+          (res) => {
+            download(res.data, `${imageId}.tar.gz`)
+            this.$message.info({content: "镜像已成功导出并下载....", key});
+          })
+      .catch(e => {
+        console.error(e);
+        this.$message.error({content: "镜像导出失败,请检查 Docker 服务是否正常", key});
+      })
+    },
+    openReTagModal: function (oldTag) {
+      this.tagImageVisible = true
+      this.oldTag = oldTag
+    },
+    async callRunNewContainerApi() {
+      let res = await imageApi.runNewContainer(this.containerConfig)
+      let {Code, Msg} = res.data
+      if (Code === 'OK') {
+        this.$message.info('新的容器启动完成!');
+        this.runImageVisible = false;
+      } else {
+        this.$message.error(Msg);
+      }
+    },
+    callReTagApi: function () {
+      if (this.newTag === '' || this.newTag.trim() === '') {
+        this.tagImageVisible = false
+        this.$message.warning("新的镜像tag 不能为空字符串");
+        return
+      }
+      if (this.newTag.trim() === this.oldTag.trim()) {
+        this.tagImageVisible = false
+        this.$message.warning("新的镜像tag不能和原镜像重复");
+        return
+      }
 
       let data = {
         source: this.oldTag,
