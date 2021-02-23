@@ -33,8 +33,8 @@ func init() {
 
 	logs.Info("初始化Docker上下文................OK!")
 
-	reduceHomePath(Config)
-	reduceExecPath(Config)
+	reduceHomePath(&Config)
+	reduceExecPath(&Config)
 	logs.Info("推断运行目录信息  ................OK!")
 
 	monitorDockerEvent()
@@ -79,8 +79,8 @@ func monitorDockerEvent() {
 }
 
 // 推断Home目录
-func reduceHomePath(config SystemConfig) {
-	homeDir, err := os.Hostname()
+func reduceHomePath(config *SystemConfig) {
+	homeDir, err := os.UserHomeDir()
 	if err != nil {
 		logs.Info("Home 目录获取失败....FAIL!")
 		homeDir = "/tmp"
@@ -90,7 +90,7 @@ func reduceHomePath(config SystemConfig) {
 }
 
 // 推断命令的目录
-func reduceExecPath(config SystemConfig) {
+func reduceExecPath(config *SystemConfig) {
 	ex, err := os.Executable()
 	if err != nil {
 		logs.Error(err)

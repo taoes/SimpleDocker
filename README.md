@@ -71,33 +71,9 @@ Docker是目前一种非常主流的容器化方案，支持非常多的特性�
 + Docker 安装 (推荐👍🏻)
 
 ```sh
-docker run  -d -p 8080:4050 -v /var/run/docker.sock:/var/run/docker.sock --name SimpleDocker  registry.cn-shanghai.aliyuncs.com/seven-tao/simple-docker:0.0.3
+docker run  -d -p 8080:4050 -v /var/run/docker.sock:/var/run/docker.sock --name SimpleDocker  registry.cn-hangzhou.aliyuncs.com/seven-tao/simple-docker:0.0.4
 // 浏览器访问 http://localhost:8080  
 ```
-
-+ Linux
-
-```sh
-curl 'https://gitee.com/taoes_admin/SimpleDocker/raw/master/script/linux-deploy.sh' > /tmp/deploy-simple-docker.sh
-chmod +x /tmp/deploy-simple-docker.sh
-/tmp/deploy-simple-docker.sh
-```
-
-+ MacOS
-
-```sh
-curl 'https://gitee.com/taoes_admin/SimpleDocker/raw/master/script/darwin-deploy.sh' > /tmp/deploy-simple-docker.sh
-chmod +x /tmp/deploy-simple-docker.sh
-/tmp/deploy-simple-docker.sh
-```
-
-+ Windows
-
-```shell script
-# 暂不支持window系统
-```
-
-
 
 + 手动安装
 

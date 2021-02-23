@@ -105,9 +105,10 @@ func (c *ImageController) PullImage() {
 	refStr = strings.Trim(refStr, " ")
 	image, err := docker.PullImage(refStr)
 	if err != nil {
+		_, _ = io.Copy(c.Ctx.Output.Context.ResponseWriter, strings.NewReader(err.Error()))
+	} else {
+		_, _ = io.Copy(c.Ctx.Output.Context.ResponseWriter, image)
 	}
-	defer image.Close()
-	io.Copy(c.Ctx.Output.Context.ResponseWriter, image)
 }
 
 // @router /api/image/push [get]

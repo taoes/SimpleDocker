@@ -29,7 +29,7 @@ if [ $? -ne 0 ]; then
 fi
 }
 
-
+rm ./App  ./SimpleDocker
 buildFe
 buildForLinux
-buildForDrawin
+#buildForDrawin
