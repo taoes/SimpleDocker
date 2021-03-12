@@ -50,6 +50,11 @@ const routes = [
         component: () => import('../views/Image.vue')
       },
       {
+        path: '/content/container_create',
+        name: 'Container',
+        component: () => import('../views/CreateContainer.vue')
+      },
+      {
         path: '/content/container',
         name: 'Container',
         component: () => import('../views/Container.vue')

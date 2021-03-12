@@ -3,6 +3,7 @@ package api
 import (
 	"SimpleDocker/src/api/model"
 	"SimpleDocker/src/auth"
+	"SimpleDocker/src/db"
 	"SimpleDocker/src/docker"
 	"SimpleDocker/src/utils"
 	"crypto/md5"
@@ -50,13 +51,17 @@ func (c *LoginController) SystemLogin() {
 		return
 	}
 
-	authInfo, _ := auth.ReadAuthFile()
-	passwordMd5 := fmt.Sprintf("%X", md5.Sum([]byte(password+"+"+authInfo.SaltValue)))
-	if name == authInfo.Username && passwordMd5 == authInfo.Password {
+	passwordConfig := db.Read("password")
+	saltValue := db.Read("saltValue")
+
+	passwordMd5 := fmt.Sprintf("%X", md5.Sum([]byte(password+"+"+saltValue)))
+	if name == "admin" && passwordMd5 == passwordConfig {
 		token, _ := auth.GeneratorToken(name)
 		c.Data["json"] = utils.PackageData(token)
+		db.Write("token", token)
 	} else {
 		c.Data["json"] = utils.PackageErrorMsg("账号或密码错误")
+		db.Del("token")
 	}
 	c.ServeJSON()
 }
@@ -65,6 +70,7 @@ func (c *LoginController) SystemLogin() {
 func (c *LoginController) SystemLogout() {
 	c.DestroySession()
 	c.Data["json"] = utils.PackageData("退出成功")
+	db.Del("token")
 	c.ServeJSON()
 }
 

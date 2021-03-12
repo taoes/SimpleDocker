@@ -6,6 +6,7 @@ import (
 	_ "SimpleDocker/src/auth"
 	"SimpleDocker/src/config"
 	context "SimpleDocker/src/context"
+	_ "SimpleDocker/src/db"
 	"flag"
 	"github.com/astaxie/beego"
 	"strconv"
