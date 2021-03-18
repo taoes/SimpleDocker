@@ -9,7 +9,6 @@
         </a-input>
       </a-form-item>
 
-
       <a-form-item>
         <a-space>
           <a-button @click="reloadVolumeList">
@@ -25,7 +24,7 @@
 
           <a-tooltip>
             <template slot="title">清空无用卷</template>
-            <a-button @click="openPruneVolumeModal = true">
+            <a-button @click="openPruneVolumeModal = true" type="danger">
               <a-icon type="delete"></a-icon>
               精简
             </a-button>
@@ -34,7 +33,7 @@
       </a-form-item>
     </a-form>
 
-    <a-table :columns="columns" :data-source="volumeList" style="margin-top: 30px">
+    <a-table :columns="columns" :data-source="volumeList" size="small" :scroll="{ x: true }" style="margin-top: 30px">
     <span slot="action" slot-scope="text, record">
       <a-space>
         <a-tooltip>
@@ -162,6 +161,8 @@ const columns = [
   {
     title: '操作',
     key: 'action',
+    fixed: 'right',
+    width: '50px',
     scopedSlots: {customRender: 'action'},
   },
 ];

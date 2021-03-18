@@ -63,6 +63,10 @@ func OperatorContainer(containerId string, operator string) error {
 	}
 }
 
+func RenameContainer(containerId string, newName string) error {
+	return context.Cli.ContainerRename(context.Ctx, containerId, newName)
+}
+
 /** 移除容器 */
 func RemoveContainer(containerId string, options types.ContainerRemoveOptions) error {
 	return context.Cli.ContainerRemove(context.Ctx, containerId, options)

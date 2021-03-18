@@ -90,6 +90,20 @@ func (c *ContainerController) StartContainer(containerId string, operator string
 	c.ServeJSON()
 }
 
+/** 启动/重启/停止/暂停/清空 容器 */
+// @router /api/container/:containerId/rename/:newName [get]
+func (c *ContainerController) RenameContainer(containerId string, newName string) {
+	err := docker.RenameContainer(containerId, newName)
+	if err != nil {
+		c.Data["json"] = utils.PackageError(err)
+		c.ServeJSON()
+		return
+	}
+
+	c.Data["json"] = utils.Success()
+	c.ServeJSON()
+}
+
 /** 移除容器 */
 // @router /api/container/:containerId/delete [get]
 func (c *ContainerController) RemoveContainer(containerId string) {

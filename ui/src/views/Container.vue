@@ -9,23 +9,19 @@
         </a-input>
       </a-form-item>
 
-
       <a-form-item>
         <a-space>
           <a-button html-type="reset" @click="reloadContainer">
             <a-icon type="reload"></a-icon>
             刷新
           </a-button>
-
-
           <a-tooltip>
             <template slot="title">删除未运行的容器</template>
-            <a-button html-type="reset" @click="cleanNotRunContainer('all')">
+            <a-button html-type="reset" @click="cleanNotRunContainer('all')" type="danger">
               <a-icon type="delete"></a-icon>
               精简
             </a-button>
           </a-tooltip>
-
 
           <a-checkbox v-model="onlyRunContainer" @change="onlyRunContainerChanged">
             仅显示运行中的容器
@@ -33,10 +29,20 @@
         </a-space>
       </a-form-item>
     </a-form>
-    <a-table :columns="columns" :data-source="containerList" style="margin-top: 30px">
-    <span slot="action" slot-scope="text, record">
-      <a-space>
+    <a-table :columns="columns" :data-source="containerList" style="margin-top: 30px" size="small"
+             :scroll="{ x: true }">
 
+      <template slot="containerName" slot-scope="text, record">
+        <EditCell :text="record.containerName"
+                  @change="onContainerNameChange(record.containerName, record.containerLongId, $event)"/>
+      </template>
+
+      <template slot="imageName" slot-scope="text,record">
+        {{ record.imageName }}
+      </template>
+
+      <span slot="action" slot-scope="text, record">
+      <a-space>
         <template v-if="['已停止','已创建'].indexOf(record.state) !==-1">
           <a-tooltip>
             <template slot="title">启动</template>
@@ -46,7 +52,6 @@
 
           <a-divider type="vertical"></a-divider>
         </template>
-
 
         <template v-if="['暂停中'].indexOf(record.state) !==-1">
           <a-tooltip>
@@ -149,7 +154,6 @@
       </a-space>
     </span>
     </a-table>
-
 
     <!--    侧边栏-->
     <a-drawer
@@ -315,35 +319,45 @@ const columns = [
     dataIndex: 'containerId',
   },
   {
-    title: '容器名称',
+    title: '名称',
     dataIndex: 'containerName',
     key: 'containerName',
+    width: '300px',
+    scopedSlots: {customRender: 'containerName'},
   },
 
   {
     title: '镜像',
     dataIndex: 'imageName',
     key: 'imageName',
+    scopedSlots: {customRender: 'imageName'},
   },
   {
     title: '状态',
     dataIndex: 'state',
+    width: '60px',
     key: 'state',
   },
   {
     title: '创建时间',
     key: 'created',
+    width: '180px',
     dataIndex: 'created'
 
   },
   {
     title: '操作',
     key: 'action',
+    width: '50px',
+    fixed: 'right',
     scopedSlots: {customRender: 'action'},
   },
 ];
+import EditCell from "@/components/EditCell";
+import ContainerApi from '../api/ContainerApi'
 
 export default {
+  components: {EditCell},
   data() {
     return {
       form: {},
@@ -359,7 +373,8 @@ export default {
       onlyRunContainer: false,
       remove: {volume: true, link: false, force: true}
     };
-  }, computed: {
+  },
+  computed: {
     containerList() {
       let allContainer = this.$store.state.container.containerList;
       if (this.searchKey !== '' && this.searchKey.trim() !== '') {
@@ -375,15 +390,19 @@ export default {
         return allContainer;
       }
 
-    }, containerInfo: function () {
+    },
+    containerInfo: function () {
       return this.$store.state.container.containerInfo
-    }, containerMountInfo: function () {
+    },
+    containerMountInfo: function () {
       let mounts = this.containerInfo.Mounts;
       return !mounts ? [] : mounts;
-    }, containerNetworkInfo: function () {
+    },
+    containerNetworkInfo: function () {
       let settings = this.containerInfo.NetworkSettings;
       return !settings ? {} : settings.Networks;
-    }, containerPorts: function () {
+    },
+    containerPorts: function () {
       let portMapping = []
       let {PortBindings} = this.$store.state.container.containerInfo.HostConfig
       if (!PortBindings) {
@@ -405,7 +424,8 @@ export default {
       formatLog = this.containerLog.replace('/\r\n/g', "<br/>")
       formatLog = formatLog.replace('\n/g', "<br/>");
       return formatLog.replace('/\s/g', "&nbsp;");
-    }, connectNetworkList: function () {
+    },
+    connectNetworkList: function () {
       return Object.keys(this.containerNetworkInfo)
     }
   },
@@ -416,7 +436,12 @@ export default {
       updateContainerList: 'updateContainerList',
       updateContainerInfo: 'updateContainerInfo',
       updateNetworkList: 'updateNetworkList'
-    }), onSearchKeyChange: function (e) {
+    }), onContainerNameChange: function (containerName, containerId, containerNewName) {
+      if (containerNewName === containerName) {
+        return
+      }
+      ContainerApi.renameContainer(containerId, containerNewName)
+    }, onSearchKeyChange: function (e) {
       this.searchKey = e.target.value;
     }, openDetail: function (containerId) {
       this.showContainerDetail = true;
@@ -514,9 +539,9 @@ export default {
             download(res.data, `${containerId}.tar.gz`)
             this.$message.info({content: "容器已成功导出并下载....", key});
           })
-      .catch(e => {
-        this.$message.error({content: "容器导出失败,请检查 Docker 服务是否正常", key});
-      })
+          .catch(e => {
+            this.$message.error({content: "容器导出失败,请检查 Docker 服务是否正常", key});
+          })
     }, openNetworkConnectModal(containerId) {
       this.connectNetworkConnectModal = true
       this.updateContainerInfo(containerId)
@@ -526,15 +551,15 @@ export default {
       let operatorName = operator === 'connect' ? '连接' : '断开'
       this.$axios.get(
           `/api/network/${networkId}/container/${this.currentContainerId}/${operator}`)
-      .then(res => {
-        let {Code, Msg} = res.data;
-        if (Code === 'OK') {
-          this.$message.info(`${operatorName} 网络完成！`)
-        } else {
-          this.$message.warning(`${operatorName} 失败,${Msg}`)
-        }
-        this.updateContainerInfo(this.currentContainerId)
-      }).catch(e => {
+          .then(res => {
+            let {Code, Msg} = res.data;
+            if (Code === 'OK') {
+              this.$message.info(`${operatorName} 网络完成！`)
+            } else {
+              this.$message.warning(`${operatorName} 失败,${Msg}`)
+            }
+            this.updateContainerInfo(this.currentContainerId)
+          }).catch(e => {
         this.$message.error({content: `${operatorName} 网络 失败, 请检查 Docker 服务是否正常`});
       })
     }, openTerminal(state, containerId) {

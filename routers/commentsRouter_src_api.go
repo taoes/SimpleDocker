@@ -96,6 +96,18 @@ func init() {
 
     beego.GlobalControllerRouter["SimpleDocker/src/api:ContainerController"] = append(beego.GlobalControllerRouter["SimpleDocker/src/api:ContainerController"],
         beego.ControllerComments{
+            Method: "RenameContainer",
+            Router: "/api/container/:containerId/rename/:newName",
+            AllowHTTPMethods: []string{"get"},
+            MethodParams: param.Make(
+				param.New("containerId", param.InPath),
+				param.New("newName", param.InPath),
+			),
+            Filters: nil,
+            Params: nil})
+
+    beego.GlobalControllerRouter["SimpleDocker/src/api:ContainerController"] = append(beego.GlobalControllerRouter["SimpleDocker/src/api:ContainerController"],
+        beego.ControllerComments{
             Method: "CreateNewContainer",
             Router: "/api/container/run",
             AllowHTTPMethods: []string{"get"},
