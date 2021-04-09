@@ -40,7 +40,6 @@
           </a-menu-item>
         </a-sub-menu>
 
-
         <a-menu-item key="https://www.zhoutao123.com" class="right">
           <a-icon type="book" theme="filled"/>
           博客
@@ -84,109 +83,97 @@
   </a-layout>
 </template>
 <script>
-  import PCMenu from "../components/PCMenu";
-  import ResetPassword from "../components/ResetPassword";
-  import AuthApi from "../api/AuthApi";
+import PCMenu from "../components/PCMenu";
+import ResetPassword from "../components/ResetPassword";
+import AuthApi from "../api/AuthApi";
 
-  let intervalId = null
+let intervalId = null
 
-  export default {
-    components: {ResetPassword, PCMenu},
-    data() {
-      return {
-        collapsed: false,
-        apiState: true,
-        showResetPasswordModal: false,
-        updatePasswordForm: {
-          oP: '',
-          nP: '',
-          cP: ''
-        }
-      };
-    }, mounted() {
-      setInterval(this.updateApiState, 5000);
-    }, beforeDestroy() {
-      if (intervalId != null) {
-        console.log("清除定时器")
-        clearInterval(intervalId)
+export default {
+  components: {ResetPassword, PCMenu},
+  data() {
+    return {
+      collapsed: false,
+      apiState: true,
+      showResetPasswordModal: false,
+      updatePasswordForm: {
+        oP: '',
+        nP: '',
+        cP: ''
       }
-    }, methods: {
-      updateApiState: function () {
-        this.$axios.get('/api/docker/ping').then((res) => {
-          let {Code} = res.data;
-          this.apiState = Code === 'OK';
-        }).catch(() => {
-          this.apiState = false;
-        });
-      },
-      linkSelect: function ({key}) {
-        if (key && key.startsWith("no")) {
-          return
-        }
-        if (key === 'logout') {
-          localStorage.setItem('token', '')
-          this.$router.push("/")
-        } else if (key === 'updatePassword') {
-          this.showResetPasswordModal = true
-        } else {
-          window.open(key, '_target')
-
-        }
-      }, callResetPassword() {
-        AuthApi.resetPassword(this.updatePasswordForm)
-        .then(res => {
-          let {Code} = res.data
-          if (Code === 'OK') {
-            this.showResetPasswordModal = false
-            this.$message.info("密码更新成功，请退出重新登录!")
-            localStorage.setItem("token", "")
-            this.$router.push("/")
-          }
-        })
+    };
+  }, mounted() {
+    setInterval(this.updateApiState, 5000);
+  }, beforeDestroy() {
+    if (intervalId != null) {
+      console.log("清除定时器")
+      clearInterval(intervalId)
+    }
+  }, methods: {
+    updateApiState: function () {
+      this.$axios.get('/api/docker/ping').then((res) => {
+        let {Code} = res.data;
+        this.apiState = Code === 'OK';
+      }).catch(() => {
+        this.apiState = false;
+      });
+    },
+    linkSelect: function ({key}) {
+      if (key && key.startsWith("no")) {
+        return
       }
+      if (key === 'logout') {
+        localStorage.setItem('token', '')
+        this.$router.push("/")
+      } else if (key === 'updatePassword') {
+        this.showResetPasswordModal = true
+      } else {
+        alert("新连接" + key)
+        window.open(key, '_target')
+      }
+    }, callResetPassword() {
+      AuthApi.resetPassword(this.updatePasswordForm)
+          .then(res => {
+            let {Code} = res.data
+            if (Code === 'OK') {
+              this.showResetPasswordModal = false
+              this.$message.info("密码更新成功，请退出重新登录!")
+              localStorage.setItem("token", "")
+              this.$router.push("/")
+            }
+          })
     }
   }
-  ;
+}
+;
 </script>
 
 <style scoped>
-  .ant-layout {
-    height: 100%;
-  }
+.ant-layout {
+  height: 100%;
+}
 
-  #components-layout-demo-top-side-2 .logo {
-    width: 120px;
-    height: 31px;
+#components-layout-demo-top-side-2 .logo {
+  width: 120px;
+  height: 31px;
 
-    float: left;
-  }
+  float: left;
+}
 
-  .layoutContent {
-    background: #fff;
-    padding: 24px;
-    margin: 0;
-    minHeight: '280px';
-  }
+.layoutContent {
+  background: #fff;
+  padding: 24px;
+  margin: 0;
+  minHeight: '280px';
+}
 
-  .right {
-    float: right;
-  }
-
-  .apiStateNormal {
-    float: right;
-    color: green !important;;
-    font-weight: bold
-  }
-
-  .apiStateError {
-    float: right;
-    color: red !important;
-    font-weight: bold
-  }
+.right {
+  float: right;
+}
 
 
-  .input {
-    margin-top: 20px;
-  }
+.input {
+  margin-top: 20px;
+}
 
 </style>

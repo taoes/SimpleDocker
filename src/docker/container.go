@@ -6,6 +6,7 @@ import (
 	"github.com/docker/docker/api/types"
 	"github.com/docker/docker/api/types/container"
 	"github.com/docker/docker/api/types/filters"
+	"github.com/docker/docker/api/types/network"
 	"github.com/docker/go-connections/nat"
 	"io"
 	"time"
@@ -25,7 +26,10 @@ func NewContainer(imageName string, containerName string, env []string, portBind
 	imageConfig := container.Config{Image: imageName, Env: env}
 
 	hostConfig := container.HostConfig{PortBindings: portBinding, Binds: pathBind}
-	resp, err := context.Cli.ContainerCreate(context.Ctx, &imageConfig, &hostConfig, nil, nil, containerName)
+	networkConfig := network.NetworkingConfig{}
+
+
+	resp, err := context.Cli.ContainerCreate(context.Ctx, &imageConfig, &hostConfig, &networkConfig, nil, containerName)
 	if err != nil {
 		_ = RemoveContainer(resp.ID, types.ContainerRemoveOptions{Force: true})
 		return "", err

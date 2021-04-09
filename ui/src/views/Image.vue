@@ -37,7 +37,7 @@
         </a-space>
       </a-form-item>
     </a-form>
-    <a-table :columns="columns" :data-source="imageList"
+    <a-table :columns="imageColumns" :data-source="imageList"
              size="small"
              :scroll="{ x: true }"
              style="margin-top: 30px">
@@ -47,7 +47,7 @@
         <a-tooltip>
             <template slot="title">启动镜像</template>
             <a-icon type="play-circle" style="color: #52c41a;font-size: 18px"
-                    @click="openCreateContainerGuide(record.rep)"/>
+                    @click="openCreateContainerGuide(record)"/>
         </a-tooltip>
 
         <a-divider type="vertical"></a-divider>
@@ -107,7 +107,7 @@
         </a-form-item>
       </a-form>
     </a-modal>
-    
+
     <a-modal v-model="importImageVisible" title="导入新的镜像" okText="导入" cancelText="取消"
              :footer="null"
              @ok="closeImportImageVisible()">
@@ -236,38 +236,7 @@ import imageApi from "../api/ImageApi";
 import {guid, download} from '../utils/index'
 import Config from '../api/Config'
 
-const columns = [
-  {
-    title: '镜像 Id',
-    key: 'imageId',
-    fixed: 'left',
-    dataIndex: 'imageId',
-  },
-  {
-    title: '镜像 Tag',
-    dataIndex: 'rep',
-    key: 'rep',
-  },
-
-  {
-    title: '镜像大小',
-    dataIndex: 'size',
-    key: 'size',
-  },
-  {
-    title: '创建时间',
-    key: 'created',
-    dataIndex: 'created'
-
-  },
-  {
-    title: '操作',
-    key: 'action',
-    fixed: 'right',
-    width: '50px',
-    scopedSlots: {customRender: 'action'},
-  },
-];
+const {imageColumns} = require('../utils/TableModelDefine')
 
 export default {
   data() {
@@ -278,7 +247,7 @@ export default {
       showDetail: false,
       currentImageId: '',
       currentRep: '',
-      columns,
+      imageColumns,
       containerConfig: {
         imageName: '',
         containerName: '',
@@ -303,8 +272,7 @@ export default {
       return {
         "authorization": localStorage.token
       }
-    },
-    imageList: function () {
+    }, imageList: function () {
       let allImageList = this.$store.state.image.imageList;
       if (this.searchKey === '' || this.searchKey.trim() === '') {
         return allImageList
@@ -402,10 +370,11 @@ export default {
     close: function (e) {
       this.showDetail = false;
     },
-    openCreateContainerGuide: function (imageName) {
+    openCreateContainerGuide: function (record) {
+      let {rep: imageName, imageId} = record;
       this.containerConfig.imageName = imageName;
       this.runImageVisible = true;
-      this.$router.push(`/content/container_create?imageTag=${imageName}`)
+      this.$router.push(`/content/container_create?imageTag=${imageName}af&imageId=${imageId}`)
     },
     callPullImageApi() {
       if (this.pulling) {

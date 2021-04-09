@@ -5,7 +5,7 @@
     </a-form-model-item>
 
     <a-form-model-item label="镜像ID">
-      <a-input placeholder="请输入容器名称"/>
+      <a-input placeholder="请输入容器名称" v-model="form.imageId" disabled/>
     </a-form-model-item>
 
     <a-form-model-item label="容器名称">
@@ -36,8 +36,8 @@
 
     <a-form-model-item :wrapper-col="{ span: 14, offset: 9 }">
       <a-space>
-        <a-button disabled type="primary">
-          上一步
+        <a-button  type="danger" @click="$parent.cancelRunNewContainer" >
+          取消创建
         </a-button>
         <a-button @click="$parent.nextStep()" type="primary">
           下一步
@@ -60,10 +60,10 @@ export default {
       wrapperCol: {span: 14},
       maxCore: 4,
       maxMemory: 9068,
-
     }
   }, beforeMount() {
     this.form.imageTag = this.$route.query.imageTag;
+    this.form.imageId = this.$route.query.imageId;
   }, methods: {}
 }
 </script>

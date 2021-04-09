@@ -1,5 +1,5 @@
 <template>
-  <a-form-model :label-col="labelCol" :wrapper-col="wrapperCol">
+  <a-form-model :label-col="labelCol" :wrapper-col="wrapperCol" v-model="form">
 
     <a-form-model-item v-for="(mountDir,index) in mountDirList" :key="index"
                        label="目录挂载">
@@ -38,9 +38,9 @@
 
 
     <a-form-model-item label="文件系统只读">
-      <a-select default-value="0">
-        <a-select-option value="0">否</a-select-option>
-        <a-select-option value="1">是</a-select-option>
+      <a-select default-value="false" v-model="form.readonly">
+        <a-select-option value="false">否</a-select-option>
+        <a-select-option value="true">是</a-select-option>
       </a-select>
     </a-form-model-item>
 
@@ -100,8 +100,13 @@
 </template>
 
 <script>
+import {mapActions} from "vuex";
+
 export default {
   name: "ContainerInfo",
+  props: {
+    form: Object
+  },
   data() {
     return {
       visible: false,
@@ -120,7 +125,12 @@ export default {
         mountId: ''
       }
     }
+  }, mounted() {
+    this.updateVolumeList()
   }, methods: {
+    ...mapActions({
+      updateVolumeList: 'updateVolumeList'
+    }),
     openMountModal: function () {
       this.visible = true;
     }, addMount: function () {

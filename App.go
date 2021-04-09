@@ -15,6 +15,7 @@ import (
 var port = flag.Int("port", 4050, "服务启动端口,默认值 4050")
 var resPath = flag.String("res", "static", "静态资源的路径,默认值 static")
 
+// 目前主分支属于开发分支，默认账号密码为 admin/123456
 func main() {
 	flag.Parse()
 	beego.BConfig.CopyRequestBody = true

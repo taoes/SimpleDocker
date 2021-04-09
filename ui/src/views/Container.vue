@@ -441,6 +441,16 @@ export default {
         return
       }
       ContainerApi.renameContainer(containerId, containerNewName)
+          .then((res) => {
+            let {Code} = res.data
+            if (Code === 'OK') {
+              this.$notification['info']({
+                message: '操作完成',
+                description: '重命名容器完成'
+              });
+              this.updateContainerList()
+            }
+          })
     }, onSearchKeyChange: function (e) {
       this.searchKey = e.target.value;
     }, openDetail: function (containerId) {

@@ -34,7 +34,16 @@ const volumeStore = {
             Created: formatUTCTime(volume.CreatedAt)
           })
         }
-        context.commit('setList', volumeList)
+        let sortList = volumeList.sort(function (a, b) {
+              let aName = a.Created;
+              let bName = b.Created;
+              if (aName === bName) {
+                return 0;
+              }
+              return aName > bName ? -1 : 1;
+            }
+        );
+        context.commit('setList', sortList)
       });
     }, updateVolumeInfo(context, imageLongName) {
       axios.get(`/api/volume/${imageLongName}/info`).then(res => {

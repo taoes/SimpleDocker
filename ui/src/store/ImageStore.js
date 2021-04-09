@@ -42,7 +42,16 @@ const imageStore = {
               created: formatDate(image.Created)
             })
           }
-          context.commit('setImageList', imageList)
+          let sortList = imageList.sort(function (a, b) {
+                let aName = a.created;
+                let bName = b.created;
+                if (aName === bName) {
+                  return 0;
+                }
+                return aName > bName ? -1 : 1;
+              }
+          );
+          context.commit('setImageList', sortList)
         }
       });
     }, getImageInfo(context, {imageId}) {
