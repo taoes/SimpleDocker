@@ -1,5 +1,4 @@
 import axios from "axios";
-import message from "ant-design-vue/lib/";
 import notification from "ant-design-vue/lib/notification";
 
 let operationMap =
@@ -15,6 +14,16 @@ let operationMap =
 function getOperatorNameByState(state) {
     let operatorName = operationMap[state]
     return !operatorName ? "未知操作" : operatorName
+}
+
+
+/**
+ * 创建新的容器(复杂模式)
+ */
+function createNewContainer(createModelData) {
+    let promise = axios.post(`/api/container/run/complex`, createModelData);
+    handleError(promise)
+    return promise;
 }
 
 /** 获取容器日志 */
@@ -115,6 +124,7 @@ function handleError(promise) {
 export default {
     monitorContainer,
     resizeContainer,
+    createNewContainer,
     createNewContainerExec,
     removeContainer,
     controlContainer,

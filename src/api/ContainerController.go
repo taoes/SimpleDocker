@@ -1,9 +1,11 @@
 package api
 
 import (
+	"SimpleDocker/src/api/model"
 	"SimpleDocker/src/docker"
 	"SimpleDocker/src/utils"
 	"bytes"
+	"encoding/json"
 	"fmt"
 	"github.com/astaxie/beego"
 	"github.com/docker/docker/api/types"
@@ -25,7 +27,7 @@ func (c *ContainerController) Get() {
 	c.ServeJSON()
 }
 
-/** 启动一个新的容器 */
+/** 创建一个新的容器(简单模式) */
 // @router /api/container/run [get]
 func (c *ContainerController) CreateNewContainer() {
 	imageName := c.Ctx.Input.Query("imageName")
@@ -72,6 +74,27 @@ func (c *ContainerController) CreateNewContainer() {
 		return
 	}
 
+	c.Data["json"] = utils.PackageData(containerId)
+	c.ServeJSON()
+}
+
+/** 创建一个新的容器(高级模式) */
+// @router /api/container/run/complex [post]
+func (c *ContainerController) CreateNewContainerWith() {
+	var resp model.ContainerCrateModel
+	err := json.Unmarshal(c.Ctx.Input.RequestBody, &resp)
+	// 反序列化失败
+	if err != nil {
+		c.Data["json"] = utils.PackageError(err)
+		c.ServeJSON()
+		return
+	}
+	containerId, err := docker.CreateNewContainer(resp)
+	if err != nil {
+		c.Data["json"] = utils.PackageError(err)
+		c.ServeJSON()
+		return
+	}
 	c.Data["json"] = utils.PackageData(containerId)
 	c.ServeJSON()
 }
@@ -168,7 +191,7 @@ func (c *ContainerController) GetContainerAllLog(containerId string) {
 	_, _ = c.Ctx.ResponseWriter.Write(logsByte)
 }
 
-// 容器导出
+/** 容器导出 */
 // @router /api/container/:containerId/export [get]
 func (c *ContainerController) ExportContainer(containerId string) {
 	info, err := docker.ExportContainer(containerId)
@@ -187,7 +210,7 @@ func (c *ContainerController) ExportContainer(containerId string) {
 	_, _ = c.Ctx.ResponseWriter.Write(bytesData)
 }
 
-// 容器监控
+/** 容器监控 */
 // @router /api/container/:containerId/monitor/info [get]
 func (c *ContainerController) Monitor(containerId string) {
 	container, err := docker.MonitorContainer(containerId)

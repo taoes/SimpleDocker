@@ -6,11 +6,11 @@
 
     <div id="containerInfoStep">
       <div class="containerInfo" style="">
-        <ContainerBaseInfo :form="form" v-if="currentStepIndex === 0"/>
-        <ContainerStoreInfo :form="form" v-if="currentStepIndex === 1"/>
-        <ContainerNetworkInfo :form="form" v-if="currentStepIndex === 2"/>
-        <ContainerEnvInfo :form="form.envList" v-if="currentStepIndex === 3"/>
-        <ContainerComplete :form="form" v-if="currentStepIndex === 4"/>
+        <ContainerBaseInfo v-if="currentStepIndex === 0"/>
+        <ContainerStoreInfo v-if="currentStepIndex === 1"/>
+        <ContainerNetworkInfo v-if="currentStepIndex === 2"/>
+        <ContainerEnvInfo v-if="currentStepIndex === 3"/>
+        <ContainerComplete v-if="currentStepIndex === 4"/>
       </div>
     </div>
 
@@ -39,44 +39,24 @@ export default {
   data() {
     return {
       stepsInfo,
-      currentStepIndex: 0,
-      form: {
-        imageTag: '',
-        restart: false,
-        hostname: '',
-        cpuCoreLimit: 1,
-        memoryLimit: 1024,
-        readonly: false,
-        ip: '',
-        dns: '',
-        mac: '',
-        bindNet: [],
-        envList: [],
-      }
+      currentStepIndex: 0
     }
   }, methods: {
-    // 返回上一步
     upStep: function () {
+      // 返回上一步
       if (this.currentStepIndex > 0) {
         this.currentStepIndex--;
       }
-    },
-    // 下一步
-    nextStep: function () {
+    }, nextStep: function () {
+      // 下一步
       if (this.currentStepIndex < stepsInfo.length) {
         this.currentStepIndex++;
       }
-    },
-    // 创建接口
-    startRunContainer: function () {
-      this.$message.info("OK.....")
-    },
-    // 取消创建新的容器
-    cancelRunNewContainer: function () {
+    }, cancelRunNewContainer: function () {
+      // 取消创建新的容器
       this.$router.push("/content/image")
-    },
-    // Step 步骤改变
-    onStepChange(current) {
+    }, onStepChange(current) {
+      // 取消创建新的容器
       this.currentStepIndex = current;
     }
   }

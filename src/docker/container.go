@@ -1,6 +1,7 @@
 package docker
 
 import (
+	"SimpleDocker/src/api/model"
 	"SimpleDocker/src/context"
 	"bytes"
 	"github.com/docker/docker/api/types"
@@ -9,6 +10,7 @@ import (
 	"github.com/docker/docker/api/types/network"
 	"github.com/docker/go-connections/nat"
 	"io"
+	"strconv"
 	"time"
 )
 
@@ -28,7 +30,6 @@ func NewContainer(imageName string, containerName string, env []string, portBind
 	hostConfig := container.HostConfig{PortBindings: portBinding, Binds: pathBind}
 	networkConfig := network.NetworkingConfig{}
 
-
 	resp, err := context.Cli.ContainerCreate(context.Ctx, &imageConfig, &hostConfig, &networkConfig, nil, containerName)
 	if err != nil {
 		_ = RemoveContainer(resp.ID, types.ContainerRemoveOptions{Force: true})
@@ -39,6 +40,70 @@ func NewContainer(imageName string, containerName string, env []string, portBind
 	if err := context.Cli.ContainerStart(context.Ctx, resp.ID, startConfig); err != nil {
 		_ = RemoveContainer(resp.ID, types.ContainerRemoveOptions{Force: true})
 		return resp.ID, err
+	}
+	return resp.ID, nil
+}
+
+/** 创建一个容器(复杂模式) */
+func CreateNewContainer(model model.ContainerCrateModel) (containerId string, err error) {
+
+	// 环境变量
+	var envList []string
+	for i := range model.EnvList {
+		envList = append(envList, model.EnvList[i].Path)
+	}
+	imageConfig := container.Config{Image: model.ImageTag, Env: envList, Hostname: model.HostName}
+
+	// 端口映射 KEY: "TCP/[]" VALUE:{HOST_IP:"",HOST_PORT:""}
+	portBindings := map[nat.Port][]nat.PortBinding{}
+	for i := range model.PortMapping {
+		mapping := model.PortMapping[i]
+		portBinding := nat.PortBinding{HostIP: "", HostPort: mapping.HostPort.String()}
+		portBindings[nat.Port(mapping.ContainerPort.String()+"/tcp")] = []nat.PortBinding{portBinding}
+	}
+	// 配置存储卷
+	var binds []string
+	for i := range model.MountDirList {
+		mount := model.MountDirList[i]
+		mountType := mount.Type
+		path := ""
+		if mountType == "dir" {
+			path = mount.HostDir + ":" + mount.ContainerDir
+		}
+		binds = append(binds, path)
+	}
+
+	// 资源限制
+	cpu, _ := model.CpuCoreLimit.Int64()
+	memory, _ := model.MemoryLimit.Int64()
+	resources := container.Resources{}
+	if cpu != 0 {
+		resources.CPUShares = cpu
+	}
+	if memory != 0 {
+		resources.Memory = memory
+	}
+
+	// 最大重启次数
+	maxRestartCount, _ := strconv.Atoi(model.MaxRestartCount.String())
+	restartPolicy := container.RestartPolicy{MaximumRetryCount: maxRestartCount}
+
+	hostConfig := container.HostConfig{PortBindings: portBindings, Binds: binds, RestartPolicy: restartPolicy}
+
+	networkConfig := network.NetworkingConfig{}
+	resp, err := context.Cli.ContainerCreate(context.Ctx, &imageConfig, &hostConfig, &networkConfig, nil, model.ContainerName)
+
+	// 如果创建失败，则移除容器
+	if err != nil {
+		_ = RemoveContainer(resp.ID, types.ContainerRemoveOptions{Force: true})
+		return "", err
+	}
+
+	// 创建成功则启动容器，启动失败则移除容器
+	startConfig := types.ContainerStartOptions{}
+	if err := context.Cli.ContainerStart(context.Ctx, resp.ID, startConfig); err != nil {
+		_ = RemoveContainer(resp.ID, types.ContainerRemoveOptions{Force: true})
+		return "", err
 	}
 	return resp.ID, nil
 }
