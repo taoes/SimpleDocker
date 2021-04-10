@@ -1,5 +1,6 @@
 <template>
   <div class="imageContainer">
+
     <a-form layout="inline">
       <a-form-item>
         <a-input placeholder="搜索关键词" v-model="searchKey" @change="searchKeyOnchange"
@@ -37,6 +38,7 @@
         </a-space>
       </a-form-item>
     </a-form>
+
     <a-table :columns="imageColumns" :data-source="imageList"
              size="small"
              :scroll="{ x: true }"
@@ -52,18 +54,21 @@
 
         <a-divider type="vertical"></a-divider>
 
+
         <a-tooltip>
-            <template slot="title">删除镜像</template>
-            <a-icon type="delete" style="color:orangered;font-size: 18px"
-                    @click="remove(record.imageLongId)"/>
+            <template slot="title">镜像详情</template>
+            <a-icon type="profile" style="color:darkslategray;font-size: 18px"
+                    @click="detail(record.imageLongId)"/>
         </a-tooltip>
+
+
         <a-divider type="vertical"></a-divider>
 
 
         <a-tooltip>
-            <template slot="title">导出镜像</template>
-            <a-icon type="download" style="color:darkslategray;font-size: 18px"
-                    @click="exportImg(record.imageLongId,record.rep)"/>
+            <template slot="title">删除镜像</template>
+            <a-icon type="delete" style="color:red;font-size: 18px"
+                    @click="remove(record.imageLongId)"/>
         </a-tooltip>
         <a-divider type="vertical"></a-divider>
 
@@ -75,11 +80,12 @@
           </a>
           <a-menu slot="overlay">
             <a-menu-item>
-                <a href="#" @click="detail(record.imageLongId)">
-                <a-icon type="profile"/>&nbsp;
-                  镜像详情
+                <a href="#" @click="exportImg(record.imageLongId,record.rep)">
+                <a-icon type="cloud-download"/>&nbsp;
+                  导出镜像
                 </a>
             </a-menu-item>
+
             <a-menu-item>
                 <a href="#" @click="openReTagModal(record.rep)">
                   <a-icon type="tags"/>&nbsp;
@@ -96,7 +102,7 @@
     </span>
     </a-table>
 
-
+    <!--    更新Tag -->
     <a-modal v-model="tagImageVisible" title="重新标记" okText="标记" cancelText="取消" @ok="callReTagApi">
       <a-form :label-col="{ span: 3 }" :wrapper-col="{ span: 21 }">
         <a-form-item label="原 Tag">
@@ -108,6 +114,7 @@
       </a-form>
     </a-modal>
 
+    <!--    导入新的镜像-->
     <a-modal v-model="importImageVisible" title="导入新的镜像" okText="导入" cancelText="取消"
              :footer="null"
              @ok="closeImportImageVisible()">
@@ -125,10 +132,9 @@
       </a-form-model>
     </a-modal>
 
-    <a-modal v-model="pullImageVisible" title="拉取新的镜像" okText="拉取" cancelText="关闭" width="800px"
-             @ok="callPullImageApi">
-      <a-form-model :label-col="{ span: 2 }" :wrapper-col="{ span: 22 }"
-                    v-model="containerConfig">
+    <!--    拉取新的镜像-->
+    <a-modal v-model="pullImageVisible" title="拉取新的镜像" width="800px" @ok="callPullImageApi">
+      <a-form-model :label-col="{ span: 1 }" :wrapper-col="{ span: 23 }" v-model="containerConfig">
         <a-form-model-item label="镜像">
           <a-input v-model="pullImageConfig.imageName"/>
         </a-form-model-item>
@@ -140,13 +146,41 @@
         </a-form-model-item>
       </a-form-model>
 
-      <div
-          style="overflow-y: auto; overflow-x:auto;height: 300px;background-color: #EFEFEF">{{
-          pullLog
-        }}
+      <div class="pullLog">{{ pullLog }}
       </div>
 
     </a-modal>
+
+
+    <!--    简单模式创建容器-->
+    <a-modal v-model="runImageVisible" title="运行新的容器" okText="运行" cancelText="取消"
+             @ok="callRunNewContainerApi">
+      <a-form-model :label-col="{ span: 4 }" :wrapper-col="{ span: 20 }"
+                    v-model="containerConfig">
+        <a-form-model-item label="镜像名称">
+          <a-input v-model="containerConfig.imageName" disabled=""/>
+        </a-form-model-item>
+
+        <a-form-model-item label="容器名称">
+          <a-input v-model="containerConfig.containerName" placeholder="请输入容器名称"/>
+        </a-form-model-item>
+
+        <a-form-model-item label="端口映射">
+          <a-input v-model="containerConfig.bindPort" placeholder="宿主机端口:容器端口(多个挂载使用;分割)"/>
+        </a-form-model-item>
+
+        <a-form-model-item label="环境变量">
+          <a-input v-model="containerConfig.env" placeholder="环境变量键=环境变量值(多个变量使用;分割)"/>
+        </a-form-model-item>
+
+        <a-form-model-item label="目录挂载">
+          <a-input v-model="containerConfig.volume" placeholder="宿主机目录:容器目录(多个挂载使用;分割)"/>
+        </a-form-model-item>
+
+      </a-form-model>
+    </a-modal>
+
+    <!--   侧边栏-->
     <a-drawer
         placement="right"
         width="35%"
@@ -233,8 +267,9 @@
 
 import {mapActions} from "vuex";
 import imageApi from "../api/ImageApi";
-import {guid, download} from '../utils/index'
+import {download, guid} from '../utils/index'
 import Config from '../api/Config'
+import systemConfigApi from "@/api/SystemConfigApi";
 
 const {imageColumns} = require('../utils/TableModelDefine')
 
@@ -309,7 +344,7 @@ export default {
       this.showDetail = true;
       this.currentImageId = imageId;
       this.getImageInfo({imageId})
-    }, push: function (imageId) {
+    }, push: function () {
       this.$message.warning("暂不支持推送镜像，请期待后续版本")
     },
     remove: function (imageId) {
@@ -320,14 +355,14 @@ export default {
         cancelText: '取消',
         onOk: () => {
           context.$axios.get(`/api/image/${imageId}/remove/false`).then(res => {
-            let data = res.data;
-            if (data.Code === 'OK') {
+            let {Code, Msg} = res.data;
+            if (Code === 'OK') {
               context.$message.info('镜像删除完成!');
               this.updateImageList()
             } else {
               context.$confirm({
                 title: `删除镜像失败，是否强制删除?`,
-                content: data.Msg,
+                content: Msg,
                 okText: '确认',
                 cancelText: '取消',
                 onOk: () => this.forceRemove(imageId)
@@ -369,12 +404,18 @@ export default {
     },
     close: function (e) {
       this.showDetail = false;
-    },
-    openCreateContainerGuide: function (record) {
+    }, async openCreateContainerGuide(record) {
+      // 获取配合判断是否是简单模式
+      let res = await systemConfigApi.getDockerConfig();
+      let {Code, Data} = res.data
       let {rep: imageName, imageId} = record;
-      this.containerConfig.imageName = imageName;
-      this.runImageVisible = true;
-      this.$router.push(`/content/container_create?imageTag=${imageName}af&imageId=${imageId}`)
+      if (Code === 'OK' && Data.containerCreateMode === 'simple') {
+        this.runImageVisible = true;
+        this.containerConfig.imageName = imageName;
+        return
+      }
+
+      await this.$router.push(`/content/container_create?imageTag=${imageName}&imageId=${imageId}`)
     },
     callPullImageApi() {
       if (this.pulling) {
@@ -424,12 +465,10 @@ export default {
             console.error(e);
             this.$message.error({content: "镜像导出失败,请检查 Docker 服务是否正常", key});
           })
-    },
-    openReTagModal: function (oldTag) {
+    }, openReTagModal: function (oldTag) {
       this.tagImageVisible = true
       this.oldTag = oldTag
-    },
-    async callRunNewContainerApi() {
+    }, async callRunNewContainerApi() {
       let res = await imageApi.runNewContainer(this.containerConfig)
       let {Code, Msg} = res.data
       if (Code === 'OK') {
@@ -438,8 +477,7 @@ export default {
       } else {
         this.$message.error(Msg);
       }
-    },
-    callReTagApi: function () {
+    }, callReTagApi: function () {
       if (this.newTag === '' || this.newTag.trim() === '') {
         this.tagImageVisible = false
         this.$message.warning("新的镜像tag 不能为空字符串");
@@ -507,5 +545,12 @@ export default {
 .contentTd {
   overflow-wrap: anywhere;
   padding: 5px 0 5px 10px;
+}
+
+.pullLog {
+  overflow-y: auto;
+  overflow-x: auto;
+  height: 300px;
+  background-color: #EFEFEF;
 }
 </style>

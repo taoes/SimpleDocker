@@ -4,10 +4,12 @@
       <img src="../assets/logo-tm.png" alt="" width="300px">
       <a-form-model :form="loginForm">
         <a-input placeholder="请输入账号" class="loginInput" type="text" :allowClear="true" v-focus
+                 @keydown.enter="login"
                  v-model="loginForm.username">
           <a-icon slot="prefix" type="user"/>
         </a-input>
         <a-input placeholder="请输入密码" class="loginInput" type="password" :allowClear="true"
+                 @keydown.enter="login"
                  v-model="loginForm.password">
           <a-icon slot="prefix" type="lock"/>
         </a-input>

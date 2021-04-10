@@ -310,7 +310,9 @@
 <script>
 import {mapActions} from "vuex";
 import containerApi from '../api/ContainerApi'
+import ContainerApi from '../api/ContainerApi'
 import {download, guid} from '../utils/index'
+import EditCell from "@/components/EditCell";
 
 const columns = [
   {
@@ -353,8 +355,6 @@ const columns = [
     scopedSlots: {customRender: 'action'},
   },
 ];
-import EditCell from "@/components/EditCell";
-import ContainerApi from '../api/ContainerApi'
 
 export default {
   components: {EditCell},
@@ -428,29 +428,36 @@ export default {
     connectNetworkList: function () {
       return Object.keys(this.containerNetworkInfo)
     }
-  },
-  mounted() {
+  }, mounted() {
+    let searchKeyFromQuery = this.$route.query.searchKey;
+    if (!!searchKeyFromQuery) {
+      this.searchKey = searchKeyFromQuery;
+    }
     this.updateContainerList()
   }, methods: {
     ...mapActions({
       updateContainerList: 'updateContainerList',
       updateContainerInfo: 'updateContainerInfo',
       updateNetworkList: 'updateNetworkList'
-    }), onContainerNameChange: function (containerName, containerId, containerNewName) {
+    }), async onContainerNameChange(containerName, containerId, containerNewName) {
       if (containerNewName === containerName) {
         return
       }
-      ContainerApi.renameContainer(containerId, containerNewName)
-          .then((res) => {
-            let {Code} = res.data
-            if (Code === 'OK') {
-              this.$notification['info']({
-                message: '操作完成',
-                description: '重命名容器完成'
-              });
-              this.updateContainerList()
-            }
-          })
+      let res = await ContainerApi.renameContainer(containerId, containerNewName);
+      let {Code, Msg} = res.data
+      if (Code === 'OK') {
+        this.$notification['info']({
+          message: '操作完成',
+          description: '重命名容器完成'
+        });
+        this.updateContainerList()
+      } else {
+        this.$notification['error']({
+          message: '操作失败',
+          description: Msg
+        });
+        this.updateContainerList()
+      }
     }, onSearchKeyChange: function (e) {
       this.searchKey = e.target.value;
     }, openDetail: function (containerId) {
@@ -557,7 +564,7 @@ export default {
       this.updateContainerInfo(containerId)
       this.updateNetworkList()
       this.currentContainerId = containerId
-    }, operatorNetwork(operator, networkId) {
+    }, async operatorNetwork(operator, networkId) {
       let operatorName = operator === 'connect' ? '连接' : '断开'
       this.$axios.get(
           `/api/network/${networkId}/container/${this.currentContainerId}/${operator}`)
@@ -623,12 +630,10 @@ export default {
         }
       });
     }, openContainerMonitor(state, containerId) {
-
       if (state !== '运行中') {
         this.$message.error("容器尚未运行，不能打开性能监控界面");
         return
       }
-
       let routeUrl = this.$router.resolve({
         path: "/terminal/monitor",
         query: {containerId: containerId}

@@ -3,8 +3,10 @@
     <a-layout-header class="header">
       <!--      <div class="logo"></div>-->
       <div style="display: inline;float: left;justify-items: center">
-        <img src="../assets/logo-tm-white2.png"
-             style="width: 150px" alt=""/>
+        <img src="../assets/logo-tm-white2.png" class="logoImg" alt=""/>
+        <h2 class="logoTitle">
+          SimpleDocker <span class="logoVersion">V0.0.2</span>
+        </h2>
       </div>
       <a-menu
           theme="dark"
@@ -12,7 +14,7 @@
           :selectable="false"
           @click="linkSelect"
           :style="{ lineHeight: '64px' }">
-        <a-menu-item :class="{'apiStateNormal': apiState,'apiStateError':!apiState}" key="noAction">
+        <a-menu-item :class="{apiStateNormal: apiState,apiStateError:!apiState}" key="noAction" class="right">
           <template v-if="apiState">
             <a-icon type="api" size="16"/>
             <span>连接正常</span>
@@ -25,7 +27,7 @@
 
         <a-sub-menu class="right">
           <template slot="title">
-            <a-icon type="user"></a-icon>
+            <a-icon type="user" theme="filled"></a-icon>
             账户
           </template>
 
@@ -106,7 +108,6 @@ export default {
     setInterval(this.updateApiState, 5000);
   }, beforeDestroy() {
     if (intervalId != null) {
-      console.log("清除定时器")
       clearInterval(intervalId)
     }
   }, methods: {
@@ -128,7 +129,6 @@ export default {
       } else if (key === 'updatePassword') {
         this.showResetPasswordModal = true
       } else {
-        alert("新连接" + key)
         window.open(key, '_target')
       }
     }, callResetPassword() {
@@ -169,11 +169,45 @@ export default {
 
 .right {
   float: right;
+  color: white;
 }
 
 
 .input {
   margin-top: 20px;
+}
+
+
+.apiStateNormal {
+  float: right;
+  color: green !important;;
+  font-weight: bold
+}
+
+.apiStateError {
+  float: right;
+  color: red !important;
+  font-weight: bold
+}
+
+.logoImg {
+  width: 200px;
+  position: absolute;
+  top: 12px;
+  left: 34px;
+  clip: rect(0px 67px 42px 0px);
+}
+
+.logoTitle {
+  margin-left: 59px;
+  color: white;
+  font-weight: 900;
+}
+
+.logoVersion {
+  font-size: 15px;
+  font-weight: 400;
+  color: whitesmoke;
 }
 
 </style>
