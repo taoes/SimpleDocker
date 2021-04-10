@@ -456,6 +456,15 @@ func init() {
             Filters: nil,
             Params: nil})
 
+    beego.GlobalControllerRouter["SimpleDocker/src/api:TestController"] = append(beego.GlobalControllerRouter["SimpleDocker/src/api:TestController"],
+        beego.ControllerComments{
+            Method: "TestDingTalk",
+            Router: "/api/notify/test",
+            AllowHTTPMethods: []string{"get"},
+            MethodParams: param.Make(),
+            Filters: nil,
+            Params: nil})
+
     beego.GlobalControllerRouter["SimpleDocker/src/api:VolumeController"] = append(beego.GlobalControllerRouter["SimpleDocker/src/api:VolumeController"],
         beego.ControllerComments{
             Method: "GetVolumeList",

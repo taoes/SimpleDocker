@@ -5,7 +5,8 @@ import (
 	"SimpleDocker/src/api"
 	_ "SimpleDocker/src/auth"
 	"SimpleDocker/src/config"
-	context "SimpleDocker/src/context"
+	"SimpleDocker/src/context"
+	_ "SimpleDocker/src/context"
 	_ "SimpleDocker/src/db"
 	"flag"
 	"github.com/astaxie/beego"
@@ -34,6 +35,7 @@ func main() {
 	beego.Include(&api.FileController{})
 	beego.Include(&api.TerminalController{})
 	beego.Include(&api.SystemController{})
+	beego.Include(&api.TestController{})
 
 	// 添加CORS 以及权限校验 &&  启动服务
 	beego.InsertFilter("/*", beego.BeforeRouter, config.Handler)
