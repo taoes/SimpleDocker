@@ -8,11 +8,17 @@ import (
 var RedisClient *redis.Client
 
 const AuthPrefix = "SIMPLE:DOCKER:AUTH:"
+const ConfigPrefix = "SIMPLE:DOCKER:SYSTEM:"
 
 var ConfigKey = map[string]string{
-	"password":  AuthPrefix + "PASSWORD",
-	"saltValue": AuthPrefix + "SALT",
-	"token":     AuthPrefix + "TOKEN",
+	"password":                 AuthPrefix + "PASSWORD",
+	"saltValue":                AuthPrefix + "SALT",
+	"token":                    AuthPrefix + "TOKEN",
+	"containerCreateMode":      ConfigPrefix + "CONTAINER_CREATE_MODE",
+	"enableDockerLog":          ConfigPrefix + "ENABLE_DOCKER_LOG",
+	"containerDeleteNotifyUrl": ConfigPrefix + "CONTAINER_DELETE_NOTIFY_URL",
+	"containerStopNotifyUrl":   ConfigPrefix + "CONTAINER_STOP_NOTIFY_URL",
+	"imageDeleteNotifyUrl":     ConfigPrefix + "IMAGE_DELETE_NOTIFY_URL",
 }
 
 func init() {
@@ -30,6 +36,16 @@ func Read(key string) string {
 	res := RedisClient.Get(ConfigKey[key])
 	if res == nil {
 		return ""
+	}
+	resStr, _ := res.Result()
+	return resStr
+}
+
+// 读取
+func ReadWithDefault(key string, defaultValue string) string {
+	res := RedisClient.Get(ConfigKey[key])
+	if res == nil {
+		return defaultValue
 	}
 	resStr, _ := res.Result()
 	return resStr

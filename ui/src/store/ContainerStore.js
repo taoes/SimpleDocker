@@ -14,7 +14,13 @@ export default {
     state: {
         containerList: [],
         createContainerStore: {
-            envList: []
+            maxRestartCount: 0,
+            cpuCoreLimit: 0,
+            memoryLimit: 0,
+            envList: [],
+            mountDirList: [],
+            readonly: false,
+            portMapping: []
         },
         containerInfo: {
             HostConfig: {},
@@ -71,7 +77,6 @@ export default {
                         return aName > bName ? 1 : -1;
                     }
                 );
-                console.log(JSON.stringify(sortList))
                 context.commit('setContainerList', sortList)
             });
         },

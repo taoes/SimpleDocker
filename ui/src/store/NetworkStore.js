@@ -1,10 +1,10 @@
 import axios from "axios";
 import {formatUTCTime, parseId} from "../utils/index";
 
-const imageStore = {
+const networkStore = {
     state: {
         list: [],
-        info: {}
+        info: {},
     }, mutations: {
         setList: function (state, payload) {
             state.list = payload
@@ -50,4 +50,4 @@ const imageStore = {
     }
 }
 
-export default imageStore;
+export default networkStore;
