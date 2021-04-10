@@ -96,9 +96,30 @@ func init() {
 
     beego.GlobalControllerRouter["SimpleDocker/src/api:ContainerController"] = append(beego.GlobalControllerRouter["SimpleDocker/src/api:ContainerController"],
         beego.ControllerComments{
+            Method: "RenameContainer",
+            Router: "/api/container/:containerId/rename/:newName",
+            AllowHTTPMethods: []string{"get"},
+            MethodParams: param.Make(
+				param.New("containerId", param.InPath),
+				param.New("newName", param.InPath),
+			),
+            Filters: nil,
+            Params: nil})
+
+    beego.GlobalControllerRouter["SimpleDocker/src/api:ContainerController"] = append(beego.GlobalControllerRouter["SimpleDocker/src/api:ContainerController"],
+        beego.ControllerComments{
             Method: "CreateNewContainer",
             Router: "/api/container/run",
             AllowHTTPMethods: []string{"get"},
+            MethodParams: param.Make(),
+            Filters: nil,
+            Params: nil})
+
+    beego.GlobalControllerRouter["SimpleDocker/src/api:ContainerController"] = append(beego.GlobalControllerRouter["SimpleDocker/src/api:ContainerController"],
+        beego.ControllerComments{
+            Method: "CreateNewContainerWith",
+            Router: "/api/container/run/complex",
+            AllowHTTPMethods: []string{"post"},
             MethodParams: param.Make(),
             Filters: nil,
             Params: nil})
@@ -350,6 +371,42 @@ func init() {
             Method: "PruneNetwork",
             Router: "/api/network/prune",
             AllowHTTPMethods: []string{"delete"},
+            MethodParams: param.Make(),
+            Filters: nil,
+            Params: nil})
+
+    beego.GlobalControllerRouter["SimpleDocker/src/api:SystemController"] = append(beego.GlobalControllerRouter["SimpleDocker/src/api:SystemController"],
+        beego.ControllerComments{
+            Method: "GetSystemInfo",
+            Router: "/api/system/info",
+            AllowHTTPMethods: []string{"get"},
+            MethodParams: param.Make(),
+            Filters: nil,
+            Params: nil})
+
+    beego.GlobalControllerRouter["SimpleDocker/src/api:SystemController"] = append(beego.GlobalControllerRouter["SimpleDocker/src/api:SystemController"],
+        beego.ControllerComments{
+            Method: "UpdateSystemNotificationConfig",
+            Router: "/api/system/notify",
+            AllowHTTPMethods: []string{"post"},
+            MethodParams: param.Make(),
+            Filters: nil,
+            Params: nil})
+
+    beego.GlobalControllerRouter["SimpleDocker/src/api:SystemController"] = append(beego.GlobalControllerRouter["SimpleDocker/src/api:SystemController"],
+        beego.ControllerComments{
+            Method: "UpdateSystemSafeConfig",
+            Router: "/api/system/safe",
+            AllowHTTPMethods: []string{"post"},
+            MethodParams: param.Make(),
+            Filters: nil,
+            Params: nil})
+
+    beego.GlobalControllerRouter["SimpleDocker/src/api:SystemController"] = append(beego.GlobalControllerRouter["SimpleDocker/src/api:SystemController"],
+        beego.ControllerComments{
+            Method: "GetSystemSafeConfig",
+            Router: "/api/system/safe",
+            AllowHTTPMethods: []string{"get"},
             MethodParams: param.Make(),
             Filters: nil,
             Params: nil})

@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Title</title>
+    <meta charset="UTF-8">
+    <title>Title</title>
 </head>
 <body>
 
@@ -13,33 +13,30 @@
 
 <script>
 
-  let command = ''
-  let content = document.getElementById('content')
-  let ws;
-  if ("WebSocket" in window) {
-    ws = new WebSocket('ws://localhost:9999/web');
-    ws.onopen = function () {
-      console.log("连接OK...");
-    };
+    let command = ''
+    let content = document.getElementById('content')
+    let ws;
+    if ("WebSocket" in window) {
+        ws = new WebSocket('ws://localhost:9999/web');
+        ws.onopen = function () {
 
-    ws.onmessage = function (evt) {
-      var received_msg = evt.data;
-      console.log("数据已接收..." + received_msg);
-      content.innerHTML = content.innerHTML + JSON.parse(received_msg).msg;
-    };
+        };
 
-    ws.onclose = function () {
-      console.log("连接已关闭...");
-    };
-  } else {
-    alert("不支持WebSocket")
-  }
+        ws.onmessage = function (evt) {
+            var received_msg = evt.data;
+            content.innerHTML = content.innerHTML + JSON.parse(received_msg).msg;
+        };
 
-  function send() {
-    let input = document.getElementById('input')
-    console.log("发送:" + input.value)
-    ws.send(input.value)
-  }
+        ws.onclose = function () {
+        };
+    } else {
+        alert("不支持WebSocket")
+    }
+
+    function send() {
+        let input = document.getElementById('input')
+        ws.send(input.value)
+    }
 
 </script>
 
