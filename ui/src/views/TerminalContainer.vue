@@ -1,18 +1,19 @@
 <template>
   <a-layout id="components-layout-demo-top-side-2">
     <a-layout-header class="header">
-      <!--      <div class="logo"></div>-->
       <div style="display: inline;float: left;justify-items: center">
-        <img src="../assets/logo-tm-white2.png"
-             style="width: 150px" alt=""/>
+        <img src="../assets/logo-tm-white2.png" class="logoImg" alt=""/>
+        <h2 class="logoTitle">容器终端控制台</h2>
       </div>
+
+
       <a-menu
           theme="dark"
           mode="horizontal"
           :selectable="false"
           @click="linkSelect"
           :style="{ lineHeight: '64px' }">
-        <a-menu-item :class="{'apiStateNormal': apiState,'apiStateError':!apiState}" key="noAction">
+        <a-menu-item :class="{apiStateNormal: apiState,apiStateError:!apiState}" key="noAction">
           <template v-if="apiState">
             <a-icon type="api" size="16"/>
             <span>连接正常</span>
@@ -22,24 +23,6 @@
             <span>连接中断</span>
           </template>
         </a-menu-item>
-
-        <a-sub-menu class="right">
-          <template slot="title">
-            <a-icon type="user"></a-icon>
-            账户
-          </template>
-
-          <a-menu-item key="updatePassword">
-            <a-icon type="lock"></a-icon>
-            修改密码
-          </a-menu-item>
-
-          <a-menu-item key="logout">
-            <a-icon type="logout"></a-icon>
-            退出登录
-          </a-menu-item>
-        </a-sub-menu>
-
 
         <a-menu-item key="https://www.zhoutao123.com" class="right">
           <a-icon type="book" theme="filled"/>
@@ -62,27 +45,11 @@
         </a-layout-content>
       </a-layout>
     </a-layout>
-
-    <a-modal :visible="showResetPasswordModal" title="修改登录密码" okText="确定" cancelText="取消"
-             @cancel="showResetPasswordModal = false"
-             @ok="callResetPassword()">
-      <a-form-model :form="updatePasswordForm">
-        <a-input class="input" placeholder="请输入原密码" type="password"
-                 v-model="updatePasswordForm.oP"/>
-        <br>
-        <a-input class="input" placeholder="请输入新密码" type="password"
-                 v-model="updatePasswordForm.nP"/>
-        <br>
-        <a-input class="input" placeholder="请再次输入新密码" type="password"
-                 v-model="updatePasswordForm.cP"/>
-      </a-form-model>
-    </a-modal>
   </a-layout>
 </template>
 <script>
 import PCMenu from "../components/PCMenu";
 import ResetPassword from "../components/ResetPassword";
-import AuthApi from "../api/AuthApi";
 
 let intervalId = null
 
@@ -93,11 +60,6 @@ export default {
       collapsed: false,
       apiState: true,
       showResetPasswordModal: false,
-      updatePasswordForm: {
-        oP: '',
-        nP: '',
-        cP: ''
-      }
     };
   }, mounted() {
     setInterval(this.updateApiState, 5000);
@@ -126,19 +88,7 @@ export default {
         this.showResetPasswordModal = true
       } else {
         window.open(key, '_target')
-
       }
-    }, callResetPassword() {
-      AuthApi.resetPassword(this.updatePasswordForm)
-      .then(res => {
-        let {Code} = res.data
-        if (Code === 'OK') {
-          this.showResetPasswordModal = false
-          this.$message.info("密码更新成功，请退出重新登录!")
-          localStorage.setItem("token", "")
-          this.$router.push("/")
-        }
-      })
     }
   }
 }
@@ -163,6 +113,7 @@ export default {
 
 .right {
   float: right;
+  color: white;
 }
 
 .apiStateNormal {
@@ -175,6 +126,27 @@ export default {
   float: right;
   color: red !important;
   font-weight: bold
+}
+
+.logoImg {
+  width: 200px;
+  position: absolute;
+  top: 12px;
+  left: 34px;
+  clip: rect(0px 67px 42px 0px);
+}
+
+.logoTitle {
+  margin-left: 59px;
+  color: white;
+  font-weight: 900;
+}
+
+
+.logoVersion {
+  font-size: 15px;
+  font-weight: 400;
+  color: whitesmoke;
 }
 
 </style>
