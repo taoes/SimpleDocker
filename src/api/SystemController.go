@@ -56,9 +56,7 @@ func (c *SystemController) GetSystemSafeConfig() {
 func (c *SystemController) UpdateSystemNotificationConfig() {
 	var config model.SystemNotificationConfig
 	_ = json.Unmarshal(c.Ctx.Input.RequestBody, &config)
-	db.Write("containerDeleteNotifyUrl", config.ContainerDeleteNotifyUrl)
-	db.Write("containerStopNotifyUrl", config.ContainerStopNotifyUrl)
-	db.Write("imageDeleteNotifyUrl", config.ImageDeleteNotifyUrl)
+	db.Write("notifyUrl", config.NotifyUrl)
 	c.Data["json"] = utils.Success()
 	c.ServeJSON()
 }
@@ -68,9 +66,7 @@ func (c *SystemController) UpdateSystemNotificationConfig() {
 func (c *SystemController) GetSystemNotificationConfig() {
 	var config model.SystemNotificationConfig
 	_ = json.Unmarshal(c.Ctx.Input.RequestBody, &config)
-	config.ContainerDeleteNotifyUrl = db.Read("containerDeleteNotifyUrl")
-	config.ContainerStopNotifyUrl = db.Read("containerStopNotifyUrl")
-	config.ImageDeleteNotifyUrl = db.Read("imageDeleteNotifyUrl")
+	config.NotifyUrl = db.Read("notifyUrl")
 	c.Data["json"] = utils.PackageData(config)
 	c.ServeJSON()
 }

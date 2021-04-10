@@ -1,8 +1,8 @@
 package context
 
 import (
+	"SimpleDocker/src/notify"
 	"context"
-	"encoding/json"
 	"github.com/astaxie/beego/logs"
 	"github.com/docker/docker/api/types"
 	"github.com/docker/docker/client"
@@ -67,8 +67,7 @@ func monitorDockerEvent() {
 		for true {
 			select {
 			case event := <-events:
-				marshal, _ := json.Marshal(event)
-				logs.Info("监控到Docker事件:%s", string(marshal))
+				notify.HandleDockerMessage(event)
 			case err := <-errors:
 				logs.Error("监控到Docker错误事件")
 				logs.Error(err)

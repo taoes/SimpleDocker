@@ -10,12 +10,10 @@ type SystemInfo struct {
 // 系统安全配置
 type SystemSafeConfig struct {
 	ContainerCreateMode string `json:"containerCreateMode"`
-	EnableDockerLog      bool `json:"enableDockerLog"`
+	EnableDockerLog     bool   `json:"enableDockerLog"`
 }
 
 // 系统通知配置
 type SystemNotificationConfig struct {
-	ContainerStopNotifyUrl   string `json:"containerStopNotifyUrl"`
-	ContainerDeleteNotifyUrl string `json:"containerDeleteNotifyUrl"`
-	ImageDeleteNotifyUrl     string `json:"imageDeleteNotifyUrl"`
+	NotifyUrl string `json:"notifyUrl"`
 }

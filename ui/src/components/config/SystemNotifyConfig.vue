@@ -1,21 +1,14 @@
 <template>
   <div>
     <a-form-model v-model="url" :label-col="{span:2}" :wrapper-col="{span:22}">
-      <a-form-model-item label="容器停止运行">
-        <a-input placeholder="请输入钉钉通知链接" v-model="url.containerStopNotifyUrl"/>
+      <a-form-model-item label="钉钉通知URL">
+        <a-input placeholder="请输入钉钉通知链接" v-model="url.notifyUrl"/>
       </a-form-model-item>
 
-      <a-form-model-item label="容器被删除">
-        <a-input placeholder="请输入钉钉通知链接" v-model="url.containerDeleteNotifyUrl"/>
-      </a-form-model-item>
-
-      <a-form-model-item label="镜像被删除">
-        <a-input placeholder="请输入钉钉通知链接" v-model="url.imageDeleteNotifyUrl"/>
-      </a-form-model-item>
     </a-form-model>
 
     <a-space>
-      <a-button icon="question-circle">测试</a-button>
+      <a-button icon="question-circle" @click="testNotifyUrl">测试</a-button>
       <a-button type="primary" icon="save" @click="save">保存</a-button>
     </a-space>
   </div>
@@ -29,9 +22,7 @@ export default {
   data() {
     return {
       url: {
-        containerStopNotifyUrl: '',
-        containerDeleteNotifyUrl: '',
-        imageDeleteNotifyUrl: '',
+        notifyUrl: ''
       }
     }
   }, async beforeMount() {
@@ -47,6 +38,10 @@ export default {
       if (Code === 'OK') {
         this.$message.info('配置保存成功');
       }
+    }, async testNotifyUrl() {
+      let res = await systemConfigApi.testNotifyUrl(this.url.notifyUrl)
+      let Data = res.data
+      this.$info({title: "响应结果", content: Data, okText: "我知道了"});
     }
   }
 }

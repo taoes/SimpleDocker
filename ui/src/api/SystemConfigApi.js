@@ -26,6 +26,12 @@ function getNotifyConfig() {
     return promise
 }
 
+function testNotifyUrl(url) {
+    let promise = axios.get(`/api/notify/test?url=${url}`)
+    handleError(promise)
+    return promise
+}
+
 
 function handleError(promise) {
     promise.then(res => {
@@ -44,5 +50,7 @@ function handleError(promise) {
 export default {
     saveDockerConfig,
     getDockerConfig,
-    saveNotifyConfig, getNotifyConfig
+    saveNotifyConfig,
+    getNotifyConfig,
+    testNotifyUrl
 }

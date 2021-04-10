@@ -11,14 +11,12 @@ const AuthPrefix = "SIMPLE:DOCKER:AUTH:"
 const ConfigPrefix = "SIMPLE:DOCKER:SYSTEM:"
 
 var ConfigKey = map[string]string{
-	"password":                 AuthPrefix + "PASSWORD",
-	"saltValue":                AuthPrefix + "SALT",
-	"token":                    AuthPrefix + "TOKEN",
-	"containerCreateMode":      ConfigPrefix + "CONTAINER_CREATE_MODE",
-	"enableDockerLog":          ConfigPrefix + "ENABLE_DOCKER_LOG",
-	"containerDeleteNotifyUrl": ConfigPrefix + "CONTAINER_DELETE_NOTIFY_URL",
-	"containerStopNotifyUrl":   ConfigPrefix + "CONTAINER_STOP_NOTIFY_URL",
-	"imageDeleteNotifyUrl":     ConfigPrefix + "IMAGE_DELETE_NOTIFY_URL",
+	"password":            AuthPrefix + "PASSWORD",
+	"saltValue":           AuthPrefix + "SALT",
+	"token":               AuthPrefix + "TOKEN",
+	"containerCreateMode": ConfigPrefix + "CONTAINER_CREATE_MODE",
+	"enableDockerLog":     ConfigPrefix + "ENABLE_DOCKER_LOG",
+	"notifyUrl":           ConfigPrefix + "NOTIFY_URL",
 }
 
 func init() {
