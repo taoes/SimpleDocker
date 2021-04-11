@@ -2,60 +2,60 @@ import axios from "axios";
 import {formatUTCTime, parseId} from "../utils/index";
 
 const volumeStore = {
-  state: {
-    list: [],
-    info: {}
-  },
-  mutations: {
-    setList: function (state, payload) {
-      state.list = payload
-    }, setInfo: function (state, payload) {
-      state.info = payload
-    }
-  },
-  actions: {
-    updateVolumeList(context) {
-      axios.get('/api/volume').then(res => {
-        let {Data} = res.data
-        if (!Data) {
-          context.commit('setList', [])
-          return
+    state: {
+        list: [],
+        info: {}
+    },
+    mutations: {
+        setList: function (state, payload) {
+            state.list = payload
+        }, setInfo: function (state, payload) {
+            state.info = payload
         }
-        let {Volumes} = Data;
-        let volumeList = []
-        for (let i = 0; i < Volumes.length; i++) {
-          let volume = Volumes[i]
-          volumeList.push({
-            key: volume.Name,
-            LongName: volume.Name,
-            Name: parseId(volume.Name),
-            Driver: volume.Driver,
-            Scope: volume.Scope,
-            Created: formatUTCTime(volume.CreatedAt)
-          })
+    },
+    actions: {
+        updateVolumeList(context) {
+            axios.get('/api/volume').then(res => {
+                let {Data} = res.data
+                if (!Data) {
+                    context.commit('setList', [])
+                    return
+                }
+                let {Volumes} = Data;
+                let volumeList = []
+                for (let i = 0; i < Volumes.length; i++) {
+                    let volume = Volumes[i]
+                    volumeList.push({
+                        key: volume.Name,
+                        LongName: volume.Name,
+                        Name: parseId(volume.Name),
+                        Driver: volume.Driver,
+                        Scope: volume.Scope,
+                        Created: formatUTCTime(volume.CreatedAt)
+                    })
+                }
+                let sortList = volumeList.sort(function (a, b) {
+                        let aName = a.Created;
+                        let bName = b.Created;
+                        if (aName === bName) {
+                            return 0;
+                        }
+                        return aName > bName ? -1 : 1;
+                    }
+                );
+                context.commit('setList', sortList)
+            });
+        }, updateVolumeInfo(context, imageLongName) {
+            axios.get(`/api/volume/${imageLongName}/info`).then(res => {
+                let {Code, Data} = res.data
+                if (Code !== 'OK') {
+                    context.commit('setInfo', {})
+                } else {
+                    context.commit('setInfo', Data)
+                }
+            });
         }
-        let sortList = volumeList.sort(function (a, b) {
-              let aName = a.Created;
-              let bName = b.Created;
-              if (aName === bName) {
-                return 0;
-              }
-              return aName > bName ? -1 : 1;
-            }
-        );
-        context.commit('setList', sortList)
-      });
-    }, updateVolumeInfo(context, imageLongName) {
-      axios.get(`/api/volume/${imageLongName}/info`).then(res => {
-        let {Code, Data} = res.data
-        if (Code !== 'OK') {
-          context.commit('setInfo', {})
-        } else {
-          context.commit('setInfo', Data)
-        }
-      });
-    }
-  },
+    },
 
 }
 

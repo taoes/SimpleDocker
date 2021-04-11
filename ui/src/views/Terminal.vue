@@ -1,12 +1,14 @@
 <template>
-  <div id="xterm" class="xterm" />
+  <div id="xterm" class="xterm"/>
 </template>
 
 <script>
 import "xterm/css/xterm.css";
-import { Terminal } from "xterm";
-import { FitAddon } from "xterm-addon-fit";
-import { AttachAddon } from "xterm-addon-attach";
+import {Terminal} from "xterm";
+import {FitAddon} from "xterm-addon-fit";
+import {AttachAddon} from "xterm-addon-attach";
+import containerApi from "../api/ContainerApi";
+import config from "../api/Config";
 
 var style = {
   foreground: "#ebeef5",
@@ -29,9 +31,6 @@ var style = {
   white: "#bbbbbb",
   brightWhite: "#ffffff",
 };
-
-import containerApi from "../api/ContainerApi";
-import config from "../api/Config";
 
 export default {
   name: "Xterm",
@@ -77,10 +76,10 @@ export default {
     },
     async initSocket() {
       let token = localStorage.token;
-      let { containerId } = this.$route.query;
+      let {containerId} = this.$route.query;
       // 创建命令
       let res = await containerApi.createNewContainerExec(containerId);
-      let { Code, Data, Msg } = res.data;
+      let {Code, Data, Msg} = res.data;
       if (Code !== "OK") {
         this.$error({
           title: "创建命令失败",
@@ -89,7 +88,7 @@ export default {
       }
       this.execId = Data;
       this.socket = new WebSocket(
-        `${config.WS_HOST}/ws/api/container/terminal/${Data}?containerId=${containerId}&token=${token}`
+          `${config.WS_HOST}/ws/api/container/terminal/${Data}?containerId=${containerId}&token=${token}`
       );
       this.socket.binaryType = "arraybuffer";
       this.socketOnClose();
@@ -111,18 +110,19 @@ export default {
       };
     },
     socketOnError() {
-      this.socket.onerror = (e) => {};
+      this.socket.onerror = () => {
+      };
     },
     resizeContainer() {
       if (!this.execId) {
         return;
       }
-      let { containerId } = this.$route.query;
+      let {containerId} = this.$route.query;
       containerApi.resizeContainer(
-        containerId,
-        this.execId,
-        this.screenWidth,
-        this.screenHeight
+          containerId,
+          this.execId,
+          this.screenWidth,
+          this.screenHeight
       );
     },
   },

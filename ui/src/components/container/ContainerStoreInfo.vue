@@ -2,7 +2,7 @@
   <a-form-model :label-col="labelCol" :wrapper-col="wrapperCol" v-model="form">
     <a-form-model-item v-for="(mountDir,index) in form.mountDirList" :key="index"
                        label="目录挂载">
-      <a-input v-model="mountDir.hostDir +':'+ mountDir.containerDir" disabled>
+      <a-input :value="mountDir.hostDir +':'+ mountDir.containerDir" disabled>
         <a-tooltip slot="suffix" title="移除此挂载">
           <a-icon type="close-circle" style="color: red" @click="removeMountDir(mountDir)"/>
         </a-tooltip>

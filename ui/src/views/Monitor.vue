@@ -4,44 +4,33 @@
       <a-col :span="24">
         <div id="cpu" class="charSize"></div>
       </a-col>
-
     </a-row>
 
-
     <a-row>
-
       <a-col :span="16">
         <div id="memoryUsage" class="charSize"></div>
       </a-col>
-
-
       <a-col :span="8">
         <div id="memory" class="charSize"></div>
       </a-col>
-
     </a-row>
 
     <a-row>
       <a-col :span="16">
         <div id="network" class="charSize"></div>
       </a-col>
-
-
       <a-col :span="8">
         <div id="networkPackage" class="charSize"></div>
       </a-col>
     </a-row>
   </div>
-
 </template>
-
 
 <script>
 
 import * as echarts from 'echarts';
 
 import containerApi from '../api/ContainerApi'
-import {formatUTCTime} from '../utils/index'
 import _ from "lodash";
 
 export default {
@@ -80,59 +69,59 @@ export default {
   }, methods: {
     updateData() {
       containerApi.monitorContainer(this.containerId)
-      .then(res => {
-            let Data = res.data
+          .then(res => {
+                let Data = res.data
 
-            // 解析CPU数据
-            let cpuTotalUsage = _.get(Data, 'cpu_stats.cpu_usage.total_usage', 10)
-            let preCpuTotalUsage = _.get(Data, 'precpu_stats.cpu_usage.total_usage', 0)
-            let cpuDelta = cpuTotalUsage - preCpuTotalUsage
+                // 解析CPU数据
+                let cpuTotalUsage = _.get(Data, 'cpu_stats.cpu_usage.total_usage', 10)
+                let preCpuTotalUsage = _.get(Data, 'precpu_stats.cpu_usage.total_usage', 0)
+                let cpuDelta = cpuTotalUsage - preCpuTotalUsage
 
-            let systemCpuTotalUsage = _.get(Data, 'cpu_stats.system_cpu_usage', 0)
-            let preSystemCpuTotalUsage = _.get(Data, 'precpu_stats.system_cpu_usage', 0)
-            let preSystemCpuDelta = systemCpuTotalUsage - preSystemCpuTotalUsage
+                let systemCpuTotalUsage = _.get(Data, 'cpu_stats.system_cpu_usage', 0)
+                let preSystemCpuTotalUsage = _.get(Data, 'precpu_stats.system_cpu_usage', 0)
+                let preSystemCpuDelta = systemCpuTotalUsage - preSystemCpuTotalUsage
 
-            let numberCpu = _.get(Data, "cpu_stats.online_cpus", 1)
+                let numberCpu = _.get(Data, "cpu_stats.online_cpus", 1)
 
-            let usageRate = 0;
-            if (preSystemCpuTotalUsage !== 0) {
-              usageRate = (cpuDelta / preSystemCpuDelta) * numberCpu * 100
-            }
+                let usageRate = 0;
+                if (preSystemCpuTotalUsage !== 0) {
+                  usageRate = (cpuDelta / preSystemCpuDelta) * numberCpu * 100
+                }
 
-            // 网络数据
-            let networksData = _.get(Data, "networks.eth0", {})
+                // 网络数据
+                let networksData = _.get(Data, "networks.eth0", {})
 
-            // 内存使用率
-            let usedMemory = _.get(Data, "memory_stats.usage", 0)
-            let usedMemoryOfCache = _.get(Data, "memory_stats.stats.cache", 0)
-            let availableMemory = _.get(Data, "memory_stats.limit", 0)
-            let usageMemoryWithoutCache = usedMemory - usedMemoryOfCache
-            let memoryRate = usageMemoryWithoutCache / availableMemory * 100
+                // 内存使用率
+                let usedMemory = _.get(Data, "memory_stats.usage", 0)
+                let usedMemoryOfCache = _.get(Data, "memory_stats.stats.cache", 0)
+                let availableMemory = _.get(Data, "memory_stats.limit", 0)
+                let usageMemoryWithoutCache = usedMemory - usedMemoryOfCache
+                let memoryRate = usageMemoryWithoutCache / availableMemory * 100
 
-            if (this.x.length > 30) {
-              this.x.splice(0, 1)
-              this.cpu.usageRate.splice(0, 1)
-              this.network.splice(0, 1)
-              this.memory.splice(0, 1)
-              this.memoryUsage.splice(0, 1)
-            }
+                if (this.x.length > 30) {
+                  this.x.splice(0, 1)
+                  this.cpu.usageRate.splice(0, 1)
+                  this.network.splice(0, 1)
+                  this.memory.splice(0, 1)
+                  this.memoryUsage.splice(0, 1)
+                }
 
-            // 塞入数据
-            let date = new Date()
-            this.x.push(date.getMinutes() + ":" + date.getSeconds())
+                // 塞入数据
+                let date = new Date()
+                this.x.push(date.getMinutes() + ":" + date.getSeconds())
 
-            this.cpu.usageRate.push(usageRate.toFixed(2))
-            this.updateCpu()
+                this.cpu.usageRate.push(usageRate.toFixed(2))
+                this.updateCpu()
 
-            this.memory.push(memoryRate.toFixed(2))
-            this.memoryUsage.push((usageMemoryWithoutCache / 1000000).toFixed(2))
-            this.updateMemory()
+                this.memory.push(memoryRate.toFixed(2))
+                this.memoryUsage.push((usageMemoryWithoutCache / 1000000).toFixed(2))
+                this.updateMemory()
 
-            this.network.push(networksData)
-            this.updateNetwork()
+                this.network.push(networksData)
+                this.updateNetwork()
 
-          }
-      )
+              }
+          )
     },
     updateCpu() {
       let cpuOptions = {

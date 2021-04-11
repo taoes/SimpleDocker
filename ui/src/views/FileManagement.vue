@@ -1,8 +1,8 @@
 <template>
   <div id="fileBrowse" style="overflow-y: scroll; overflow-x:auto;height: 100%">
     <div style="width: 80%;justify-content: center">
-      <template v-for="data in fileList">
-        <div class="file" @click="updatePath(data)">
+      <template v-for="(data,index) in fileList">
+        <div class="file" @click="updatePath(data)" :key="index">
           <img :src="getIcon(data)" alt="" width="40" class="fileLogo"/>
           <div class="fileInfo">
             <span><b>{{ data.Name }}</b></span>
@@ -36,11 +36,10 @@
 import ContainerApi from '../api/ContainerApi'
 import config from '../api/Config'
 import {download} from "@/utils";
-import TerminalContainer from "@/views/TerminalContainer";
 
 export default {
   name: "FileBrowser",
-  components: {TerminalContainer},
+  components: {},
   data() {
     return {
       containerId: '',
@@ -109,7 +108,7 @@ export default {
       this.fileList = [{Name: '返回上一层'}, ...SubCategory]
     },
     send: function () {
-      if (!!this.socket) {
+      if (this.socket) {
         if (this.pathChain.length === 0) {
           this.socket.send("App2 /")
         } else {
@@ -121,29 +120,31 @@ export default {
         title: '连接断开',
         content: "终端远程服务连接断开，请检查网络状态"
       });
-    },
-    getIcon(file) {
+    }, getIcon(file) {
       let {Name, Permission, FileType} = file
+      let fileName = "";
       if (Name === '返回上一层') {
-        return require("../assets/file/back.png")
+        fileName = "../assets/file/back.png"
       } else if (FileType === "true") {
         if (Name === 'home' || Name === 'root') {
-          return require("../assets/file/home.png")
+          fileName = "../assets/file/home.png"
         }
-        return require("../assets/file/category.png")
+        fileName = "../assets/file/category.png"
       } else if (Permission.indexOf("x") !== -1) {
-        return require("../assets/file/exe.png")
+        fileName = "../assets/file/exe.png"
       } else if (Permission.indexOf("L") !== -1) {
-        return require("../assets/file/link.png")
+        fileName = "../assets/file/link.png"
       } else if (Name.endsWith(".png")) {
-        return require("../assets/file/pic.png")
+        fileName = "../assets/file/pic.png"
       } else if (Name.endsWith(".html")) {
-        return require("../assets/file/web.png")
+        fileName = "../assets/file/web.png"
       } else if (Name.endsWith(".tar.gz")) {
-        return require("../assets/file/tar.png")
+        fileName = "../assets/file/tar.png"
       } else {
-        return require("../assets/file/unkonw.png")
+        fileName = "../assets/file/unkonw.png"
       }
+      // eslint-disable-next-line no-undef
+      return require(fileName)
     }
   }
 }

@@ -93,8 +93,8 @@
           <td class="contentTd">子网掩码</td>
         </tr>
 
-        <template v-for="config in IPConfig">
-          <tr>
+        <template v-for="(config,index) in IPConfig">
+          <tr :key="index">
             <td class="tagTd">{{ config.Subnet }}</td>
             <td class="tagTd">{{ config.Gateway }}</td>
           </tr>
@@ -278,7 +278,7 @@ export default {
         } else {
           this.$message.info({content: Msg, key});
         }
-      }).catch(e => {
+      }).catch(() => {
         this.$message.info({content: '服务连接失败，请检查服务是否正常启动', key});
       })
     }, callCreateNewNetworkApi() {
@@ -297,7 +297,7 @@ export default {
         } else {
           this.$message.info({content: '创建网络完成', key});
         }
-      }).catch(e => {
+      }).catch(() => {
         this.$message.info({content: '服务连接失败，请检查服务是否正常启动', key});
       })
     }, callPruneNetworkApi() {

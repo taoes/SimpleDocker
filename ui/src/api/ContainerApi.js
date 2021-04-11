@@ -29,7 +29,7 @@ function createNewContainer(createModelData) {
 /** 获取容器日志 */
 function getContainerLog(containerId) {
     let apiResp = axios.get(`/api/container/${containerId}/log`);
-    apiResp.catch(e => {
+    apiResp.catch(() => {
         this.$notification['warning']({
             message: `操作失败`,
             description: `操作失败,请检查 Docker 服务是否正常`
@@ -41,7 +41,7 @@ function getContainerLog(containerId) {
 /** 操作容器 */
 function controlContainer(containerId, state, operateName) {
     let apiResp = axios.get(`/api/container/${containerId}/${state}`)
-    apiResp.catch(e => {
+    apiResp.catch(() => {
         this.$notification['error']({
             message: `${operateName}容器失败`,
             description: `${operateName}容器失败,请检查 Docker 服务是否正常`
@@ -112,7 +112,7 @@ function handleError(promise) {
                 description: Msg
             })
         }
-    }).catch(e => {
+    }).catch(() => {
         notification['error']({
             message: '系统API访问异常',
             description: '操作失败,请检查 Docker 服务是否正常'

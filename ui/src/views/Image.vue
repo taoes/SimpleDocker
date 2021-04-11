@@ -271,6 +271,7 @@ import {download, guid} from '../utils/index'
 import Config from '../api/Config'
 import systemConfigApi from "@/api/SystemConfigApi";
 
+// eslint-disable-next-line no-undef
 const {imageColumns} = require('../utils/TableModelDefine')
 
 export default {
@@ -368,7 +369,7 @@ export default {
                 onOk: () => this.forceRemove(imageId)
               })
             }
-          }).catch(e => {
+          }).catch(() => {
             this.$notification['error']({
               message: '删除镜像失败',
               description: "访问 Docker 镜像出现异常,请检查 Docker 服务是否正常启动",
@@ -391,7 +392,7 @@ export default {
               this.$message.error(Msg);
             }
           }
-      ).catch(e => {
+      ).catch(() => {
         this.$message.error("访问 Docker 镜像出现异常,请检查 Docker 服务是否正常启动");
       })
     },
@@ -401,8 +402,7 @@ export default {
     },
     pullImage: function () {
       this.pullImageVisible = true;
-    },
-    close: function (e) {
+    }, close: function () {
       this.showDetail = false;
     }, async openCreateContainerGuide(record) {
       // 获取配合判断是否是简单模式
@@ -438,33 +438,27 @@ export default {
             let data = res.data
             this.pullLog = this.pullLog + data;
             this.$message.info({content: '镜像获取完成', key})
-          }).catch(e => {
+          }).catch(() => {
         this.$message.error({content: '网络访问失败，请检查服务是否正常启动', key})
         this.pullLog = "网络访问失败，请检查服务是否正常启动"
       })
       this.pulling = false
-    },
-    exportImg: function (imageId, imageTag) {
+    }, async exportImg(imageId, imageTag) {
       let key = guid()
-      let token = localStorage.token;
       this.$message.loading({content: "正在导出镜像，请稍后....", key, duration: 0});
       let config = {
         withCredentials: true,
         timeout: 600000,
-        responseType: 'blob', headers: {Authorization: token}
+        responseType: 'blob', headers: {Authorization: localStorage.token}
       }
-      this.$axios.create(config).post(
-          `/api/image/save`,
-          {imageTag, imageId},
-      ).then(
-          (res) => {
-            download(res.data, `${imageId}.tar.gz`)
-            this.$message.info({content: "镜像已成功导出并下载....", key});
-          })
-          .catch(e => {
-            console.error(e);
-            this.$message.error({content: "镜像导出失败,请检查 Docker 服务是否正常", key});
-          })
+      this.$axios.create(config).post(`/api/image/save`, {imageTag, imageId})
+          .then(
+              (res) => {
+                download(res.data, `${imageId}.tar.gz`)
+                this.$message.info({content: "镜像已成功导出并下载....", key});
+              }).catch(() => {
+        this.$message.error({content: "镜像导出失败,请检查 Docker 服务是否正常", key});
+      });
     }, openReTagModal: function (oldTag) {
       this.tagImageVisible = true
       this.oldTag = oldTag
@@ -477,8 +471,8 @@ export default {
       } else {
         this.$message.error(Msg);
       }
-    }, callReTagApi: function () {
-      if (this.newTag === '' || this.newTag.trim() === '') {
+    }, async callReTagApi() {
+      if (this.newTag.trim() === '') {
         this.tagImageVisible = false
         this.$message.warning("新的镜像tag 不能为空字符串");
         return
@@ -489,33 +483,20 @@ export default {
         return
       }
 
-      let data = {
-        source: this.oldTag,
-        tag: this.newTag
+      let res = await imageApi.renameImage({source: this.oldTag, tag: this.newTag});
+      let {Code} = res.data;
+      if (Code === 'OK') {
+        this.$message.info('标记镜像完成!');
+        this.tagImageVisible = false
+        this.updateImageList()
       }
-      this.$axios.get(`/api/image/tag`, {params: data})
-          .then((res) => {
-            let {Code, Msg} = res.data;
-            if (Code === 'OK') {
-              this.$message.info('标记镜像完成!');
-              this.tagImageVisible = false
-              this.updateImageList()
-            } else {
-              this.$message.warning(Msg);
-            }
-          })
-          .catch(e => {
-            this.$message.error("镜像标记失败,请检查 Docker 服务是否正常");
-          })
-    }, callPruneImageApi() {
-      imageApi.pruneImage().then(res => {
-        let {Code, Data} = res.data
-        if (Code === 'OK') {
-          this.$message.info(`精简镜像完成!!`);
-        }
-      })
+    }, async callPruneImageApi() {
+      let res = await imageApi.pruneImage()
+      let {Code} = res.data
+      if (Code === 'OK') {
+        this.$message.info(`精简镜像完成!!`);
+      }
     }
-
   }
 }
 ;

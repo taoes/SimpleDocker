@@ -16,13 +16,12 @@
   </div>
 </template>
 <script>
-import ResetPassword from "../components/ResetPassword";
 import SystemDockerConfig from "@/components/config/SystemDockerConfig";
 import SystemNotifyConfig from "@/components/config/SystemNotifyConfig";
 import SystemAboutConfig from "@/components/config/SystemAboutConfig";
 
 export default {
-  components: {SystemAboutConfig, SystemNotifyConfig, SystemDockerConfig, ResetPassword},
+  components: {SystemAboutConfig, SystemNotifyConfig, SystemDockerConfig},
 };
 </script>
 

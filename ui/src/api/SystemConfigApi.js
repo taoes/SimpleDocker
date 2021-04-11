@@ -39,7 +39,7 @@ function handleError(promise) {
         if (Code !== "OK") {
             message.info(Msg)
         }
-    }).catch(e => {
+    }).catch(() => {
         notification['error']({
             message: `操作失败`,
             description: `操作失败,请检查 Docker 服务是否正常`

@@ -50,31 +50,31 @@
 </template>
 
 <script>
-  import {mapMutations} from "vuex";
+import {mapMutations} from "vuex";
 
-  export default {
-    name: "PCMenu",
-    computed: {
-      currentMenuKey: function () {
-        return this.$store.state.menu.currentMenuKey;
-      }
-    },
-    methods: {
-      ...mapMutations({
-        setCurrentMenuKey: 'setCurrentMenuKey'
-      }),
-      selectItem: function ({key}) {
-        this.$router.push(`/content${key}`)
-        this.setCurrentMenuKey(key)
-      }
+export default {
+  name: "PCMenu",
+  computed: {
+    currentMenuKey: function () {
+      return this.$store.state.menu.currentMenuKey;
+    }
+  },
+  methods: {
+    ...mapMutations({
+      setCurrentMenuKey: 'setCurrentMenuKey'
+    }),
+    selectItem: function ({key}) {
+      this.$router.push(`/content${key}`)
+      this.setCurrentMenuKey(key)
     }
   }
+}
 </script>
 
 <style>
-  .menuItem {
-    color: #000c17;
-  }
+.menuItem {
+  color: #000c17;
+}
 </style>
 
 

@@ -24,7 +24,7 @@
     </a-form-model-item>
 
     <a-form-model-item v-for="(mapping,index) in form.portMapping" :key="index" label="端口映射">
-      <a-input v-model="mapping.hostPort + ':' + mapping.containerPort" disabled>
+      <a-input :value="mapping.hostPort + ':' + mapping.containerPort" disabled>
         <a-tooltip slot="suffix" title="移除此映射">
           <a-icon type="close-circle" style="color: red" @click="removePortMapping(mapping)"/>
         </a-tooltip>
@@ -40,11 +40,11 @@
         </a-button>
 
         <a-button @click="mappingPortVisible = true">
-          <a-icon type="plus-circle" />
+          <a-icon type="plus-circle"/>
           新增映射
         </a-button>
 
-        <a-button  type="primary" @click="$parent.nextStep()">
+        <a-button type="primary" @click="$parent.nextStep()">
           下一步
           <a-icon type="arrow-right"/>
         </a-button>

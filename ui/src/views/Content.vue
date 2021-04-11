@@ -86,13 +86,12 @@
 </template>
 <script>
 import PCMenu from "../components/PCMenu";
-import ResetPassword from "../components/ResetPassword";
 import AuthApi from "../api/AuthApi";
 
 let intervalId = null
 
 export default {
-  components: {ResetPassword, PCMenu},
+  components: {PCMenu},
   data() {
     return {
       collapsed: false,

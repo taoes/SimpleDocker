@@ -14,7 +14,7 @@ function createNewVolume(query) {
 function removeVolume(volumeName, forceRemoveVolume) {
   let apiResp = axios.get(
       `/api/volume/${volumeName}/delete/${forceRemoveVolume}`)
-  apiResp.catch(e => {
+  apiResp.catch(() => {
     this.$notification['error']({
       message: `操作失败`,
       description: `操作失败,请检查 Docker 服务是否正常`
@@ -25,7 +25,7 @@ function removeVolume(volumeName, forceRemoveVolume) {
 
 function pruneVolume() {
   let apiResp = axios.get('/api/volume/prune')
-  apiResp.catch(e => {
+  apiResp.catch(() => {
     this.$notification['error']({
       message: `操作失败`,
       description: `操作失败,请检查 Docker 服务是否正常`

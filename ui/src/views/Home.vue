@@ -14,7 +14,7 @@
 import {mapActions} from "vuex";
 import {formatUTCTime} from '../utils/index'
 import systemInfoApi from '@/api/SystemInfoApi'
-
+import _ from "lodash";
 import DockerInfo from "@/components/home/DockerInfo";
 import DockerStatistics from "@/components/home/DockerStatistics";
 import SystemInfo from "@/components/home/SystemInfo";

@@ -31,6 +31,7 @@ const imageColumns = [
     },
 ];
 
+// eslint-disable-next-line no-undef
 module.exports = {
     imageColumns: imageColumns
 }

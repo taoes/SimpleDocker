@@ -50,7 +50,7 @@ function handleError(promise) {
                 description: Msg
             })
         }
-    }).catch(e => {
+    }).catch(() => {
         notification['error']({
             message: `操作失败`,
             description: `请检查 Docker 服务是否正常`

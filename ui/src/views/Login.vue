@@ -1,7 +1,7 @@
 <template>
   <div id="loginContainer">
     <div id="loginForm">
-      <img src="../assets/logo-tm.png" alt="" width="300px">
+      <img src="../assets/logo-tm.png" alt="" style="width: 300px">
       <a-form-model :form="loginForm">
         <a-input placeholder="请输入账号" class="loginInput" type="text" :allowClear="true" v-focus
                  @keydown.enter="login"

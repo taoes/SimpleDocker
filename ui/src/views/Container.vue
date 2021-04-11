@@ -189,8 +189,8 @@
 
 
           <p>网络地址</p>
-          <template v-for="(network,key,index) in containerNetworkInfo">
-            <table class="configTable">
+          <template v-for="(network,key) in containerNetworkInfo">
+            <table class="configTable" :key="key">
               <tr>
                 <td class="tagTd">网络名</td>
                 <td class="contentTd" align="left"> {{ key }}</td>
@@ -218,8 +218,8 @@
 
 
         <a-collapse-panel key="volumeConfig" header="存储配置">
-          <template v-for="volume in containerMountInfo">
-            <table class="configTable">
+          <template v-for="(volume,key) in containerMountInfo">
+            <table class="configTable" :key="key">
               <tr>
                 <td class="tagTd">名称</td>
                 <td class="contentTd" align="left"> {{ volume.Name }}</td>
@@ -266,7 +266,7 @@
       <a-form-model :label-col="{ span: 4 }" :wrapper-col="{ span: 20 }"
                     style="overflow-y: scroll; overflow-x:auto;height: 350px;">
         <template v-for="network in this.$store.state.network.list">
-          <div style="display: flex;justify-content: space-around;align-items: center">
+          <div :key="network.Id" style="display: flex;justify-content: space-around;align-items: center">
             <div style="flex-grow: 1">{{ network.Id }}</div>
             <div style="flex-grow: 2"> {{ network.Name }}</div>
             <div style="padding: 5px;">
@@ -286,7 +286,7 @@
               </template>
             </div>
           </div>
-          <a-divider style="margin: 0"></a-divider>
+          <a-divider style="margin: 0" :key="network.Id +'_DIVIDER'"></a-divider>
         </template>
 
       </a-form-model>
@@ -423,14 +423,14 @@ export default {
       let formatLog = ''
       formatLog = this.containerLog.replace('/\r\n/g', "<br/>")
       formatLog = formatLog.replace('\n/g', "<br/>");
-      return formatLog.replace('/\s/g', "&nbsp;");
+      return formatLog.replace('/s/g', "&nbsp;");
     },
     connectNetworkList: function () {
       return Object.keys(this.containerNetworkInfo)
     }
   }, mounted() {
     let searchKeyFromQuery = this.$route.query.searchKey;
-    if (!!searchKeyFromQuery) {
+    if (searchKeyFromQuery) {
       this.searchKey = searchKeyFromQuery;
     }
     this.updateContainerList()
@@ -556,7 +556,7 @@ export default {
             download(res.data, `${containerId}.tar.gz`)
             this.$message.info({content: "容器已成功导出并下载....", key});
           })
-          .catch(e => {
+          .catch(() => {
             this.$message.error({content: "容器导出失败,请检查 Docker 服务是否正常", key});
           })
     }, openNetworkConnectModal(containerId) {
@@ -576,7 +576,7 @@ export default {
               this.$message.warning(`${operatorName} 失败,${Msg}`)
             }
             this.updateContainerInfo(this.currentContainerId)
-          }).catch(e => {
+          }).catch(() => {
         this.$message.error({content: `${operatorName} 网络 失败, 请检查 Docker 服务是否正常`});
       })
     }, openTerminal(state, containerId) {

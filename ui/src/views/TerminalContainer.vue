@@ -108,7 +108,7 @@ export default {
 
 .layoutContent {
   margin: 0;
-  minHeight: '280px';
+  minHeight: 280px;
 }
 
 .right {

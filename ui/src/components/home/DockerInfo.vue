@@ -37,7 +37,7 @@
 
       <a-descriptions-item label="组件版本" :span="1">
         <template v-for="component of version.Components">
-          <p>
+          <p :key="component.Name">
             <span>{{ component.Name }} </span>
             <span style="margin-left: 0"> - {{ component.Version }}</span>
           </p>

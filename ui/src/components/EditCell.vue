@@ -3,7 +3,7 @@
     <div v-if="editable" class="editable-cell-input-wrapper">
       <a-input :value="value" @click="edit" @change="handleChange" @pressEnter="check" style="margin-right: 100px"/>
     </div>
-    <span v-else class="editable-cell-text-wrapper" >
+    <span v-else class="editable-cell-text-wrapper">
       {{ value || ' ' }}
       <a-icon type="edit" class="editable-cell-icon" @click="edit"/>
     </span>
@@ -52,7 +52,7 @@ export default {
 </script>
 
 <style scoped>
-.editable-cell-icon{
+.editable-cell-icon {
   padding-left: 20px;
 }
 
