@@ -49,7 +49,8 @@ Docker是目前一种非常主流的容器化方案，支持非常多的特性�
 #### DockerCompose 安装
 
 1. 确保Docker & DockerCompose 已经部署并且启动成功，如果docker-compose 没有安装请参考官网 [https://docs.docker.com/compose/install/](https://docs.docker.com/compose/install/) 安装
-2. 在某个目录下创建文件 docker-compose.yml 其内容如下:
+2. 通过命令 `docker-compose version` 验证安装成功     
+3. 在某个目录下创建文件 `docker-compose.yml` 其内容如下:
 ```yaml
 # yaml 配置实例
 version: '3'
@@ -57,7 +58,7 @@ services:
   redis:
     image: redis:latest
   web:
-    build: registry.cn-hangzhou.aliyuncs.com/seven-tao/simple-docker:0.0.5
+    image: registry.cn-hangzhou.aliyuncs.com/seven-tao/simple-docker:0.0.5
     ports:
       - "9091:4050"
     volumes:
@@ -74,8 +75,8 @@ docker-compose up -d # 后台运行
 
 3. 浏览器访问 http://localhost:9091
 4. 默认账号: admin 默认密码: 123456
-5. 如果使用了域名并且通过服务器进行反向代理，请配置反向代理服务器支持
-   WebSocket，否则终端功能可能无法使用 [1. Nginx 配置支持WebSocket](https://www.xncoding.com/2018/03/12/fullstack/nginx-websocket.html)
+
+> 如果使用了域名并且通过服务器进行反向代理，请配置反向代理服务器支持  WebSocket，否则终端功能可能无法使用 [1. Nginx 配置支持WebSocket](https://www.xncoding.com/2018/03/12/fullstack/nginx-websocket.html)
 
 #### 手动编译
 
