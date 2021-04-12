@@ -1,35 +1,7 @@
-dir=`pwd`
-
-function buildForLinux() {
-cd $dir
-echo "[2/3] build for linux...."
+echo  "编译后端....."
 CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build App.go
-if [ $? -ne 0 ]; then
-  echo "Linux 项目编译失败!"
-  exit -1
-fi
-}
+cp ./App ./build/App
 
-
-function buildForDrawin() {
-echo "[3/3] build for drawin...."
-go build App.go
-if [ $? -ne 0 ]; then
-  echo "Drawin 项目编译失败!"
-  exit -1
-fi
-}
-
-function buildFe() {
-echo "[1/3] build for ui...."
+echo  "编译前端....."
 cd ui && yarn build
-if [ $? -ne 0 ]; then
-  echo "前端项目编译失败!"
-  exit -1
-fi
-}
-
-rm ./App  ./SimpleDocker
-buildFe
-buildForLinux
-#buildForDrawin
+cd .. && cp -r ./ui/dist/ ./build/resource/dist

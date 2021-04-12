@@ -8,16 +8,9 @@
 
 **个人开发维护不易，麻烦给个 Star ✨ 鼓励一下作者,您的鼓励是我最大的动力 😛！！！**
 
-> 🎉 🔥 ✨ 新发布的 V0.0.4 版本支持 容器在线终端管理、在线文件浏览及文件下载、容器性能监控等功能，欢迎体验 & 提交PR
+> 🎉 🔥 ✨ 新发布的 V0.0.5 版本支持 容器在线终端管理、在线文件浏览及文件下载、容器性能监控、容器异常通知等功能，欢迎体验 & 提交PR
 
----
-预计发布的V0.0.5新支持特性
 
-+ 完善细节(进行中.....)
-+ 重构容器创建流程，使用向导模式创建容器(完成)
-+ 新增容器异常的钉钉通知(完成)
-+ 首页新增系统信息(完成)
-+ 接入Redis作为存储中间件(完成)
 
 ## 背景
 
@@ -27,7 +20,7 @@ Docker是目前一种非常主流的容器化方案，支持非常多的特性�
 > Tip: 您可以在Issues中提出需求和您发现的bug！[需求 & BUG 管理](https://github.com/taoes/SimpleDocker/issues)
 
 
-** 🎉 目前支持以下特性:**
+### 🎉 目前支持特性
 
 |特性|支持功能|
 |---|---|
@@ -40,29 +33,51 @@ Docker是目前一种非常主流的容器化方案，支持非常多的特性�
 |设置|容器创建模式，容器异常通知配置|
 |监控|容器异常通知、容器性能监控|
 
-** 🛠 计划支持的特性: **
+### 🛠 计划支持特性
 
 0. 新增Docker控制窗口，支持相关Docker脚本的执行
 1. DockerCompose 镜像编排管理(计划中)
 2. DockerSwarm 集群管理(计划中)
 
+
+### 📔 更新记录
+
+[SimpleDocker 更新记录](./doc/update.md)
+
 ## 应用安装
 
-+ Docker 安装
+#### DockerCompose 安装
 
-1. 确保Docker已经部署并且启动成功
-2. 执行下面的脚本，会自动拉取镜像并启动在8080端口
+1. 确保Docker & DockerCompose 已经部署并且启动成功，如果docker-compose 没有安装请参考官网 [https://docs.docker.com/compose/install/](https://docs.docker.com/compose/install/) 安装
+2. 在某个目录下创建文件 docker-compose.yml 其内容如下:
+```yaml
+# yaml 配置实例
+version: '3'
+services:
+  redis:
+    image: redis:latest
+  web:
+    build: registry.cn-hangzhou.aliyuncs.com/seven-tao/simple-docker:0.0.5
+    ports:
+      - "9091:4050"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    depends_on:
+      - redis
+```   
+3. 执行下面的脚本，会自动拉取镜像并启动在 9091 端口
 
 ```sh
-docker run  -d -p 8080:4050 -v /var/run/docker.sock:/var/run/docker.sock --name SimpleDocker  registry.cn-hangzhou.aliyuncs.com/seven-tao/simple-docker:0.0.4
+docker-compose up # 前台运行
+docker-compose up -d # 后台运行
 ```
 
-3. 浏览器访问 http://localhost:8080
-4. 默认账号: admin 默认密码: SimpleDocker2020
+3. 浏览器访问 http://localhost:9091
+4. 默认账号: admin 默认密码: 123456
 5. 如果使用了域名并且通过服务器进行反向代理，请配置反向代理服务器支持
    WebSocket，否则终端功能可能无法使用 [1. Nginx 配置支持WebSocket](https://www.xncoding.com/2018/03/12/fullstack/nginx-websocket.html)
 
-+ 手动编译
+#### 手动编译
 
 0. 准备Redis环境
 1. 克隆代码到本地，并启动 beego项目
@@ -72,10 +87,9 @@ git clone https://gitee.com/taoes_admin/SimpleDocker
 cd ./SimpleDocker
 bee run
 ```
-
-2. 新建终端窗口，切换到 `ui` 目录下打开前端项目
-
-3. 修改 `ui/src/api/Config.js` 文件内容，确保请求前缀和 beego 启动端口一致
+2. 修改 db.go 文件中Redis的配置
+3. 新建终端窗口，切换到 `ui` 目录下打开前端项目
+4. 修改 `ui/src/api/Config.js` 文件内容，确保请求前缀和 beego 启动端口一致
 
 ```shell
 cd ui
@@ -88,11 +102,7 @@ yarn install && yarn server
 
 + Docker 信息
   ![Docker 信息](./img/info.png)
-
-+ 容器危险操作通知
-
-  ![img.png](img/container_notify.png)
-
+  
 + Image 信息
   ![Image 信息](./img/image.png)
 
@@ -124,7 +134,7 @@ yarn install && yarn server
 
 1. 忘记密码
 
-> 忘记密码时候，你可以切换到`~/.local/simpleDocker` 目录，修改auth.json 文件，将password值修改为`B923E7672631F71B510FEDB20A77EA8A` 即可恢复默认密码 `SimpleDocker2020`
+> 忘记密码时候，你可以通过访问Redis服务的1号数据库，移除  `KEY=SIMPLE:DOCKER:AUTH:*`的所有KEY即可恢复默认密码
 
 ## 相关依赖
 

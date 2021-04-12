@@ -153,8 +153,7 @@
 
 
     <!--    简单模式创建容器-->
-    <a-modal v-model="runImageVisible" title="运行新的容器" okText="运行" cancelText="取消"
-             @ok="callRunNewContainerApi">
+    <a-modal v-model="runImageVisible" title="运行新的容器" okText="运行" cancelText="取消" @ok="callRunNewContainerApi">
       <a-form-model :label-col="{ span: 4 }" :wrapper-col="{ span: 20 }"
                     v-model="containerConfig">
         <a-form-model-item label="镜像名称">
@@ -269,7 +268,6 @@ import {mapActions} from "vuex";
 import imageApi from "../api/ImageApi";
 import {download, guid} from '../utils/index'
 import Config from '../api/Config'
-import systemConfigApi from "@/api/SystemConfigApi";
 
 // eslint-disable-next-line no-undef
 const {imageColumns} = require('../utils/TableModelDefine')
@@ -405,17 +403,27 @@ export default {
     }, close: function () {
       this.showDetail = false;
     }, async openCreateContainerGuide(record) {
-      // 获取配合判断是否是简单模式
-      let res = await systemConfigApi.getDockerConfig();
-      let {Code, Data} = res.data
+      let that = this;
       let {rep: imageName, imageId} = record;
-      if (Code === 'OK' && Data.containerCreateMode === 'simple') {
-        this.runImageVisible = true;
-        this.containerConfig.imageName = imageName;
-        return
-      }
+      const h = this.$createElement;
+      let content = h('div', {}, [
+        h('p', '🔥 简单模式: 快速创建容器, 功能小巧'),
+        h('p', '🛠 专业模式: 向导创建容器, 功能强大'),
+      ]);
+      this.$confirm({
+        title: `请选择容器创建模式`,
+        content,
+        okText: '简单模式',
+        cancelText: '专业模式',
+        onOk() {
+          that.containerConfig.imageName = imageName;
+          that.runImageVisible = true;
+        }, async onCancel() {
+          await that.$router.push(`/content/container_create?imageTag=${imageName}&imageId=${imageId}`)
+        }
+      });
 
-      await this.$router.push(`/content/container_create?imageTag=${imageName}&imageId=${imageId}`)
+
     },
     callPullImageApi() {
       if (this.pulling) {

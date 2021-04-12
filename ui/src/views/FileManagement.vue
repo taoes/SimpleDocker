@@ -124,27 +124,25 @@ export default {
       let {Name, Permission, FileType} = file
       let fileName = "";
       if (Name === '返回上一层') {
-        fileName = "../assets/file/back.png"
+        return require("../assets/file/back.png")
       } else if (FileType === "true") {
         if (Name === 'home' || Name === 'root') {
-          fileName = "../assets/file/home.png"
+          return require("../assets/file/home.png")
         }
-        fileName = "../assets/file/category.png"
+        return require("../assets/file/category.png")
       } else if (Permission.indexOf("x") !== -1) {
-        fileName = "../assets/file/exe.png"
+        return require("../assets/file/exe.png")
       } else if (Permission.indexOf("L") !== -1) {
-        fileName = "../assets/file/link.png"
+        return require("../assets/file/link.png")
       } else if (Name.endsWith(".png")) {
-        fileName = "../assets/file/pic.png"
+        return require("../assets/file/pic.png")
       } else if (Name.endsWith(".html")) {
-        fileName = "../assets/file/web.png"
+        return require("../assets/file/web.png")
       } else if (Name.endsWith(".tar.gz")) {
-        fileName = "../assets/file/tar.png"
+        return require("../assets/file/tar.png")
       } else {
-        fileName = "../assets/file/unkonw.png"
+        return require("../assets/file/unkonw.png")
       }
-      // eslint-disable-next-line no-undef
-      return require(fileName)
     }
   }
 }

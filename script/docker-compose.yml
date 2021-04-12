@@ -4,7 +4,7 @@ services:
   redis:
     image: redis:latest
   web:
-    build: .
+    build: registry.cn-hangzhou.aliyuncs.com/seven-tao/simple-docker:0.0.5
     ports:
       - "9090:4050"
     volumes:
