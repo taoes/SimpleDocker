@@ -1,6 +1,6 @@
 FROM node:12-alpine AS ui-builder
-ARG PORT 4050
-ARG HOST 127.0.0.1
+ARG PORT=4050
+ARG HOST=127.0.0.1
 ENV VUE_APP_API_HOST ${HOST}
 ENV VUE_APP_API_PORT ${PORT}
 WORKDIR /ui
@@ -18,7 +18,7 @@ chmod a+x bin/SimpleDocker
 
 FROM alpine
 LABEL maintainer="zhoutao825638@vip.qq.com, k8scat@gmail.com"
-ARG PORT 4050
+ARG PORT=4050
 EXPOSE ${PORT}
 WORKDIR /app
 COPY --from=ui-builder /ui/dist ./static
