@@ -4,16 +4,16 @@ import (
 	"SimpleDocker/src/api/model"
 	"SimpleDocker/src/docker"
 	"SimpleDocker/src/utils"
-	"bytes"
 	"fmt"
-	"github.com/astaxie/beego"
-	"github.com/astaxie/beego/logs"
-	"github.com/gorilla/websocket"
-	jsoniter "github.com/json-iterator/go"
 	"io/ioutil"
 	"net/http"
 	"os"
 	"time"
+
+	"github.com/astaxie/beego"
+	"github.com/astaxie/beego/logs"
+	"github.com/gorilla/websocket"
+	jsoniter "github.com/json-iterator/go"
 )
 
 var clientsOfFile = make(map[model.Client]bool)
@@ -63,17 +63,6 @@ func (c *FileController) CategoryInfo(containerId string) {
 		return
 	}
 
-	// 拷贝文件到容器的Bin目录
-	dir, err := os.UserHomeDir()
-	file, err := ioutil.ReadFile(dir + "/.local/simpleDocker/App.tar.gz")
-	err = docker.UploadFileToContainer(containerId, "/bin", bytes.NewReader(file))
-	if err != nil {
-		logs.Error("拷贝文件发生错误")
-		logs.Error(err)
-		conn.Close()
-		return
-	}
-
 	attach, execId, err := docker.ContainerFileSystem(containerId)
 	if err != nil {
 		logs.Info("发生错误")
@@ -102,13 +91,16 @@ func (c *FileController) CategoryInfo(containerId string) {
 	// 持续读取消息
 	go func() {
 		for true {
-			readString, _ := attach.Reader.ReadString('#')
-			if readString == "" {
+			b, _ := attach.Reader.ReadBytes('#')
+			if len(b) == 0 {
 				time.Sleep(time.Millisecond * 100)
 				continue
 			}
-			result, _ := model.ParseForContainerCategoryModel(readString)
-			_ = conn.WriteJSON(result)
+			files, _ := model.ParseFiles(b)
+			res := map[string][]*model.File{
+				"files": files,
+			}
+			_ = conn.WriteJSON(res)
 		}
 	}()
 

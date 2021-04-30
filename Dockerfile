@@ -1,7 +1,26 @@
-FROM ubuntu
-MAINTAINER zhoutao zhoutao825638@vip.qq.com
+ARG PORT 4050
+ARG HOST 127.0.0.1
+
+FROM node:12-alpine AS ui-builder
+ENV VUE_APP_API_HOST ${HOST}
+ENV VUE_APP_API_PORT ${PORT}
+WORKDIR /ui
+COPY ./ui/. .
+RUN npm install && \
+npm run build
+
+FROM golang:1.15-alpine AS api-builder
+WORKDIR /api
+COPY . .
+RUN apk --no-cache add gcc musl-dev && \
+go mod tidy && \
+go build -trimpath -o bin/SimpleDocker App.go && \
+chmod a+x bin/SimpleDocker
+
+FROM alpine
+LABEL maintainer="zhoutao825638@vip.qq.com, k8scat@gmail.com"
+EXPOSE ${PORT}
 WORKDIR /app
-COPY ./ui/dist /app/static
-COPY ./App /app/SimpleDocker
-COPY ./App.tar.gz /home/.local/simpleDocker/App.tar.gz
-CMD /app/SimpleDocker -port=4050
+COPY --from=ui-builder /ui/dist ./static
+COPY --from=api-builder /api/bin/SimpleDocker .
+CMD ["./SimpleDocker", "-p", ${PORT}]

@@ -122,3 +122,6 @@ static/
 SimpleDocker.tar.gz
 SimpleDocker.tar.gz
 /App
+routers/
+build/resource/
+build/App
