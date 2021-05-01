@@ -107,14 +107,15 @@ func (c *FileController) CategoryInfo(containerId string) {
 	// 持续接收消息，并将消息发送到 容器的连接中
 	for {
 		// 读取消息。如果连接断开，则会返回错误
-		_, msgStr, err := client.Conn.ReadMessage()
+		_, msg, err := client.Conn.ReadMessage()
 		if err != nil {
 			return
 		}
-		if msgStr == nil || len(msgStr) == 0 {
+		if msg == nil || len(msg) == 0 {
 			continue
 		}
-		_, _ = attach.Conn.Write([]byte(string(msgStr) + "\n"))
+		msg = append(msg, '\n')
+		_, _ = attach.Conn.Write(msg)
 	}
 }
 

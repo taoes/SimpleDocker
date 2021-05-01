@@ -1,2 +1,3 @@
 ui/node_modules
 ui/yarn.lock
+ui/package-lock.json

@@ -9,14 +9,14 @@ axios.interceptors.request.use(config => {
         return config
     }
     if (!localStorage.token) {
-        router.push("/").then()
+        router.push("/")
         return Promise.reject()
     } else {
         let tokenStr = localStorage.token;
         let token = jwtDecode(tokenStr)
         if (new Date(token.exp).getTime() < new Date().getTime()) {
             localStorage.setItem("token", "")
-            router.push("/").then()
+            router.push("/")
             return Promise.reject()
         } else {
             config.headers.Authorization = localStorage.token;
@@ -29,8 +29,8 @@ axios.interceptors.response.use(res => {
     return res;
 }, err => {
     if (err.response.status === 403) {
-        console.log("接到到未授权的请求")
-        router.push("/").then()
+        localStorage.removeItem('token')
+        router.push("/")
     } else {
         return Promise.resolve()
     }

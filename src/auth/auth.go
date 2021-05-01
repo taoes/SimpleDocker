@@ -6,19 +6,16 @@ import (
 	"crypto/md5"
 	"errors"
 	"fmt"
-	"github.com/dgrijalva/jwt-go"
 	"strings"
 	"time"
+
+	"github.com/dgrijalva/jwt-go"
 )
 
 var SignNameSecret = "SimpleDocker2020"
 var defaultPassword = "BFA5A81C0E15A3BCFFBB04590D693D4D"
 
-func init() {
-	initConfig()
-}
-
-func initConfig() {
+func InitConfig() {
 	//初始化密码
 	authInfo := db.RedisClient.Get(db.ConfigKey["password"])
 	if authInfo.Err() != nil {
@@ -92,5 +89,3 @@ func UpdatePassword(op string, np string) error {
 	db.Write("password", npMd5)
 	return nil
 }
-
-

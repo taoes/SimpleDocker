@@ -125,3 +125,4 @@ SimpleDocker.tar.gz
 routers/
 build/resource/
 build/App
+package-lock.json

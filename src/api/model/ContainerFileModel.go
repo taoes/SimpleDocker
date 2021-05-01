@@ -19,7 +19,7 @@ type File struct {
 }
 
 func ParseFiles(b []byte) ([]*File, error) {
-	var files []*File
+	files := make([]*File, 0)
 	r := bufio.NewReader(bytes.NewBuffer(b))
 	for {
 		line, _, err := r.ReadLine()

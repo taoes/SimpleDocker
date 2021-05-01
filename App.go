@@ -3,14 +3,15 @@ package main
 import (
 	_ "SimpleDocker/routers"
 	"SimpleDocker/src/api"
-	_ "SimpleDocker/src/auth"
+	"SimpleDocker/src/auth"
 	"SimpleDocker/src/config"
 	"SimpleDocker/src/context"
 	_ "SimpleDocker/src/context"
-	_ "SimpleDocker/src/db"
+	"SimpleDocker/src/db"
 	"flag"
-	"github.com/astaxie/beego"
 	"strconv"
+
+	"github.com/astaxie/beego"
 )
 
 var port = flag.Int("port", 4050, "服务启动端口,默认值 4050")
@@ -18,7 +19,11 @@ var resPath = flag.String("res", "static", "静态资源的路径,默认值 stat
 
 // 目前主分支属于开发分支，默认账号密码为 admin/123456
 func main() {
+	flag.StringVar(&db.RedisAddr, "redis-addr", "redis:6379", "Redis addr")
 	flag.Parse()
+
+	db.InitDB()
+	auth.InitConfig()
 	beego.BConfig.CopyRequestBody = true
 	beego.BConfig.WebConfig.Session.SessionOn = true
 
