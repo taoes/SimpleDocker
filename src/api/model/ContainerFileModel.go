@@ -1,50 +1,73 @@
 package model
 
 import (
+	"bufio"
+	"bytes"
+	"fmt"
+	"strconv"
 	"strings"
+	"time"
 )
 
-type ContainerAndPath struct {
-	ContainerId   string `json:"containerId"`
-	ContainerPath string `json:"containerPath"`
+type File struct {
+	Name       string `json:"name"`
+	Permission string `json:"permission"`
+	Owner      string `json:"owner"`
+	Group      string `json:"group"`
+	Size       int64  `json:"size"`
+	Modifytime int64  `json:"modify_time"`
 }
 
-type ContainerCategoryInfo struct {
-	Code        int
-	Msg         string
-	SumSize     string
-	SubCategory []ContainerCategoryModel
-}
-
-// 容器相关服务模型
-type ContainerCategoryModel struct {
-	FileType       string
-	Permission     string
-	LinkCount      string
-	FileAuthor     string
-	FileGroup      string
-	FileSize       string
-	ModifyDatetime string
-	Name           string
-}
-
-func ParseForContainerCategoryModel(data string) (ContainerCategoryInfo, error) {
-	info := ContainerCategoryInfo{}
-	// 按照回车键划分
-	split := strings.Split(data, "\r\n")
-	models := make([]ContainerCategoryModel, 0)
-	for i := 1; i < len(split)-5; {
-		if i%5 == 1 {
-			mode := ContainerCategoryModel{}
-			mode.Name = split[i]
-			mode.FileSize = split[i+1]
-			mode.FileType = split[i+2]
-			mode.Permission = split[i+3]
-			mode.ModifyDatetime = split[i+4]
-			models = append(models, mode)
+func ParseFiles(b []byte) ([]*File, error) {
+	files := make([]*File, 0)
+	r := bufio.NewReader(bytes.NewBuffer(b))
+	for {
+		line, _, err := r.ReadLine()
+		if err != nil {
+			break
 		}
-		i = i + 5
+
+		fields := strings.Fields(string(line))
+		if len(fields) < 9 {
+			continue
+		}
+		filename := fields[8]
+		if filename == "." || filename == ".." {
+			continue
+		}
+		filesize, err := strconv.ParseInt(fields[4], 10, 64)
+		if err != nil {
+			return nil, err
+		}
+		ty := fields[7] // time or year
+		var t string
+		var y string
+		if strings.Contains(ty, ":") {
+			t = ty
+			y = time.Now().Format("2006")
+		} else {
+			y = ty
+			t = "00:00"
+		}
+		d := fields[6]
+		if len(d) == 1 {
+			d = fmt.Sprintf("0%s", d)
+		}
+		m := fields[5]
+		mt, err := time.Parse("2006 Jan 02 15:04", fmt.Sprintf("%s %s %s %s", y, m, d, t))
+		if err != nil {
+			return nil, err
+		}
+
+		file := &File{
+			Name:       filename,
+			Permission: fields[0],
+			Owner:      fields[2],
+			Group:      fields[3],
+			Size:       filesize,
+			Modifytime: mt.Unix(),
+		}
+		files = append(files, file)
 	}
-	info.SubCategory = models
-	return info, nil
+	return files, nil
 }
