@@ -10,18 +10,21 @@ var RedisClient *redis.Client
 const AuthPrefix = "SIMPLE:DOCKER:AUTH:"
 const ConfigPrefix = "SIMPLE:DOCKER:SYSTEM:"
 
-var ConfigKey = map[string]string{
-	"password":            AuthPrefix + "PASSWORD",
-	"saltValue":           AuthPrefix + "SALT",
-	"token":               AuthPrefix + "TOKEN",
-	"containerCreateMode": ConfigPrefix + "CONTAINER_CREATE_MODE",
-	"enableDockerLog":     ConfigPrefix + "ENABLE_DOCKER_LOG",
-	"notifyUrl":           ConfigPrefix + "NOTIFY_URL",
-}
+var (
+	ConfigKey = map[string]string{
+		"password":            AuthPrefix + "PASSWORD",
+		"saltValue":           AuthPrefix + "SALT",
+		"token":               AuthPrefix + "TOKEN",
+		"containerCreateMode": ConfigPrefix + "CONTAINER_CREATE_MODE",
+		"enableDockerLog":     ConfigPrefix + "ENABLE_DOCKER_LOG",
+		"notifyUrl":           ConfigPrefix + "NOTIFY_URL",
+	}
+	RedisAddr string
+)
 
-func init() {
+func InitDB() {
 	options := redis.Options{
-		Addr:     "redis:6379",
+		Addr:     RedisAddr,
 		Password: "",
 		DB:       1,
 	}

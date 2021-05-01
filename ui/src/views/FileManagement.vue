@@ -1,27 +1,26 @@
 <template>
   <div id="fileBrowse" style="overflow-y: scroll; overflow-x:auto;height: 100%">
     <div style="width: 80%;justify-content: center">
-      <template v-for="(data,index) in fileList">
-        <div class="file" @click="updatePath(data)" :key="index">
-          <img :src="getIcon(data)" alt="" width="40" class="fileLogo"/>
+      <template v-for="(file, index) in fileList">
+        <div v-if="!(file.name === '返回上一层' && pathChain.length === 0)" class="file" @click="updatePath(file)" :key="index">
+          <img :src="getIcon(file)" alt="" width="40" class="fileLogo"/>
           <div class="fileInfo">
-            <span><b>{{ data.Name }}</b></span>
-            <teamplate v-if="data.Name !== '返回上一层'">
-              <teamplate v-if="data.FileType !== 'true'">
-                <span class="simpleSpan"> 大小: {{ data.FileSize }} 字节</span>
-                <br>
-              </teamplate>
-              <span class="simpleSpan"> 修改: {{ data.ModifyDatetime }}</span>
-            </teamplate>
+            <span><b>{{ file.name }}</b></span>
+            <template v-if="file.name !== '返回上一层'">
+              <template v-if="file.permission[0] !== 'd'">
+                <span class="simpleSpan"> 大小: {{ file.size }} 字节</span>
+              </template>
+              <span class="simpleSpan"> 修改: {{ file.modify_time }}</span>
+            </template>
           </div>
           <div class="fileOperator">
-            <template v-if="data.Name !== '返回上一层'">
-              <template v-if="data.FileType === 'false'">
+            <template v-if="file.name !== '返回上一层'">
+              <template v-if="file.permission[0] !== 'd'">
                 <a-tooltip>
                   <template slot="tilte">
                     <span>下载后请使用tar命令解压</span>
                   </template>
-                  <a @click="downloadFile(data.Name)">下载</a>
+                  <a @click="downloadFile(file.name)">下载</a>
                 </a-tooltip>
               </template>
             </template>
@@ -35,7 +34,7 @@
 <script>
 import ContainerApi from '../api/ContainerApi'
 import config from '../api/Config'
-import {download} from "@/utils";
+import { download, formatDate } from "@/utils";
 
 export default {
   name: "FileBrowser",
@@ -47,20 +46,28 @@ export default {
       fileList: [],
       pathChain: [],
     }
-  }, beforeMount() {
+  },
+  beforeMount() {
     this.initWebSocket()
-  }, beforeDestroy() {
+  },
+  beforeDestroy() {
     if (this.socket) {
       this.socket.close()
     }
-  }, methods: {
+  },
+  methods: {
     updatePath: function (file) {
-      let {FileType, Name} = file
-      if (FileType === "true" || Name === '返回上一层') {
-        this.addPath(Name)
-      } else if (FileType === 'flase') {
-        this.$message.info("文件不可以继续打开，请选择下载按钮下载此文件")
+      const { permission, name } = file
+      if (name === '返回上一层') {
+        this.addPath(name)
+        return
       }
+      
+      if (permission[0] === 'd') {
+        this.addPath(name)
+        return
+      }
+      this.$message.info("文件不可以继续打开，请选择下载按钮下载此文件")
     },
     addPath(name) {
       if (name === '返回上一层') {
@@ -69,7 +76,8 @@ export default {
         this.pathChain.push(name)
       }
       this.send()
-    }, async downloadFile(fileName) {
+    },
+    async downloadFile(fileName) {
       let filePath = "/" + this.pathChain.join("/") + "/" + fileName
       const modal = this.$success({
         title: '正在下载,请稍等...',
@@ -82,8 +90,7 @@ export default {
       } finally {
         modal.destroy()
       }
-    }
-    ,
+    },
     initWebSocket() {
       let {containerId} = this.$route.query
       this.containerId = containerId
@@ -91,65 +98,80 @@ export default {
       this.socket.onopen = this.open
       this.socket.onclose = this.close
       this.socket.onmessage = this.getMessage
-    }, open: function () {
+    },
+    open: function () {
       this.send()
-    }, getMessage: function (msg) {
-      let {data} = msg
-      let {SubCategory} = JSON.parse(data)
-      SubCategory.sort(function (a, b) {
-        let {FileType: aType} = a
-        let {FileType: bType} = b
-        if (bType === "true" && aType === 'true') {
-          return 1
-        } else {
-          return -1
-        }
-      });
-      this.fileList = [{Name: '返回上一层'}, ...SubCategory]
+    },
+    getMessage: function (msg) {
+      let { data } = msg
+      let { files } = JSON.parse(data)
+      if (files) {
+        files.sort(function (a, b) {
+          let { permission: pa } = a
+          let { permission: pb } = b
+          if (pa[0] === 'd' && pb[0] === 'd') {
+            return 1
+          } else {
+            return -1
+          }
+        });
+        files.forEach((el, index, arr) => {
+          el.modify_time = formatDate(el.modify_time)
+          arr[index] = el
+        });
+        this.fileList = [{name: '返回上一层'}, ...files];
+      }
     },
     send: function () {
       if (this.socket) {
         if (this.pathChain.length === 0) {
-          this.socket.send("App2 /")
-        } else {
-          this.socket.send(`App2 /${this.pathChain.join("/")}`)
+          this.socket.send("ls --color=never -la /")
+          return
         }
+
+        this.socket.send(`ls --color=never -la /${this.pathChain.join("/")}`)
+        return
       }
-    }, close: function () {
+    },
+    close: function () {
       this.$error({
         title: '连接断开',
         content: "终端远程服务连接断开，请检查网络状态"
       });
-    }, getIcon(file) {
-      let {Name, Permission, FileType} = file
-      let fileName = "";
-      if (Name === '返回上一层') {
+    },
+    getIcon(file) {
+      const { name, permission } = file
+      if (name === '返回上一层') {
         return require("../assets/file/back.png")
-      } else if (FileType === "true") {
-        if (Name === 'home' || Name === 'root') {
+      }
+      if (permission[0] === 'd') {
+        if (name === 'home' || name === 'root') {
           return require("../assets/file/home.png")
         }
         return require("../assets/file/category.png")
-      } else if (Permission.indexOf("x") !== -1) {
-        return require("../assets/file/exe.png")
-      } else if (Permission.indexOf("L") !== -1) {
-        return require("../assets/file/link.png")
-      } else if (Name.endsWith(".png")) {
-        return require("../assets/file/pic.png")
-      } else if (Name.endsWith(".html")) {
-        return require("../assets/file/web.png")
-      } else if (Name.endsWith(".tar.gz")) {
-        return require("../assets/file/tar.png")
-      } else {
-        return require("../assets/file/unkonw.png")
       }
+      if (permission.indexOf("x") !== -1) {
+        return require("../assets/file/exe.png")
+      }
+      if (permission.indexOf("l") !== -1) {
+        return require("../assets/file/link.png")
+      }
+      if (name.endsWith(".png")) {
+        return require("../assets/file/pic.png")
+      }
+      if (name.endsWith(".html")) {
+        return require("../assets/file/web.png")
+      }
+      if (name.endsWith(".tar.gz")) {
+        return require("../assets/file/tar.png")
+      }
+      return require("../assets/file/unkonw.png")
     }
   }
 }
 </script>
 
 <style scoped>
-
 #fileBrowse {
   width: 100%;
   display: flex;

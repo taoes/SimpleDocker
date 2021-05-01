@@ -1,20 +1,19 @@
 package main
 
 import (
-	"SimpleDocker/src/api/model"
 	"context"
 	"fmt"
+	"io/ioutil"
+	"net/http"
+	"path"
+	"testing"
+	"time"
+
 	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/logs"
 	"github.com/docker/docker/api/types"
 	"github.com/docker/docker/client"
 	"github.com/gorilla/websocket"
-	"io/ioutil"
-	"net/http"
-	"path"
-	"strings"
-	"testing"
-	"time"
 )
 
 func TestSocket(t *testing.T) {
@@ -106,61 +105,6 @@ func handleMessages() {
 			}
 		}
 	}
-}
-
-func TestParse(t *testing.T) {
-	data := "total 48\ndrwxr-xr-x    1 root     root          4096 Jan 12 14:49 .\ndrwxr-xr-x    1 root     root          4096 Jan 12 14:49 ..\n-rwxr-xr-x    1 root     root             0 Jan 12 14:35 .dockerenv\ndrwxr-xr-x    2 root     root         12288 Dec 29 22:14 bin\ndrwxr-xr-x    5 root     root           360 Jan 13 14:05 dev\ndrwxr-xr-x    1 root     root          4096 Jan 12 14:35 etc\ndrwxr-xr-x    2 nobody   nobody        4096 Dec 29 22:23 home\ndr-xr-xr-x  216 root     root             0 Jan 13 14:05 proc\ndrwx------    1 root     root          4096 Jan 13 14:13 root\ndr-xr-xr-x   12 root     root             0 Jan 13 13:31 sys\ndrwxrwxrwt    2 root     root          4096 Dec 29 22:23 tmp\ndrwxr-xr-x    1 root     root          4096 Dec 29 22:23 usr\ndrwxr-xr-x    4 root     root          4096 Dec 29 22:23 var\n"
-	split := strings.Split(data, "\n")
-	info := model.ContainerCategoryInfo{}
-	models := make([]model.ContainerCategoryModel, 0)
-	for i := range split {
-		// "xxxxyyyyzzz"
-		row := split[i]
-		if len(row) == 0 {
-			continue
-		}
-		// ["xxxx","yyyy","zzzz"]
-		paramInitArray := strings.Split(row, " ")
-		paramArray := make([]string, 0)
-		for _, ele := range paramInitArray {
-			if ele = strings.Trim(ele, " "); len(ele) != 0 {
-				paramArray = append(paramArray, ele)
-			}
-		}
-
-		if i == 0 {
-			info.SumSize = paramArray[1]
-			continue
-		} else {
-			model := model.ContainerCategoryModel{}
-			for j := range paramArray {
-				param := paramArray[j]
-				param = strings.Trim(param, " ")
-				if len(param) == 0 {
-					continue
-				}
-				switch j {
-				case 0:
-					model.Permission = param
-				case 1:
-					model.LinkCount = param
-				case 2:
-					model.FileAuthor = param
-				case 3:
-					model.FileGroup = param
-				case 4:
-					model.FileSize = param
-				case 5, 6, 7:
-					model.ModifyDatetime = model.ModifyDatetime + " " + param
-				case 8:
-					model.Name = param
-				}
-			}
-			models = append(models, model)
-		}
-	}
-	info.SubCategory = models
-	fmt.Println("")
 }
 
 func TestPath(t *testing.T) {
