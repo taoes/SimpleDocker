@@ -3,13 +3,19 @@ package docker
 import (
 	"SimpleDocker/src/api/model"
 	"SimpleDocker/src/context"
+	"SimpleDocker/src/db"
 	"bytes"
+	"errors"
+	"fmt"
+	"github.com/astaxie/beego/logs"
 	"github.com/docker/docker/api/types"
 	"github.com/docker/docker/api/types/container"
 	"github.com/docker/docker/api/types/filters"
 	"github.com/docker/docker/api/types/network"
 	"github.com/docker/go-connections/nat"
 	"io"
+	"io/ioutil"
+	"os"
 	"strconv"
 	"time"
 )
@@ -168,6 +174,40 @@ func GetContainerLog(containerId string, tail string) (string, error) {
 /** 导出容器 */
 func ExportContainer(containerId string) (io.ReadCloser, error) {
 	return context.Cli.ContainerExport(context.Ctx, containerId)
+}
+
+/**
+导出容器到本地
+*/
+func ExportContainerToLocal(containerId string, name string) error {
+	if name == "" {
+		return errors.New("备份容器失败，导出的文件名不能为空")
+	}
+	// 读取保存文件的配置地址
+	address := db.ReadWithDefault("exportContainerLocalAdd", "/tmp")
+	err := os.MkdirAll(address, os.ModePerm)
+	if err != nil {
+		logs.Error("备份容器失败，该容器所在目录:{}创建失败", address)
+		return err
+	}
+	fullPath := fmt.Sprintf("%s/%s", address, name)
+	if _, err := os.Stat(fullPath); os.IsExist(err) {
+		return errors.New("文件已存在，请尝试重新输入新的文件名");
+	}
+
+	// 导出容器
+	body, err := context.Cli.ContainerExport(context.Ctx, containerId)
+	if err != nil {
+		return nil
+	}
+	defer body.Close()
+	content, err := ioutil.ReadAll(body)
+
+	err = ioutil.WriteFile(fullPath, content, os.ModePerm)
+	if err != nil {
+		return err
+	}
+	return nil
 }
 
 // 调整TTYSize
