@@ -1,5 +1,6 @@
 package api
 
+import "C"
 import (
 	"SimpleDocker/src/docker"
 	"SimpleDocker/src/utils"
@@ -161,5 +162,20 @@ func (c *ImageController) ImportImage() {
 	}
 
 	c.Data["json"] = utils.PackageData(resp)
+	c.ServeJSON()
+}
+
+/** 备份容器到本地 */
+// @router /api/image/save/local
+func (c ImageController) ExportImageToLocal() {
+	fileName := c.Ctx.Input.Query("fileName")
+	imageTag := c.Ctx.Input.Query("imageTag")
+	err := docker.SaveImageToLocal(imageTag, fileName)
+	if err != nil {
+		C.Data["json"] = utils.PackageError(err)
+		c.ServeJSON()
+		return
+	}
+	c.Data["json"] = utils.Success()
 	c.ServeJSON()
 }

@@ -2,12 +2,17 @@ package docker
 
 import (
 	"SimpleDocker/src/context"
+	"SimpleDocker/src/db"
 	"bytes"
+	"fmt"
+	"github.com/astaxie/beego/logs"
 	"github.com/docker/docker/api/types"
 	"github.com/docker/docker/api/types/filters"
 	"github.com/pkg/errors"
 	"io"
+	"io/ioutil"
 	"os"
+	"strings"
 )
 
 func GetImageList() ([]types.ImageSummary, error) {
@@ -53,6 +58,38 @@ func DeleteImage(imageId string, forge bool) error {
 /** 导出镜像 */
 func SaveImage(imageTag string) (io.ReadCloser, error) {
 	return context.Cli.ImageSave(context.Ctx, []string{imageTag})
+}
+
+/** 导出镜像到本地 */
+func SaveImageToLocal(imageTag string, name string) error {
+	if strings.Trim(name, "") == "" || strings.Trim(name, "") == "" {
+		return errors.New("备份容器失败，文件名或者镜像名不能为空")
+	}
+
+	// 读取保存文件的配置地址
+	address := db.ReadWithDefault("exportLocalAdd", "/tmp/simple/image")
+	err := os.MkdirAll(address+"/simple/image", os.ModePerm)
+	if err != nil {
+		logs.Error("备份镜像失败，该镜像所在目录:{} 创建失败", address)
+		return err
+	}
+	fullPath := fmt.Sprintf("%s/%s", address, name)
+	if _, err := os.Stat(fullPath); os.IsExist(err) {
+		return errors.New("文件已存在，请尝试重新输入新的文件名")
+	}
+
+	body, err := context.Cli.ImageSave(context.Ctx, []string{imageTag})
+	if err != nil {
+		return err
+	}
+	content, err := ioutil.ReadAll(body)
+
+	err = ioutil.WriteFile(fullPath, content, os.ModePerm)
+	if err != nil {
+		return err
+	}
+	return nil
+
 }
 
 func PruneImage() (types.ImagesPruneReport, error) {
