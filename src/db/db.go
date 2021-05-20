@@ -34,12 +34,7 @@ func InitDB() {
 
 // 读取
 func Read(key string) string {
-	res := RedisClient.Get(ConfigKey[key])
-	if res == nil {
-		return ""
-	}
-	resStr, _ := res.Result()
-	return resStr
+	return ReadWithDefault(key, "")
 }
 
 // 读取

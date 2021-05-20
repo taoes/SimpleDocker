@@ -1,5 +1,6 @@
 package api
 
+import "C"
 import (
 	"SimpleDocker/src/api/model"
 	"SimpleDocker/src/docker"
@@ -208,6 +209,20 @@ func (c *ContainerController) ExportContainer(containerId string) {
 	c.Ctx.Output.Header("Content-Disposition", fmt.Sprintf("attachment;filename=%s.tar.gz", containerId))
 	c.Ctx.Output.Header("Content-Transfer-Encoding", "binary")
 	_, _ = c.Ctx.ResponseWriter.Write(bytesData)
+}
+
+/** 容器到处到本地服务器 */
+// @router /api/container/:containerId/export/local
+func (c *ContainerController) ExportContainerToLocal(containerId string) {
+	fileName := c.Ctx.Input.Query("fileName")
+	err := docker.ExportContainerToLocal(containerId, fileName)
+	if err != nil {
+		C.Data["json"] = utils.PackageError(err)
+		c.ServeJSON()
+		return
+	}
+	c.Data["json"] = utils.Success()
+	c.ServeJSON()
 }
 
 /** 容器监控 */
