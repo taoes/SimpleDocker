@@ -19,7 +19,7 @@ var resPath = flag.String("res", "static", "静态资源的路径,默认值 stat
 
 // 目前主分支属于开发分支，默认账号密码为 admin/123456
 func main() {
-	flag.StringVar(&db.RedisAddr, "redis-addr", "redis:6379", "Redis addr")
+	flag.StringVar(&db.RedisAddr, "redis-addr", "127.0.0.1:6379", "Redis addr")
 	flag.Parse()
 
 	db.InitDB()

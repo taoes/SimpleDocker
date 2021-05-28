@@ -215,13 +215,13 @@ func (c *ContainerController) ExportContainer(containerId string) {
 // @router /api/container/:containerId/export/local
 func (c *ContainerController) ExportContainerToLocal(containerId string) {
 	fileName := c.Ctx.Input.Query("fileName")
-	err := docker.ExportContainerToLocal(containerId, fileName)
+	fullPath, err := docker.ExportContainerToLocal(containerId, fileName)
 	if err != nil {
-		C.Data["json"] = utils.PackageError(err)
+		c.Data["json"] = utils.PackageError(err)
 		c.ServeJSON()
 		return
 	}
-	c.Data["json"] = utils.Success()
+	c.Data["json"] = utils.PackageData(fullPath)
 	c.ServeJSON()
 }
 

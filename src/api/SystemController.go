@@ -32,6 +32,7 @@ func (c *SystemController) GetSystemInfo() {
 func (c *SystemController) UpdateSystemSafeConfig() {
 	var config model.SystemSafeConfig
 	_ = json.Unmarshal(c.Ctx.Input.RequestBody, &config)
+	db.Write("backDir", config.BackDir)
 	db.Write("enableDockerLog", strconv.FormatBool(config.EnableDockerLog))
 	db.Write("containerCreateMode", config.ContainerCreateMode)
 	c.Data["json"] = utils.Success()
@@ -47,6 +48,7 @@ func (c *SystemController) GetSystemSafeConfig() {
 		config.EnableDockerLog = false
 	}
 	config.ContainerCreateMode = db.Read("containerCreateMode")
+	config.BackDir = db.ReadWithDefault("backDir", "/tmp")
 	c.Data["json"] = utils.PackageData(config)
 	c.ServeJSON()
 }

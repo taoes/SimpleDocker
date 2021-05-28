@@ -11,6 +11,7 @@ type SystemInfo struct {
 type SystemSafeConfig struct {
 	ContainerCreateMode string `json:"containerCreateMode"`
 	EnableDockerLog     bool   `json:"enableDockerLog"`
+	BackDir     string   `json:"backDir"`
 }
 
 // 系统通知配置
