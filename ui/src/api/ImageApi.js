@@ -28,6 +28,14 @@ function renameImage(data) {
     return promise
 }
 
+// 备份镜像数据
+function backImageToLocal(imageTag) {
+    let params = {imageTag}
+    let promise = axios.get('/api/image/save/to/local', {params: params})
+    handleError(promise)
+    return promise
+}
+
 function handleError(promise) {
     promise.then(res => {
         let {Code, Msg} = res.data
@@ -50,5 +58,6 @@ export default {
     runNewContainer,
     pruneImage,
     getImageInfo,
-    renameImage
+    renameImage,
+    backImageToLocal
 }

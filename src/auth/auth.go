@@ -6,6 +6,7 @@ import (
 	"crypto/md5"
 	"errors"
 	"fmt"
+	"github.com/astaxie/beego/logs"
 	"strings"
 	"time"
 
@@ -17,7 +18,9 @@ var defaultPassword = "BFA5A81C0E15A3BCFFBB04590D693D4D"
 
 func InitConfig() {
 	//初始化密码
+	logs.Info("初始化密码")
 	authInfo := db.RedisClient.Get(db.ConfigKey["password"])
+	logs.Info("初始化密码..OK")
 	if authInfo.Err() != nil {
 		db.RedisClient.Set(db.ConfigKey["password"], defaultPassword, 0)
 	}

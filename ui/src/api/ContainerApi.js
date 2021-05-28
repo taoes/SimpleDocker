@@ -98,6 +98,11 @@ function downloadFileFromContainer(containerId, filePath) {
         {headers: respConfig})
 }
 
+// 导出容器到本地
+function exposeContainerToLocal(containerId) {
+    return axios.get(`/api/container/${containerId}/export/local`);
+}
+
 // 容器监控
 function monitorContainer(containerId) {
     return axios.get(`/api/container/${containerId}/monitor/info`,)
@@ -132,5 +137,6 @@ export default {
     getContainerAllLog,
     getOperatorNameByState,
     downloadFileFromContainer,
+    exposeContainerToLocal,
     renameContainer
 }

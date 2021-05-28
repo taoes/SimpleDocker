@@ -18,6 +18,7 @@ var (
 		"containerCreateMode": ConfigPrefix + "CONTAINER_CREATE_MODE",
 		"enableDockerLog":     ConfigPrefix + "ENABLE_DOCKER_LOG",
 		"notifyUrl":           ConfigPrefix + "NOTIFY_URL",
+		"backDir":             ConfigPrefix + "BACK_DIR",
 	}
 	RedisAddr string
 )

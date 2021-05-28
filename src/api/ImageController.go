@@ -166,16 +166,15 @@ func (c *ImageController) ImportImage() {
 }
 
 /** 备份容器到本地 */
-// @router /api/image/save/local
-func (c ImageController) ExportImageToLocal() {
-	fileName := c.Ctx.Input.Query("fileName")
+// @router /api/image/save/to/local [get]
+func (c *ImageController) ExportImageToLocal() {
 	imageTag := c.Ctx.Input.Query("imageTag")
-	err := docker.SaveImageToLocal(imageTag, fileName)
+	fullName, err := docker.SaveImageToLocal(imageTag, "")
 	if err != nil {
-		C.Data["json"] = utils.PackageError(err)
+		c.Data["json"] = utils.PackageError(err)
 		c.ServeJSON()
 		return
 	}
-	c.Data["json"] = utils.Success()
+	c.Data["json"] = utils.PackageData(fullName)
 	c.ServeJSON()
 }
