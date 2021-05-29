@@ -49,8 +49,6 @@
             <a-icon type="play-circle" style="color: #52c41a;font-size: 18px"
                     @click="callControlContainerApi(record.containerId,'start')"/>
           </a-tooltip>
-
-          <a-divider type="vertical"></a-divider>
         </template>
 
         <template v-if="['暂停中'].indexOf(record.state) !==-1">
@@ -59,8 +57,6 @@
             <a-icon type="right-circle" style="color: #52c41a;font-size: 18px"
                     @click="callControlContainerApi(record.containerId,'unpause')"/>
           </a-tooltip>
-
-          <a-divider type="vertical"></a-divider>
         </template>
 
         <template v-if="record.state === '运行中'">
@@ -69,7 +65,6 @@
             <a-icon type="poweroff" style="color: orangered;font-size: 18px"
                     @click="callControlContainerApi(record.containerId,'stop')"/>
           </a-tooltip>
-          <a-divider type="vertical"></a-divider>
         </template>
 
                 <a-tooltip>
@@ -77,21 +72,27 @@
         <a-icon type="code" style="color:darkslategray;font-size: 18px"
                 @click="openTerminal(record.state,record.containerId)"/>
         </a-tooltip>
-        <a-divider type="vertical"></a-divider>
+
 
         <a-tooltip>
           <template slot="title">文件管理</template>
         <a-icon type="file-pdf" style="color:darkslategray;font-size: 18px"
                 @click="openFileManagementModal(record.state,record.containerId)"/>
         </a-tooltip>
-        <a-divider type="vertical"></a-divider>
+
 
         <a-tooltip>
           <template slot="title">性能监控</template>
         <a-icon type="bar-chart" style="color:darkslategray;font-size: 18px"
                 @click="openContainerMonitor(record.state,record.containerId)"/>
         </a-tooltip>
-        <a-divider type="vertical"></a-divider>
+
+
+          <a-tooltip>
+          <template slot="title">备份至本地</template>
+        <a-icon type="cloud-sync" style="color:darkslategray;font-size: 18px"
+                @click="exposeContainerToLocal(record.containerId)"/>
+        </a-tooltip>
 
         <a-dropdown>
           <a class="ant-dropdown-link" @click="e => e.preventDefault()">
@@ -150,12 +151,7 @@
                </a>
             </a-menu-item>
 
-            <a-menu-item>
-                <a href="#" @click="exposeContainerToLocal(record.containerId)">
-                <a-icon type="cloud-sync"/>&nbsp;
-                  备份到服务器
-                </a>
-            </a-menu-item>
+
 
             </a-menu>
         </a-dropdown>
@@ -250,6 +246,10 @@
                             </tr>
                         </table>
                     </template>
+                </a-collapse-panel>
+
+                <a-collapse-panel key="inspect" header="容器 Inspect">
+                    <json-viewer :value="containerInfo" :expand-depth=1 sort></json-viewer>
                 </a-collapse-panel>
 
             </a-collapse>
@@ -625,7 +625,7 @@
                 let openUrl = function () {
                     let routeUrl = router.resolve({
                         path: "/terminal/console",
-                        query: {containerId: containerId}
+                        query: {containerId: containerId, title: 'SimpleDocker 容器终端控制台'}
                     });
                     window.open(routeUrl.href, '_blank');
                 }
@@ -652,7 +652,7 @@
                 let openUrl = function () {
                     let routeUrl = router.resolve({
                         path: "/terminal/file",
-                        query: {containerId: containerId}
+                        query: {containerId: containerId, title: 'SimpleDocker 容器文件管理控制台'}
                     });
                     window.open(routeUrl.href, '_blank');
                 }
@@ -674,7 +674,7 @@
                 }
                 let routeUrl = this.$router.resolve({
                     path: "/terminal/monitor",
-                    query: {containerId: containerId}
+                    query: {containerId: containerId, title: 'SimpleDocker 容器状态监控台'}
                 });
                 window.open(routeUrl.href, '_blank');
             }

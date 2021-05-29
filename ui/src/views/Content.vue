@@ -5,7 +5,7 @@
       <div style="display: inline;float: left;justify-items: center">
         <img src="../assets/logo-tm-white2.png" class="logoImg" alt=""/>
         <h2 class="logoTitle">
-          SimpleDocker <span class="logoVersion">V0.0.2</span>
+          SimpleDocker <span class="logoVersion">V0.0.6</span>
         </h2>
       </div>
       <a-menu
@@ -27,7 +27,7 @@
 
         <a-sub-menu class="right">
           <template slot="title">
-            <a-icon type="user" theme="filled"></a-icon>
+            <a-icon type="home" theme="filled"></a-icon>
             账户
           </template>
 

@@ -1,6 +1,6 @@
 package api
 
-import "C"
+
 import (
 	"SimpleDocker/src/api/model"
 	"SimpleDocker/src/docker"
