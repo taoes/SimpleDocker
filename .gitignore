@@ -120,9 +120,8 @@ yarn.lock
 static/
 
 SimpleDocker.tar.gz
-SimpleDocker.tar.gz
 /App
 routers/
-build/resource/
-build/App
+build/
+ui/dist
 package-lock.json

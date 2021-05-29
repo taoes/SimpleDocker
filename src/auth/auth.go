@@ -19,17 +19,10 @@ var defaultPassword = "BFA5A81C0E15A3BCFFBB04590D693D4D"
 func InitConfig() {
 	//初始化密码
 	logs.Info("初始化密码")
-	authInfo := db.RedisClient.Get(db.ConfigKey["password"])
+	db.RedisClient.Set(db.ConfigKey["password"], defaultPassword, 0)
+	db.RedisClient.Set(db.ConfigKey["saltValue"], SignNameSecret, 0)
 	logs.Info("初始化密码..OK")
-	if authInfo.Err() != nil {
-		db.RedisClient.Set(db.ConfigKey["password"], defaultPassword, 0)
-	}
 
-	// 初始化盐值
-	saltValue := db.RedisClient.Get(db.ConfigKey["saltValue"])
-	if saltValue.Err() != nil {
-		db.RedisClient.Set(db.ConfigKey["saltValue"], SignNameSecret, 0)
-	}
 }
 
 // 生成 Token

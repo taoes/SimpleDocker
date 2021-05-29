@@ -2,7 +2,7 @@
   <div>
     <a-form-model v-model="url" :label-col="{span:2}" :wrapper-col="{span:22}">
       <a-form-model-item label="钉钉通知URL">
-        <a-input placeholder="请输入钉钉通知链接" v-model="url.notifyUrl"/>
+        <a-input placeholder="请输入钉钉通知链接,请设置钉钉关键词为 SimpleDocker 否则可能发送失败" v-model="url.notifyUrl"/>
       </a-form-model-item>
 
     </a-form-model>

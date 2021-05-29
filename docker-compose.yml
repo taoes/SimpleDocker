@@ -1,12 +1,7 @@
 version: "3"
 services:
   simple-docker:
-    build:
-      context: .
-      args:
-        HOST: "127.0.0.1"
-        PORT: "9000"
-    image: simple-docker:latest
+    image: registry.cn-hangzhou.aliyuncs.com/seven-tao/simple-docker:0.0.6
     ports:
       - "9000:4050"
     environment:

@@ -14,6 +14,7 @@
     "jwt-decode": "^3.1.2",
     "lodash": "^4.17.20",
     "vue": "^2.6.11",
+    "vue-json-viewer": "^2.2.19",
     "vue-router": "^3.2.0",
     "vue-terminal-ui": "^0.1.6",
     "vuex": "^3.4.0",

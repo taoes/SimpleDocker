@@ -7,11 +7,6 @@
             <a-switch v-model="config.enableDockerLog" checked-children="启用" un-checked-children="关闭"/>
         </a-form-model-item>
 
-        <a-form-model-item label="镜像/容器备份目录">
-            <span style="margin-left: 20px"></span>
-            <a-input placeholder="请输入备份目录" v-model="config.backDir"></a-input>
-        </a-form-model-item>
-
         <a-space>
             <a-button type="danger" icon="issues-close">默认</a-button>
             <a-button type="primary" icon="save" @click="save">保存</a-button>
@@ -28,17 +23,15 @@
         data() {
             return {
                 config: {
-                    enableDockerLog: true,
-                    backDir: ''
+                    enableDockerLog: true
                 }
             }
         }, async beforeMount() {
             let res = await systemConfigApi.getDockerConfig();
             let {Code, Data} = res.data;
             if (Code === 'OK') {
-                let {backDir, enableDockerLog} = Data;
+                let {enableDockerLog} = Data;
                 this.config.enableDockerLog = enableDockerLog;
-                this.config.backDir = backDir;
             }
         },
         methods: {

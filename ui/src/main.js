@@ -8,17 +8,18 @@ import 'ant-design-vue/dist/antd.css';
 
 import axios from './api/axios'
 
+import JsonViewer from 'vue-json-viewer'
+
 Vue.prototype.$lodash = _
 Vue.config.productionTip = false
 Vue.prototype.$axios = axios
 
 Vue.use(Antd);
+Vue.use(JsonViewer);
 
 // 自定义指令
 Vue.directive('focus', {
     inserted: function (el) {
-
-
         el.querySelector("input").focus()
     }
 })

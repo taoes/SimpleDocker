@@ -52,7 +52,7 @@
                     @click="openCreateContainerGuide(record)"/>
         </a-tooltip>
 
-        <a-divider type="vertical"></a-divider>
+
 
 
         <a-tooltip>
@@ -62,7 +62,7 @@
         </a-tooltip>
 
 
-        <a-divider type="vertical"></a-divider>
+
 
 
         <a-tooltip>
@@ -70,7 +70,15 @@
             <a-icon type="delete" style="color:red;font-size: 18px"
                     @click="remove(record.imageLongId)"/>
         </a-tooltip>
-        <a-divider type="vertical"></a-divider>
+
+
+        <a-tooltip>
+            <template slot="title">备份至本地</template>
+            <a-icon type="cloud-sync" style="font-size: 18px"
+                    @click="backImageToLocal(record.imageLongId)"/>
+        </a-tooltip>
+
+
 
 
         <a-dropdown>
@@ -98,12 +106,6 @@
                   推送镜像</a>
             </a-menu-item>
 
-            <a-menu-item>
-                <a href="#" @click="backImageToLocal(record.imageLongId)">
-                <a-icon type="cloud-sync"/>&nbsp;
-                  备份到服务器
-                </a>
-            </a-menu-item>
             </a-menu>
         </a-dropdown>
       </a-space>
