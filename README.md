@@ -1,8 +1,8 @@
 [![standard-readme compliant](https://img.shields.io/badge/readme%20style-standard-brightgreen.svg?style=flat-square)](https://github.com/RichardLitt/standard-readme)
 
-<div style="text-align:center">
-    <img src="https://gitee.com/taoes_admin/SimpleDocker/blob/master/img/icon.png" width="200" alt="" >
-</div>
+
+    
+![xxx](./img/icon.png)
 
 **SimpleDocker** 是一个简单的Docker控制面板，致力于可以让用户更方便、更无障碍、更舒适的使用Docker,其界面简洁、操作便捷，功能强大，可以带来更好地运维体验。
 
@@ -10,6 +10,12 @@
 
 > 🎉 🔥 ✨ 新发布的 V0.0.6 新增容器备份到本地、查看容器Inspect的功能以及修复若干BUG
 
+
+## 演示网站
+   1. 演示环境 [http://docker.zhoutao123.com](http://docker.zhoutao123.com)
+   2. 账号: admin 密码: 123456
+   3. 演示环境，请勿删除/停止/暂停 simpledocker-xxxx 开头的容器，否则可能造成服务异常
+   4. 如果演示环境无法登录或者无法使用，请及时创建Issue联系我
 
 
 ## 背景
@@ -51,7 +57,7 @@ Docker是目前一种非常主流的容器化方案，支持非常多的特性�
 
 1. 确保Docker & DockerCompose 已经部署并且启动成功，如果docker-compose 没有安装请参考官网 [https://docs.docker.com/compose/install/](https://docs.docker.com/compose/install/) 安装
 2. 通过命令 `docker-compose version` 验证安装成功     
-3. 在某个目录下创建文件 `docker-compose.yml` 其内容如下:
+3. 在某个目录下创建文件 `docker-compose.yml` 其内容如下: 
 ```yaml
 # yaml 配置实例
 version: '3'
@@ -63,13 +69,12 @@ services:
     ports:
       - "9091:4050"
     volumes:
+      - /tmp/simple-docker/back:/tmp/back
       - /var/run/docker.sock:/var/run/docker.sock
     depends_on:
       - redis
 ```   
 
-
-> ** 如果需要持久化容器/镜像的备份文件，请在 volumes 标签下新增挂载 `- 宿主机目录:/tmp/back` **
 
 
 3. 执行下面的脚本，会自动拉取镜像并启动在 9091 端口
