@@ -69,6 +69,7 @@ func UpdateService(serviceId string) ([]string, error) {
 		return nil, errors.New("服务ID不能为空")
 	}
 
+	options := types.ServiceInspectOptions{}
 	info, _, err := context.Cli.ServiceInspectWithRaw(context.Ctx, serviceId, options)
 	if err != nil {
 		return nil, err
@@ -77,8 +78,8 @@ func UpdateService(serviceId string) ([]string, error) {
 
 	// TODO: 更新Service的配置
 	spec := swarm.ServiceSpec{}
-	options := types.ServiceUpdateOptions{}
-	response, err := context.Cli.ServiceUpdate(context.Ctx, serviceId, version, spec, options)
+	options2 := types.ServiceUpdateOptions{}
+	response, err := context.Cli.ServiceUpdate(context.Ctx, serviceId, version, spec, options2)
 	if err != nil {
 		return nil, err
 	}
