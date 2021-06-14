@@ -14,6 +14,20 @@
                     <a-icon slot="prefix" type="lock"/>
                 </a-input>
 
+                <div id="slideStyle">
+                    <a-input placeholder="请输入验证码" class="loginInput" type="text" :allowClear="true"
+                             @keydown.enter="login"
+                             v-model="loginForm.verityCode" style="padding-right: 0">
+                        <a-icon slot="prefix" type="code"/>
+                        <vue-captcha
+                                :height="30"
+                                slot="addonAfter"
+                                ref="captcha"
+                                captcha.sync="code"
+                                @on-change="changeCaptcha"/>
+                    </a-input>
+                </div>
+
 
                 <div id="loginCtl">
                     <a-button type="primary" class="button" @click="login">
@@ -40,18 +54,30 @@
 <script>
 
     import authApi from '../api/AuthApi'
+    import VueCaptcha from 'vue-captcha-code';
 
     export default {
+        components: {VueCaptcha},
         data() {
             return {
+                rightVerityCode: '',
                 loginForm: {
                     username: '',
-                    password: ''
+                    password: '',
+                    verityCode: ''
                 }
             }
         }, beforeMount() {
         }, methods: {
             login() {
+                if (this.loginForm.verityCode.toUpperCase() !== this.rightVerityCode.toUpperCase()){
+                    this.$notification['error']({
+                        message: '登录失败',
+                        description: "验证码错误，请重新输入后重试"
+                    })
+                    this.$refs.captcha.refreshCaptcha();
+                    return
+                }
                 authApi.login(this.loginForm)
                     .then(res => {
                         let {Code, Data} = res.data
@@ -63,8 +89,11 @@
             },
             reset() {
                 this.loginForm = {}
+                this.$refs.captcha.refreshCaptcha();
             }, openSourcePage() {
                 window.open('https://gitee.com/taoes_admin/SimpleDocker', '_blank')
+            }, changeCaptcha(code) {
+                this.rightVerityCode = code
             }
         }
     }
@@ -83,7 +112,7 @@
     }
 
     #loginForm {
-        height: 350px;
+        height: 400px;
         display: flex;
         flex-direction: column;
         align-items: center;
@@ -102,6 +131,14 @@
     }
 
     .loginInput {
-        margin-top: 30px;
+        margin-top: 20px;
     }
+
+    .ant-input-group-addon {
+        margin: 0;
+        padding: 0 !important;
+        border: 0 solid #d9d9d9 !important;
+    }
+
+
 </style>
