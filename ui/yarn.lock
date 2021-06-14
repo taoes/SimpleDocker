@@ -2294,9 +2294,9 @@ caniuse-api@^3.0.0:
     lodash.uniq "^4.5.0"
 
 caniuse-lite@^1.0.0, caniuse-lite@^1.0.30001109, caniuse-lite@^1.0.30001165:
-  version "1.0.30001170"
-  resolved "https://registry.npm.taobao.org/caniuse-lite/download/caniuse-lite-1.0.30001170.tgz?cache=0&sync_timestamp=1608444248648&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fcaniuse-lite%2Fdownload%2Fcaniuse-lite-1.0.30001170.tgz#0088bfecc6a14694969e391cc29d7eb6362ca6a7"
-  integrity sha1-AIi/7MahRpSWnjkcwp1+tjYspqc=
+  version "1.0.30001237"
+  resolved "https://registry.npmjs.org/caniuse-lite/-/caniuse-lite-1.0.30001237.tgz"
+  integrity sha512-pDHgRndit6p1NR2GhzMbQ6CkRrp4VKuSsqbcLeOQppYPKOYkKT/6ZvZDvKJUqcmtyWIAHuZq3SVS2vc1egCZzw==
 
 case-sensitive-paths-webpack-plugin@^2.3.0:
   version "2.3.0"
@@ -7857,6 +7857,14 @@ vm-browserify@^1.0.1:
   version "1.1.2"
   resolved "https://registry.npm.taobao.org/vm-browserify/download/vm-browserify-1.1.2.tgz#78641c488b8e6ca91a75f511e7a3b32a86e5dda0"
   integrity sha1-eGQcSIuObKkadfUR56OzKobl3aA=
+
+vue-captcha-code@^1.0.2:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/vue-captcha-code/-/vue-captcha-code-1.0.2.tgz#00fc7e4c84e5e428fd91044e2656b1e2605342ae"
+  integrity sha512-+w8BXtmIYdng8ZTWvpy7X4t5wm7XYLMNf3EsF8CgqJeIz3SdglKc0RdRVyGoXxg/h1UD+NzWnCs1AohbptkaMA==
+  dependencies:
+    core-js "^3.6.5"
+    vue "^2.6.11"
 
 vue-hot-reload-api@^2.3.0:
   version "2.3.4"
