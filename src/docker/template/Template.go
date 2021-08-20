@@ -29,7 +29,7 @@ func UploadDockerTemplate() {
 
 }
 
-// TODO:从URL中更新模板文件内容
+// TODO: 从URL中更新模板文件内容
 func UpdateDockerTemplate() {
 
 }
