@@ -13,12 +13,14 @@ func init() {
 	logs.Info("尝试初始化Docker Swarm...")
 }
 
-/** 查询DockESwarm的服务列表 */
+// GetServiceList
+//** 查询DockESwarm的服务列表 */
 func GetServiceList() ([]swarm.Service, error) {
 	optional := types.ServiceListOptions{}
 	return context.Cli.ServiceList(context.Ctx, optional)
 }
 
+// GetServiceLogs
 /** 查询制定服务的日志 */
 func GetServiceLogs(serviceId string) (string, error) {
 	if serviceId != "" {
@@ -37,6 +39,7 @@ func GetServiceLogs(serviceId string) (string, error) {
 	return string(bytes), nil
 }
 
+// GetServiceInspect
 /** 查询服务的 Inspect 信息 */
 func GetServiceInspect(serviceId string) (string, error) {
 	if serviceId != "" {
@@ -51,6 +54,7 @@ func GetServiceInspect(serviceId string) (string, error) {
 	return string(bytes), nil
 }
 
+//RemoveService
 /** 移除服务*/
 func RemoveService(serviceId string) error {
 	if serviceId != "" {
@@ -63,6 +67,7 @@ func RemoveService(serviceId string) error {
 	return nil
 }
 
+//UpdateService
 /** 更新服务 */
 func UpdateService(serviceId string) ([]string, error) {
 	if serviceId != "" {

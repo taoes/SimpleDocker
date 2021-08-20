@@ -9,13 +9,17 @@ import (
 	_ "SimpleDocker/src/context"
 	"SimpleDocker/src/db"
 	"flag"
+	"os"
 	"strconv"
 
 	"github.com/astaxie/beego"
 )
 
-var port = flag.Int("port", 4050, "服务启动端口,默认值 4050")
-var resPath = flag.String("res", "static", "静态资源的路径,默认值 static")
+// 默认值 4050
+var port = os.Getenv("SD_PORT")
+
+// 默认值 static
+var resPath = os.Getenv("SD_RES_PATH")
 
 // 目前主分支属于开发分支，默认账号密码为 admin/123456
 func main() {
@@ -23,6 +27,7 @@ func main() {
 	flag.Parse()
 
 	db.InitDB()
+	db.InitConfig()
 	auth.InitConfig()
 	beego.BConfig.CopyRequestBody = true
 	beego.BConfig.WebConfig.Session.SessionOn = true
@@ -44,5 +49,5 @@ func main() {
 
 	// 添加CORS 以及权限校验 &&  启动服务
 	beego.InsertFilter("/*", beego.BeforeRouter, config.Handler)
-	beego.Run(":" + strconv.Itoa(*port))
+	beego.Run(":" + port)
 }
