@@ -46,7 +46,7 @@ const imageStore = {
                             let aName = a.created;
                             let bName = b.created;
                             if (aName === bName) {
-                                return 0;
+                                return a.Id - b.Id;
                             }
                             return aName > bName ? -1 : 1;
                         }

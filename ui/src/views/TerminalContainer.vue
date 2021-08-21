@@ -5,8 +5,6 @@
                 <img src="../assets/logo-tm-white2.png" class="logoImg" alt=""/>
                 <h2 class="logoTitle">{{title}}</h2>
             </div>
-
-
             <a-menu
                     theme="dark"
                     mode="horizontal"
@@ -63,12 +61,13 @@
                 showResetPasswordModal: false,
             };
         }, mounted() {
+
             setInterval(this.updateApiState, 5000);
              let {title} = this.$route.query;
              if (!!title){
                this.title = title
+               document.title = title
              }
-
         }, beforeDestroy() {
             if (intervalId != null) {
                 clearInterval(intervalId)

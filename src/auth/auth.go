@@ -6,7 +6,6 @@ import (
 	"crypto/md5"
 	"errors"
 	"fmt"
-	"github.com/astaxie/beego/logs"
 	"strings"
 	"time"
 
@@ -17,11 +16,6 @@ var SignNameSecret = "SimpleDocker2020"
 var defaultPassword = "BFA5A81C0E15A3BCFFBB04590D693D4D"
 
 func InitConfig() {
-	//初始化密码
-	logs.Info("初始化密码")
-	db.RedisClient.Set(db.ConfigKey["password"], defaultPassword, 0)
-	db.RedisClient.Set(db.ConfigKey["saltValue"], SignNameSecret, 0)
-	logs.Info("初始化密码..OK")
 
 }
 

@@ -40,46 +40,39 @@
         </a-form>
 
         <a-table :columns="imageColumns" :data-source="imageList"
-                 size="small"
                  :scroll="{ x: true }"
+                 rowKey="Id"
                  style="margin-top: 30px">
     <span slot="action" slot-scope="text, record">
       <a-space>
-
         <a-tooltip>
             <template slot="title">启动镜像</template>
             <a-icon type="play-circle" style="color: #52c41a;font-size: 18px"
                     @click="openCreateContainerGuide(record)"/>
         </a-tooltip>
 
-
-
-
+        <a-divider type="vertical" />
         <a-tooltip>
             <template slot="title">镜像详情</template>
             <a-icon type="profile" style="color:darkslategray;font-size: 18px"
                     @click="detail(record.imageLongId)"/>
         </a-tooltip>
 
-
-
-
-
+        <a-divider type="vertical" />
         <a-tooltip>
             <template slot="title">删除镜像</template>
             <a-icon type="delete" style="color:red;font-size: 18px"
                     @click="remove(record.imageLongId)"/>
         </a-tooltip>
 
-
+        <a-divider type="vertical" />
         <a-tooltip>
             <template slot="title">备份至本地</template>
             <a-icon type="cloud-sync" style="font-size: 18px"
                     @click="backImageToLocal(record.imageLongId)"/>
         </a-tooltip>
 
-
-
+        <a-divider type="vertical" />
 
         <a-dropdown>
           <a class="ant-dropdown-link" @click="e => e.preventDefault()">
@@ -95,7 +88,7 @@
             </a-menu-item>
 
             <a-menu-item>
-                <a href="#" @click="openReTagModal(record.rep)">
+                <a href="#" @click="openReTagModal(record)">
                   <a-icon type="tags"/>&nbsp;
                   重新标记</a>
             </a-menu-item>
@@ -115,10 +108,13 @@
         <!--    更新Tag -->
         <a-modal v-model="tagImageVisible" title="重新标记" okText="标记" cancelText="取消" @ok="callReTagApi">
             <a-form :label-col="{ span: 3 }" :wrapper-col="{ span: 21 }">
-                <a-form-item label="原 Tag">
+              <a-form-item label="镜像ID">
+                <a-input v-model="imageId" disabled/>
+              </a-form-item>
+                <a-form-item label="原Tag">
                     <a-input v-model="oldTag" disabled/>
                 </a-form-item>
-                <a-form-item label="新 Tag">
+                <a-form-item label="新Tag">
                     <a-input @change="e=> this.newTag = e.target.value"/>
                 </a-form-item>
             </a-form>
@@ -163,7 +159,12 @@
 
 
         <!--    简单模式创建容器-->
-        <a-modal v-model="runImageVisible" title="运行新的容器" okText="运行" cancelText="取消" @ok="callRunNewContainerApi">
+        <a-modal v-model="runImageVisible"
+                 title="运行新的容器"
+                 okText="运行"
+                 cancelText="取消"
+                 :confirm-loading="createContainerFinished"
+                 @ok="callRunNewContainerApi">
             <a-form-model :label-col="{ span: 4 }" :wrapper-col="{ span: 20 }"
                           v-model="containerConfig">
                 <a-form-model-item label="镜像名称">
@@ -286,6 +287,7 @@
         data() {
             return {
                 searchKey: '',
+                imageId:'',
                 oldTag: '',
                 newTag: '',
                 showDetail: false,
@@ -307,6 +309,7 @@
                 pullImageVisible: false,
                 runImageVisible: false,
                 tagImageVisible: false,
+                createContainerFinished:false
             };
         }, mounted() {
             this.updateImageList()
@@ -491,8 +494,10 @@
 
             }, openReTagModal: function (oldTag) {
                 this.tagImageVisible = true
-                this.oldTag = oldTag
+                this.oldTag = oldTag.rep
+                this.imageId =  oldTag.imageId
             }, async callRunNewContainerApi() {
+                this.createContainerFinished = false
                 let res = await imageApi.runNewContainer(this.containerConfig)
                 let {Code, Msg} = res.data
                 if (Code === 'OK') {
@@ -501,6 +506,7 @@
                 } else {
                     this.$message.error(Msg);
                 }
+                this.createContainerFinished = true
             }, async callReTagApi() {
                 if (this.newTag.trim() === '') {
                     this.tagImageVisible = false
@@ -513,7 +519,7 @@
                     return
                 }
 
-                let res = await imageApi.renameImage({source: this.oldTag, tag: this.newTag});
+                let res = await imageApi.renameImage({source: this.imageId, tag: this.newTag});
                 let {Code} = res.data;
                 if (Code === 'OK') {
                     this.$message.info('标记镜像完成!');

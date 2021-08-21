@@ -5,7 +5,7 @@
       <div style="display: inline;float: left;justify-items: center">
         <img src="../assets/logo-tm-white2.png" class="logoImg" alt=""/>
         <h2 class="logoTitle">
-          SimpleDocker <span class="logoVersion">V0.0.6</span>
+          SimpleDocker
         </h2>
       </div>
       <a-menu
@@ -17,11 +17,11 @@
         <a-menu-item :class="{apiStateNormal: apiState,apiStateError:!apiState}" key="noAction" class="right">
           <template v-if="apiState">
             <a-icon type="api" size="16"/>
-            <span>连接正常</span>
+            <span>正常</span>
           </template>
           <template v-else>
             <a-icon type="disconnect" size="16"/>
-            <span>连接中断</span>
+            <span>中断</span>
           </template>
         </a-menu-item>
 
@@ -38,7 +38,7 @@
 
           <a-menu-item key="logout">
             <a-icon type="logout"></a-icon>
-            退出登录
+            退出系统
           </a-menu-item>
         </a-sub-menu>
 

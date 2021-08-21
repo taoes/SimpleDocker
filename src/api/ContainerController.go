@@ -1,6 +1,5 @@
 package api
 
-
 import (
 	"SimpleDocker/src/api/model"
 	"SimpleDocker/src/docker"
@@ -20,7 +19,7 @@ type ContainerController struct {
 	beego.Controller
 }
 
-/** 获取容器列表 */
+// Get 获取容器列表
 // @router /api/container [get]
 func (c *ContainerController) Get() {
 	containerList := docker.GetContainerList()
@@ -28,7 +27,7 @@ func (c *ContainerController) Get() {
 	c.ServeJSON()
 }
 
-/** 创建一个新的容器(简单模式) */
+// CreateNewContainer 创建一个新的容器(简单模式)
 // @router /api/container/run [get]
 func (c *ContainerController) CreateNewContainer() {
 	imageName := c.Ctx.Input.Query("imageName")
@@ -79,7 +78,7 @@ func (c *ContainerController) CreateNewContainer() {
 	c.ServeJSON()
 }
 
-/** 创建一个新的容器(高级模式) */
+// CreateNewContainerWith 创建一个新的容器(高级模式)
 // @router /api/container/run/complex [post]
 func (c *ContainerController) CreateNewContainerWith() {
 	var resp model.ContainerCrateModel
@@ -100,9 +99,9 @@ func (c *ContainerController) CreateNewContainerWith() {
 	c.ServeJSON()
 }
 
-/** 启动/重启/停止/暂停/清空 容器 */
+// OperatorContainer 启动/重启/停止/暂停/清空 容器
 // @router /api/container/:containerId/:operator [get]
-func (c *ContainerController) StartContainer(containerId string, operator string) {
+func (c *ContainerController) OperatorContainer(containerId string, operator string) {
 	err := docker.OperatorContainer(containerId, operator)
 	if err != nil {
 		c.Data["json"] = utils.PackageError(err)
@@ -114,7 +113,7 @@ func (c *ContainerController) StartContainer(containerId string, operator string
 	c.ServeJSON()
 }
 
-/** 启动/重启/停止/暂停/清空 容器 */
+// RenameContainer 重命名容器
 // @router /api/container/:containerId/rename/:newName [get]
 func (c *ContainerController) RenameContainer(containerId string, newName string) {
 	err := docker.RenameContainer(containerId, newName)
@@ -128,7 +127,7 @@ func (c *ContainerController) RenameContainer(containerId string, newName string
 	c.ServeJSON()
 }
 
-/** 移除容器 */
+// RemoveContainer 移除容器
 // @router /api/container/:containerId/delete [get]
 func (c *ContainerController) RemoveContainer(containerId string) {
 	var err error
@@ -148,7 +147,7 @@ func (c *ContainerController) RemoveContainer(containerId string) {
 	c.ServeJSON()
 }
 
-/** 查看容器信息 */
+// GetContainerInfo 查看容器信息
 // @router /api/container/:containerId/info [get]
 func (c *ContainerController) GetContainerInfo(containerId string) {
 	info, err := docker.GetContainerInfo(containerId)
@@ -162,7 +161,7 @@ func (c *ContainerController) GetContainerInfo(containerId string) {
 	c.ServeJSON()
 }
 
-/** 查看容器日志 */
+// GetContainerLog 查看容器日志
 // @router /api/container/:containerId/log [get]
 func (c *ContainerController) GetContainerLog(containerId string) {
 	logs, err := docker.GetContainerLog(containerId, "200")
@@ -176,7 +175,7 @@ func (c *ContainerController) GetContainerLog(containerId string) {
 	c.ServeJSON()
 }
 
-// 下载全部日志
+// GetContainerAllLog 下载全部日志
 // @router /api/container/:containerId/log/all [get]
 func (c *ContainerController) GetContainerAllLog(containerId string) {
 	logs, err := docker.GetContainerLog(containerId, "")
@@ -192,7 +191,7 @@ func (c *ContainerController) GetContainerAllLog(containerId string) {
 	_, _ = c.Ctx.ResponseWriter.Write(logsByte)
 }
 
-/** 容器导出 */
+// ExportContainer 容器导出
 // @router /api/container/:containerId/export [get]
 func (c *ContainerController) ExportContainer(containerId string) {
 	info, err := docker.ExportContainer(containerId)
@@ -211,7 +210,7 @@ func (c *ContainerController) ExportContainer(containerId string) {
 	_, _ = c.Ctx.ResponseWriter.Write(bytesData)
 }
 
-/** 容器到处到本地服务器 */
+// ExportContainerToLocal 容器到处到本地服务器
 // @router /api/container/:containerId/export/local
 func (c *ContainerController) ExportContainerToLocal(containerId string) {
 	fileName := c.Ctx.Input.Query("fileName")
@@ -225,7 +224,7 @@ func (c *ContainerController) ExportContainerToLocal(containerId string) {
 	c.ServeJSON()
 }
 
-/** 容器监控 */
+// Monitor 容器监控
 // @router /api/container/:containerId/monitor/info [get]
 func (c *ContainerController) Monitor(containerId string) {
 	container, err := docker.MonitorContainer(containerId)

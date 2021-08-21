@@ -16,7 +16,7 @@
             刷新
           </a-button>
 
-          <a-button @click="openNewVolumeModal">
+          <a-button @click="openNewVolumeModal" type="primary">
             <a-icon type="plus-circle"></a-icon>
             创建
           </a-button>
@@ -41,15 +41,15 @@
           <a-icon type="profile" style="color:darkslategray;font-size: 18px"
                   @click="openVolumeDetail(record.LongName)"/>
         </a-tooltip>
-        <a-divider type="vertical"></a-divider>
 
+        <a-divider type="vertical" />
         <a-tooltip>
           <template slot="title">删除</template>
           <a-icon type="delete" style="color:orangered;font-size: 18px"
                   @click="openRemoveVolumeModal(record.LongName)"/>
         </a-tooltip>
-        <a-divider type="vertical"></a-divider>
 
+        <a-divider type="vertical" />
         <a-tooltip>
           <template slot="title">挂载</template>
           <a-icon type="link" style="color:darkslategray;font-size: 18px"/>

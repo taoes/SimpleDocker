@@ -9,10 +9,8 @@ import (
 	_ "SimpleDocker/src/context"
 	"SimpleDocker/src/db"
 	"flag"
-	"os"
-	"strconv"
-
 	"github.com/astaxie/beego"
+	"os"
 )
 
 // 默认值 4050
@@ -33,7 +31,7 @@ func main() {
 	beego.BConfig.WebConfig.Session.SessionOn = true
 
 	// 配置静态资源
-	beego.SetStaticPath("/", context.Config.ExecDir+"/"+*resPath)
+	beego.SetStaticPath("/", context.Config.ExecDir+"/"+resPath)
 
 	// 配置路由
 	beego.Include(&api.DockerController{})

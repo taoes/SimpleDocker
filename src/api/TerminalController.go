@@ -133,7 +133,7 @@ func printBanner(conn *websocket.Conn) {
 
 // 打印连接成功时候的欢迎消息
 func printWelcome(conn *websocket.Conn) {
-	_ = conn.WriteMessage(websocket.BinaryMessage, []byte("\033[32m 欢迎您使用 SimpleDocker, 容器终端已为您连接成功 ...............  \033[0m \r\n \r\n"))
+	_ = conn.WriteMessage(websocket.BinaryMessage, []byte("\033[32m 欢迎您使用 SimpleDocker, 容器终端已为您连接成功 ...............OK  \033[0m \r\n \r\n"))
 	_ = conn.WriteMessage(websocket.BinaryMessage, []byte("\033[37m 程序默认使用 /bin/sh 连接，如有必要请手动切换到 /bin/bash 或者其他 shell 环境  \033[0m \r\n \r\n"))
 	_ = conn.WriteMessage(websocket.BinaryMessage, []byte("\033[37m 如遇BUG或者Issue 欢迎访问 https://github.com/taoes 或者 https://gitee.com/taoes_admin 联系作者  \033[0m \r\n \r\n"))
 }

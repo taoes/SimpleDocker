@@ -8,9 +8,10 @@ import (
 	"os"
 )
 
+// 初始密码明文 123456
 var DEFAULT_CONFIG = map[string]string{
 	"username":           "admin",
-	"password":           "123456",
+	"password":           "271F7FCB664F8838C3382C92A86E9FF4",
 	"enableDockerLog":    "false",
 	"containerNotifyUrl": "",
 	"backCategory":       "/tmp",
@@ -19,10 +20,7 @@ var DEFAULT_CONFIG = map[string]string{
 // InitConfig 初始化配置文件
 func InitConfig() {
 	// 判断文件夹是否已存在,不存在则使用默认值
-	configDir := os.Getenv("SD_CONFIG_DIR")
-	if configDir == "" {
-		configDir = os.Getenv("HOME") + "/config"
-	}
+	configDir := os.Getenv("HOME") + "/config"
 	exists, _ := utils.PathExists(configDir)
 	if exists {
 		logs.Info("配置文件目录存在,{}", configDir)
@@ -53,8 +51,8 @@ func InitConfig() {
 
 }
 func getAllConfig() map[string]string {
-	configDir := os.Getenv("SD_CONFIG_DIR")
-	file, err := os.Open(configDir + "/config")
+	configDir := os.Getenv("HOME")
+	file, err := os.Open(configDir + "/config/config.json")
 	defer file.Close()
 	if err != nil {
 		return make(map[string]string)
@@ -87,7 +85,7 @@ func delFromConfig(key string) {
 }
 
 func updateConfigFile(configMap map[string]string) {
-	configPath := os.Getenv("SD_CONFIG_DIR") + "/config"
+	configPath := os.Getenv("HOME") + "/config/config.json"
 	file, err := os.Create(configPath)
 	defer file.Close()
 	if err != nil {

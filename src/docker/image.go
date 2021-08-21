@@ -60,14 +60,14 @@ func SaveImage(imageTag string) (io.ReadCloser, error) {
 	return context.Cli.ImageSave(context.Ctx, []string{imageTag})
 }
 
-/** 导出镜像到本地 */
+// SaveImageToLocal 导出镜像到本地
 func SaveImageToLocal(imageTag string, fileName string) (string, error) {
 	if strings.Trim(fileName, "") == "" || strings.Trim(fileName, "") == "" {
 		fileName = imageTag + "_" + time.Now().Format("2006-01-02-15-04-05.tar.gz")
 	}
 
 	// 读取保存文件的配置地址
-	address := "/tmp/back/image"
+	address := os.Getenv("HOME" + "/back/image")
 	err := os.MkdirAll(address, os.ModePerm)
 	if err != nil {
 		logs.Error("备份镜像失败，该镜像所在目录:{} 创建失败", address)
@@ -75,7 +75,7 @@ func SaveImageToLocal(imageTag string, fileName string) (string, error) {
 	}
 	fullPath := fmt.Sprintf("%s/%s", address, fileName)
 	if _, err := os.Stat(fullPath); os.IsExist(err) {
-		return fullPath, errors.New("文件已存在，请尝试重新输入新的文件名")
+		return fullPath, errors.New("文件已存在，请尝试重新输入新的文件名~")
 	}
 
 	body, err := context.Cli.ImageSave(context.Ctx, []string{imageTag})

@@ -10,6 +10,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/astaxie/beego"
+	"github.com/astaxie/beego/logs"
 	"github.com/docker/docker/api/types"
 	"strings"
 )
@@ -32,10 +33,12 @@ func (c *LoginController) Login() {
 	c.ServeJSON()
 }
 
+// SystemLogin 系统登录服务
 // @router /api/system/login [post]
 func (c *LoginController) SystemLogin() {
 	var loginReq model.LoginRequest
 	_ = json.Unmarshal(c.Ctx.Input.RequestBody, &loginReq)
+
 	name := loginReq.Username
 	password := loginReq.Password
 
@@ -51,21 +54,27 @@ func (c *LoginController) SystemLogin() {
 		return
 	}
 
-	passwordConfig := db.Read("password")
-	saltValue := db.Read("saltValue")
+	// 真实密码
+	realPassword := db.ReadFromConfig("password")
 
-	passwordMd5 := fmt.Sprintf("%X", md5.Sum([]byte(password+"+"+saltValue)))
-	if name == "admin" && passwordMd5 == passwordConfig {
+	// MD5密码
+	passwordMd5 := fmt.Sprintf("%X", md5.Sum([]byte(name+"+"+password)))
+
+	logs.Info(realPassword)
+	logs.Info(passwordMd5)
+	// 验证密码
+	if name == "admin" && passwordMd5 == realPassword {
 		token, _ := auth.GeneratorToken(name)
 		c.Data["json"] = utils.PackageData(token)
-		db.Write("token", token)
-	} else {
-		c.Data["json"] = utils.PackageErrorMsg("账号或密码错误")
-		db.Del("token")
+		c.ServeJSON()
+		return
 	}
+	c.Data["json"] = utils.PackageErrorMsg("账号或密码错误")
+	db.Del("token")
 	c.ServeJSON()
 }
 
+// SystemLogout 系统退出
 // @router /api/system/logout
 func (c *LoginController) SystemLogout() {
 	c.DestroySession()

@@ -7,7 +7,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/astaxie/beego"
-	"github.com/astaxie/beego/logs"
 	"io"
 	"strconv"
 	"strings"
@@ -23,6 +22,7 @@ type ImportImageInfo struct {
 	ImageTag string `json:"imageTag"`
 }
 
+// GetImageList 获取镜像列表
 // @router /api/image [get]
 func (c *ImageController) GetImageList() {
 	imageList, err := docker.GetImageList()
@@ -35,6 +35,7 @@ func (c *ImageController) GetImageList() {
 	c.ServeJSON()
 }
 
+// GetImageInfo 获取镜像信息
 // @router /api/image/:imageId [get]
 func (c *ImageController) GetImageInfo(imageId string) {
 	imageInfo, err := docker.GetImageInfo(imageId)
@@ -47,6 +48,7 @@ func (c *ImageController) GetImageInfo(imageId string) {
 	c.ServeJSON()
 }
 
+// DeleteImage 删除镜像
 // @router /api/image/:imageId/remove/:forge [get]
 func (c *ImageController) DeleteImage(imageId string, forge string) {
 	b, _ := strconv.ParseBool(forge)
@@ -60,23 +62,22 @@ func (c *ImageController) DeleteImage(imageId string, forge string) {
 	c.ServeJSON()
 }
 
+// TagImage 重新标记镜像
 // @router /api/image/tag [get]
 func (c *ImageController) TagImage() {
 	source := c.Ctx.Input.Query("source")
 	tag := c.Ctx.Input.Query("tag")
 
-	logs.Info(source)
-	logs.Info(tag)
 	err := docker.TagImage(source, tag)
 	if err != nil {
 		c.Data["json"] = utils.PackageError(err)
-		c.ServeJSON()
-		return
+	} else {
+		c.Data["json"] = utils.Success()
 	}
-	c.Data["json"] = utils.Success()
 	c.ServeJSON()
 }
 
+// SaveImage 导出镜像
 // @router /api/image/save [post]
 func (c *ImageController) SaveImage() {
 
@@ -99,6 +100,7 @@ func (c *ImageController) SaveImage() {
 	_, _ = c.Ctx.ResponseWriter.Write(i)
 }
 
+// PullImage 拉取镜像
 // @router /api/image/pull [get]
 func (c *ImageController) PullImage() {
 	refStr := c.Ctx.Input.Query("refStr")
@@ -111,6 +113,7 @@ func (c *ImageController) PullImage() {
 	}
 }
 
+// PushImage 推送镜像
 // @router /api/image/push [get]
 func (c *ImageController) PushImage() {
 	refStr := c.Ctx.Input.Query("refStr")
@@ -124,6 +127,7 @@ func (c *ImageController) PushImage() {
 	c.ServeJSON()
 }
 
+// PruneImage 清空镜像
 // @router /api/image/prune [delete]
 func (c *ImageController) PruneImage() {
 	report, err := docker.PruneImage()
@@ -135,7 +139,7 @@ func (c *ImageController) PruneImage() {
 	c.ServeJSON()
 }
 
-/** 导入Image */
+//ImportImage 导入Image
 // @router /api/image/import [post]
 func (c *ImageController) ImportImage() {
 	file, _, err := c.GetFile("file")
@@ -164,7 +168,7 @@ func (c *ImageController) ImportImage() {
 	c.ServeJSON()
 }
 
-/** 备份容器到本地 */
+// ExportImageToLocal 备份容器到本地
 // @router /api/image/save/to/local [get]
 func (c *ImageController) ExportImageToLocal() {
 	imageTag := c.Ctx.Input.Query("imageTag")
