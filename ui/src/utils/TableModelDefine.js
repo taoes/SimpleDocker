@@ -31,7 +31,33 @@ const imageColumns = [
     },
 ];
 
+const defaultTemplateColumn = [
+    {
+        title: '配置名称',
+        key: 'name',
+    },
+    {
+        title: '镜像名称',
+        key: 'name',
+    },
+    {
+        title: '镜像版本',
+        key: 'version',
+    },
+    {
+        title: '创建时间',
+        key: 'createdAt',
+    },
+    {
+        title: '操作',
+        fixed: 'right',
+        key: 'createdAt',
+        scopedSlots: {customRender: 'action'},
+    },
+]
+
 // eslint-disable-next-line no-undef
 module.exports = {
-    imageColumns: imageColumns
+    imageColumns: imageColumns,
+    defaultTemplateColumn: defaultTemplateColumn
 }

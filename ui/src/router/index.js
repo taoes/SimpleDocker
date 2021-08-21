@@ -79,6 +79,11 @@ const routes = [
                 name: 'Setting',
                 component: () => import('../views/Setting.vue')
             },
+            {
+                path: '/content/template',
+                name: '容器模板',
+                component: () => import('../views/Template.vue')
+            },
         ]
     }
 

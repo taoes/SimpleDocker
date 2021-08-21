@@ -35,9 +35,9 @@
             <span class="menuItem"> 网络管理</span>
         </a-menu-item>
 
-        <a-menu-item key="/dev/feat1">
+        <a-menu-item key="/template">
             <a-icon type="snippets"/>
-            <span class="menuItem">容器模板(开发中)</span>
+            <span class="menuItem">容器模板</span>
         </a-menu-item>
 
 

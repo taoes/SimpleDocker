@@ -15,6 +15,7 @@
     "lodash": "^4.17.20",
     "vue": "^2.6.11",
     "vue-captcha-code": "^1.0.2",
+    "vue-json-editor": "^1.4.3",
     "vue-json-viewer": "^2.2.19",
     "vue-router": "^3.2.0",
     "vue-terminal-ui": "^0.1.6",
