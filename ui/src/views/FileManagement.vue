@@ -47,7 +47,7 @@ export default {
       pathChain: [],
     }
   },
-  beforeMount() {
+  mounted() {
     this.initWebSocket()
   },
   beforeDestroy() {
@@ -94,7 +94,7 @@ export default {
     initWebSocket() {
       let {containerId} = this.$route.query
       this.containerId = containerId
-      this.socket = new WebSocket(`${config.WS_HOST}/ws/api/container/${containerId}/file?token=${localStorage.token}`)
+      this.socket = new WebSocket(`ws://${location.host}/ws/api/container/${containerId}/file?token=${localStorage.token}`)
       this.socket.onopen = this.open
       this.socket.onclose = this.close
       this.socket.onmessage = this.getMessage
