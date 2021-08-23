@@ -88,7 +88,7 @@ export default {
       }
       this.execId = Data;
       this.socket = new WebSocket(
-          `${config.WS_HOST}/ws/api/container/terminal/${Data}?containerId=${containerId}&token=${token}`
+          `ws://${location.host}/ws/api/container/terminal/${Data}?containerId=${containerId}&token=${token}`
       );
       this.socket.binaryType = "arraybuffer";
       this.socketOnClose();
