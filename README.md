@@ -37,6 +37,11 @@ Docker是目前一种非常主流的容器化方案，支持非常多的特性�
 2. Docker 服务发布到 Docker Hub
 3. 移除 Redis 依赖
 
+0. 移除Redis依赖，使用文件管理配置 ✅
+1. Docker容器模板功能 ✅
+2. 多Docker管理 ✅
+3. DockerCompose 镜像编排管理(计划中)
+4. DockerSwarm 集群管理(计划中)
 
 ### 📔 更新记录
 
@@ -56,7 +61,7 @@ services:
   redis:
     image: redis:latest
   web:
-    image: registry.cn-hangzhou.aliyuncs.com/seven-tao/simple-docker:0.0.7
+    image: registry.cn-hangzhou.aliyuncs.com/seven-tao/simple-docker:0.0.7.1
     ports:
       - "9091:4050"
     volumes:
@@ -65,8 +70,6 @@ services:
     depends_on:
       - redis
 ```   
-
-
 
 3. 执行下面的脚本，会自动拉取镜像并启动在 9091 端口
 
@@ -78,7 +81,9 @@ docker-compose up -d # 后台运行
 3. 浏览器访问 http://localhost:9091
 4. 默认账号: admin 默认密码: 123456
 
-> 如果使用了域名并且通过服务器进行反向代理，请配置反向代理服务器支持  WebSocket，否则终端功能可能无法使用 [1. Nginx 配置支持WebSocket](https://www.xncoding.com/2018/03/12/fullstack/nginx-websocket.html)
+<span style='color:red'>如果使用了域名并且通过服务器进行反向代理，请配置反向代理服务器支持  WebSocket，否则终端功能可能无法使用</span>
+
+[1. Nginx 配置支持WebSocket](https://www.xncoding.com/2018/03/12/fullstack/nginx-websocket.html)
 
 #### Dockerfile + DockerCompose
 
