@@ -191,6 +191,10 @@ func (c *ContainerController) GetContainerAllLog(containerId string) {
 	_, _ = c.Ctx.ResponseWriter.Write(logsByte)
 }
 
+func (c *ContainerController)GetLogStream()  {
+
+}
+
 // ExportContainer 容器导出
 // @router /api/container/:containerId/export [get]
 func (c *ContainerController) ExportContainer(containerId string) {

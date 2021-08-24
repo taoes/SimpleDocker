@@ -151,6 +151,15 @@ func GetContainerInfo(containerId string) (types.ContainerJSON, error) {
 	return context.Cli.ContainerInspect(context.Ctx, containerId)
 }
 
+func GetContainerInfoRaw(containerId string) (types.ContainerJSON, []byte, error) {
+	return context.Cli.ContainerInspectWithRaw(context.Ctx, containerId, true)
+}
+
+// GetContainerTop 获取容器进程信息
+func GetContainerTop(containerId string, args []string) (container.ContainerTopOKBody, error) {
+	return context.Cli.ContainerTop(context.Ctx, containerId, args)
+}
+
 /** 查看日志数据 */
 func GetContainerLog(containerId string, tail string) (string, error) {
 	options := types.ContainerLogsOptions{ShowStdout: true}
@@ -170,14 +179,16 @@ func GetContainerLog(containerId string, tail string) (string, error) {
 	return buf.String(), nil
 }
 
-/** 导出容器 */
+func GetServiceLogs(containerId string, tail string) {
+
+}
+
+// ExportContainer 导出容器
 func ExportContainer(containerId string) (io.ReadCloser, error) {
 	return context.Cli.ContainerExport(context.Ctx, containerId)
 }
 
-/**
-导出容器到本地
-*/
+// ExportContainerToLocal 导出容器文件
 func ExportContainerToLocal(containerId string, fileName string) (string, error) {
 	if fileName == "" {
 		fileName = containerId + "_" + time.Now().Format("2006-01-02-15-04-05.tar.gz")
@@ -191,7 +202,7 @@ func ExportContainerToLocal(containerId string, fileName string) (string, error)
 	}
 	fullPath := fmt.Sprintf("%s/%s", address, fileName)
 	if _, err := os.Stat(fullPath); os.IsExist(err) {
-		return fullPath, errors.New("文件已存在，请尝试重新输入新的文件名");
+		return fullPath, errors.New("文件已存在，请尝试重新输入新的文件名")
 	}
 
 	// 导出容器
@@ -210,14 +221,14 @@ func ExportContainerToLocal(containerId string, fileName string) (string, error)
 	return fullPath, nil
 }
 
-// 调整TTYSize
+// ResizeContainerTty 调整TTYSize
 func ResizeContainerTty(containerId string, execId string, w uint, h uint) error {
 	err := context.Cli.ContainerExecResize(context.Ctx, execId, types.ResizeOptions{Width: w, Height: h})
 	err = context.Cli.ContainerResize(context.Ctx, containerId, types.ResizeOptions{Width: w, Height: h})
 	return err
 }
 
-// 容器监控信息
+// MonitorContainer 容器监控信息
 func MonitorContainer(containerId string) (types.ContainerStats, error) {
 	return context.Cli.ContainerStats(context.Ctx, containerId, false)
 }

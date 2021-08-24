@@ -29,12 +29,12 @@ func GetVersion() Version {
 	return version
 }
 
-/** 检查Docker服务是否正常 */
+// Ping 检查Docker服务是否正常
 func Ping() (types.Ping, error) {
 	return context.Cli.Ping(context.Ctx)
 }
 
-// 磁盘使用
+// Disk 磁盘使用
 func Disk() (types.DiskUsage, error) {
 	return context.Cli.DiskUsage(context.Ctx)
 }
