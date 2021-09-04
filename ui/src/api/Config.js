@@ -1,12 +1,5 @@
-// 生产环境
-// export default {
-//     HOST: "",
-//     WS_HOST: "ws://" + location.host
-// }
-
-
-// 测试环境
+console.log(process.env)
 export default {
-    HOST: "http://127.0.0.1:8081",
-    WS_HOST: "ws://127.0.0.1:8081"
+    HOST: process.env.VUE_APP_API_HOST,
+    WS_HOST: process.env.VUE_APP_WS_HOST
 }

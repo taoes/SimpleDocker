@@ -251,7 +251,13 @@
         </a-collapse-panel>
 
         <a-collapse-panel key="inspect" header="容器 Inspect">
-          <json-viewer :value="containerInfo" :expand-depth=1 sort></json-viewer>
+           <vue-json-editor
+          v-model="containerInfo"
+          :showBtns="false"
+          :mode="'code'"
+          lang="zh"
+      />
+      
         </a-collapse-panel>
 
       </a-collapse>
@@ -323,6 +329,7 @@ import containerApi from '../api/ContainerApi'
 import ContainerApi from '../api/ContainerApi'
 import {download, guid} from '../utils/index'
 import EditCell from "@/components/EditCell";
+import vueJsonEditor from 'vue-json-editor'
 
 const columns = [
   {
@@ -367,7 +374,7 @@ const columns = [
 ];
 
 export default {
-  components: {EditCell},
+  components: {EditCell,vueJsonEditor},
   data() {
     return {
       form: {},

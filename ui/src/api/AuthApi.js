@@ -10,7 +10,7 @@ function login(loginForm) {
 
 // 重置密码
 function resetPassword(loginForm) {
-    let {oP, nP, cP} = loginForm
+    let { oP, nP, cP } = loginForm
     if (oP.trim() === '') {
         notification['warning']({
             message: '操作失败',
@@ -34,7 +34,7 @@ function resetPassword(loginForm) {
         })
         return null
     }
-    let upData = {oldPassword: oP, newPassword: nP};
+    let upData = { oldPassword: oP, newPassword: nP };
     let promise = axios.post(`/api/system/update/password`, upData);
     handleError(promise)
     return promise
@@ -43,7 +43,7 @@ function resetPassword(loginForm) {
 // 异常处理逻辑
 function handleError(promise) {
     promise.then(res => {
-        let {Code, Msg} = res.data
+        let { Code, Msg } = res.data
         if (Code !== "OK") {
             notification['warning']({
                 message: '操作失败',

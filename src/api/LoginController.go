@@ -8,10 +8,12 @@ import (
 	"SimpleDocker/src/utils"
 	"crypto/md5"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/logs"
 	"github.com/docker/docker/api/types"
+	"os"
 	"strings"
 )
 
@@ -83,8 +85,16 @@ func (c *LoginController) SystemLogout() {
 	c.ServeJSON()
 }
 
+// UpdatePassword 更新密码
 // @router /api/system/update/password [post]
 func (c *LoginController) UpdatePassword() {
+	isDemo:=os.Getenv("DEMO")
+	if isDemo == "TRUE" {
+		c.Data["json"] = utils.PackageError(errors.New("演示环境不允许操作容器"))
+		c.ServeJSON()
+		return
+	}
+
 	var resetReq model.ResetPasswordRequest
 	_ = json.Unmarshal(c.Ctx.Input.RequestBody, &resetReq)
 	nP := resetReq.NewPassword

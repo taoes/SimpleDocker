@@ -1,12 +1,10 @@
 <template>
+<!-- 顶部状态栏 -->
   <a-layout id="components-layout-demo-top-side-2">
     <a-layout-header class="header">
-      <!--      <div class="logo"></div>-->
       <div style="display: inline;float: left;justify-items: center">
         <img src="../assets/logo-tm-white2.png" class="logoImg" alt=""/>
-        <h2 class="logoTitle">
-          SimpleDocker
-        </h2>
+        <h2 class="logoTitle">SimpleDocker</h2>
       </div>
       <a-menu
           theme="dark"

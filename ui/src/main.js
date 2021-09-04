@@ -22,7 +22,7 @@ Vue.directive('focus', {
     inserted: function (el) {
         el.querySelector("input").focus()
     }
-})
+});
 
 new Vue({
     router,

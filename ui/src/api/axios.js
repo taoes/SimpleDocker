@@ -4,6 +4,7 @@ import router from "@/router";
 import jwtDecode from "jwt-decode";
 
 axios.defaults.baseURL = Config.HOST
+console.log(Config.HOST)
 axios.interceptors.request.use(config => {
     if (config.url === '/api/system/login') {
         return config

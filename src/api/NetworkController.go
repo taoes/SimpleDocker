@@ -36,7 +36,7 @@ func (c *NetworkController) GetNetworkInfo(networkId string) {
 	c.ServeJSON()
 }
 
-/** 创建新的网络 */
+// CreateNetworkList 创建新的网络
 //@router /api/network/new [get]
 func (c *NetworkController) CreateNetworkList() {
 	name := c.Ctx.Input.Query("Name")
@@ -58,6 +58,7 @@ func (c *NetworkController) CreateNetworkList() {
 	c.ServeJSON()
 }
 
+// RemoveNetwork 移除网络
 //@router /api/network/:networkId/delete [get]
 func (c *NetworkController) RemoveNetwork(networkId string) {
 	networkId = strings.Trim(networkId, " ")
@@ -76,7 +77,7 @@ func (c *NetworkController) RemoveNetwork(networkId string) {
 	c.ServeJSON()
 }
 
-// 精简网络
+// PruneNetwork 精简网络
 //@router /api/network/prune [delete]
 func (c *NetworkController) PruneNetwork() {
 	_, err := docker.PruneNetwork()
@@ -88,7 +89,7 @@ func (c *NetworkController) PruneNetwork() {
 	c.ServeJSON()
 }
 
-/** 容器连接网络 */
+// ConnectNetwork 容器连接网络
 //@router /api/network/:networkId/container/:containerId/:operator [get]
 func (c *NetworkController) ConnectNetwork(containerId string, networkId string, operator string) {
 	containerId = strings.Trim(containerId, " ")
