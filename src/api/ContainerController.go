@@ -6,11 +6,13 @@ import (
 	"SimpleDocker/src/utils"
 	"bytes"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"github.com/astaxie/beego"
 	"github.com/docker/docker/api/types"
 	"github.com/docker/go-connections/nat"
 	"io/ioutil"
+	"os"
 	"strconv"
 	"strings"
 )
@@ -30,6 +32,12 @@ func (c *ContainerController) Get() {
 // CreateNewContainer 创建一个新的容器(简单模式)
 // @router /api/container/run [get]
 func (c *ContainerController) CreateNewContainer() {
+	isDemo:=os.Getenv("DEMO")
+	if isDemo == "TRUE" {
+		c.Data["json"] = utils.PackageError(errors.New("演示环境不允许操作容器"))
+		c.ServeJSON()
+		return
+	}
 	imageName := c.Ctx.Input.Query("imageName")
 	containerName := c.Ctx.Input.Query("containerName")
 	port := c.Ctx.Input.Query("bindPort")
@@ -81,6 +89,12 @@ func (c *ContainerController) CreateNewContainer() {
 // CreateNewContainerWith 创建一个新的容器(高级模式)
 // @router /api/container/run/complex [post]
 func (c *ContainerController) CreateNewContainerWith() {
+	isDemo:=os.Getenv("DEMO")
+	if isDemo == "TRUE" {
+		c.Data["json"] = utils.PackageError(errors.New("演示环境不允许操作容器"))
+		c.ServeJSON()
+		return
+	}
 	var resp model.ContainerCrateModel
 	err := json.Unmarshal(c.Ctx.Input.RequestBody, &resp)
 	// 反序列化失败
