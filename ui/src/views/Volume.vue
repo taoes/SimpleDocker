@@ -293,4 +293,10 @@ export default {
   overflow-wrap: anywhere;
   padding: 5px 0 5px 10px;
 }
+
+.sss{
+
+  font-family: 'Courier New', Courier, monospace;
+
+}
 </style>
