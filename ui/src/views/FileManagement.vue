@@ -212,5 +212,9 @@ export default {
   margin-top: 4px;
 }
 
+.sss{
+  font-size: 12px;
+}
+
 
 </style>
