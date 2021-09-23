@@ -299,4 +299,7 @@ export default {
   font-family: 'Courier New', Courier, monospace;
 
 }
+#dfs{
+  font-size: 12px;
+}
 </style>
