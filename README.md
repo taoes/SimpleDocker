@@ -1,6 +1,6 @@
 [![standard-readme compliant](https://img.shields.io/badge/readme%20style-standard-brightgreen.svg?style=flat-square)](https://github.com/RichardLitt/standard-readme)
 
-![xxx](./img/icon.png)
+![xxx](resource/img/icon.png)
 
 ----
 > <p style='color:red'>目前项目处于重构期间,新版本将使用新的技术栈构建，V1版本暂时停止更新，欢迎大家提交Issue</p>
@@ -56,7 +56,7 @@ Docker是目前一种非常主流的容器化方案，支持非常多的特性�
 
 ### 📔 更新记录
 
-[SimpleDocker 更新记录](./doc/update.md)
+[SimpleDocker 更新记录](about/update.md)
 
 ## 应用安装
 
@@ -128,37 +128,37 @@ yarn install && yarn server
 ## 预览
 
 + 主页
-  ![Docker 信息](./img/home.jpg)
+  ![Docker 信息](resource/img/home.jpg)
 
 + Docker 信息
-  ![Docker 信息](./img/info.png)
+  ![Docker 信息](resource/img/info.png)
   
 + Image 信息
-  ![Image 信息](./img/image.png)
+  ![Image 信息](resource/img/image.png)
 
 + 运行新的容器
-  ![Image 信息](./img/runContainer.png)
+  ![Image 信息](resource/img/runContainer.png)
 
 + Container 信息
-  ![Container 信息](./img/container.png)
+  ![Container 信息](resource/img/container.png)
 
 + 容器终端在线管理
-  ![终端管理](./img/terminal.png)
+  ![终端管理](resource/img/terminal.png)
 
 + 容器文件在线管理
-  ![终端管理](./img/file.png)
+  ![终端管理](resource/img/file.png)
 
 + 容器性能监控
-  ![终端监控](./img/monitor.png)
+  ![终端监控](resource/img/monitor.png)
 
 + 容器日志以及日志下载
-  ![Image 信息](./img/containerLog.png)
+  ![Image 信息](resource/img/containerLog.png)
 
 + Volume 信息
-  ![Volume 信息](./img/volume.png)
+  ![Volume 信息](resource/img/volume.png)
 
 + Network 信息
-  ![Network 信息](./img/network.png)
+  ![Network 信息](resource/img/network.png)
 
 ## Q & A
 
