@@ -10,6 +10,8 @@ var RedisClient *redis.Client
 const AuthPrefix = "SIMPLE:DOCKER:AUTH:"
 const ConfigPrefix = "SIMPLE:DOCKER:SYSTEM:"
 
+
+// Redis 配置KEY
 var (
 	ConfigKey = map[string]string{
 		"password":            AuthPrefix + "PASSWORD",
@@ -33,7 +35,7 @@ func InitDB() {
 	logs.Info("Redis 客户端连接.........OK!")
 }
 
-// 读取
+// 读取配置
 func Read(key string) string {
 	return ReadWithDefault(key, "")
 }
