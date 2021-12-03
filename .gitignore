@@ -121,7 +121,7 @@ static/
 
 SimpleDocker.tar.gz
 /App
-back-src/routers/
+back-src/utils/
 build/
 ui/dist
 package-lock.json
