@@ -1,0 +1,42 @@
+.code-box-demo {
+    text-align: center;
+}
+
+.ant-layout-header,
+.ant-layout-footer {
+    color: #fff;
+}
+
+[data-theme="dark"] .ant-layout-header {
+
+}
+
+[data-theme="dark"] .ant-layout-footer {
+
+}
+
+.ant-layout-footer {
+    line-height: 1.5;
+}
+
+.ant-layout-sider {
+    line-height: 120px;
+}
+
+[data-theme="dark"] .ant-layout-sider {
+
+}
+
+.ant-layout-content {
+    min-height: 1000px;
+    background-color: white;
+    padding: 20px;
+}
+
+[data-theme="dark"] .ant-layout-content {
+
+}
+
+> .code-box-demo > .ant-layout + .ant-layout {
+    margin-top: 48px;
+}

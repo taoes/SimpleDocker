@@ -1,13 +1,10 @@
 package main
 
 import (
-	_ "SimpleDocker/back-src/config"
-	"github.com/astaxie/beego"
+	_ "SimpleDocker/config"
 )
-
 func main() {
 	// 解析参数
 
-	// 运行服务
-	beego.Run(":3364")
+
 }

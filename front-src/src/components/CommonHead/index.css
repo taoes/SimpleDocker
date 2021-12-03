@@ -1,0 +1,14 @@
+#title {
+    color: white;
+    font-size: 2em;
+}
+
+#version {
+    color: lightgray;
+    margin: 10px;
+}
+
+#header{
+    display: flex;
+    align-items: center;
+}
