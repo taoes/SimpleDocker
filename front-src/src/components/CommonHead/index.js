@@ -5,12 +5,6 @@ import './index.css'
 
 class CommonHead extends React.Component {
 
-    constructor(props) {
-        super(props);
-        // const menu = []
-        // this.setState({menu})
-    }
-
     render() {
         const version = "1.0.0-beta";
         return (

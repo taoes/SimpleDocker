@@ -12,7 +12,7 @@ import CommonHead from "./components/CommonHead/index";
 import {BrowserRouter, Route, Routes} from "react-router-dom";
 import ContainerPage from "./page/ContainerPage";
 import ImagePage from "./page/ImagePage";
-import HomePage from "./page/HomePage";
+import HomePage from "./page/HomePage/index";
 import VolumePage from "./page/VolumePage";
 import NetworkPage from "./page/NetWorkPage";
 
