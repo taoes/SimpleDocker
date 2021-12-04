@@ -1,7 +1,12 @@
 import {Component} from "react";
-import {Button, Checkbox, Divider, Input, Space, Table, Tag} from "antd";
+
+
+import {Button, Checkbox, Divider, Dropdown, Input, Menu, Table, Tag} from "antd";
+import {DeleteOutlined,ExportOutlined,TagOutlined,InfoCircleOutlined} from '@ant-design/icons';
+
+
 import {getImageList} from "../api/ImageApi";
-import formateDate from '../utils/DateTime'
+import formatDate from '../utils/DateTime'
 import bytesToSize from '../utils/ByteSize'
 
 /**
@@ -26,6 +31,26 @@ class ImagePage extends Component {
 
 
     render() {
+        const menu = (
+            <Menu>
+                <Menu.Item icon={<InfoCircleOutlined />}>
+                    详情信息
+                </Menu.Item>
+
+                <Menu.Item icon={<TagOutlined />}>
+                    更新标签
+                </Menu.Item>
+
+                <Menu.Item icon={<ExportOutlined />}>
+                    导出镜像
+                </Menu.Item>
+
+                <Menu.Item danger icon={<DeleteOutlined />}>
+                    删除镜像
+                </Menu.Item>
+            </Menu>
+        );
+
         const columns = [
             {
                 title: '容器ID',
@@ -65,7 +90,7 @@ class ImagePage extends Component {
                 dataIndex: 'Created',
                 key: 'Created',
                 width: 120,
-                render: time => <span>{formateDate(time * 1000)}</span>,
+                render: time => <span>{formatDate(time * 1000)}</span>,
             },
             {
                 title: '操作',
@@ -79,17 +104,20 @@ class ImagePage extends Component {
                         <Divider type="vertical"/>
                         <Button size="small" type="danger">删除</Button>
                         <Divider type="vertical"/>
-                        <Button size="small">更多</Button>
+                        <Dropdown overlay={menu}>
+                            <Button size="small">更多</Button>
+                        </Dropdown>
                     </div>
 
             },
         ];
 
+
         return (
             <div>
                 <div style={{margin: 10}}>
                     <Input placeholder="请输入过滤词" style={{width: 400}}/>
-                    <Checkbox checked style={{marginLeft:10}}>包含无效镜像</Checkbox>
+                    <Checkbox checked style={{marginLeft: 10}}>包含无效镜像</Checkbox>
                 </div>
                 <Table
                     bordered

@@ -2,7 +2,6 @@ import {Component} from "react";
 import {Button, Checkbox, Divider, Input, Table, Tag} from "antd";
 import {getContainerList} from "../api/ContainerApi";
 import formateDate from '../utils/DateTime'
-import bytesToSize from '../utils/ByteSize'
 
 /**
  * 主页布局文件
@@ -68,7 +67,7 @@ class ContainerPage extends Component {
                     } else if (State === 'exited') {
                         color = 'red'
                         text = '退出'
-                    }else if (State === 'paused') {
+                    } else if (State === 'paused') {
                         color = 'gold'
                         text = '暂停'
                     }

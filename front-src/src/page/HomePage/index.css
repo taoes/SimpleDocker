@@ -1,0 +1,10 @@
+.ant-modal-body{
+    height: 500px;
+    width: 800px;
+    padding: 5px;
+}
+
+.jsoneditor{
+    width: 800px;
+    height: 500px;
+}
