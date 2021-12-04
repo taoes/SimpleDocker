@@ -1,6 +1,7 @@
 import {Component} from "react";
 import {Button, Descriptions} from "antd";
 import {getDockerInfo} from '../api/InfoApi'
+import bytesToSize from "../utils/ByteSize";
 
 let _ = require('lodash')
 
@@ -12,6 +13,9 @@ class ImagePage extends Component {
     constructor(props) {
         super(props);
         this.state = {info: {}, version: {}, disk: {}}
+    }
+
+    componentDidMount() {
         getDockerInfo().then(resp => {
             let {info, version, disk} = resp.data
             this.setState({info, version, disk})
@@ -22,7 +26,8 @@ class ImagePage extends Component {
         return (
             <div>
                 <Descriptions
-                    bordered
+                    bordered={true}
+                    size="small"
                     title="Docker 版本信息"
                     extra={<Button type="primary">详情信息</Button>}>
                     <Descriptions.Item label="服务端版本">{this.state.info.ServerVersion}</Descriptions.Item>
@@ -67,8 +72,8 @@ class ImagePage extends Component {
                     bordered
                     title="Docker 磁盘使用"
                     extra={<Button type="primary">详情信息</Button>}>
-                    <Descriptions.Item label="总层大小">{_.get(this.state.disk, "LayersSize")}</Descriptions.Item>
-                    <Descriptions.Item label="构建大小">{_.get(this.state.disk, "BuilderSize")}</Descriptions.Item>
+                    <Descriptions.Item label="总层大小">{bytesToSize(_.get(this.state.disk, "LayersSize",0))}</Descriptions.Item>
+                    <Descriptions.Item label="构建大小">{bytesToSize(_.get(this.state.disk, "BuilderSize",0))}</Descriptions.Item>
                 </Descriptions>
             </div>
 

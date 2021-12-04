@@ -28,7 +28,6 @@ class CommonMenu extends React.Component {
             <div>
                 <Menu
                     defaultSelectedKeys={['1']}
-                    defaultOpenKeys={['sub1']}
                     mode="inline"
                     theme="dark"
                 >

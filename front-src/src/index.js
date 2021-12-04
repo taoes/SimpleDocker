@@ -20,7 +20,6 @@ const {Content, Footer, Header, Sider} = Layout
 
 
 ReactDOM.render(
-    <React.StrictMode>
         <BrowserRouter>
             <Layout>
                 {/*标题头*/}
@@ -48,8 +47,7 @@ ReactDOM.render(
                 </Footer>
 
             </Layout>
-        </BrowserRouter>
-    </React.StrictMode>,
+        </BrowserRouter>,
     document.getElementById('root')
 )
 ;
