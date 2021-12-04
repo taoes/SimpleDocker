@@ -12,5 +12,6 @@
 #header{
     display: flex;
     align-items: center;
+    height: 64px;
 
 }

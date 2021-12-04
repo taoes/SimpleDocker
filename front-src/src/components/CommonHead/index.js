@@ -16,7 +16,7 @@ class CommonHead extends React.Component {
         return (
             <div>
                 <div id="header">
-                    <img src={"/icon2.png"} style={{height: 50}} alt=""/>
+                    <img src={"/icon2.png"} style={{height: 40}} alt=""/>
                     <h1 id="title">SimpleDocker</h1>
                     <span id="version">{version}</span>
                 </div>
