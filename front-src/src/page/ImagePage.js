@@ -73,7 +73,7 @@ class ImagePage extends Component {
 
         return (
             <div>
-                <Table columns={columns} dataSource={data} size="small"/>
+                <Table bordered columns={columns} dataSource={data} size="small"/>
             </div>
         )
     }
