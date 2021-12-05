@@ -1,5 +1,12 @@
 [![standard-readme compliant](https://img.shields.io/badge/readme%20style-standard-brightgreen.svg?style=flat-square)](https://github.com/RichardLitt/standard-readme)
 
+[![star](https://gitee.com/taoes_admin/SimpleDocker/badge/star.svg?theme=gvp)](https://gitee.com/taoes_admin/SimpleDocker/stargazers)
+
+[![fork](https://gitee.com/taoes_admin/SimpleDocker/badge/fork.svg?theme=gvp)](https://gitee.com/taoes_admin/SimpleDocker/members)
+
+
+
+
 由于原架构对新特性的开发支持并不是特别好，原代码结构混乱，打包方式不易，对读者部署阅读均不合适，因此计划重构。
 
 + 计划使用Java重写原Go服务，使用SpringBoot框架代替Beego框架。作为一个Java开发者来说,使用Java语言开发更方便，对ISSUE也能更快的响应，虽然Go部署方便，但是一些同学本地开发很不方便
