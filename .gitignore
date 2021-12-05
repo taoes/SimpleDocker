@@ -122,3 +122,5 @@ SimpleDocker.tar.gz
 /App
 build/
 package-lock.json
+
+!backend-src/src/main/java/
