@@ -18,7 +18,7 @@ class ImagePage extends Component {
         super(props);
         this.state = {
             imageList: [],
-            filterKey: ''
+        filterKey: 'docker'
         }
 
     }
@@ -134,9 +134,10 @@ class ImagePage extends Component {
                 </div>
                 <Table
                     bordered
+                    size="small"
                     pagination="bottomCenter"
                     columns={columns}
-                    dataSource={imageListOfFilter} size="small" />
+                    dataSource={imageListOfFilter} />
             </div>
         )
 
