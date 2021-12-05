@@ -105,7 +105,6 @@ fabric.properties
 ./SimpleDocker
 ./lastupdate.tmp
 ./go.sum
-!/SimpleDocker
 !/lastupdate.tmp
 ./ui/node_modules
 
@@ -121,7 +120,5 @@ static/
 
 SimpleDocker.tar.gz
 /App
-back-src/utils/
 build/
-ui/dist
 package-lock.json
