@@ -2,8 +2,6 @@ import {Component} from "react";
 import {Button, Divider, Input, Table, Tag} from "antd";
 import {getNetworkList} from "../api/NetworkApi";
 import _ from 'lodash'
-import formateDate from '../utils/DateTime'
-import bytesToSize from '../utils/ByteSize'
 
 /**
  * 主页布局文件

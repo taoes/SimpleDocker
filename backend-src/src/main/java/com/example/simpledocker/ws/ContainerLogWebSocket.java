@@ -57,7 +57,8 @@ public class ContainerLogWebSocket {
     @OnOpen
     public void onOpen(Session session) {
         SessionSet.add(session);
-        OnlineCount.incrementAndGet();
+        final int i = OnlineCount.incrementAndGet();
+        log.info("有连接接入，当前连接数为：{}", i);
 
         final Map<String, String> param = session.getPathParameters();
         final var client = clientFactory.get();
@@ -149,7 +150,6 @@ public class ContainerLogWebSocket {
      */
     public void SendMessage(Session session, String message) {
         if (!session.isOpen()){
-            log.error("Session 已关闭，停止发送消息");
             return;
         }
         try {
