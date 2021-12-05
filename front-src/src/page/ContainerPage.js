@@ -10,7 +10,10 @@ class ContainerPage extends Component {
 
     constructor(props) {
         super(props);
-        this.state = {containerList: []}
+        this.state = {
+            containerList: [],
+            filterKey: ''
+        }
 
     }
 
@@ -70,6 +73,9 @@ class ContainerPage extends Component {
                     } else if (State === 'paused') {
                         color = 'gold'
                         text = '暂停'
+                    }else if (State === 'created'){
+                        color = 'purple'
+                        text = '创建'
                     }
                     return <Tag color={color}>{text}</Tag>
                 },
@@ -101,17 +107,29 @@ class ContainerPage extends Component {
             },
         ];
 
+        let containerListOfFilter =  this.state.containerList.filter(container => {
+            if (!this.state.filterKey) {
+                return true
+            }
+            return container.Id.indexOf(this.state.filterKey) !== -1 
+            || container.State.indexOf(this.state.filterKey) !== -1 
+            || container.Image.indexOf(this.state.filterKey) !== -1 
+            || (JSON.stringify(container.Names).indexOf(this.state.filterKey) !==-1)
+
+            ;
+        });
+
         return (
             <div>
                 <div style={{margin: 10}}>
-                    <Input placeholder="请输入过滤词" style={{width: 400}}/>
+                    <Input placeholder="请输入过滤词" style={{ width: 400 }} allowClear onChange={(e)=>this.setState({filterKey:e.target.value})}/>
                     <Checkbox checked style={{marginLeft: 10}}>包含未运行容器</Checkbox>
                 </div>
                 <Table
                     bordered
                     pagination="bottomCenter"
                     columns={columns}
-                    dataSource={this.state.containerList} size="small"/>
+                    dataSource={containerListOfFilter} size="small"/>
             </div>
         )
 

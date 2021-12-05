@@ -2,7 +2,7 @@ import axios from "axios";
 import * as Process from "process";
 
 axios.defaults.timeout = 3000
-axios.defaults.baseURL = Process.env.ENV === 'prod' ? '/' : 'http://localhost:3364/api/';
+axios.defaults.baseURL =  'http://docker.zhoutao123.com/api/';
 
 // axios.interceptors.request.use(request => {
 //
