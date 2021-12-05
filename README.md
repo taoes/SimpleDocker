@@ -1,25 +1,34 @@
 [![standard-readme compliant](https://img.shields.io/badge/readme%20style-standard-brightgreen.svg?style=flat-square)](https://github.com/RichardLitt/standard-readme)
 
+由于原架构对新特性的开发支持并不是特别好，原代码结构混乱，打包方式不易，对读者部署阅读均不合适，因此计划重构。
+
++ 计划使用Java重写原Go服务，使用SpringBoot框架代替Beego框架。作为一个Java开发者来说,使用Java语言开发更方便，对ISSUE也能更快的响应，虽然Go部署方便，但是一些同学本地开发很不方便
+
++  使用React重写GUI界面。作为前端菜鸟，VUE 写多了感觉维护不太方便，因此使用React重写服务
+
++  原存储服务使用MySQL 代替 Redis，Redis 还是作为缓存较好，作为存储服务还是有点弱。由于新版本将支持大量配置以及监控，日志等，因此使用MySQL这种结构数据库还是比较稳定的。
+
++ 重构方便偏向于安全、多Docker客户端、监控、提升稳定性
+
+Tip: 您可以在Issues中提出需求！[需求 & BUG 管理](https://github.com/taoes/SimpleDocker/issues)
+
+---
 ![xxx](resource/img/icon.png)
-
-----
-> <p style='color:red'>目前项目处于重构期间,新版本将使用新的技术栈构建，V1版本暂时停止更新，欢迎大家提交Issue</p>
-
 ----
 
+SimpleDocker 是一个简单的Docker控制面板，致力于可以让用户更方便、更无障碍、更舒适的使用Docker，其界面简洁、操作便捷，功能强大，可以带来更好地运维体验。
 
-**SimpleDocker** 是一个简单的Docker控制面板，致力于可以让用户更方便、更无障碍、更舒适的使用Docker，其界面简洁、操作便捷，功能强大，可以带来更好地运维体验。
+**个人开发维护不易，求给个 Star ✨ 鼓励一下作者,您的鼓励是我最大的动力 💪🏻 ！！！**
 
-**个人开发维护不易，麻烦给个 Star ✨ 鼓励一下作者,您的鼓励是我最大的动力 😛！！！**
 
-> 🎉 🔥 ✨ 新发布的 V0.0.7 新增登录界面验证码的功能
 
 ## 背景
 
-Docker是目前一种非常主流的容器化方案，支持非常多的特性，给开发者带来便利，但是 Docker 镜像以及容器管理复杂的参数让新手望而却步，基于此开发 SimpleDocker 控制面板，方便新手和相关的运维同学使用!!!
++ Docker是目前一种非常主流的容器化方案，支持非常多的特性，给开发者带来便利，但是 Docker 镜像以及容器管理复杂的参数让新手望而却步，基于此开发 SimpleDocker 控制面板，方便新手和相关的运维同学使用!!!
 
-> 本项目是基于学习的目的的，致力于提供一个 界面清晰、免费的、简单的、专注于 Docker 服务管理的控制面板(当然也会持续开发下去~)，目的只想做一个适合自己的管理软件！！！
-> Tip: 您可以在Issues中提出需求和您发现的bug！[需求 & BUG 管理](https://github.com/taoes/SimpleDocker/issues)
++ 本项目是基于学习的目的的，致力于提供一个 界面清晰、免费的、简单的、专注于 Docker 服务管理的控制面板(当然也会持续开发下去~)，目的只想做一个适合自己的管理软件！！！
+
+
 
 ## 演示网站
 0. 部署的内容为重构版本，目前可能功能尚未完善，一些功能尚未完善，随着重构进度后面会继续发布

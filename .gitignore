@@ -124,3 +124,4 @@ build/
 package-lock.json
 
 !backend-src/src/main/java/
+backend-src/target/
