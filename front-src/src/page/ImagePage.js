@@ -16,9 +16,8 @@ class ImagePage extends Component {
 
     constructor(props) {
         super(props);
-        this.state = {
-            imageList: [],
-        filterKey: 'docker'
+        this.state = {imageList: [],
+        filterKey: ''
         }
 
     }

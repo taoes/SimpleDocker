@@ -23,20 +23,8 @@
     line-height: 120px;
 }
 
-[data-theme="dark"] .ant-layout-sider {
-
-}
-
 .ant-layout-content {
-    min-height: 1000px;
+    min-height: 1400px;
     background-color: white;
     padding: 20px;
-}
-
-[data-theme="dark"] .ant-layout-content {
-
-}
-
-> .code-box-demo > .ant-layout + .ant-layout {
-    margin-top: 48px;
 }
