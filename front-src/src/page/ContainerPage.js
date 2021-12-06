@@ -3,6 +3,7 @@ import { Button, Checkbox, Divider, Input, message, Table, Tag } from "antd";
 import { getContainerList } from "../api/ContainerApi";
 import formateDate from '../utils/DateTime'
 import Modal from "antd/lib/modal/Modal";
+import { CiOutlined } from "@ant-design/icons";
 
 /**
  * 主页布局文件
@@ -62,6 +63,7 @@ class ContainerPage extends Component {
         // 关闭WS 连接
         if (this.ws !== null) {
             this.ws.close()
+        
         }
     }
 
@@ -72,8 +74,8 @@ class ContainerPage extends Component {
             {
                 title: '容器ID',
                 dataIndex: 'Id',
-                key: 'name',
-                render: id => <span>{id.substring(0, 15)}</span>,
+                key: 'id',
+                render: id => <span>{id && id.substring(0, 15)}</span>,
                 ellipsis: true,
                 width: 80,
             },
@@ -83,7 +85,7 @@ class ContainerPage extends Component {
                 key: 'Names',
                 render: Names => {
                     let item = Names.map(name => {
-                        return <Tag key={name}>{name}</Tag>
+                        return <Tag key={name} color='green'>{name && name.substring(1)}</Tag>
                     })
                     return item
                 },
@@ -137,11 +139,11 @@ class ContainerPage extends Component {
                 width: 80,
                 render: (text, record) =>
                     <div>
-                        <Button size="small" type="primary" onClick={()=>this.showContainerLog(record.Id)}>日志</Button>
+                        <Button size="small" type="link" onClick={()=>this.showContainerLog(record.Id)}>日志</Button>
                         <Divider type="vertical" />
-                        <Button size="small" type="danger">删除</Button>
+                        <Button size="small" type="link">删除</Button>
                         <Divider type="vertical" />
-                        <Button size="small">更多</Button>
+                        <Button type="link">更多</Button>
                     </div>
 
             },
