@@ -46,6 +46,14 @@
             <version>3.2.12</version>
         </dependency>
 
+        <!-- https://mvnrepository.com/artifact/com.github.docker-java/docker-java-transport-httpclient5 -->
+        <dependency>
+            <groupId>com.github.docker-java</groupId>
+<!--            <artifactId>docker-java-transport-netty</artifactId>-->
+            <artifactId>docker-java-transport-httpclient5</artifactId>
+            <version>3.2.12</version>
+        </dependency>
+
         <!-- WebSocket支持-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
