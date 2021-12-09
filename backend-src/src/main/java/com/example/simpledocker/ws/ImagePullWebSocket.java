@@ -1,5 +1,6 @@
 package com.example.simpledocker.ws;
 
+import java.io.Closeable;
 import java.io.IOException;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -15,8 +16,10 @@ import javax.websocket.Session;
 import javax.websocket.server.ServerEndpoint;
 
 import com.example.simpledocker.config.DockerClientFactory;
+import com.example.simpledocker.utils.JsonUtils;
 import com.github.dockerjava.api.async.ResultCallback;
 import com.github.dockerjava.api.model.Frame;
+import com.github.dockerjava.api.model.PullResponseItem;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -61,10 +64,47 @@ public class ImagePullWebSocket {
         final String param = session.getQueryString();
         final var client = clientFactory.get();
 
-        final ResultCallback callback = client
-            .pullImageCmd("")
-            .withTag(param)
-            .exec(null);
+        final ResultCallback callback =
+            client
+                .pullImageCmd("redis:latest")
+                .exec(new ResultCallback<PullResponseItem>() {
+                    @Override
+                    public void onStart(Closeable closeable) {
+
+                    }
+
+                    @Override
+                    public void onNext(PullResponseItem object) {
+                        SendMessage(session, JsonUtils.toJsonString(object));
+                    }
+
+                    @Override
+                    public void onError(Throwable throwable) {
+                        try {
+                            session.close();
+                        } catch (Exception e) {
+                            log.error("发生异常", e);
+                        }
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        try {
+                            session.close();
+                        } catch (IOException e) {
+                            log.error("发生异常", e);
+                        }
+                    }
+
+                    @Override
+                    public void close() throws IOException {
+                        try {
+                            session.close();
+                        } catch (IOException e) {
+                            log.error("发生异常", e);
+                        }
+                    }
+                });
         callbackMap.put(session.getId(), callback);
     }
 

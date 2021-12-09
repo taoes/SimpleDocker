@@ -8,6 +8,7 @@ import com.example.simpledocker.model.exception.NotFoundClientException;
 import com.github.dockerjava.api.DockerClient;
 import com.github.dockerjava.core.DefaultDockerClientConfig;
 import com.github.dockerjava.core.DockerClientBuilder;
+import com.github.dockerjava.core.DockerClientConfig;
 import com.github.dockerjava.httpclient5.ApacheDockerHttpClient;
 import com.github.dockerjava.transport.DockerHttpClient;
 import lombok.extern.slf4j.Slf4j;
@@ -61,9 +62,8 @@ public class DockerClientFactory implements ApplicationContextAware, CommandLine
     @Override
     public void run(String... args) throws Exception {
         // 读取配置
-        final var config = DefaultDockerClientConfig.createDefaultConfigBuilder().build();
 
-        System.out.println(config);
+        DockerClientConfig config = DefaultDockerClientConfig.createDefaultConfigBuilder().build();
         final var defaultClient = DockerClientBuilder.getInstance(config).build();
         clientGroup.put("DEFAULT", defaultClient);
 
