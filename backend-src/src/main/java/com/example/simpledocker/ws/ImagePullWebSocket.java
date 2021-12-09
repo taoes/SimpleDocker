@@ -60,6 +60,7 @@ public class ImagePullWebSocket {
 
         final String param = session.getQueryString();
         final var client = clientFactory.get();
+
         final ResultCallback callback = client
             .pullImageCmd("")
             .withTag(param)

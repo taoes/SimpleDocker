@@ -8,6 +8,8 @@ import com.example.simpledocker.model.exception.NotFoundClientException;
 import com.github.dockerjava.api.DockerClient;
 import com.github.dockerjava.core.DefaultDockerClientConfig;
 import com.github.dockerjava.core.DockerClientBuilder;
+import com.github.dockerjava.httpclient5.ApacheDockerHttpClient;
+import com.github.dockerjava.transport.DockerHttpClient;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeansException;
 import org.springframework.boot.CommandLineRunner;
@@ -28,6 +30,8 @@ public class DockerClientFactory implements ApplicationContextAware, CommandLine
 
     private final Map<String, DockerClient> clientGroup = new HashMap<>();
 
+    private final Map<String, DockerHttpClient> httpClientGroup = new HashMap<>();
+
     private ApplicationContext context;
 
     public DockerClient get() {
@@ -42,12 +46,32 @@ public class DockerClientFactory implements ApplicationContextAware, CommandLine
         return client;
     }
 
+    public DockerHttpClient getHttpClient() {
+        final String clientId = DockerClientInterception.clientIdLocal.get();
+        if (!StringUtils.hasText(clientId)) {
+            return httpClientGroup.get("DEFAULT-HTTP");
+        }
+        final DockerHttpClient httpClient = httpClientGroup.get(clientId.toUpperCase(Locale.ROOT));
+        if (httpClient == null) {
+            throw new NotFoundClientException("客户端不存在!");
+        }
+        return httpClient;
+    }
+
     @Override
     public void run(String... args) throws Exception {
         // 读取配置
         final var config = DefaultDockerClientConfig.createDefaultConfigBuilder().build();
+
+        System.out.println(config);
         final var defaultClient = DockerClientBuilder.getInstance(config).build();
         clientGroup.put("DEFAULT", defaultClient);
+
+        DockerHttpClient defaultHttpClient = new ApacheDockerHttpClient.Builder()
+            .sslConfig(config.getSSLConfig())
+            .dockerHost(config.getDockerHost()).build();
+        httpClientGroup.put("DEFAULT-HTTP", defaultHttpClient);
+
         log.info("初始化Client内容完成,clientSize={}", clientGroup.size());
     }
 

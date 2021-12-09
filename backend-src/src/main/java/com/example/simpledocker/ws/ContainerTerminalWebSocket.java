@@ -1,10 +1,11 @@
 package com.example.simpledocker.ws;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PipedInputStream;
 import java.io.PipedOutputStream;
-import java.io.UncheckedIOException;
+import java.nio.charset.StandardCharsets;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArraySet;
@@ -19,9 +20,15 @@ import javax.websocket.Session;
 import javax.websocket.server.ServerEndpoint;
 
 import com.example.simpledocker.config.DockerClientFactory;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.dockerjava.api.async.ResultCallback;
 import com.github.dockerjava.api.command.ExecCreateCmdResponse;
 import com.github.dockerjava.api.model.Frame;
+import com.github.dockerjava.transport.DockerHttpClient;
+import com.github.dockerjava.transport.DockerHttpClient.Request;
+import com.github.dockerjava.transport.DockerHttpClient.Request.Method;
+import com.github.dockerjava.transport.DockerHttpClient.Response;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.glassfish.jersey.internal.util.collection.ByteBufferInputStream;
@@ -59,56 +66,133 @@ public class ContainerTerminalWebSocket {
      */
     private static Map<String, InputStream> inputStreamMap = new ConcurrentHashMap<>();
 
+    static PipedOutputStream pipedOutputStream = new PipedOutputStream();
+    static PipedInputStream pipedInputStream = new PipedInputStream();
+
     @PostConstruct
     public void init() {
         log.info("容器终端 WS 初始化 OK！");
     }
 
     @OnOpen
-    @SneakyThrows
-    public void onOpen(Session session) {
+    public void onOpen(Session session) throws IOException, InterruptedException {
         SessionSet.add(session);
         OnlineCount.incrementAndGet();
 
         final Map<String, String> params = session.getPathParameters();
-        final var client = clientFactory.get();
-        final ExecCreateCmdResponse response = client
-            .execCreateCmd(params.get("cId"))
-            .withAttachStderr(true)
-            .withAttachStdin(true)
-            .withAttachStderr(true)
-            .withCmd("sh")
-            .exec();
-        final InputStream inputStream = new ByteBufferInputStream();
-        inputStreamMap.put(session.getId(),inputStream);
+        final DockerHttpClient httpClient = clientFactory.getHttpClient();
 
-        PipedInputStream pipedInputStream = new PipedInputStream();
-        PipedOutputStream pipedOutputStream = new PipedOutputStream();
+        String cont = "{\n"
+            + "  \"AttachStdin\": true,\n"
+            + "  \"AttachStdout\": true,\n"
+            + "  \"AttachStderr\": true,\n"
+            + "  \"DetachKeys\": \"ctrl-p,ctrl-q\",\n"
+            + "  \"Tty\": true,\n"
+            + "  \"Cmd\": [\n"
+            + "    \"sh\"\n"
+            + "  ],\n"
+            + "  \"Env\": [\n"
+            + "    \"FOO=bar\",\n"
+            + "    \"BAZ=quux\"\n"
+            + "  ]\n"
+            + "}";
+        final Response execute = httpClient.execute(Request.builder()
+            .method(Method.POST)
+            .putHeader("Content-Type", "application/json")
+            .path("/containers/" + params.get("cId") + "/exec")
+            .body(new ByteArrayInputStream(cont.getBytes()))
+            .build());
+        final InputStream body = execute.getBody();
+        byte[] bytes = new byte[1024];
+        Thread.sleep(1000);
+        body.read(bytes);
+        String str = new String(bytes);
+
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+
+        final ExecCreateCmdResponse execCreateCmdResponse = mapper.readValue(str, ExecCreateCmdResponse.class);
+        System.out.println("EXEC=" + execCreateCmdResponse.getId());
+        //language=JSON
+        cont = "{\n"
+            + "  \"Detach\": false,\n"
+            + "  \"Tty\": false\n"
+            + "}";
         pipedInputStream.connect(pipedOutputStream);
+        Request request = Request.builder()
+            .method(Method.POST)
+            .path("/exec/" + execCreateCmdResponse.getId() + "/start")
+            .putHeader("Content-Type", "application/json")
+            .body(new ByteArrayInputStream(cont.getBytes()))
+            .build();
+        final Response httpResponse = httpClient.execute(request);
+        final InputStream resultInput = httpResponse.getBody();
 
-        ResultCallback.Adapter<Frame> execCallback = client.execStartCmd(response.getId()).withStdIn(pipedInputStream)
-            .exec(new ResultCallback.Adapter<Frame>() {
-                @Override
-                public void onNext(Frame object) {
-                    try {
-                        System.out.write(object.getPayload());
-                    } catch (IOException e) {
-                        throw new UncheckedIOException(e);
+        new Thread(new Runnable() {
+
+            @Override
+            public void run() {
+                try {
+                    byte[] bytes;
+                    while (true) {
+                        bytes = new byte[100];
+                        final int read = resultInput.read(bytes);
+                        System.out.print(read);
+                        if (read != -1) {
+                            String str = new String(bytes);
+                            log.info("收到数据：" + str);
+                            SendMessage(session, "OK");
+                        } else {
+                            Thread.sleep(1000);
+                        }
                     }
+                } catch (Throwable e) {
+                    e.printStackTrace();
                 }
-            });
+                System.out.println("ContainerTerminalWebSocket.run");
+            }
+        }).start();
 
+        Request attachRequest = Request.builder()
+            .method(Method.POST)
+            .putHeader("Content-Type", "application/vnd.docker.raw-stream")
+            .path("/containers/" + params.get("cId") + "/attach?stream=1&stdout=1")
+            .hijackedInput(pipedInputStream)
+            .build();
+        final InputStream body1 = httpClient.execute(attachRequest).getBody();
 
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+
+                    byte[] bytes = new byte[100];
+                    while (true) {
+                        final int read = body1.read(bytes);
+                        if (read == -1) {
+                            System.out.println("-");
+                            Thread.sleep(10);
+                            continue;
+                        }
+                        String str = new String(bytes);
+                        log.info("attach 收到数据：" + str);
+                        SendMessage(session, "OK");
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
     }
 
     /**
      * 连接关闭调用的方法
      */
     @OnClose
-    @SneakyThrows
-    public void onClose(Session session) {
+    public void onClose(Session session) throws IOException {
         SessionSet.remove(session);
         int cnt = OnlineCount.decrementAndGet();
+        System.out.println("ContainerTerminalWebSocket.onClose");
         final ResultCallback<Frame> resultCallback = callbackMap.get(session.getId());
         if (resultCallback != null && session.isOpen()) { resultCallback.close(); }
     }
@@ -119,12 +203,9 @@ public class ContainerTerminalWebSocket {
      * @param message 客户端发送过来的消息
      */
     @OnMessage
-    public void onMessage(String message, Session session) {
-        System.out.println("ContainerLogWebSocket.onMessage");
-        SendMessage(session, "收到消息，消息内容：" + message);
-        final InputStream inputStream = inputStreamMap.get(session.getId());
-
-
+    public void onMessage(String message, Session session) throws IOException {
+        pipedOutputStream.write(message.getBytes(StandardCharsets.UTF_8));
+        pipedOutputStream.flush();
     }
 
     /**
@@ -134,8 +215,7 @@ public class ContainerTerminalWebSocket {
      * @param error
      */
     @OnError
-    @SneakyThrows
-    public void onError(Session session, Throwable error) {
+    public void onError(Session session, Throwable error) throws IOException {
         log.error("发生错误：{}，Session ID： {}", error.getMessage(), session.getId());
         final ResultCallback<Frame> resultCallback = callbackMap.get(session.getId());
         if (resultCallback != null && session.isOpen()) { resultCallback.close(); }
