@@ -11,7 +11,7 @@ import CommonFooter from "./components/CommonFooter";
 import CommonHead from "./components/CommonHead/index";
 import {BrowserRouter, Route, Routes} from "react-router-dom";
 import ContainerPage from "./page/ContainerPage";
-import ImagePage from "./page/ImagePage";
+import ImagePage from "./page/ImagePage/index";
 import HomePage from "./page/HomePage/index";
 import VolumePage from "./page/VolumePage";
 import NetworkPage from "./page/NetWorkPage";
