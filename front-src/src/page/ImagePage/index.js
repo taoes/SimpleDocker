@@ -164,6 +164,7 @@ class ImagePage extends Component {
                     style={{overflow: 'auto'}}
                     closable={false}
                     okText="确定"
+                    cancelText="导出"
                     onOk={() => this.updateImagePullStatus(false)}>
                     <ImagePullModal/>
                 </Modal>

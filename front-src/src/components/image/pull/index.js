@@ -11,7 +11,7 @@ class ImagePullModal extends React.Component {
         super(props);
         this.state = {
             pullBtnDisable: false,
-            pullLog: '---',
+            pullLog: '',
             pullInfo: []
         }
     }
@@ -32,6 +32,7 @@ class ImagePullModal extends React.Component {
         }
 
         message.info("镜像开始拉取中,请稍等")
+
 
         // 创建WS链接
         let ws = new WebSocket(`ws://localhost:3364/ws/image/pull`)
@@ -101,7 +102,7 @@ class ImagePullModal extends React.Component {
                         return
                     }
                     infos.progress = 100
-                    that.setState({pullInfo: infoList})
+                    that.setState({pullBtnDisable: false, pullInfo: infoList})
                     break
                 default:
             }
