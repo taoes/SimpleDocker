@@ -5,10 +5,31 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="2e8afb8c-0a7a-4fb7-ad64-90ec4bfdb3a1" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/backend-src/src/main/java/com/example/simpledocker/utils/DataConverterUtils.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend-src/src/main/java/com/taoes/simpledocker/service/ContainerService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend-src/src/main/java/com/taoes/simpledocker/service/imple/ContainerServiceImpl.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/front-src/src/api/container.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/front-src/src/components/image/run/index.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/front-src/src/config/containerStatus.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/front-src/src/page/container/index.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/front-src/src/page/container/index.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/front-src/src/page/network/index.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/front-src/src/page/volume/index.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend-src/src/main/java/com/example/simpledocker/controller/ContainerController.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend-src/src/main/java/com/example/simpledocker/controller/ContainerController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend-src/src/main/java/com/taoes/simpledocker/controller/ContainerController.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend-src/src/main/java/com/taoes/simpledocker/controller/ContainerController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend-src/src/main/java/com/taoes/simpledocker/controller/container/OperateContainerRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend-src/src/main/java/com/taoes/simpledocker/controller/container/OperateContainerRequest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend-src/src/main/java/com/taoes/simpledocker/model/ResponseModel.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend-src/src/main/java/com/taoes/simpledocker/model/ResponseModel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend-src/src/main/java/com/taoes/simpledocker/utils/DataConverterUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend-src/src/main/java/com/taoes/simpledocker/utils/BooleanUtils.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/front-src/src/api/ContainerApi.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/front-src/src/api/api.js" beforeDir="false" afterPath="$PROJECT_DIR$/front-src/src/api/api.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/front-src/src/components/CommonMenu.js" beforeDir="false" afterPath="$PROJECT_DIR$/front-src/src/components/CommonMenu.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/front-src/src/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/front-src/src/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/front-src/src/page/ContainerPage.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/front-src/src/page/HomePage/index.css" beforeDir="false" afterPath="$PROJECT_DIR$/front-src/src/page/home/index.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/front-src/src/page/HomePage/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/front-src/src/page/home/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/front-src/src/page/ImagePage/index.css" beforeDir="false" afterPath="$PROJECT_DIR$/front-src/src/page/image/index.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/front-src/src/page/ImagePage/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/front-src/src/page/image/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/front-src/src/page/NetWorkPage.js" beforeDir="false" afterPath="$PROJECT_DIR$/front-src/src/page/network/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/front-src/src/page/VolumePage.js" beforeDir="false" afterPath="$PROJECT_DIR$/front-src/src/page/volume/index.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -21,7 +42,10 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
+        <option value="Interface" />
         <option value="Class" />
+        <option value="CSS File" />
+        <option value="JavaScript File" />
       </list>
     </option>
   </component>
@@ -44,6 +68,7 @@
     <setting file="jar://$MAVEN_REPOSITORY$/com/github/docker-java/docker-java-transport/3.2.12/docker-java-transport-3.2.12.jar!/com/github/dockerjava/transport/ImmutableRequest.class" root0="SKIP_INSPECTION" />
     <setting file="jar://$MAVEN_REPOSITORY$/com/github/docker-java/docker-java-transport/3.2.12/docker-java-transport-3.2.12.jar!/com/github/dockerjava/transport/DockerHttpClient.class" root0="SKIP_INSPECTION" />
     <setting file="jar://$MAVEN_REPOSITORY$/com/github/docker-java/docker-java-transport-httpclient5/3.2.12/docker-java-transport-httpclient5-3.2.12.jar!/com/github/dockerjava/httpclient5/ApacheDockerHttpClientImpl.class" root0="SKIP_INSPECTION" />
+    <setting file="jar://$MAVEN_REPOSITORY$/com/github/docker-java/docker-java-api/3.2.12/docker-java-api-3.2.12-sources.jar!/com/github/dockerjava/api/command/RemoveContainerCmd.java" root0="SKIP_INSPECTION" />
   </component>
   <component name="ProjectCodeStyleSettingsMigration">
     <option name="version" value="1" />
@@ -71,12 +96,21 @@
     <property name="aspect.path.notification.shown" value="true" />
     <property name="go.import.settings.migrated" value="true" />
     <property name="go.sdk.automatically.set" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/front-src/src/page/volume" />
+    <property name="list.type.of.created.stylesheet" value="CSS" />
     <property name="nodejs_package_manager_path" value="npm" />
-    <property name="settings.editor.selected.configurable" value="com.intellij.scala.play.settings.Play2CompilerSettingsConfigurable" />
+    <property name="restartRequiresConfirmation" value="false" />
+    <property name="settings.editor.selected.configurable" value="reference.settingsdialog.IDE.editor.colors.Color Scheme Font" />
     <property name="vue.rearranger.settings.migration" value="true" />
   </component>
   <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/front-src/src/page/volume" />
+      <recent name="$PROJECT_DIR$/front-src/src/page/container" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/front-src/src/page/network" />
+    </key>
     <key name="CopyClassDialog.RECENTS_KEY">
       <recent name="com.example.simpledocker.utils" />
       <recent name="com.example.simpledocker.ws" />
@@ -91,11 +125,11 @@
       </method>
     </configuration>
     <configuration name="WebSocketConfig" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="com.example.simpledocker.config.WebSocketConfig" />
+      <option name="MAIN_CLASS_NAME" value="com.taoes.simpledocker.config.WebSocketConfig" />
       <module name="simpleDocker" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="com.example.simpledocker.config.*" />
+          <option name="PATTERN" value="com.taoes.simpledocker.config.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
@@ -103,20 +137,22 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration default="true" type="ArquillianJUnit" factoryName="" nameIsGenerated="true">
+    <configuration default="true" type="ArquillianTestNG" factoryName="" nameIsGenerated="true">
       <option name="arquillianRunConfiguration">
         <value>
           <option name="containerStateName" value="" />
         </value>
       </option>
-      <option name="TEST_OBJECT" value="class" />
+      <option name="TEST_OBJECT" value="CLASS" />
+      <properties />
+      <listeners />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
     <configuration name="SimpleDockerApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
       <module name="simpleDocker" />
-      <option name="SPRING_BOOT_MAIN_CLASS" value="com.example.simpledocker.SimpleDockerApplication" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.taoes.simpledocker.SimpleDockerApplication" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -138,7 +174,8 @@
       <updated>1638884092735</updated>
       <workItem from="1638884094286" duration="5830000" />
       <workItem from="1638937283267" duration="18062000" />
-      <workItem from="1639149564451" duration="109000" />
+      <workItem from="1639149564451" duration="2108000" />
+      <workItem from="1639151716123" duration="7532000" />
     </task>
     <servers />
   </component>
@@ -173,42 +210,42 @@
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/backend-src/src/main/java/com/example/simpledocker/ws/ContainerTerminal2WebSocket.java</url>
+          <url>file://$PROJECT_DIR$/backend-src/src/main/java/com/taoes/simpledocker/ws/ContainerTerminal2WebSocket.java</url>
           <line>141</line>
           <option name="timeStamp" value="2" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/backend-src/src/main/java/com/example/simpledocker/ws/ContainerTerminalWebSocket.java</url>
+          <url>file://$PROJECT_DIR$/backend-src/src/main/java/com/taoes/simpledocker/ws/ContainerTerminalWebSocket.java</url>
           <line>172</line>
           <option name="timeStamp" value="7" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/backend-src/src/main/java/com/example/simpledocker/ws/ContainerTerminalWebSocket.java</url>
+          <url>file://$PROJECT_DIR$/backend-src/src/main/java/com/taoes/simpledocker/ws/ContainerTerminalWebSocket.java</url>
           <line>170</line>
           <option name="timeStamp" value="8" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/backend-src/src/main/java/com/example/simpledocker/ws/ContainerTerminalWebSocket.java</url>
+          <url>file://$PROJECT_DIR$/backend-src/src/main/java/com/taoes/simpledocker/ws/ContainerTerminalWebSocket.java</url>
           <line>171</line>
           <option name="timeStamp" value="9" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/backend-src/src/main/java/com/example/simpledocker/ws/ImagePullWebSocket.java</url>
+          <url>file://$PROJECT_DIR$/backend-src/src/main/java/com/taoes/simpledocker/ws/ImagePullWebSocket.java</url>
           <line>83</line>
           <option name="timeStamp" value="16" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/backend-src/src/main/java/com/example/simpledocker/ws/ImagePullWebSocket.java</url>
+          <url>file://$PROJECT_DIR$/backend-src/src/main/java/com/taoes/simpledocker/ws/ImagePullWebSocket.java</url>
           <line>94</line>
           <option name="timeStamp" value="18" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/backend-src/src/main/java/com/example/simpledocker/ws/ImagePullWebSocket.java</url>
+          <url>file://$PROJECT_DIR$/backend-src/src/main/java/com/taoes/simpledocker/ws/ImagePullWebSocket.java</url>
           <line>101</line>
           <option name="timeStamp" value="19" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/backend-src/src/main/java/com/example/simpledocker/ws/ImagePullWebSocket.java</url>
+          <url>file://$PROJECT_DIR$/backend-src/src/main/java/com/taoes/simpledocker/ws/ImagePullWebSocket.java</url>
           <line>85</line>
           <option name="timeStamp" value="20" />
         </line-breakpoint>

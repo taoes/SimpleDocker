@@ -1,7 +1,7 @@
 import axios from "axios";
 
 
-axios.defaults.timeout = 3000
+axios.defaults.timeout = 30000
 axios.defaults.baseURL = 'http://localhost:3364/api/';
 
 // axios.interceptors.request.use(request => {
@@ -22,6 +22,13 @@ axios.defaults.baseURL = 'http://localhost:3364/api/';
 export function get(url, params = {}) {
     return axios.get(url, {params});
 }
+
+
+// 封装Post方法
+export function post(url, params = {}) {
+    return axios.post(url, params);
+}
+
 
 
 
