@@ -22,7 +22,6 @@ class CommonMenu extends React.Component {
         collapsed: true,
     };
 
-
     render() {
         return (
             <div>

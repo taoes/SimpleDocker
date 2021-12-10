@@ -16,7 +16,27 @@ public class ResponseModel<T> {
 
     private int code;
 
-    public static <T> ResponseModel fail(T data){
+    /**
+     * 失败的数据
+     *
+     * @param data
+     * @param <T>
+     * @return
+     */
+    public static <T> ResponseModel fail(T data) {
         return new ResponseModel();
+    }
+
+    /**
+     * 成功
+     *
+     * @param <T>
+     * @return
+     */
+    public static <T> ResponseModel<T> ok(T t) {
+        final ResponseModel<T> model = new ResponseModel<>();
+        model.setData(t);
+        model.setCode(0);
+        return model;
     }
 }

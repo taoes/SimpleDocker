@@ -1,5 +1,6 @@
 package com.taoes.simpledocker.controller.container;
 
+import java.util.Collections;
 import java.util.Map;
 
 import lombok.Data;
@@ -22,4 +23,12 @@ public class OperateContainerRequest {
      * 操作选项
      */
     private Map<String, String> properties;
+
+    public Map<String, String> findProperties() {
+        final Map<String, String> properties = this.getProperties();
+        if (properties == null) {
+            return Collections.emptyMap();
+        }
+        return properties;
+    }
 }

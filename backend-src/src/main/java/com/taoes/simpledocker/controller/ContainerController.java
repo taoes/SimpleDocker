@@ -1,13 +1,15 @@
 package com.taoes.simpledocker.controller;
 
 import java.util.List;
-import java.util.Map;
 
 import com.taoes.simpledocker.config.DockerClientFactory;
 import com.taoes.simpledocker.controller.container.OperateContainerRequest;
+import com.taoes.simpledocker.model.ResponseModel;
 import com.taoes.simpledocker.model.enums.ContainerOperate;
 import com.github.dockerjava.api.model.Container;
-import com.taoes.simpledocker.utils.DataConverterUtils;
+import com.taoes.simpledocker.service.ContainerService;
+import com.taoes.simpledocker.utils.BooleanUtils;
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,15 +29,14 @@ import org.springframework.web.bind.annotation.RestController;
 @Slf4j
 @RestController
 @RequestMapping("/api/container")
+@AllArgsConstructor
 public class ContainerController {
 
-    @Autowired
-    private DockerClientFactory clientFactory;
+    private ContainerService service;
 
     @GetMapping("/list")
     public List<Container> list() {
-        var client = clientFactory.get();
-        return client.listContainersCmd().withShowAll(true).exec();
+        return service.list(true);
     }
 
     @PostMapping("/new")
@@ -43,42 +44,38 @@ public class ContainerController {
 
     }
 
-    @PostMapping("/{containerId}/{operate}")
-    public void operateContainer(
+    @PostMapping("/operator/{operate}")
+    public ResponseModel<Boolean> operateContainer(
         @PathVariable ContainerOperate operate,
-        @PathVariable OperateContainerRequest request) {
-        final var client = clientFactory.get();
+        @RequestBody OperateContainerRequest request) {
+
         final var containerId = request.getContainerId();
-        final var properties = request.getProperties();
+        final var properties = request.findProperties();
 
-        switch (operate) {
-            case START:
-                client.startContainerCmd(containerId).exec();
-                break;
-            case STOP:
-                client.stopContainerCmd(containerId).exec();
-                break;
-            case PAUSE:
-                client.pauseContainerCmd(containerId).exec();
-                break;
-            case UNPAUSE:
-                client.unpauseContainerCmd(containerId).exec();
-                break;
-            case RESTART:
-                client.restartContainerCmd(containerId).exec();
-                break;
-            case REMOVE:
-                final String force = properties.getOrDefault("force", "false");
-                final String removeVolume = properties.getOrDefault("removeVolume", "false");
-                client.removeContainerCmd(containerId)
-                    .withForce(DataConverterUtils.parse(force, false))
-                    .withRemoveVolumes(DataConverterUtils.parse(removeVolume, false))
-                    .exec();
-            case EXPORT_LOCAL:
-
-            default:
-
+        try {
+            switch (operate) {
+                case START:
+                    service.start(containerId);
+                    break;
+                case STOP:
+                    service.stop(containerId);
+                    break;
+                case PAUSE:
+                    service.pause(containerId);
+                    break;
+                case UNPAUSE:
+                    service.unpause(containerId);
+                    break;
+                case REMOVE:
+                    service.remove(containerId, properties);
+                    break;
+                case EXPORT_LOCAL:
+                default:
+            }
+        } catch (Exception e) {
+            return ResponseModel.fail(e.getMessage());
         }
+        return ResponseModel.ok(Boolean.TRUE);
     }
 
 }

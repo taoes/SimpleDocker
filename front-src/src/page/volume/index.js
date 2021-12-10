@@ -1,8 +1,6 @@
 import {Component} from "react";
-import {Button, Divider, Input, Table, Tag} from "antd";
-import {getVolumeList} from "../api/VolumeApi";
-import formateDate from '../utils/DateTime'
-import bytesToSize from '../utils/ByteSize'
+import {Button, Input, Space, Table} from "antd";
+import {getVolumeList} from "../../api/VolumeApi";
 
 /**
  * 主页布局文件
@@ -18,7 +16,7 @@ class VolumePage extends Component {
     componentDidMount() {
         getVolumeList().then(resp => {
             let volumeList = resp.data
-            this.setState({volumeList:volumeList.Volumes})
+            this.setState({volumeList: volumeList.Volumes})
         })
     }
 
@@ -66,13 +64,11 @@ class VolumePage extends Component {
                 fixed: 'right',
                 width: 80,
                 render: () =>
-                    <div>
-                        <Button size="small" type="primary">运行</Button>
-                        <Divider type="vertical"/>
-                        <Button size="small" type="danger">删除</Button>
-                        <Divider type="vertical"/>
-                        <Button size="small">更多</Button>
-                    </div>
+                    <Space>
+                        <Button size="small" type="link">运行</Button>
+                        <Button size="small" type="link">删除</Button>
+                        <Button size="small" type="link">更多</Button>
+                    </Space>
 
             },
         ];

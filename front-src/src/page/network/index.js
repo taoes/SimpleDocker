@@ -1,6 +1,6 @@
 import {Component} from "react";
-import {Button, Divider, Input, Table, Tag} from "antd";
-import {getNetworkList} from "../api/NetworkApi";
+import {Button, Space, Input, Table, Tag} from "antd";
+import {getNetworkList} from "../../api/NetworkApi";
 import _ from 'lodash'
 
 /**
@@ -48,9 +48,9 @@ class VolumePage extends Component {
                 title: '网关/子网掩码',
                 dataIndex: 'IPAM',
                 key: 'Mountpoint',
-                render: ipam=>{
-                    let configs = _.get(ipam,"Config",[]);
-                    return configs.map(c=>{
+                render: ipam => {
+                    let configs = _.get(ipam, "Config", []);
+                    return configs.map(c => {
                         return <div><Tag color='red'>{c.Gateway}</Tag> <Tag color='blue'>{c.Subnet}</Tag></div>
                     })
                 },
@@ -76,13 +76,11 @@ class VolumePage extends Component {
                 fixed: 'right',
                 width: 80,
                 render: () =>
-                    <div>
-                        <Button size="small" type="primary">运行</Button>
-                        <Divider type="vertical"/>
-                        <Button size="small" type="danger">删除</Button>
-                        <Divider type="vertical"/>
-                        <Button size="small">更多</Button>
-                    </div>
+                    <Space>
+                        <Button size="small" type="link">运行</Button>
+                        <Button size="small" type="link">删除</Button>
+                        <Button size="small" type="link">更多</Button>
+                    </Space>
 
             },
         ];
