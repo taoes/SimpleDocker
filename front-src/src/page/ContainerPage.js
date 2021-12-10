@@ -176,6 +176,8 @@ class ContainerPage extends Component {
                     visible={this.state.logModalVisible}
                     width={1000}
                     closable={false}
+                    okText="确定"
+                    cancelText="导出"
                     onOk={this.closeContainerLogModal}>
                     {
                         <div style={{ width: '1000px', height: '500px', overflow: 'scroll', padding: 10 }}>
