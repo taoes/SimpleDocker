@@ -6,7 +6,7 @@
 .LSOverride
 
 # Icon must end with two \r
-Icon
+
 
 # Thumbnails
 ._*
@@ -102,7 +102,6 @@ fabric.properties
 
 
 
-./SimpleDocker
 ./lastupdate.tmp
 ./go.sum
 !/lastupdate.tmp
@@ -112,16 +111,14 @@ fabric.properties
 
 lastupdate.tmp
 
-SimpleDocker
+
 
 yarn.lock
 
-static/
+
 
 SimpleDocker.tar.gz
-/App
-build/
-package-lock.json
 
-!backend-src/src/main/java/
+
+
 backend-src/target/
