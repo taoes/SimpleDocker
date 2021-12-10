@@ -4,7 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="2e8afb8c-0a7a-4fb7-ad64-90ec4bfdb3a1" name="Default Changelist" comment="" />
+    <list default="true" id="2e8afb8c-0a7a-4fb7-ad64-90ec4bfdb3a1" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/backend-src/src/main/java/com/example/simpledocker/utils/DataConverterUtils.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend-src/src/main/java/com/example/simpledocker/controller/ContainerController.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend-src/src/main/java/com/example/simpledocker/controller/ContainerController.java" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -44,6 +49,9 @@
     <option name="version" value="1" />
   </component>
   <component name="ProjectId" id="21xYEC4OkkqGUUL418zqPZOn8c3" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
   <component name="ProjectViewState">
     <option name="autoscrollFromSource" value="true" />
     <option name="autoscrollToSource" value="true" />
@@ -70,6 +78,7 @@
   </component>
   <component name="RecentsManager">
     <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="com.example.simpledocker.utils" />
       <recent name="com.example.simpledocker.ws" />
     </key>
   </component>
@@ -90,6 +99,17 @@
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration default="true" type="ArquillianJUnit" factoryName="" nameIsGenerated="true">
+      <option name="arquillianRunConfiguration">
+        <value>
+          <option name="containerStateName" value="" />
+        </value>
+      </option>
+      <option name="TEST_OBJECT" value="class" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -118,6 +138,7 @@
       <updated>1638884092735</updated>
       <workItem from="1638884094286" duration="5830000" />
       <workItem from="1638937283267" duration="18062000" />
+      <workItem from="1639149564451" duration="109000" />
     </task>
     <servers />
   </component>
@@ -129,7 +150,19 @@
       <map>
         <entry key="MAIN">
           <value>
-            <State />
+            <State>
+              <option name="FILTERS">
+                <map>
+                  <entry key="branch">
+                    <value>
+                      <list>
+                        <option value="HEAD" />
+                      </list>
+                    </value>
+                  </entry>
+                </map>
+              </option>
+            </State>
           </value>
         </entry>
       </map>
