@@ -41,7 +41,7 @@ import org.springframework.stereotype.Component;
  */
 @Slf4j
 @Component
-@ServerEndpoint("/ws/container/{cId}/terminal")
+@ServerEndpoint("/api/ws/container/{cId}/terminal")
 public class ContainerTerminalWebSocket {
 
     private static DockerClientFactory clientFactory;

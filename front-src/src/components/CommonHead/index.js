@@ -2,17 +2,19 @@ import React from "react";
 
 
 import './index.css'
+import LoginInfo from "../login";
 
 class CommonHead extends React.Component {
 
     render() {
-        const version = "1.0.0-beta";
         return (
             <div>
                 <div id="header">
-                    <img src={"/icon2.png"} style={{height: 40}} alt=""/>
-                    <h1 id="title">SimpleDocker</h1>
-                    <span id="version">{version}</span>
+                    <div style={{marginRight: 'auto', display: 'flex', alignItems: 'center'}}>
+                        <img src={"/icon2.png"} style={{height: 40}} alt=""/>
+                        <h1 id="title">SimpleDocker</h1>
+                    </div>
+                    <LoginInfo/>
                 </div>
             </div>
         )

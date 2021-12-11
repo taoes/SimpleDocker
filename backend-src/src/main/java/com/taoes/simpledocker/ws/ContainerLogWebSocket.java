@@ -31,7 +31,7 @@ import org.springframework.stereotype.Component;
  */
 @Slf4j
 @Component
-@ServerEndpoint("/ws/container/{cId}/log")
+@ServerEndpoint("/api/ws/container/{cId}/log")
 public class ContainerLogWebSocket {
 
     private static DockerClientFactory clientFactory;
@@ -67,6 +67,7 @@ public class ContainerLogWebSocket {
             .withFollowStream(true)
             .withStdErr(true)
             .withStdOut(true)
+            .withTail(100)
             .exec(new ResultCallback<Frame>() {
                 @Override
                 public void onStart(Closeable closeable) {
@@ -149,7 +150,7 @@ public class ContainerLogWebSocket {
      * @param message
      */
     public void SendMessage(Session session, String message) {
-        if (!session.isOpen()){
+        if (!session.isOpen()) {
             return;
         }
         try {

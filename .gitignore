@@ -105,3 +105,4 @@ lastupdate.tmp
 yarn.lock
 SimpleDocker.tar.gz
 backend-src/target/
+backend-src/src/main/resources/static/

@@ -11,7 +11,7 @@ let _ = require('lodash')
 /**
  * 主页布局文件
  */
-class ImagePage extends Component {
+class HomePage extends Component {
 
     constructor(props) {
         super(props);
@@ -102,4 +102,4 @@ class ImagePage extends Component {
 
 }
 
-export default ImagePage;
+export default HomePage;

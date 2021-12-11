@@ -5,6 +5,8 @@ import {Option} from "antd/es/mentions";
 import TextArea from "antd/es/input/TextArea";
 import {LoadingOutlined, SendOutlined} from "@ant-design/icons";
 
+import domain from "../../../config/config"
+
 class ImagePullModal extends React.Component {
 
     constructor(props) {
@@ -35,7 +37,7 @@ class ImagePullModal extends React.Component {
 
 
         // 创建WS链接
-        let ws = new WebSocket(`ws://localhost:3364/ws/image/pull`)
+        let ws = new WebSocket(`${domain.ws}/api/ws/image/pull`)
         let that = this
         let msg = message
 

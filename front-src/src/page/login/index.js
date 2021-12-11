@@ -1,5 +1,5 @@
 import React from "react";
-import {Form, Input, Button, message} from "antd";
+import {Form, Input, Button, message, Divider} from "antd";
 
 
 import './index.css'
@@ -23,11 +23,20 @@ class LoginPage extends React.Component {
     login = () => {
         let {username, password} = this.state
         if (username !== 'admin' || password !== '123456') {
-            message.error('登录失败，请稍后尝试')
+            message.error('账户和密码不匹配，请重新输入后尝试')
             return
         }
         message.info('登录成功，即将跳转到APP页面')
+        localStorage.setItem('TOKEN', "TOKEN")
         this.setState({state: true})
+    }
+
+    /**
+     * 重置动作
+     * @returns {JSX.Element}
+     */
+    reset = () => {
+        this.setState({username: '', password: ''})
     }
 
     render() {
@@ -68,11 +77,18 @@ class LoginPage extends React.Component {
                             </Button>
 
                             <div style={{margin: 20}}/>
-                            <Button type="danger" htmlType="button">
+                            <Button type="danger" htmlType="button" onClick={this.reset}>
                                 重置
                             </Button>
+                        </div>
 
-
+                        <div>
+                            <Divider orientation="right" plain>
+                                <a href="https://gitee.com/taoes_admin/SimpleDocker"
+                                   target="_blank"
+                                   rel="noreferrer"
+                                   style={{color: 'lightgray'}}>源码地址</a>
+                            </Divider>
                         </div>
                     </Form>
                 </div>
