@@ -1,11 +1,10 @@
 import React from "react";
 
+
 class CommonFooter extends React.Component {
 
     render() {
-        return (<div>
-
-        </div>)
+        return (<div></div>)
     }
 
 }
