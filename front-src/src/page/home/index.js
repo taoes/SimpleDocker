@@ -4,7 +4,7 @@ import 'jsoneditor-react/es/editor.min.css';
 import './index.css'
 import {Button, Descriptions, Modal, Tag} from "antd";
 import {getDockerInfo} from '../../api/InfoApi'
-import bytesToSize from "../../utils/ByteSize";
+
 
 let _ = require('lodash')
 
@@ -82,7 +82,6 @@ class ImagePage extends Component {
 
                     </Descriptions.Item>
                 </Descriptions>
-
 
 
                 <Modal

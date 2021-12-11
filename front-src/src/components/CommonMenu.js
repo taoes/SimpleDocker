@@ -31,21 +31,21 @@ class CommonMenu extends React.Component {
                     theme="dark"
                 >
                     <Menu.Item key="1" icon={<PieChartOutlined/>}>
-                        <Link to='/'>系统概述</Link>
+                        <Link to='/app'>系统概述</Link>
                     </Menu.Item>
                     <Menu.Item key="2" icon={<DesktopOutlined/>}>
-                        <Link to='/image'>镜像管理</Link>
+                        <Link to='/app/image'>镜像管理</Link>
                     </Menu.Item>
                     <Menu.Item key="3" icon={<RocketOutlined/>}>
-                        <Link to='/container'>容器管理</Link>
+                        <Link to='/app/container'>容器管理</Link>
                     </Menu.Item>
 
                     <Menu.Item key="4" icon={<HddOutlined/>}>
-                        <Link to='/volume'>存储管理</Link>
+                        <Link to='/app/volume'>存储管理</Link>
                     </Menu.Item>
 
                     <Menu.Item key="5" icon={<DeploymentUnitOutlined/>}>
-                        <Link to='/network'>网络管理</Link>
+                        <Link to='/app/network'>网络管理</Link>
                     </Menu.Item>
 
                     <SubMenu key="sub1" icon={<ToolOutlined/>} title="系统设置">

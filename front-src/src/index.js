@@ -1,56 +1,40 @@
-import React from 'react';
+import React, {lazy} from 'react';
 import ReactDOM from 'react-dom';
 import {HashRouter, Route, Routes} from "react-router-dom";
 
 
-import {Layout} from 'antd'
-import CommonMenu from "./components/CommonMenu";
-import CommonFooter from "./components/CommonFooter";
-import CommonHead from "./components/CommonHead/index";
-
-
 // 导入页面
-import ContainerPage from "./page/container/index";
-import ImagePage from "./page/image/index";
-import HomePage from "./page/home/index";
-import VolumePage from "./page/volume/index";
-import NetworkPage from "./page/network/index";
+
+import AppLayout from "./layout/appLayout";
 
 
 // 引入 antd css 样式
 import 'antd/dist/antd.css';
-import './index.css';
+import './layout/appLayout.css';
 
-const {Content, Footer, Header, Sider} = Layout
+
+import HomePage from "./page/home"
+import ImagePage from "./page/image";
+import ContainerPage from "./page/container";
+import VolumePage from "./page/volume";
+import NetworkPage from "./page/network";
+import LoginLayout from "./layout/loginLayout";
+import {Suspense} from "react";
 
 
 ReactDOM.render(
     <HashRouter>
-        <Layout>
-            <Header>
-                <CommonHead/>
-            </Header>
-
-            <Layout>
-                <Sider>
-                    <CommonMenu/>
-                </Sider>
-                <Content>
-                    {/*路由布局*/}
-                    <Routes>
-                        <Route path="/" element={<HomePage/>}/>
-                        <Route path="/image" element={<ImagePage/>}/>
-                        <Route path="/container" element={<ContainerPage/>}/>
-                        <Route path="/volume" element={<VolumePage/>}/>
-                        <Route path="/network" element={<NetworkPage/>}/>
-                    </Routes>
-                </Content>
-            </Layout>
-            <Footer>
-                <CommonFooter/>
-            </Footer>
-
-        </Layout>
+        <Routes>
+            <Route path="/app" element={<AppLayout/>}>
+                <Route index element={<HomePage/>}/>
+                <Route path="/app/image" element={<ImagePage/>}/>
+                <Route path="/app/container" element={<ContainerPage/>}/>
+                <Route path="/app/volume" element={<VolumePage/>}/>
+                <Route path="/app/network" element={<NetworkPage/>}/>
+            </Route>
+            <Route path="/login" element={<LoginLayout/>}/>
+            <Route path="/" element={<LoginLayout/>}/>
+        </Routes>
     </HashRouter>,
     document.getElementById('root')
 )
