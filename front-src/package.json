@@ -20,7 +20,9 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build ENV=prod",
+    "start:prod": "react-scripts start -e .env.prod",
+    "build": "react-scripts build",
+    "build:prod": "react-scripts build -e .env.prod",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },

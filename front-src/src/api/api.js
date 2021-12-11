@@ -1,8 +1,10 @@
 import axios from "axios";
+import domainName from '../config/config'
 
 
 axios.defaults.timeout = 30000
-axios.defaults.baseURL = 'http://localhost:3364/api/';
+axios.defaults.baseURL = domainName.api;
+
 
 // axios.interceptors.request.use(request => {
 

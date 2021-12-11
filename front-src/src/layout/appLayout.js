@@ -16,7 +16,7 @@ const {Content, Footer, Header, Sider} = Layout
 export default class AppLayout extends React.Component {
     render() {
         return (
-            <Layout style={{minHeight:'100%'}}>
+            <Layout style={{minHeight: '100%'}}>
                 <Header>
                     <CommonHead/>
                 </Header>

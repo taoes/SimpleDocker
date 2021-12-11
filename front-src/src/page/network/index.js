@@ -6,7 +6,7 @@ import _ from 'lodash'
 /**
  * 主页布局文件
  */
-class VolumePage extends Component {
+class NetworkPage extends Component {
 
     constructor(props) {
         super(props);
@@ -101,4 +101,4 @@ class VolumePage extends Component {
     }
 }
 
-export default VolumePage;
+export default NetworkPage;

@@ -33,7 +33,7 @@ import org.springframework.stereotype.Component;
  */
 @Slf4j
 @Component
-@ServerEndpoint("/ws/image/pull")
+@ServerEndpoint("/api/ws/image/pull")
 public class ImagePullWebSocket {
 
     private static DockerClientFactory clientFactory;

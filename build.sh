@@ -1,18 +1,11 @@
+cd ./front-src
 echo "编译前端.......START!"
-cd front-src
-yarn build
-echo "编译前端.......OK!"
+yarn build:prod
+echo "编译前端资源文件.......OK!"
 
-
-rm -rf ../backend-src/src/main/resources/static
-mkdir -p  ../backend-src/src/main/resources/static
-cp -rf ./build/ ../backend-src/src/main/resources/static/
-
+# shellcheck disable=SC2103
 cd ..
-cd backend-src
-echo "打包后端.......START!"
-mvn clean package
-echo "打包后端.......OK!"
-
-cd target
-scp ./*.jar ubuntu@www.zhoutao123.com:/home/ubuntu/sdocker/app2.jar
+rm -rf ./backend-src/src/main/resources/static
+mkdir -p ./backend-src/src/main/resources/static
+cp -rf ./front-src/build/ ./backend-src/src/main/resources/static/
+echo "拷贝静态资源文件........OK!"

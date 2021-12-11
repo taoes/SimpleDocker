@@ -5,17 +5,32 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="2e8afb8c-0a7a-4fb7-ad64-90ec4bfdb3a1" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/front-src/src/layout/appLayout.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/front-src/src/layout/loginLayout.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/front-src/src/page/login/index.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/front-src/src/page/login/index.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/front-src/.env" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/front-src/.env.prod" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/front-src/src/components/login/index.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/front-src/src/config/config.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/front-src/src/router/AuthRouter.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/front-src/src/router/app.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-src/public/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/front-src/public/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-src/src/components/CommonFooter.js" beforeDir="false" afterPath="$PROJECT_DIR$/front-src/src/components/CommonFooter.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-src/src/components/CommonMenu.js" beforeDir="false" afterPath="$PROJECT_DIR$/front-src/src/components/CommonMenu.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-src/src/index.css" beforeDir="false" afterPath="$PROJECT_DIR$/front-src/src/layout/appLayout.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend-src/src/main/java/com/taoes/simpledocker/service/imple/ContainerServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend-src/src/main/java/com/taoes/simpledocker/service/imple/ContainerServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend-src/src/main/java/com/taoes/simpledocker/ws/ContainerLogWebSocket.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend-src/src/main/java/com/taoes/simpledocker/ws/ContainerLogWebSocket.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend-src/src/main/java/com/taoes/simpledocker/ws/ContainerTerminal2WebSocket.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend-src/src/main/java/com/taoes/simpledocker/ws/ContainerTerminal2WebSocket.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend-src/src/main/java/com/taoes/simpledocker/ws/ContainerTerminalWebSocket.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend-src/src/main/java/com/taoes/simpledocker/ws/ContainerTerminalWebSocket.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend-src/src/main/java/com/taoes/simpledocker/ws/ImagePullWebSocket.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend-src/src/main/java/com/taoes/simpledocker/ws/ImagePullWebSocket.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build.sh" beforeDir="false" afterPath="$PROJECT_DIR$/build.sh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/front-src/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/front-src/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/front-src/src/api/api.js" beforeDir="false" afterPath="$PROJECT_DIR$/front-src/src/api/api.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/front-src/src/components/CommonHead/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/front-src/src/components/CommonHead/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/front-src/src/components/image/pull/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/front-src/src/components/image/pull/index.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/front-src/src/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/front-src/src/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/front-src/src/layout/appLayout.js" beforeDir="false" afterPath="$PROJECT_DIR$/front-src/src/layout/appLayout.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/front-src/src/layout/loginLayout.js" beforeDir="false" afterPath="$PROJECT_DIR$/front-src/src/layout/loginLayout.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/front-src/src/page/container/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/front-src/src/page/container/index.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/front-src/src/page/home/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/front-src/src/page/home/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/front-src/src/page/image/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/front-src/src/page/image/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/front-src/src/page/login/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/front-src/src/page/login/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/front-src/src/page/network/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/front-src/src/page/network/index.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -30,8 +45,8 @@
       <list>
         <option value="Interface" />
         <option value="Class" />
-        <option value="JavaScript File" />
         <option value="CSS File" />
+        <option value="JavaScript File" />
       </list>
     </option>
   </component>
@@ -82,7 +97,7 @@
     <property name="aspect.path.notification.shown" value="true" />
     <property name="go.import.settings.migrated" value="true" />
     <property name="go.sdk.automatically.set" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/front-src/src/layout" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/front-src" />
     <property name="list.type.of.created.stylesheet" value="CSS" />
     <property name="nodejs_package_manager_path" value="npm" />
     <property name="restartRequiresConfirmation" value="false" />
@@ -92,10 +107,11 @@
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/front-src" />
+      <recent name="$PROJECT_DIR$/front-src/src/router" />
       <recent name="$PROJECT_DIR$/front-src/src/layout" />
       <recent name="$PROJECT_DIR$/front-src/src" />
       <recent name="$PROJECT_DIR$/front-src/src/page/volume" />
-      <recent name="$PROJECT_DIR$/front-src/src/page/container" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/front-src/src/layout" />
@@ -165,7 +181,7 @@
       <workItem from="1638884094286" duration="5830000" />
       <workItem from="1638937283267" duration="18062000" />
       <workItem from="1639149564451" duration="2108000" />
-      <workItem from="1639151716123" duration="15184000" />
+      <workItem from="1639151716123" duration="25308000" />
     </task>
     <servers />
   </component>

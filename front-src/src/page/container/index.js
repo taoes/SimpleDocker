@@ -12,7 +12,8 @@ import {
 } from "@ant-design/icons";
 
 
-const {confirm} = Modal
+import domain from "../../config/config"
+
 const {operatorMap} = require('../../config/containerStatus')
 
 /**
@@ -51,8 +52,7 @@ class ContainerPage extends Component {
     //  显示容器日志Modal
     showContainerLog = function (cId) {
         this.setState({logModalVisible: true})
-        // 开启WS连接
-        var ws = new WebSocket(`ws://localhost:3364/ws/container/${cId}/log`)
+        let ws = new WebSocket(`${domain.ws}/ws/container/${cId}/log`)
         this.ws = ws
         let that = this
         ws.onopen = function () {
@@ -142,24 +142,29 @@ class ContainerPage extends Component {
         const menu = function (container) {
             let disabled = container.State !== 'running';
             return <Menu>
-                <Menu.Item icon={<InfoCircleOutlined/>} onClick={() => message.info("暂未实现")}>
+                <Menu.Item icon={<InfoCircleOutlined/>} onClick={() => message.warning("正在开发中，敬请期待")}>
                     详情信息
                 </Menu.Item>
 
-                <Menu.Item icon={<PauseOutlined/>} onClick={() => that.operatorContainer('PAUSE', container)} disabled={disabled}>
+                <Menu.Item icon={<PauseOutlined/>} onClick={() => that.operatorContainer('PAUSE', container)}
+                           disabled={disabled}>
                     暂停容器
                 </Menu.Item>
 
-                <Menu.Item icon={<CopyOutlined/>} onClick={() => message.info("暂未实现")}>
+                <Menu.Item icon={<CopyOutlined/>} onClick={() => message.warning("暂未实现")}>
                     复制容器
                 </Menu.Item>
 
-                <Menu.Item icon={<ExportOutlined/>} onClick={() => message.info("暂未实现")}>
+                <Menu.Item icon={<ExportOutlined/>} onClick={() => message.warning("暂未实现")}>
                     导出容器
                 </Menu.Item>
 
                 <Menu.Item icon={<DeleteOutlined/>} onClick={() => that.operatorContainer('REMOVE', container)} danger>
                     删除容器
+                </Menu.Item>
+
+                <Menu.Item icon={<DeleteOutlined/>} onClick={() => that.operatorContainer('REMOVE', container)} danger>
+                    连接网络
                 </Menu.Item>
             </Menu>
         }

@@ -1,7 +1,7 @@
 import {Component} from "react";
 
 
-import {Button, Checkbox, Divider, Dropdown, Input, Menu, Modal, Space, Table, Tag} from "antd";
+import {Button, Checkbox, Dropdown, Input, Menu, Modal, Space, Table, Tag} from "antd";
 import {
     DeleteOutlined,
     ExportOutlined,

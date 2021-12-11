@@ -40,7 +40,6 @@ public class ContainerServiceImpl implements ContainerService {
     @Override
     public void start(String containerId) {
         final DockerClient client = clientFactory.get();
-        client.killContainerCmd()
         client.startContainerCmd(containerId).exec();
         log.info("启动容器,containerId={}", containerId);
     }
@@ -72,7 +71,6 @@ public class ContainerServiceImpl implements ContainerService {
         final String removeVolume = params.get("removeVolume");
 
         final DockerClient client = clientFactory.get();
-        client.authCmd()
         client.removeContainerCmd(containerId)
             .withForce(BooleanUtils.parse(force, false))
             .withRemoveVolumes(BooleanUtils.parse(removeVolume, false))
