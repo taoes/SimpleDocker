@@ -35,6 +35,5 @@ public class DockerClientInterception implements HandlerInterceptor {
     public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex)
         throws Exception {
         clientIdLocal.remove();
-
     }
 }

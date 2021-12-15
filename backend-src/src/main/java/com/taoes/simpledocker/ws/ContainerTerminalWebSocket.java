@@ -1,11 +1,7 @@
 package com.taoes.simpledocker.ws;
 
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.PipedInputStream;
-import java.io.PipedOutputStream;
-import java.nio.charset.StandardCharsets;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArraySet;
@@ -20,21 +16,20 @@ import javax.websocket.Session;
 import javax.websocket.server.ServerEndpoint;
 
 import com.taoes.simpledocker.config.DockerClientFactory;
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.github.dockerjava.api.async.ResultCallback;
-import com.github.dockerjava.api.command.ExecCreateCmdResponse;
-import com.github.dockerjava.api.model.Frame;
-import com.github.dockerjava.transport.DockerHttpClient;
-import com.github.dockerjava.transport.DockerHttpClient.Request;
-import com.github.dockerjava.transport.DockerHttpClient.Request.Method;
-import com.github.dockerjava.transport.DockerHttpClient.Response;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
+import okhttp3.OkHttpClient;
+import okhttp3.Response;
+import okhttp3.WebSocket;
+import okhttp3.WebSocketListener;
+import okio.ByteString;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 /**
- * TODO: please input file info
+ * 容器终端服务
  *
  * @author eleme taozhou.tao@alibaba-inc.com
  * @date 2021/12/5 1:33 上午
@@ -57,15 +52,12 @@ public class ContainerTerminalWebSocket {
     // Session保存
     private static CopyOnWriteArraySet<Session> SessionSet = new CopyOnWriteArraySet<Session>();
 
-    private final Map<String, ResultCallback<Frame>> callbackMap = new ConcurrentHashMap<>();
+    private final Map<String, WebSocket> callbackMap = new ConcurrentHashMap<>();
 
     /**
      * 输入流，用于接收WebSocket的输入，转发给 ExecStartCmd
      */
     private static Map<String, InputStream> inputStreamMap = new ConcurrentHashMap<>();
-
-    static PipedOutputStream pipedOutputStream = new PipedOutputStream();
-    static PipedInputStream pipedInputStream = new PipedInputStream();
 
     @PostConstruct
     public void init() {
@@ -73,126 +65,62 @@ public class ContainerTerminalWebSocket {
     }
 
     @OnOpen
-    public void onOpen(Session session) throws IOException, InterruptedException {
+    @SneakyThrows
+    public void onOpen(Session session) {
         SessionSet.add(session);
         OnlineCount.incrementAndGet();
 
-        final Map<String, String> params = session.getPathParameters();
-        final DockerHttpClient httpClient = clientFactory.getHttpClient();
+        // 使用 连接 GoWS
+        OkHttpClient client = new OkHttpClient();
 
-        String cont = "{\n"
-            + "  \"AttachStdin\": true,\n"
-            + "  \"AttachStdout\": true,\n"
-            + "  \"AttachStderr\": true,\n"
-            + "  \"DetachKeys\": \"ctrl-p,ctrl-q\",\n"
-            + "  \"Tty\": true,\n"
-            + "  \"Cmd\": [\n"
-            + "    \"sh\"\n"
-            + "  ],\n"
-            + "  \"Env\": [\n"
-            + "    \"FOO=bar\",\n"
-            + "    \"BAZ=quux\"\n"
-            + "  ]\n"
-            + "}";
-        final Response execute = httpClient.execute(Request.builder()
-            .method(Method.POST)
-            .putHeader("Content-Type", "application/json")
-            .path("/containers/" + params.get("cId") + "/exec")
-            .body(new ByteArrayInputStream(cont.getBytes()))
-            .build());
-        final InputStream body = execute.getBody();
-        byte[] bytes = new byte[1024];
-        Thread.sleep(1000);
-        body.read(bytes);
-        String str = new String(bytes);
-
-        ObjectMapper mapper = new ObjectMapper();
-        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-
-        final ExecCreateCmdResponse execCreateCmdResponse = mapper.readValue(str, ExecCreateCmdResponse.class);
-        System.out.println("EXEC=" + execCreateCmdResponse.getId());
-        //language=JSON
-        cont = "{\n"
-            + "  \"Detach\": false,\n"
-            + "  \"Tty\": false\n"
-            + "}";
-        pipedInputStream.connect(pipedOutputStream);
-        Request request = Request.builder()
-            .method(Method.POST)
-            .path("/exec/" + execCreateCmdResponse.getId() + "/start")
-            .putHeader("Content-Type", "application/json")
-            .body(new ByteArrayInputStream(cont.getBytes()))
-            .build();
-        final Response httpResponse = httpClient.execute(request);
-        final InputStream resultInput = httpResponse.getBody();
-
-        new Thread(new Runnable() {
+        final WebSocket webSocket = client.newWebSocket(null, new WebSocketListener() {
+            @Override
+            public void onClosed(@NotNull WebSocket webSocket, int code, @NotNull String reason) {
+                super.onClosed(webSocket, code, reason);
+            }
 
             @Override
-            public void run() {
-                try {
-                    byte[] bytes;
-                    while (true) {
-                        bytes = new byte[100];
-                        final int read = resultInput.read(bytes);
-                        System.out.print(read);
-                        if (read != -1) {
-                            String str = new String(bytes);
-                            log.info("收到数据：" + str);
-                            SendMessage(session, "OK");
-                        } else {
-                            Thread.sleep(1000);
-                        }
-                    }
-                } catch (Throwable e) {
-                    e.printStackTrace();
-                }
-                System.out.println("ContainerTerminalWebSocket.run");
+            public void onClosing(@NotNull WebSocket webSocket, int code, @NotNull String reason) {
+                super.onClosing(webSocket, code, reason);
             }
-        }).start();
 
-        Request attachRequest = Request.builder()
-            .method(Method.POST)
-            .putHeader("Content-Type", "application/vnd.docker.raw-stream")
-            .path("/containers/" + params.get("cId") + "/attach?stream=1&stdout=1")
-            .hijackedInput(pipedInputStream)
-            .build();
-        final InputStream body1 = httpClient.execute(attachRequest).getBody();
-
-        new Thread(new Runnable() {
             @Override
-            public void run() {
-                try {
-
-                    byte[] bytes = new byte[100];
-                    while (true) {
-                        final int read = body1.read(bytes);
-                        if (read == -1) {
-                            System.out.println("-");
-                            Thread.sleep(10);
-                            continue;
-                        }
-                        String str = new String(bytes);
-                        log.info("attach 收到数据：" + str);
-                        SendMessage(session, "OK");
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+            public void onFailure(@NotNull WebSocket webSocket, @NotNull Throwable t, @Nullable Response response) {
+                super.onFailure(webSocket, t, response);
             }
-        }).start();
+
+            @Override
+            public void onMessage(@NotNull WebSocket webSocket, @NotNull String text) {
+                // 接收到GoLang 消息后转发给前端
+                SendMessage(session, text);
+            }
+
+            @Override
+            public void onMessage(@NotNull WebSocket webSocket, @NotNull ByteString bytes) {
+                super.onMessage(webSocket, bytes);
+            }
+
+            @Override
+            public void onOpen(@NotNull WebSocket webSocket, @NotNull Response response) {
+                super.onOpen(webSocket, response);
+            }
+        });
+        client.dispatcher().executorService().shutdown();
+        callbackMap.put(session.getId(), webSocket);
+
     }
 
     /**
      * 连接关闭调用的方法
      */
     @OnClose
-    public void onClose(Session session) throws IOException {
+    @SneakyThrows
+    public void onClose(Session session) {
         SessionSet.remove(session);
         int cnt = OnlineCount.decrementAndGet();
         System.out.println("ContainerTerminalWebSocket.onClose");
-        final ResultCallback<Frame> resultCallback = callbackMap.get(session.getId());
-        if (resultCallback != null && session.isOpen()) { resultCallback.close(); }
+        final WebSocket webSocket = callbackMap.get(session.getId());
+        if (webSocket != null && session.isOpen()) { webSocket.close(0, ""); }
     }
 
     /**
@@ -200,10 +128,11 @@ public class ContainerTerminalWebSocket {
      *
      * @param message 客户端发送过来的消息
      */
+    @SneakyThrows
     @OnMessage
-    public void onMessage(String message, Session session) throws IOException {
-        pipedOutputStream.write(message.getBytes(StandardCharsets.UTF_8));
-        pipedOutputStream.flush();
+    public void onMessage(String message, Session session) {
+        final WebSocket webSocket = callbackMap.get(session.getId());
+        webSocket.send(message);
     }
 
     /**
@@ -213,10 +142,11 @@ public class ContainerTerminalWebSocket {
      * @param error
      */
     @OnError
-    public void onError(Session session, Throwable error) throws IOException {
+    @SneakyThrows
+    public void onError(Session session, Throwable error) {
         log.error("发生错误：{}，Session ID： {}", error.getMessage(), session.getId());
-        final ResultCallback<Frame> resultCallback = callbackMap.get(session.getId());
-        if (resultCallback != null && session.isOpen()) { resultCallback.close(); }
+        final WebSocket webSocket = callbackMap.get(session.getId());
+        if (webSocket != null && session.isOpen()) { webSocket.close(0, "ERROR"); }
     }
 
     /**

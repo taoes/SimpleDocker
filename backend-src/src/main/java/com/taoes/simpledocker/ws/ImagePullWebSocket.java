@@ -26,7 +26,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 /**
- * TODO: please input file info
+ * 镜像拉取服务
  *
  * @author eleme taozhou.tao@alibaba-inc.com
  * @date 2021/12/5 1:33 上午

@@ -19,9 +19,9 @@ public class ResponseModel<T> {
     /**
      * 失败的数据
      *
-     * @param data
-     * @param <T>
-     * @return
+     * @param data 数据
+     * @param <T>  泛型
+     * @return 失败的包裹数据
      */
     public static <T> ResponseModel fail(T data) {
         return new ResponseModel();
@@ -30,8 +30,8 @@ public class ResponseModel<T> {
     /**
      * 成功
      *
-     * @param <T>
-     * @return
+     * @param <T> 泛型对象
+     * @return 包裹后的数据
      */
     public static <T> ResponseModel<T> ok(T t) {
         final ResponseModel<T> model = new ResponseModel<>();
