@@ -4,7 +4,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.concurrent.Future;
 
 import com.github.dockerjava.api.DockerClient;
 import com.github.dockerjava.core.DefaultDockerClientConfig;
@@ -13,7 +12,6 @@ import com.github.dockerjava.core.DockerClientConfig;
 import com.taoes.simpledocker.model.Docker;
 import com.taoes.simpledocker.model.exception.NotFoundClientException;
 import com.taoes.simpledocker.service.DockerService;
-import com.taoes.simpledocker.service.GoProgramRunner;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeansException;
@@ -32,15 +30,13 @@ import org.springframework.util.StringUtils;
 @Slf4j
 @Component
 @RequiredArgsConstructor
-public class DockerClientFactory implements ApplicationContextAware, CommandLineRunner {
+public class GoServiceCommand implements ApplicationContextAware, CommandLineRunner {
 
     private final Map<String, DockerClient> clientGroup = new HashMap<>();
 
     private ApplicationContext context;
 
     private final DockerService dockerService;
-
-    private final GoProgramRunner goProgramRunner;
 
     public DockerClient get() {
         final String clientId = DockerClientInterception.clientIdLocal.get();
@@ -59,15 +55,17 @@ public class DockerClientFactory implements ApplicationContextAware, CommandLine
         // 读取配置
         final List<Docker> dockerList = dockerService.list();
         for (Docker docker : dockerList) {
-            DockerClientConfig config = DefaultDockerClientConfig.createDefaultConfigBuilder().build();
-            final var defaultClient = DockerClientBuilder.getInstance(config).build();
-            clientGroup.put("DEFAULT", defaultClient);
-
-            // TODO 江南 启动GoLanguage服务
-            final Future<?> future = goProgramRunner.asyncRun("./goService", "");
+            // 初始化Docker
+            log.info("初始化:{}", docker);
         }
 
+        DockerClientConfig config = DefaultDockerClientConfig.createDefaultConfigBuilder().build();
+        final var defaultClient = DockerClientBuilder.getInstance(config).build();
+        clientGroup.put("DEFAULT", defaultClient);
         log.info("初始化Client内容完成,clientSize={}", clientGroup.size());
+
+        // 启动GoLanguage服务
+
 
     }
 
