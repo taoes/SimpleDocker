@@ -3,7 +3,7 @@ package com.taoes.simpledocker.model.enums;
 /**
  * 操作系统平台类型
  *
- * @author eleme taozhou.tao@alibaba-inc.com
+ * @author 枕上江南 zhoutao925638@vip.qq.com
  * @date 2021/12/15 1:35 下午
  */
 public enum EPlatform {
