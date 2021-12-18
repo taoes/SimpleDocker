@@ -1,16 +1,29 @@
-#imagePullCtr{
-    padding: 20px;
+/*镜像拉取区域*/
+#imagePullArea {
+    min-height: 500px;
+    display: flex;
+    flex-direction: column;
 }
 
-#imagePullProgress{
-    padding: 20px;
+/*镜像拉取控制区域*/
+#imagePullCtr {
+    margin-bottom: 10px;
+    flex-grow: 0;
 }
 
-.imagePullLogs{
-    padding: 20px;
+#imagePullProgress {
+    padding: 10px;
+    flex-grow: 1;
+    border: 1px solid lightgray;
+    background-color: #FEFEFE;
+}
+
+.imagePullLogs {
+    margin-top: 10px;
     overflow: auto;
+    flex-grow: 0;
 }
 
-.pullImageProgress{
+.pullImageProgress {
     display: flex;
 }

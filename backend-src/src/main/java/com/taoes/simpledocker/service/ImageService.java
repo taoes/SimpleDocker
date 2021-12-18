@@ -2,6 +2,7 @@ package com.taoes.simpledocker.service;
 
 import java.util.List;
 
+import com.github.dockerjava.api.command.InspectImageResponse;
 import com.github.dockerjava.api.model.Image;
 
 /**
@@ -19,6 +20,14 @@ public interface ImageService {
      * @return
      */
     List<Image> list(String key);
+
+    /**
+     * 通过镜像ID获取镜像
+     *
+     * @param imageId
+     * @return
+     */
+    InspectImageResponse inspect(String imageId);
 
     /**
      * 重新标记镜像
@@ -51,13 +60,6 @@ public interface ImageService {
     void search(String key);
 
     /**
-     * 查询镜像详情
-     *
-     * @param imageId 镜像ID
-     */
-    void inspect(String imageId);
-
-    /**
      * 移除未使用的镜像
      */
     void remove();
@@ -75,4 +77,5 @@ public interface ImageService {
      * @param file
      */
     void importByTar(String file);
+
 }

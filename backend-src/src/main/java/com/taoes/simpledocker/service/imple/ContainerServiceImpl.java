@@ -5,7 +5,11 @@ import java.util.Map;
 
 import com.github.dockerjava.api.DockerClient;
 import com.github.dockerjava.api.command.TopContainerResponse;
+import com.github.dockerjava.api.model.Bind;
 import com.github.dockerjava.api.model.Container;
+import com.github.dockerjava.api.model.HostConfig;
+import com.github.dockerjava.api.model.Link;
+import com.github.dockerjava.api.model.PortBinding;
 import com.taoes.simpledocker.config.DockerClientFactory;
 import com.taoes.simpledocker.service.ContainerService;
 import com.taoes.simpledocker.utils.BooleanUtils;
@@ -35,6 +39,17 @@ public class ContainerServiceImpl implements ContainerService {
     @Override
     public void run() {
         final DockerClient client = clientFactory.get();
+        HostConfig hostConfig = HostConfig.newHostConfig();
+        hostConfig.withBinds(Bind.parse("/host:/container:ro"))
+            .withPortBindings(PortBinding.parse("12:44"))
+            .withLinks(Link.parse(""))
+            .withDns("", "")
+            .withNetworkMode("网络名");
+
+        client.createContainerCmd("s")
+            .withAliases("")
+            .withHostConfig(hostConfig)
+            .withEnv("A=B", "C=D").exec();
     }
 
     @Override
@@ -88,7 +103,7 @@ public class ContainerServiceImpl implements ContainerService {
     }
 
     @Override
-    public TopContainerResponse top(String containerId,String psArgs) {
+    public TopContainerResponse top(String containerId, String psArgs) {
         final DockerClient dockerClient = clientFactory.get();
         return dockerClient.topContainerCmd(containerId)
             .withPsArgs(psArgs)

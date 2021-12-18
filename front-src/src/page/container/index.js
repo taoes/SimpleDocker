@@ -1,7 +1,7 @@
 import {Component} from "react";
-import {Button, Checkbox, Input, Space, Table, Tag, Modal, message, Menu, Dropdown,Tooltip} from "antd";
+import {Button, Checkbox, Input, Space, Table, Tag, Modal, message, Menu, Dropdown, Tooltip} from "antd";
 import {getContainerList, operatorContainerApi} from "../../api/container";
-import formateDate from '../../utils/DateTime'
+import dateToStr from '../../utils/DateTime'
 import {
     DeleteOutlined,
     ExportOutlined,
@@ -45,7 +45,6 @@ class ContainerPage extends Component {
         getContainerList().then(resp => {
             let containerList = resp.data
             this.setState({containerList})
-            message.info("加载容器列表完成")
         })
     }
 
@@ -104,7 +103,7 @@ class ContainerPage extends Component {
     }
 
     // 获取操作的按钮
-    getOperatorInfo = function (State) {
+    getOperatorInfo = (State) => {
         switch (State) {
             case 'running':
                 return {name: '停止', operate: 'STOP'}
@@ -116,7 +115,7 @@ class ContainerPage extends Component {
     }
 
     // 操作容器
-    operatorContainer = function (operator, container) {
+    operatorContainer = (operator, container) => {
         let {Id} = container;
         let key = `${operator}-${Id}`
         message.loading({content: `正在${operatorMap.get(operator)}容器,请稍后`, key});
@@ -140,11 +139,16 @@ class ContainerPage extends Component {
     render() {
         // 下拉菜单
         let that = this
-        const menu = function (container) {
-            let disabled = container.State !== 'running';
+        const menu = (container) => {
+            let {State} = container;
+            let disabled = State !== 'running';
             return <Menu>
                 <Menu.Item icon={<InfoCircleOutlined/>} onClick={() => message.warning("正在开发中，敬请期待")}>
                     详情信息
+                </Menu.Item>
+
+                <Menu.Item icon={<InfoCircleOutlined/>} onClick={() => this.showContainerLog(container.Id)}>
+                    容器日志
                 </Menu.Item>
 
                 <Menu.Item icon={<PauseOutlined/>} onClick={() => that.operatorContainer('PAUSE', container)}
@@ -173,11 +177,11 @@ class ContainerPage extends Component {
                 </Menu.Item>
 
                 <Menu.Item icon={<DeleteOutlined/>} onClick={() => message.info("开发中")}>
-                    容器文件
+                    文件管理
                 </Menu.Item>
 
                 <Menu.Item icon={<DeleteOutlined/>} onClick={() => message.info("开发中")}>
-                    资源使用
+                    系统监控
                 </Menu.Item>
 
             </Menu>
@@ -228,35 +232,22 @@ class ContainerPage extends Component {
                 dataIndex: 'Created',
                 key: 'Created',
                 width: 80,
-                render: time => <span>{formateDate(time * 1000)}</span>,
+                render: time => <span>{dateToStr(time * 1000)}</span>,
             },
             {
                 title: '操作',
                 dataIndex: '[State,Id]',
-                key: 'address 4',
-                fixed: 'staye',
+                key: 'operator',
+                fixed: 'left',
                 width: 80,
                 render: (text, record) => {
                     let {operate, name} = this.getOperatorInfo(record.State);
                     return <div>
                         <Space>
-                            <Tooltip title="容器详情">
-                                <InfoCircleOutlined onClick={() => message.info("详情信息")}
-                                                    style={{color: '#4A4AFF'}}/>
-                            </Tooltip>
-
-                            <Tooltip title="容器操作">
-                                <PauseOutlined onClick={() => this.operatorContainer(operate, record)}
-                                               style={{color: '#FFD306'}}/>
-                            </Tooltip>
-
-                            <Tooltip title="容器日志">
-                                <UnorderedListOutlined onClick={() => this.showContainerLog(record.Id)}
-                                                       style={{color: '#7E3D76'}}/>
-                            </Tooltip>
-
+                            <Button type="link" onClick={() => message.info("详情信息")} size="small">详情</Button>
+                            <Button type="link" onClick={() => this.operatorContainer(operate, record)} size="small">{name}</Button>
                             <Dropdown overlay={() => menu(record)} arrow>
-                                <Button type="link" size="small">更多</Button>
+                                <Button type="link" onClick={() => message.info("详情信息")} size="small">更多</Button>
                             </Dropdown>
                         </Space>
                     </div>
@@ -281,7 +272,9 @@ class ContainerPage extends Component {
             <div>
                 <Space>
                     <Button type="primary" icon={<ReloadOutlined/>} onClick={() => this.refreshList()}>刷新</Button>
-                    <Input placeholder="请输入过滤词" style={{width: 400}} allowClear
+                    <Input placeholder="请输入过滤词"
+                           id="containerFilterInput"
+                           allowClear
                            onChange={(e) => this.setState({filterKey: e.target.value})}/>
                     <Checkbox checked style={{marginLeft: 10}}>包含未运行容器</Checkbox>
                 </Space>
@@ -294,13 +287,13 @@ class ContainerPage extends Component {
                     dataSource={containerListOfFilter}/>
                 <Modal
                     visible={this.state.logModalVisible}
-                    width={1000}
+                    width={800}
                     closable={false}
                     okText="确定"
                     cancelText="导出"
                     onOk={this.closeContainerLogModal}>
                     {
-                        <div style={{width: '1000px', height: '500px', overflow: 'scroll', padding: 10}}>
+                        <div style={{width: 800, height: 500, overflow: 'scroll-auto', padding: 10}}>
                             {
                                 this.state.logRecord.map(
                                     log => <span key={log} style={{whiteSpace: 'nowrap', display: 'block'}}>{log}</span>
@@ -313,6 +306,7 @@ class ContainerPage extends Component {
         )
 
     }
+
 }
 
 export default ContainerPage;
