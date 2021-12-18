@@ -15,15 +15,15 @@ import javax.websocket.OnOpen;
 import javax.websocket.Session;
 import javax.websocket.server.ServerEndpoint;
 
+import com.github.dockerjava.api.async.ResultCallback;
+import com.github.dockerjava.api.model.PullResponseItem;
 import com.taoes.simpledocker.config.DockerClientFactory;
 import com.taoes.simpledocker.utils.JsonUtils;
-import com.github.dockerjava.api.async.ResultCallback;
-import com.github.dockerjava.api.model.Frame;
-import com.github.dockerjava.api.model.PullResponseItem;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 
 /**
  * 镜像拉取服务
@@ -44,16 +44,17 @@ public class ImagePullWebSocket {
     }
 
     // 当前在线数
-    private static AtomicInteger OnlineCount = new AtomicInteger(0);
+    private static final AtomicInteger OnlineCount = new AtomicInteger(0);
 
     // Session保存
-    private static CopyOnWriteArraySet<Session> SessionSet = new CopyOnWriteArraySet<Session>();
+    private static final CopyOnWriteArraySet<Session> SessionSet = new CopyOnWriteArraySet<Session>();
 
-    private Map<String, ResultCallback<Frame>> callbackMap = new ConcurrentHashMap<>();
+    // 回调通知函数
+    private static final Map<String, ResultCallback<PullResponseItem>> callbackMap = new ConcurrentHashMap<>();
 
     @PostConstruct
     public void init() {
-        log.info("镜像拉去 WS 初始化 OK！");
+        log.info("镜像拉取WebSocket初始化完成！");
     }
 
     @OnOpen
@@ -61,50 +62,51 @@ public class ImagePullWebSocket {
         SessionSet.add(session);
         OnlineCount.incrementAndGet();
 
-        final String param = session.getQueryString();
+        final var imageTag = session.getQueryString().split("=")[1];
+        if (!StringUtils.hasText(imageTag)) {
+            sendMessage(session, "无效的标签ID，请正确输入后重试");
+            return;
+        }
         final var client = clientFactory.get();
+        final var callback = new ResultCallback<PullResponseItem>() {
+            @Override
+            public void onStart(Closeable closeable) { }
 
-        final ResultCallback callback =
-            client
-                .pullImageCmd("redis:latest")
-                .exec(new ResultCallback<PullResponseItem>() {
-                    @Override
-                    public void onStart(Closeable closeable) {
+            @Override
+            public void onNext(PullResponseItem object) {
+                sendMessage(session, JsonUtils.toJsonString(object));
+            }
 
-                    }
+            @Override
+            public void onError(Throwable throwable) {
+                try {
+                    sendMessage(session, "拉取失败：" + throwable.getMessage());
+                    session.close();
+                } catch (Exception e) {
+                    log.error("发生异常", e);
+                }
+            }
 
-                    @Override
-                    public void onNext(PullResponseItem object) {
-                        SendMessage(session, JsonUtils.toJsonString(object));
-                    }
+            @Override
+            public void onComplete() {
+                try {
+                    sendMessage(session,"镜像拉取完成");
+                    session.close();
+                } catch (IOException e) {
+                    log.error("发生异常", e);
+                }
+            }
 
-                    @Override
-                    public void onError(Throwable throwable) {
-                        try {
-                            session.close();
-                        } catch (Exception e) {
-                            log.error("发生异常", e);
-                        }
-                    }
-
-                    @Override
-                    public void onComplete() {
-                        try {
-                            session.close();
-                        } catch (IOException e) {
-                            log.error("发生异常", e);
-                        }
-                    }
-
-                    @Override
-                    public void close() throws IOException {
-                        try {
-                            session.close();
-                        } catch (IOException e) {
-                            log.error("发生异常", e);
-                        }
-                    }
-                });
+            @Override
+            public void close() throws IOException {
+                try {
+                    session.close();
+                } catch (IOException e) {
+                    log.error("发生异常", e);
+                }
+            }
+        };
+        client.pullImageCmd(imageTag).exec(callback);
         callbackMap.put(session.getId(), callback);
     }
 
@@ -115,9 +117,11 @@ public class ImagePullWebSocket {
     @SneakyThrows
     public void onClose(Session session) {
         SessionSet.remove(session);
-        int cnt = OnlineCount.decrementAndGet();
-        final ResultCallback<Frame> resultCallback = callbackMap.get(session.getId());
+        final var sessionId = session.getId();
+        OnlineCount.decrementAndGet();
+        final ResultCallback<PullResponseItem> resultCallback = callbackMap.get(sessionId);
         if (resultCallback != null && session.isOpen()) { resultCallback.close(); }
+        callbackMap.remove(sessionId);
     }
 
     /**
@@ -126,10 +130,7 @@ public class ImagePullWebSocket {
      * @param message 客户端发送过来的消息
      */
     @OnMessage
-    public void onMessage(String message, Session session) {
-        System.out.println("ContainerLogWebSocket.onMessage");
-        SendMessage(session, "收到消息，消息内容：" + message);
-    }
+    public void onMessage(String message, Session session) {}
 
     /**
      * 出现错误
@@ -140,18 +141,20 @@ public class ImagePullWebSocket {
     @OnError
     @SneakyThrows
     public void onError(Session session, Throwable error) {
-        log.error("发生错误：{}，Session ID： {}", error.getMessage(), session.getId());
-        final ResultCallback<Frame> resultCallback = callbackMap.get(session.getId());
+        final var sessionId = session.getId();
+        log.error("发生错误：{}，Session ID： {}", error.getMessage(), sessionId);
+        final var resultCallback = callbackMap.get(sessionId);
         if (resultCallback != null && session.isOpen()) { resultCallback.close(); }
+        callbackMap.remove(sessionId);
     }
 
     /**
      * 发送消息
      *
-     * @param session
-     * @param message
+     * @param session 回话
+     * @param message 消息内容
      */
-    public void SendMessage(Session session, String message) {
+    public void sendMessage(Session session, String message) {
         if (!session.isOpen()) {
             log.error("Session 已关闭，停止发送消息");
             return;
@@ -162,5 +165,4 @@ public class ImagePullWebSocket {
             log.error("发送消息出错：{}", e.getMessage());
         }
     }
-
 }

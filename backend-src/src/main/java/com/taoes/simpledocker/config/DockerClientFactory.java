@@ -4,7 +4,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.concurrent.Future;
 
 import com.github.dockerjava.api.DockerClient;
 import com.github.dockerjava.core.DefaultDockerClientConfig;
@@ -64,7 +63,7 @@ public class DockerClientFactory implements ApplicationContextAware, CommandLine
             clientGroup.put("DEFAULT", defaultClient);
 
             // TODO 江南 启动GoLanguage服务
-            final Future<?> future = goProgramRunner.asyncRun("./goService", "");
+            //final Future<?> future = goProgramRunner.asyncRun("./goService", "");
         }
 
         log.info("初始化Client内容完成,clientSize={}", clientGroup.size());

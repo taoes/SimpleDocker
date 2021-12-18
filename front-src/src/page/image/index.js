@@ -1,24 +1,26 @@
 import {Component} from "react";
 
 
-import {Button, Checkbox, Dropdown, Input, Menu, Modal, Space, Table, Tag} from "antd";
+import {Button, Checkbox, Dropdown, Input, Menu, Modal, Space, Table, Tag, Drawer, Spin, Tooltip} from "antd";
 import {
     DeleteOutlined,
     ExportOutlined,
     TagOutlined,
-    InfoCircleOutlined,
+    QuestionCircleOutlined,
     CloudDownloadOutlined,
     BuildOutlined
 } from '@ant-design/icons';
 
 
-import {getImageList} from "../../api/ImageApi";
+import {getImage, getImageList} from "../../api/ImageApi";
 import formatDate from '../../utils/DateTime'
 import bytesToSize from '../../utils/ByteSize'
 import ImagePullModal from '../../components/image/pull'
 
 import './index.css'
 import RunNewContainerStep from "../../components/image/run";
+import {JsonEditor as Editor} from "jsoneditor-react";
+import ImageDetail from "../../components/image/detail";
 
 /**
  * 主页布局文件
@@ -28,11 +30,14 @@ class ImagePage extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            imageId: this.props.imageId,
             imageList: [],
             filterKey: '',
             pullImageModalStatus: false,
             runNewContainerModalStatus: false,
-            configNewContainerParam: {},
+            showImageDetailModal: false,
+            imageDetail: null,
+            imageIdOfRun: {},
         }
 
     }
@@ -57,18 +62,25 @@ class ImagePage extends Component {
 
 
     // 更新运行镜像Modal
-    showRunNewContainerStatus(configNewContainerParam) {
-        this.setState({runNewContainerModalStatus: true, configNewContainerParam})
+    showRunNewContainerStatus(image) {
+        this.setState({runNewContainerModalStatus: true, imageIdOfRun: image.Id})
+    }
+
+    // 显示详情页
+    async showImageDetail(image) {
+        let {data: imageDetail} = await getImage(image.Id)
+        this.setState({showImageDetailModal: true, imageDetail: imageDetail})
+    }
+
+    // 移除镜像
+    removeImage = (image) => {
+        this.setState({showRemoveImageModal: true, removeImageId: image.Id})
     }
 
     render() {
-        const menu = function (image) {
+        const menu = (image) => {
             return (
                 <Menu>
-                    <Menu.Item icon={<InfoCircleOutlined/>} key={image.Id + '-detail'}>
-                        详情信息
-                    </Menu.Item>
-
                     <Menu.Item icon={<TagOutlined/>} key={image.Id + '-update-tag'}>
                         更新标签
                     </Menu.Item>
@@ -77,7 +89,8 @@ class ImagePage extends Component {
                         导出镜像
                     </Menu.Item>
 
-                    <Menu.Item danger icon={<DeleteOutlined/>} key={image.Id + '-remove'}>
+                    <Menu.Item danger icon={<DeleteOutlined/>} key={image.Id + '-remove'}
+                               onClick={() => this.removeImage(image)}>
                         删除镜像
                     </Menu.Item>
                 </Menu>
@@ -133,12 +146,13 @@ class ImagePage extends Component {
                     fixed: 'right',
                     width: 180,
                     render: (text, image) => {
-                        let imageId = image.Id
                         return (
                             <Space>
                                 <Button size="small" type="link"
-                                        onClick={() => this.showRunNewContainerStatus({imageId})}>运行</Button>
-                                <Button size="small" type="link">详情</Button>
+                                        onClick={() => this.showRunNewContainerStatus(image)}>运行</Button>
+                                <Button size="small" type="link"
+                                        onClick={() => this.showImageDetail(image)}>详情</Button>
+
                                 <Dropdown overlay={() => menu(image)} arrow={true}>
                                     <Button size="small" type="link">更多</Button>
                                 </Dropdown>
@@ -186,10 +200,11 @@ class ImagePage extends Component {
                     visible={this.state.pullImageModalStatus}
                     width={800}
                     style={{overflow: 'auto'}}
-                    closable={false}
-                    okText="确定"
+                    okText="关闭"
                     cancelText="导出"
-                    onOk={() => this.updateImagePullStatus(false)}>
+                    destroyOnClose={true}
+                    onCancel={() => this.setState({pullImageModalStatus: false})}
+                    footer={[]}>
                     <ImagePullModal/>
                 </Modal>
 
@@ -200,9 +215,38 @@ class ImagePage extends Component {
                     title="创建新的容器"
                     okText="好"
                     cancelText="取消"
+                    destroyOnClose={true}
                     onOk={() => this.setState({runNewContainerModalStatus: false})}>
-                    <RunNewContainerStep config={this.state.configNewContainerParam}/>
+                    <RunNewContainerStep imageId={this.state.imageIdOfRun}/>
                 </Modal>
+
+
+                {/*移除镜像对话框*/}
+                <Modal
+                    visible={this.state.showRemoveImageModal}
+                    closable={false}
+                    title="移除镜像"
+                    okText="好"
+                    cancelText="取消"
+                    destroyOnClose={true}
+                    onOk={() => this.setState({showRemoveImageModal: false})}>
+                    <span>确定移除该镜像吗</span>
+                    <br/>
+                    <Space style={{marginTop: 20}}>
+                        <Checkbox>强制移除镜像</Checkbox>
+                        <Checkbox>移除父级层</Checkbox>
+                    </Space>
+                </Modal>
+
+                {/*侧边栏 显示镜像详情信息*/}
+                <Drawer title="镜像详情"
+                        destroyOnClose={true}
+                        okText="好"
+                        width={720}
+                        onClose={() => this.setState({showImageDetailModal: false})}
+                        visible={this.state.showImageDetailModal}>
+                    <ImageDetail info={this.state.imageDetail}/>
+                </Drawer>
             </div>
         )
 

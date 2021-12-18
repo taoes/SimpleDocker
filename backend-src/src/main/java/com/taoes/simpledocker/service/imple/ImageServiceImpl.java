@@ -3,6 +3,7 @@ package com.taoes.simpledocker.service.imple;
 import java.util.List;
 
 import com.github.dockerjava.api.DockerClient;
+import com.github.dockerjava.api.command.InspectImageResponse;
 import com.github.dockerjava.api.model.Image;
 import com.taoes.simpledocker.config.DockerClientFactory;
 import com.taoes.simpledocker.service.ImageService;
@@ -31,6 +32,12 @@ public class ImageServiceImpl implements ImageService {
     }
 
     @Override
+    public InspectImageResponse inspect(String imageId) {
+        final DockerClient dockerClient = factory.get();
+        return dockerClient.inspectImageCmd(imageId).exec();
+    }
+
+    @Override
     public void tag(String imageId, String newTag) {
         final DockerClient dockerClient = factory.get();
         dockerClient.tagImageCmd(imageId, "", newTag).exec();
@@ -48,11 +55,6 @@ public class ImageServiceImpl implements ImageService {
 
     @Override
     public void search(String key) {
-
-    }
-
-    @Override
-    public void inspect(String imageId) {
 
     }
 
