@@ -1,5 +1,5 @@
 import {Component} from "react";
-import {Button, Checkbox, Input, Space, Table, Tag, Modal, message, Menu, Dropdown} from "antd";
+import {Button, Checkbox, Input, Space, Table, Tag, Modal, message, Menu, Dropdown,Tooltip} from "antd";
 import {getContainerList, operatorContainerApi} from "../../api/container";
 import formateDate from '../../utils/DateTime'
 import {
@@ -8,7 +8,8 @@ import {
     InfoCircleOutlined,
     ReloadOutlined,
     PauseOutlined,
-    CopyOutlined
+    CopyOutlined,
+    UnorderedListOutlined
 } from "@ant-design/icons";
 
 
@@ -163,9 +164,22 @@ class ContainerPage extends Component {
                     删除容器
                 </Menu.Item>
 
-                <Menu.Item icon={<DeleteOutlined/>} onClick={() => that.operatorContainer('REMOVE', container)} danger>
+                <Menu.Item icon={<DeleteOutlined/>} onClick={() => message.info("开发中")}>
                     连接网络
                 </Menu.Item>
+
+                <Menu.Item icon={<DeleteOutlined/>} onClick={() => message.info("开发中")}>
+                    容器终端
+                </Menu.Item>
+
+                <Menu.Item icon={<DeleteOutlined/>} onClick={() => message.info("开发中")}>
+                    容器文件
+                </Menu.Item>
+
+                <Menu.Item icon={<DeleteOutlined/>} onClick={() => message.info("开发中")}>
+                    资源使用
+                </Menu.Item>
+
             </Menu>
         }
 
@@ -226,10 +240,21 @@ class ContainerPage extends Component {
                     let {operate, name} = this.getOperatorInfo(record.State);
                     return <div>
                         <Space>
-                            <Button size="small" type="link"
-                                    onClick={() => this.operatorContainer(operate, record)}>{name}</Button>
-                            <Button size="small" type="link"
-                                    onClick={() => this.showContainerLog(record.Id)}>日志</Button>
+                            <Tooltip title="容器详情">
+                                <InfoCircleOutlined onClick={() => message.info("详情信息")}
+                                                    style={{color: '#4A4AFF'}}/>
+                            </Tooltip>
+
+                            <Tooltip title="容器操作">
+                                <PauseOutlined onClick={() => this.operatorContainer(operate, record)}
+                                               style={{color: '#FFD306'}}/>
+                            </Tooltip>
+
+                            <Tooltip title="容器日志">
+                                <UnorderedListOutlined onClick={() => this.showContainerLog(record.Id)}
+                                                       style={{color: '#7E3D76'}}/>
+                            </Tooltip>
+
                             <Dropdown overlay={() => menu(record)} arrow>
                                 <Button type="link" size="small">更多</Button>
                             </Dropdown>

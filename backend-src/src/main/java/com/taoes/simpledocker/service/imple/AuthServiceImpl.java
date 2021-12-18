@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 /**
  * 授权服务接口实现
  *
- * @author eleme taozhou.tao@alibaba-inc.com
+ * @author 枕上江南 zhoutao925638@vip.qq.com
  * @date 2021/12/15 1:24 下午
  */
 @Slf4j

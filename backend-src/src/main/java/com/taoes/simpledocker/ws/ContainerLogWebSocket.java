@@ -26,7 +26,7 @@ import org.springframework.stereotype.Component;
 /**
  * 容器日志服务
  *
- * @author eleme taozhou.tao@alibaba-inc.com
+ * @author 枕上江南 zhoutao925638@vip.qq.com
  * @date 2021/12/5 1:33 上午
  */
 @Slf4j
@@ -59,6 +59,8 @@ public class ContainerLogWebSocket {
         SessionSet.add(session);
         final int i = OnlineCount.incrementAndGet();
         log.info("有连接接入，当前连接数为：{}", i);
+
+        // TODO 校验容器存在 & 优化
 
         final Map<String, String> param = session.getPathParameters();
         final var client = clientFactory.get();

@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 /**
  * ConfigRepository 对象
  *
- * @author eleme taozhou.tao@alibaba-inc.com
+ * @author 枕上江南 zhoutao925638@vip.qq.com
  * @date 2021/12/15 1:18 下午
  */
 @Repository

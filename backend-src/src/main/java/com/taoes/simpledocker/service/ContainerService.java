@@ -3,12 +3,13 @@ package com.taoes.simpledocker.service;
 import java.util.List;
 import java.util.Map;
 
+import com.github.dockerjava.api.command.TopContainerResponse;
 import com.github.dockerjava.api.model.Container;
 
 /**
  * 容器服务接口
  *
- * @author eleme taozhou.tao@alibaba-inc.com
+ * @author 枕上江南 zhoutao925638@vip.qq.com
  * @date 2021/12/10 11:31 下午
  */
 public interface ContainerService {
@@ -61,5 +62,20 @@ public interface ContainerService {
      * @param param       辅助操作的参数
      */
     void remove(String containerId, Map<String, String> param);
+
+    /**
+     * 获取容器的资源使用情况
+     *
+     * @param containerId 容器ID
+     */
+    void rename(String containerId, String newName);
+
+    /**
+     * 查询容器的线程信息
+     *  @param containerId 容器ID
+     * @param psArgs      进程参数
+     * @return
+     */
+    TopContainerResponse top(String containerId, String psArgs);
 
 }

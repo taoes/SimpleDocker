@@ -4,19 +4,19 @@ import java.util.List;
 import java.util.Map;
 
 import com.github.dockerjava.api.DockerClient;
+import com.github.dockerjava.api.command.TopContainerResponse;
 import com.github.dockerjava.api.model.Container;
 import com.taoes.simpledocker.config.DockerClientFactory;
 import com.taoes.simpledocker.service.ContainerService;
 import com.taoes.simpledocker.utils.BooleanUtils;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-
 import org.springframework.stereotype.Service;
 
 /**
  * 容器服务实现类
  *
- * @author eleme taozhou.tao@alibaba-inc.com
+ * @author 枕上江南 zhoutao925638@vip.qq.com
  * @date 2021/12/10 11:40 下午
  */
 @Slf4j
@@ -76,5 +76,22 @@ public class ContainerServiceImpl implements ContainerService {
             .withRemoveVolumes(BooleanUtils.parse(removeVolume, false))
             .exec();
         log.info("移除容器,containerId={} params={}", containerId, params);
+    }
+
+    @Override
+    public void rename(String containerId, String newName) {
+        final DockerClient dockerClient = clientFactory.get();
+        dockerClient.renameContainerCmd(containerId)
+            .withName(newName)
+            .exec();
+        log.info("重命名容器:[{}]为[{}]", containerId, newName);
+    }
+
+    @Override
+    public TopContainerResponse top(String containerId,String psArgs) {
+        final DockerClient dockerClient = clientFactory.get();
+        return dockerClient.topContainerCmd(containerId)
+            .withPsArgs(psArgs)
+            .exec();
     }
 }
