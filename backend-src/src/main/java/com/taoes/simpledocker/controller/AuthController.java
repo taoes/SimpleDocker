@@ -1,9 +1,12 @@
 package com.taoes.simpledocker.controller;
 
+import com.taoes.simpledocker.controller.auth.UserLoginRequest;
+import com.taoes.simpledocker.controller.auth.UserResetRequest;
 import com.taoes.simpledocker.model.ResponseModel;
 import com.taoes.simpledocker.service.AuthService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -19,7 +22,22 @@ public class AuthController {
     private AuthService authService;
 
     @PostMapping("/login")
-    public ResponseModel<String> login(){
-        return null;
+    public ResponseModel<String> login(@RequestBody UserLoginRequest loginRequest) {
+        final var username = loginRequest.getUsername();
+        final var password = loginRequest.getPassword();
+
+        var token = this.authService.login(username, password);
+        return ResponseModel.ok(token);
     }
+
+    /**
+     * 重置密码
+     */
+    @PostMapping("/reset")
+    public ResponseModel<Boolean> resetPassword(@RequestBody UserResetRequest request) {
+        request.checkParam();
+        authService.reset(request.getUsername(), request.getPassword(), request.getNewPassword());
+        return ResponseModel.ok(Boolean.TRUE);
+    }
+
 }
