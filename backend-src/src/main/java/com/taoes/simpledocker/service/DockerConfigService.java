@@ -10,7 +10,7 @@ import com.taoes.simpledocker.model.Docker;
  * @author 枕上江南 zhoutao925638@vip.qq.com
  * @date 2021/12/15 1:23 下午
  */
-public interface DockerService {
+public interface DockerConfigService {
     /**
      * 登录接口
      *

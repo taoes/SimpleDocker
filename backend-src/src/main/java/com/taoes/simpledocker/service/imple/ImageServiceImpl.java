@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.github.dockerjava.api.DockerClient;
 import com.github.dockerjava.api.command.InspectImageResponse;
+import com.github.dockerjava.api.exception.NotFoundException;
 import com.github.dockerjava.api.model.Image;
 import com.taoes.simpledocker.config.DockerClientFactory;
 import com.taoes.simpledocker.service.ImageService;
@@ -45,7 +46,8 @@ public class ImageServiceImpl implements ImageService {
 
     @Override
     public void remove(String imageId) {
-
+        final var client = factory.get();
+        client.removeImageCmd(imageId).exec();
     }
 
     @Override
@@ -60,7 +62,7 @@ public class ImageServiceImpl implements ImageService {
 
     @Override
     public void remove() {
-
+        final var client = factory.get();
     }
 
     @Override
@@ -71,5 +73,17 @@ public class ImageServiceImpl implements ImageService {
     @Override
     public void importByTar(String file) {
 
+    }
+
+    @Override
+    public boolean exist(String imageId) {
+        final DockerClient client = factory.get();
+        try {
+            final InspectImageResponse inspectImage = client.inspectImageCmd(imageId).exec();
+            log.info("获取到信息如下：{}", inspectImage);
+            return inspectImage != null;
+        } catch (NotFoundException e) {
+            return false;
+        }
     }
 }

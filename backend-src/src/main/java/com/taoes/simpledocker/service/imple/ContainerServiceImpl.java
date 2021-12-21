@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.github.dockerjava.api.DockerClient;
+import com.github.dockerjava.api.command.CreateContainerResponse;
 import com.github.dockerjava.api.command.TopContainerResponse;
 import com.github.dockerjava.api.model.Bind;
 import com.github.dockerjava.api.model.Container;
@@ -11,6 +12,7 @@ import com.github.dockerjava.api.model.HostConfig;
 import com.github.dockerjava.api.model.Link;
 import com.github.dockerjava.api.model.PortBinding;
 import com.taoes.simpledocker.config.DockerClientFactory;
+import com.taoes.simpledocker.controller.container.RunNewContainerRequest;
 import com.taoes.simpledocker.service.ContainerService;
 import com.taoes.simpledocker.utils.BooleanUtils;
 import lombok.AllArgsConstructor;
@@ -37,7 +39,7 @@ public class ContainerServiceImpl implements ContainerService {
     }
 
     @Override
-    public void run() {
+    public CreateContainerResponse run(RunNewContainerRequest request) {
         final DockerClient client = clientFactory.get();
         HostConfig hostConfig = HostConfig.newHostConfig();
         hostConfig.withBinds(Bind.parse("/host:/container:ro"))
@@ -46,10 +48,13 @@ public class ContainerServiceImpl implements ContainerService {
             .withDns("", "")
             .withNetworkMode("网络名");
 
-        client.createContainerCmd("s")
-            .withAliases("")
-            .withHostConfig(hostConfig)
-            .withEnv("A=B", "C=D").exec();
+        final CreateContainerResponse response =
+            client.createContainerCmd("s")
+                .withAliases("")
+                .withHostConfig(hostConfig)
+                .withEnv("A=B", "C=D")
+                .exec();
+        return response;
     }
 
     @Override

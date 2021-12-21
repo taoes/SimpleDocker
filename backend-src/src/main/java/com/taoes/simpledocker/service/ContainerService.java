@@ -3,8 +3,10 @@ package com.taoes.simpledocker.service;
 import java.util.List;
 import java.util.Map;
 
+import com.github.dockerjava.api.command.CreateContainerResponse;
 import com.github.dockerjava.api.command.TopContainerResponse;
 import com.github.dockerjava.api.model.Container;
+import com.taoes.simpledocker.controller.container.RunNewContainerRequest;
 
 /**
  * 容器服务接口
@@ -23,8 +25,9 @@ public interface ContainerService {
 
     /**
      * 运行新的容器
+     * @return
      */
-    void run();
+    CreateContainerResponse run(RunNewContainerRequest request);
 
     /**
      * 启动一个已经存在的容器
@@ -72,7 +75,8 @@ public interface ContainerService {
 
     /**
      * 查询容器的线程信息
-     *  @param containerId 容器ID
+     *
+     * @param containerId 容器ID
      * @param psArgs      进程参数
      * @return
      */

@@ -11,11 +11,11 @@ import com.github.dockerjava.core.DockerClientBuilder;
 import com.github.dockerjava.core.DockerClientConfig;
 import com.taoes.simpledocker.model.Docker;
 import com.taoes.simpledocker.model.exception.NotFoundClientException;
-import com.taoes.simpledocker.service.DockerService;
+import com.taoes.simpledocker.service.DockerConfigService;
 import com.taoes.simpledocker.service.GoProgramRunner;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeansException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
@@ -30,16 +30,17 @@ import org.springframework.util.StringUtils;
  */
 @Slf4j
 @Component
-@RequiredArgsConstructor
 public class DockerClientFactory implements ApplicationContextAware, CommandLineRunner {
 
     private final Map<String, DockerClient> clientGroup = new HashMap<>();
 
     private ApplicationContext context;
 
-    private final DockerService dockerService;
+    @Autowired
+    private DockerConfigService dockerConfigService;
 
-    private final GoProgramRunner goProgramRunner;
+    @Autowired
+    private GoProgramRunner goProgramRunner;
 
     public DockerClient get() {
         final String clientId = DockerClientInterception.clientIdLocal.get();
@@ -56,7 +57,7 @@ public class DockerClientFactory implements ApplicationContextAware, CommandLine
     @Override
     public void run(String... args) throws Exception {
         // 读取配置
-        final List<Docker> dockerList = dockerService.list();
+        final List<Docker> dockerList = dockerConfigService.list();
         for (Docker docker : dockerList) {
             DockerClientConfig config = DefaultDockerClientConfig.createDefaultConfigBuilder().build();
             final var defaultClient = DockerClientBuilder.getInstance(config).build();

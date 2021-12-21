@@ -164,5 +164,7 @@
     <orderEntry type="library" name="Maven: org.springframework.boot:spring-boot-starter-websocket:2.6.1" level="project" />
     <orderEntry type="library" name="Maven: org.springframework:spring-messaging:5.3.13" level="project" />
     <orderEntry type="library" name="Maven: org.springframework:spring-websocket:5.3.13" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: junit:junit:4.13.2" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: org.hamcrest:hamcrest-core:2.2" level="project" />
   </component>
 </module>
