@@ -15,4 +15,13 @@ public interface AuthService {
      * @return 生成的token
      */
     String login(String username, String password);
+
+    /**
+     * 重置密码
+     *
+     * @param username    用户名
+     * @param password    原密码
+     * @param newPassword 新密码
+     */
+    void reset(String username, String password, String newPassword);
 }
