@@ -4,7 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.taoes.simpledocker.model.Docker;
-import com.taoes.simpledocker.service.DockerService;
+import com.taoes.simpledocker.service.DockerConfigService;
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -16,11 +17,14 @@ import org.springframework.stereotype.Service;
  */
 @Slf4j
 @Service
-public class DockerServiceImpl implements DockerService {
+@AllArgsConstructor
+public class DockerConfigServiceImpl implements DockerConfigService {
+
     @Override
     public List<Docker> list() {
         ArrayList<Docker> dockers = new ArrayList<>();
         dockers.add(new Docker());
         return dockers;
     }
+
 }

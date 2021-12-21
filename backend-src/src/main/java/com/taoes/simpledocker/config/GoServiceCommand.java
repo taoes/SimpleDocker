@@ -11,7 +11,7 @@ import com.github.dockerjava.core.DockerClientBuilder;
 import com.github.dockerjava.core.DockerClientConfig;
 import com.taoes.simpledocker.model.Docker;
 import com.taoes.simpledocker.model.exception.NotFoundClientException;
-import com.taoes.simpledocker.service.DockerService;
+import com.taoes.simpledocker.service.DockerConfigService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeansException;
@@ -36,7 +36,7 @@ public class GoServiceCommand implements ApplicationContextAware, CommandLineRun
 
     private ApplicationContext context;
 
-    private final DockerService dockerService;
+    private final DockerConfigService dockerConfigService;
 
     public DockerClient get() {
         final String clientId = DockerClientInterception.clientIdLocal.get();
@@ -53,7 +53,7 @@ public class GoServiceCommand implements ApplicationContextAware, CommandLineRun
     @Override
     public void run(String... args) throws Exception {
         // 读取配置
-        final List<Docker> dockerList = dockerService.list();
+        final List<Docker> dockerList = dockerConfigService.list();
         for (Docker docker : dockerList) {
             // 初始化Docker
             log.info("初始化:{}", docker);
