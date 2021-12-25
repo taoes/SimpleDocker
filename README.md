@@ -39,7 +39,7 @@ SimpleDocker 是一个简单的Docker控制面板，致力于可以让用户更�
 
 ## 演示网站
 0. 部署的内容为重构版本，目前可能功能尚未完善，一些功能尚未完善，随着重构进度后面会继续发布
-1. 演示环境 [http://docker.zhoutao123.com/](http://docker.zhoutao123.com/)
+1. 演示环境 [http://dockerConfig.zhoutao123.com/](http://dockerConfig.zhoutao123.com/)
 2. 账号: admin 密码: 123456
 3. 演示环境，请勿删除/停止/暂停 容器，否则可能造成服务异常
 4. 如果演示环境无法登录或者无法使用，请及时创建Issue联系我
@@ -79,9 +79,9 @@ SimpleDocker 是一个简单的Docker控制面板，致力于可以让用户更�
 
 #### DockerCompose 安装
 
-1. 确保Docker & DockerCompose 已经部署并且启动成功，如果docker-compose 没有安装请参考官网 [https://docs.docker.com/compose/install/](https://docs.docker.com/compose/install/) 安装
-2. 通过命令 `docker-compose version` 验证安装成功     
-3. 在某个目录下创建文件 `docker-compose.yml` 其内容如下: 
+1. 确保Docker & DockerCompose 已经部署并且启动成功，如果docker-compose 没有安装请参考官网 [https://docs.dockerConfig.com/compose/install/](https://docs.dockerConfig.com/compose/install/) 安装
+2. 通过命令 `dockerConfig-compose version` 验证安装成功     
+3. 在某个目录下创建文件 `dockerConfig-compose.yml` 其内容如下: 
 ```yaml
 # yaml 配置实例
 version: '3'
@@ -89,12 +89,12 @@ services:
   redis:
     image: redis:latest
   web:
-    image: registry.cn-hangzhou.aliyuncs.com/seven-tao/simple-docker:0.0.7.1
+    image: registry.cn-hangzhou.aliyuncs.com/seven-tao/simple-dockerConfig:0.0.7.1
     ports:
       - "9091:4050"
     volumes:
-      - /tmp/simple-docker/back:/tmp/back
-      - /var/run/docker.sock:/var/run/docker.sock
+      - /tmp/simple-dockerConfig/back:/tmp/back
+      - /var/run/dockerConfig.sock:/var/run/dockerConfig.sock
     depends_on:
       - redis
 ```   
@@ -102,8 +102,8 @@ services:
 3. 执行下面的脚本，会自动拉取镜像并启动在 9091 端口
 
 ```sh
-docker-compose up # 前台运行
-docker-compose up -d # 后台运行
+dockerConfig-compose up # 前台运行
+dockerConfig-compose up -d # 后台运行
 ```
 
 3. 浏览器访问 http://localhost:9091
@@ -118,7 +118,7 @@ docker-compose up -d # 后台运行
 ```bash
 git clone https://gitee.com/taoes_admin/SimpleDocker
 cd SimpleDocker
-docker-compose up -d --build # Build images before starting containers
+dockerConfig-compose up -d --build # Build images before starting containers
 ```
 
 #### 手动编译
@@ -189,7 +189,7 @@ yarn install && yarn server
 - [Vuex](https://vuex.vuejs.org/)
 - [VueJs 2.x](https://vuejs.org/)
 - [Ant Design Vue](https://www.antdv.com/docs/vue/introduce-cn/)
-- [Docker API Engine](https://docs.docker.com/engine/api/sdk/)
+- [Docker API Engine](https://docs.dockerConfig.com/engine/api/sdk/)
 
 ## 我的信息
 

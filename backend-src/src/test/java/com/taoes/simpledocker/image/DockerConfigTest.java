@@ -17,7 +17,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = SimpleDockerApplication.class, webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
-public class DockerTest {
+public class DockerConfigTest {
 
     @Autowired
     private DockerClientService clientService;

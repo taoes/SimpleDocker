@@ -1,22 +1,16 @@
 package com.taoes.simpledocker.service.imple;
 
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Collection;
-import java.util.Date;
-import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
 import com.taoes.simpledocker.dao.bean.UserDao;
 import com.taoes.simpledocker.dao.responsity.UserRepository;
 import com.taoes.simpledocker.service.AuthService;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Service;
+
+//import org.springframework.security.core.GrantedAuthority;
 
 /**
  * 授权服务接口实现
@@ -48,7 +42,7 @@ public class AuthServiceImpl implements AuthService {
         }
 
         // 生成token
-        return createNewToken(username, new ArrayList<>());
+        return "";//createNewToken(username, new ArrayList<>());
     }
 
     @Override
@@ -57,24 +51,24 @@ public class AuthServiceImpl implements AuthService {
         // TODO 江南 重置密码
     }
 
-    private String createNewToken(String username, Collection<? extends GrantedAuthority> authorities) {
-        // 定义存放角色集合的对象
-        List<String> roleList = new ArrayList<>();
-        for (GrantedAuthority grantedAuthority : authorities) {
-            roleList.add(grantedAuthority.getAuthority());
-        }
-
-        // 生成token start
-        Calendar calendar = Calendar.getInstance();
-        Date now = calendar.getTime();
-        calendar.setTime(new Date());
-        calendar.add(Calendar.HOUR, 2);
-        Date time = calendar.getTime();
-        return Jwts.builder()
-            .setSubject(username)
-            .setIssuedAt(now)
-            .setExpiration(time)
-            .signWith(SignatureAlgorithm.HS512, "SIGNING_KEY")
-            .compact();
-    }
+    //private String createNewToken(String username, Collection<? extends GrantedAuthority> authorities) {
+    //    // 定义存放角色集合的对象
+    //    List<String> roleList = new ArrayList<>();
+    //    for (GrantedAuthority grantedAuthority : authorities) {
+    //        roleList.add(grantedAuthority.getAuthority());
+    //    }
+    //
+    //    // 生成token start
+    //    Calendar calendar = Calendar.getInstance();
+    //    Date now = calendar.getTime();
+    //    calendar.setTime(new Date());
+    //    calendar.add(Calendar.HOUR, 2);
+    //    Date time = calendar.getTime();
+    //    return Jwts.builder()
+    //        .setSubject(username)
+    //        .setIssuedAt(now)
+    //        .setExpiration(time)
+    //        .signWith(SignatureAlgorithm.HS512, "SIGNING_KEY")
+    //        .compact();
+    //}
 }

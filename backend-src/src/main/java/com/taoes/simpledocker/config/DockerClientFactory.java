@@ -9,7 +9,7 @@ import com.github.dockerjava.api.DockerClient;
 import com.github.dockerjava.core.DefaultDockerClientConfig;
 import com.github.dockerjava.core.DockerClientBuilder;
 import com.github.dockerjava.core.DockerClientConfig;
-import com.taoes.simpledocker.model.Docker;
+import com.taoes.simpledocker.model.DockerConfig;
 import com.taoes.simpledocker.model.exception.NotFoundClientException;
 import com.taoes.simpledocker.service.DockerConfigService;
 import com.taoes.simpledocker.service.GoProgramRunner;
@@ -57,8 +57,8 @@ public class DockerClientFactory implements ApplicationContextAware, CommandLine
     @Override
     public void run(String... args) throws Exception {
         // 读取配置
-        final List<Docker> dockerList = dockerConfigService.list();
-        for (Docker docker : dockerList) {
+        final List<DockerConfig> dockerConfigList = dockerConfigService.list();
+        for (DockerConfig dockerConfig : dockerConfigList) {
             DockerClientConfig config = DefaultDockerClientConfig.createDefaultConfigBuilder().build();
             final var defaultClient = DockerClientBuilder.getInstance(config).build();
             clientGroup.put("DEFAULT", defaultClient);
@@ -74,5 +74,15 @@ public class DockerClientFactory implements ApplicationContextAware, CommandLine
     @Override
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
         this.context = context;
+    }
+
+    /**
+     * TODO 通过配置查询到Code
+     *
+     * @param code docker 配置的code
+     * @return 该code对应的客户端
+     */
+    public DockerClient findByCode(String code) {
+        return null;
     }
 }

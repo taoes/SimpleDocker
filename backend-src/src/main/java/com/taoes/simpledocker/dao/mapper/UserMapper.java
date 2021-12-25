@@ -1,5 +1,7 @@
 package com.taoes.simpledocker.dao.mapper;
 
+import java.util.List;
+
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.taoes.simpledocker.dao.bean.UserDao;
 import org.apache.ibatis.annotations.Mapper;
@@ -12,4 +14,7 @@ import org.apache.ibatis.annotations.Mapper;
  */
 @Mapper
 public interface UserMapper extends BaseMapper<UserDao> {
+
+
+    List<UserDao> listByPass();
 }

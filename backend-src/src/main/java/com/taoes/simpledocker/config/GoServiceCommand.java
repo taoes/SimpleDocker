@@ -9,7 +9,7 @@ import com.github.dockerjava.api.DockerClient;
 import com.github.dockerjava.core.DefaultDockerClientConfig;
 import com.github.dockerjava.core.DockerClientBuilder;
 import com.github.dockerjava.core.DockerClientConfig;
-import com.taoes.simpledocker.model.Docker;
+import com.taoes.simpledocker.model.DockerConfig;
 import com.taoes.simpledocker.model.exception.NotFoundClientException;
 import com.taoes.simpledocker.service.DockerConfigService;
 import lombok.RequiredArgsConstructor;
@@ -53,10 +53,10 @@ public class GoServiceCommand implements ApplicationContextAware, CommandLineRun
     @Override
     public void run(String... args) throws Exception {
         // 读取配置
-        final List<Docker> dockerList = dockerConfigService.list();
-        for (Docker docker : dockerList) {
+        final List<DockerConfig> dockerConfigList = dockerConfigService.list();
+        for (DockerConfig dockerConfig : dockerConfigList) {
             // 初始化Docker
-            log.info("初始化:{}", docker);
+            log.info("初始化:{}", dockerConfig);
         }
 
         DockerClientConfig config = DefaultDockerClientConfig.createDefaultConfigBuilder().build();

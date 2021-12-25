@@ -168,7 +168,7 @@ class ImagePage extends Component {
                 return true
             }
             return image.Id.indexOf(this.state.filterKey) !== -1 || (JSON.stringify(image.RepoTags).indexOf(this.state.filterKey) !== -1);
-            ;
+
         });
 
         return (

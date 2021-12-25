@@ -2,7 +2,7 @@ package com.taoes.simpledocker.service;
 
 import java.util.List;
 
-import com.taoes.simpledocker.model.Docker;
+import com.taoes.simpledocker.model.DockerConfig;
 
 /**
  * docker 服务
@@ -12,9 +12,9 @@ import com.taoes.simpledocker.model.Docker;
  */
 public interface DockerConfigService {
     /**
-     * 登录接口
+     * 获取全部的Docker配置
      *
      * @return 生成的token
      */
-    List<Docker> list();
+    List<DockerConfig> list();
 }

@@ -1,7 +1,7 @@
 package com.taoes.simpledocker.dao.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.taoes.simpledocker.dao.bean.DockerDao;
+import com.taoes.simpledocker.dao.bean.DockerConfigDao;
 import org.apache.ibatis.annotations.Mapper;
 
 /**
@@ -11,5 +11,5 @@ import org.apache.ibatis.annotations.Mapper;
  * @date 2021/12/15 1:17 下午
  */
 @Mapper
-public interface DockerMapper extends BaseMapper<DockerDao> {
+public interface DockerMapper extends BaseMapper<DockerConfigDao> {
 }
