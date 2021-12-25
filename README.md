@@ -39,7 +39,7 @@ SimpleDocker 是一个简单的Docker控制面板，致力于可以让用户更�
 
 ## 演示网站
 0. 部署的内容为重构版本，目前可能功能尚未完善，一些功能尚未完善，随着重构进度后面会继续发布
-1. 演示环境 [http://dockerConfig.zhoutao123.com/](http://dockerConfig.zhoutao123.com/)
+1. 演示环境 [http://docker.zhoutao123.com/](http://docker.zhoutao123.com/)
 2. 账号: admin 密码: 123456
 3. 演示环境，请勿删除/停止/暂停 容器，否则可能造成服务异常
 4. 如果演示环境无法登录或者无法使用，请及时创建Issue联系我
