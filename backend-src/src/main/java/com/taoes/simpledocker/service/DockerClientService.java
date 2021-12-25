@@ -14,4 +14,8 @@ public interface DockerClientService {
      */
     Void ping();
 
+    /**
+     * 监控服务
+     */
+    void monitor();
 }

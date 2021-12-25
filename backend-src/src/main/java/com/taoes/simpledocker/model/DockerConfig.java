@@ -1,21 +1,16 @@
-package com.taoes.simpledocker.dao.bean;
+package com.taoes.simpledocker.model;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
+import com.taoes.simpledocker.model.enums.DockerConfigType;
 import lombok.Data;
 
 /**
- * docker 服务端配置
+ * Docker配置信息
  *
  * @author 枕上江南 zhoutao925638@vip.qq.com
- * @date 2021/12/15 1:11 下午
+ * @date 2021/12/15 1:26 下午
  */
 @Data
-@TableName("sd_docker")
-public class DockerDao {
-    @TableId(type = IdType.AUTO)
-    private Long id;
+public class DockerConfig {
 
     /**
      * 配置名
@@ -41,5 +36,10 @@ public class DockerDao {
      * ssl
      */
     private Boolean ssl;
+
+    /**
+     * docker 配置的类型
+     */
+    private DockerConfigType type;
 
 }

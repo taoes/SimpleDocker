@@ -1,9 +1,11 @@
 package com.taoes.simpledocker.service.imple;
 
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
-import com.taoes.simpledocker.model.Docker;
+import com.taoes.simpledocker.converter.DockerConfigConverter;
+import com.taoes.simpledocker.dao.responsity.DockerRepository;
+import com.taoes.simpledocker.model.DockerConfig;
 import com.taoes.simpledocker.service.DockerConfigService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -20,11 +22,15 @@ import org.springframework.stereotype.Service;
 @AllArgsConstructor
 public class DockerConfigServiceImpl implements DockerConfigService {
 
+    private final DockerRepository dockerRepository;
+
+    private final DockerConfigConverter converter;
+
     @Override
-    public List<Docker> list() {
-        ArrayList<Docker> dockers = new ArrayList<>();
-        dockers.add(new Docker());
-        return dockers;
+    public List<DockerConfig> list() {
+        return Collections.singletonList(new DockerConfig());
+        //final List<DockerConfigDao> dockerConfigDaoList = dockerRepository.list();
+        //return dockerConfigDaoList.stream().map(converter::from).collect(Collectors.toList());
     }
 
 }

@@ -6,7 +6,6 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.taoes.simpledocker.dao.bean.UserDao;
 import com.taoes.simpledocker.dao.mapper.UserMapper;
-import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Repository;
 
 /**

@@ -18,4 +18,18 @@ public interface ConfigService {
      * @return KEY & VALUE
      */
     Map<String, String> findConfigByKeys(Set<String> keys);
+
+    /**
+     * 保存配置信息
+     *
+     * @param configGroup 配置信息
+     */
+    void save(Map<String, String> configGroup);
+
+    /**
+     * 清除配置
+     *
+     * @param cleanKeys 需要清除的Key
+     */
+    void cleanByKeys(Set<String> cleanKeys);
 }

@@ -1,17 +1,22 @@
 package com.taoes.simpledocker.service.imple;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.taoes.simpledocker.dao.bean.ConfigDao;
 import com.taoes.simpledocker.dao.responsity.ConfigRepository;
 import com.taoes.simpledocker.service.ConfigService;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 
 /**
  * 配置查询服务实现类
@@ -21,10 +26,10 @@ import org.springframework.stereotype.Service;
  */
 @Slf4j
 @Service
+@RequiredArgsConstructor
 public class ConfigServiceImpl implements ConfigService {
 
-    @Autowired
-    private ConfigRepository configRepository;
+    private final ConfigRepository configRepository;
 
     @Override
     public Map<String, String> findConfigByKeys(Set<String> names) {
@@ -38,5 +43,39 @@ public class ConfigServiceImpl implements ConfigService {
             result.put(name, value);
         }
         return result;
+    }
+
+    @Override
+    @Transactional
+    public void save(Map<String, String> configGroup) {
+        if (CollectionUtils.isEmpty(configGroup)) {
+            return;
+        }
+
+        // 清除
+        var cleanKeys = configGroup.keySet();
+        this.cleanByKeys(cleanKeys);
+
+        // 保存
+        var configDaoList = new ArrayList<ConfigDao>();
+        for (Entry<String, String> entry : configGroup.entrySet()) {
+            ConfigDao configDao = new ConfigDao();
+            configDao.setName(entry.getKey());
+            configDao.setValue(entry.getValue());
+            configDao.setVersion("0");
+            configDaoList.add(configDao);
+        }
+        this.configRepository.saveBatch(configDaoList);
+    }
+
+    @Override
+    public void cleanByKeys(Set<String> cleanKeys) {
+        if (CollectionUtils.isEmpty(cleanKeys)) {
+            return;
+        }
+
+        var wrapper = new LambdaQueryWrapper<ConfigDao>();
+        wrapper.in(ConfigDao::getName, cleanKeys);
+        this.configRepository.remove(wrapper);
     }
 }

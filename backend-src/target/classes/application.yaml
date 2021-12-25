@@ -2,7 +2,7 @@ server:
   port: 3364   #纪念给予我最大支持的老婆 DENG 对应九宫格编码 '3364'
 spring:
   datasource:
-    url: jdbc:mysql://localhost:3306/test?serverTimezone=GMT+8
+    url: jdbc:mysql://localhost:3306/test
     username: root
     password: 123456
     driver-class-name: com.mysql.cj.jdbc.Driver

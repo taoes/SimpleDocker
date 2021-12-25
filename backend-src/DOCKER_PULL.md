@@ -1,4 +1,4 @@
-+ Pulling from library/redis
+d ..+ Pulling from library/redis
 ```json
 {
     "stream": null,
