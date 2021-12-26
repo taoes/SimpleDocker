@@ -1,5 +1,5 @@
 import {Component} from "react";
-import {Button, Checkbox, Input, Space, Table, Tag, Modal, message, Menu, Dropdown, Tooltip} from "antd";
+import {Button, Checkbox, Input, Space, Table, Tag, Modal, message, Menu, Dropdown} from "antd";
 import {getContainerList, operatorContainerApi} from "../../api/container";
 import dateToStr from '../../utils/DateTime'
 import {

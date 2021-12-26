@@ -49,14 +49,44 @@ class CommonMenu extends React.Component {
                     </Menu.Item>
 
                     <SubMenu key="sub1" icon={<ToolOutlined/>} title="系统设置">
-                        <Menu.Item key="11" icon={<SettingOutlined/>}>监控配置</Menu.Item>
-                        <Menu.Item key="12" icon={<SettingOutlined/>}>通知配置</Menu.Item>
-                        <Menu.Item key="13" icon={<SettingOutlined/>}>数据管理</Menu.Item>
+                        <Menu.Item key="monitorPage" icon={<SettingOutlined/>}>
+                            <Link to='/app/monitor'>
+                                WebHook
+                            </Link>
+                        </Menu.Item>
+
+                        <Menu.Item key="notificationPage" icon={<SettingOutlined/>}>
+                            <Link to='/app/notification'>
+                                通知配置
+                            </Link>
+                        </Menu.Item>
+
+                        <Menu.Item to='/app/data' key="13" icon={<SettingOutlined/>}>数据管理</Menu.Item>
                     </SubMenu>
 
                     <SubMenu key="sub2" icon={<LockOutlined/>} title="安全配置">
-                        <Menu.Item key="9" icon={<InsertRowLeftOutlined/>}>仓库管理</Menu.Item>
-                        <Menu.Item key="10" icon={<LinkOutlined/>}>连接管理</Menu.Item>
+
+                        <Menu.Item key="userPage" icon={<InsertRowLeftOutlined/>}>
+                            <Link to='/app/user'>
+                                用户管理
+                            </Link>
+                        </Menu.Item>
+
+
+                        <Menu.Item key="registryPage" icon={<InsertRowLeftOutlined/>}>
+                            <Link to='/app/registry'>
+                                仓库管理
+                            </Link>
+                        </Menu.Item>
+
+
+                        <Menu.Item key="dockerPage" icon={<InsertRowLeftOutlined/>}>
+                            <Link to='/app/docker'>
+                                连接管理
+                            </Link>
+                        </Menu.Item>
+
+
                     </SubMenu>
                 </Menu>
             </div>

@@ -5,6 +5,11 @@ import NetworkPage from "../page/network";
 import ContainerPage from "../page/container";
 import React from "react";
 import AuthRouter from "./AuthRouter";
+import MonitPage from "../page/security/monit";
+import NotificationPage from "../page/security/notification";
+import UserPage from "../page/security/user";
+import DockerPage from "../page/security/docker";
+import RegistryPage from "../page/security/registry";
 
 const appRouter = [
     {
@@ -30,6 +35,27 @@ const appRouter = [
     {
         path: '/app/network',
         component: <AuthRouter><NetworkPage/></AuthRouter>,
+        exact: true,
+    },
+    {
+        path: '/app/monitor',
+        component: <AuthRouter><MonitPage/></AuthRouter>,
+        exact: true,
+    }, {
+        path: '/app/notification',
+        component: <AuthRouter><NotificationPage/></AuthRouter>,
+        exact: true,
+    }, {
+        path: '/app/user',
+        component: <AuthRouter><UserPage/></AuthRouter>,
+        exact: true,
+    }, {
+        path: '/app/docker',
+        component: <AuthRouter><DockerPage/></AuthRouter>,
+        exact: true,
+    }, {
+        path: '/app/registry',
+        component: <AuthRouter><RegistryPage/></AuthRouter>,
         exact: true,
     }
 ]
