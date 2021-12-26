@@ -5,57 +5,73 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="2e8afb8c-0a7a-4fb7-ad64-90ec4bfdb3a1" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/backend-src/src/main/java/com/taoes/simpledocker/converter/AbstractConverter.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/backend-src/src/main/java/com/taoes/simpledocker/converter/DockerConfigConverter.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/backend-src/src/main/java/com/taoes/simpledocker/model/enums/DockerConfigType.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/backend-src/src/main/java/com/taoes/simpledocker/service/docker/monitor/DockerMonitorCallback.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/build/Dockerfile" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/front-vue-src/public/icon.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/front-vue-src/src/api/ContainerApi.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/front-vue-src/src/api/ImageApi.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/front-vue-src/src/api/NetworkApi.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/front-vue-src/src/api/VolumeApi.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/front-vue-src/src/boot/router.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/front-vue-src/src/i18n/zh-CN/index.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/front-vue-src/src/i18n/zh-TW/index.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/front-vue-src/src/layouts/LoginLayout.vue" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/front-vue-src/src/pages/ContainerPage.vue" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/front-vue-src/src/pages/ImagePage.vue" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/front-vue-src/src/pages/LoginPage.vue" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/front-vue-src/src/pages/NetworkPage.vue" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/front-vue-src/src/pages/SecurityConfigPage.vue" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/front-vue-src/src/pages/SystemConfigPage.vue" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/front-vue-src/src/pages/VolumePage.vue" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/front-vue-src/src/pages/container/New.vue" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/front-vue-src/src/utils/SizeUtils.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/front-vue-src/src/utils/TimeUtils.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/front-src/src/page/security/docker/index.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/front-src/src/page/security/notification/index.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/front-src/src/page/security/registry/index.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/front-src/src/page/security/user/index.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend-src/DOCKER_PULL.md" beforeDir="false" afterPath="$PROJECT_DIR$/backend-src/DOCKER_PULL.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend-src/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/backend-src/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend-src/simpleDocker.iml" beforeDir="false" afterPath="$PROJECT_DIR$/backend-src/simpleDocker.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend-src/src/main/java/com/taoes/simpledocker/config/DockerClientFactory.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend-src/src/main/java/com/taoes/simpledocker/config/DockerClientFactory.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend-src/src/main/java/com/taoes/simpledocker/config/GoServiceCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend-src/src/main/java/com/taoes/simpledocker/config/GoServiceCommand.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend-src/src/main/java/com/taoes/simpledocker/config/TokenValidateFilter.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend-src/src/main/java/com/taoes/simpledocker/config/TokenValidateFilter.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend-src/src/main/java/com/taoes/simpledocker/dao/bean/DockerDao.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend-src/src/main/java/com/taoes/simpledocker/dao/bean/DockerConfigDao.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend-src/src/main/java/com/taoes/simpledocker/dao/mapper/DockerMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend-src/src/main/java/com/taoes/simpledocker/dao/mapper/DockerMapper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend-src/src/main/java/com/taoes/simpledocker/dao/mapper/UserMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend-src/src/main/java/com/taoes/simpledocker/dao/mapper/UserMapper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend-src/src/main/java/com/taoes/simpledocker/dao/responsity/DockerRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend-src/src/main/java/com/taoes/simpledocker/dao/responsity/DockerRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend-src/src/main/java/com/taoes/simpledocker/dao/responsity/UserRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend-src/src/main/java/com/taoes/simpledocker/dao/responsity/UserRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend-src/src/main/java/com/taoes/simpledocker/model/Docker.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend-src/src/main/java/com/taoes/simpledocker/model/DockerConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend-src/src/main/java/com/taoes/simpledocker/service/ConfigService.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend-src/src/main/java/com/taoes/simpledocker/service/ConfigService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend-src/src/main/java/com/taoes/simpledocker/service/DockerClientService.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend-src/src/main/java/com/taoes/simpledocker/service/DockerClientService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend-src/src/main/java/com/taoes/simpledocker/service/DockerConfigService.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend-src/src/main/java/com/taoes/simpledocker/service/DockerConfigService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend-src/src/main/java/com/taoes/simpledocker/service/auth/GrantedAuthorityImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend-src/src/main/java/com/taoes/simpledocker/service/auth/GrantedAuthorityImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend-src/src/main/java/com/taoes/simpledocker/service/imple/AuthServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend-src/src/main/java/com/taoes/simpledocker/service/imple/AuthServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend-src/src/main/java/com/taoes/simpledocker/service/imple/ConfigServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend-src/src/main/java/com/taoes/simpledocker/service/imple/ConfigServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend-src/src/main/java/com/taoes/simpledocker/service/imple/DockerClientServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend-src/src/main/java/com/taoes/simpledocker/service/imple/DockerClientServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend-src/src/main/java/com/taoes/simpledocker/service/imple/DockerConfigServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend-src/src/main/java/com/taoes/simpledocker/service/imple/DockerConfigServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend-src/src/main/resources/application.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/backend-src/src/main/resources/application.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend-src/src/test/java/com/taoes/simpledocker/image/DockerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend-src/src/test/java/com/taoes/simpledocker/image/DockerConfigTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend-src/target/classes/application.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/backend-src/target/classes/application.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-src/src/page/image/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/front-src/src/page/image/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/front-src/src/api/container.js" beforeDir="false" afterPath="$PROJECT_DIR$/front-src/src/api/container.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/front-src/src/components/CommonMenu.js" beforeDir="false" afterPath="$PROJECT_DIR$/front-src/src/components/CommonMenu.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/front-src/src/page/container/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/front-src/src/page/container/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/front-src/src/router/app.js" beforeDir="false" afterPath="$PROJECT_DIR$/front-src/src/router/app.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/front-vue-src/.editorconfig" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/front-vue-src/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/front-vue-src/.postcssrc.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/front-vue-src/.vscode/extensions.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/front-vue-src/.vscode/settings.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/front-vue-src/README.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/front-vue-src/babel.config.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/front-vue-src/jsconfig.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/front-vue-src/package.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/front-vue-src/public/favicon.ico" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/front-vue-src/public/icon.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/front-vue-src/public/icons/favicon-128x128.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/front-vue-src/public/icons/favicon-16x16.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/front-vue-src/public/icons/favicon-32x32.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/front-vue-src/public/icons/favicon-96x96.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/front-vue-src/quasar.conf.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/front-vue-src/src/App.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/front-vue-src/src/api/ContainerApi.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/front-vue-src/src/api/ImageApi.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/front-vue-src/src/api/NetworkApi.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/front-vue-src/src/api/VolumeApi.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/front-vue-src/src/assets/quasar-logo-vertical.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/front-vue-src/src/boot/.gitkeep" beforeDir="false" afterPath="$PROJECT_DIR$/front-src/src/page/security/monit/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/front-vue-src/src/boot/axios.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/front-vue-src/src/boot/i18n.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/front-vue-src/src/boot/router.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/front-vue-src/src/components/EssentialLink.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/front-vue-src/src/css/app.scss" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/front-vue-src/src/css/quasar.variables.scss" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/front-vue-src/src/i18n/en-US/index.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/front-vue-src/src/i18n/index.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/front-vue-src/src/i18n/zh-CN/index.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/front-vue-src/src/i18n/zh-TW/index.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/front-vue-src/src/index.template.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/front-vue-src/src/layouts/LoginLayout.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/front-vue-src/src/layouts/MainLayout.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/front-vue-src/src/pages/ContainerPage.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/front-vue-src/src/pages/Error404.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/front-vue-src/src/pages/ImagePage.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/front-vue-src/src/pages/Index.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/front-vue-src/src/pages/LoginPage.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/front-vue-src/src/pages/NetworkPage.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/front-vue-src/src/pages/SecurityConfigPage.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/front-vue-src/src/pages/SystemConfigPage.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/front-vue-src/src/pages/VolumePage.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/front-vue-src/src/pages/container/New.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/front-vue-src/src/quasar.d.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/front-vue-src/src/router/index.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/front-vue-src/src/router/routes.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/front-vue-src/src/store/index.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/front-vue-src/src/store/module-example/actions.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/front-vue-src/src/store/module-example/getters.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/front-vue-src/src/store/module-example/index.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/front-vue-src/src/store/module-example/mutations.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/front-vue-src/src/store/module-example/state.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/front-vue-src/src/store/store-flag.d.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/front-vue-src/src/utils/SizeUtils.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/front-vue-src/src/utils/TimeUtils.js" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -75,8 +91,8 @@
         <option value="Interface" />
         <option value="Class" />
         <option value="Enum" />
-        <option value="JavaScript File" />
         <option value="Vue Single File Component" />
+        <option value="JavaScript File" />
       </list>
     </option>
   </component>
@@ -148,7 +164,7 @@
     <property name="aspect.path.notification.shown" value="true" />
     <property name="go.import.settings.migrated" value="true" />
     <property name="go.sdk.automatically.set" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/front-vue-src/public" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/front-src/src/page/security" />
     <property name="list.type.of.created.stylesheet" value="CSS" />
     <property name="nodejs_package_manager_path" value="npm" />
     <property name="restartRequiresConfirmation" value="false" />
@@ -164,11 +180,11 @@
       <recent name="com.taoes.simpledocker.service.imple" />
     </key>
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/front-src/src/page/security" />
       <recent name="$PROJECT_DIR$/front-vue-src/public" />
       <recent name="$PROJECT_DIR$/front-vue-src/src/pages" />
       <recent name="$PROJECT_DIR$/front-vue-src/src/api" />
       <recent name="$PROJECT_DIR$/front-vue-src/src/i18n" />
-      <recent name="$PROJECT_DIR$/front-vue-src/src/utils" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/front-src/src/layout" />
@@ -182,22 +198,9 @@
       <recent name="com.taoes.simpledocker.image" />
     </key>
   </component>
-  <component name="RunManager" selected="Spring Boot.SimpleDockerApplication">
+  <component name="RunManager" selected="Node.js.index.js">
     <configuration name="OSInfo" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="com.taoes.simpledocker.utils.OSInfo" />
-      <module name="simpleDocker" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="com.taoes.simpledocker.utils.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="OSinfo" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="com.taoes.simpledocker.utils.OSinfo" />
       <module name="simpleDocker" />
       <extension name="coverage">
         <pattern>
@@ -263,6 +266,9 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="index.js" type="NodeJSConfigurationType" temporary="true" nameIsGenerated="true" path-to-js-file="$PROJECT_DIR$/front-src/src/page/security/monit/index.js" working-dir="$PROJECT_DIR$/front-src/src/page/security/monit">
+      <method v="2" />
+    </configuration>
     <configuration name="SimpleDockerApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
       <module name="simpleDocker" />
       <option name="SPRING_BOOT_MAIN_CLASS" value="com.taoes.simpledocker.SimpleDockerApplication" />
@@ -272,11 +278,11 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Node.js.index.js" />
         <item itemvalue="JUnit.ContainerTest and 2 more" />
         <item itemvalue="JUnit.ImageTest" />
         <item itemvalue="JUnit.ImageTest.testImageExist" />
         <item itemvalue="Application.OSInfo" />
-        <item itemvalue="Application.OSinfo" />
       </list>
     </recent_temporary>
   </component>
@@ -301,7 +307,7 @@
       <workItem from="1640150196406" duration="2765000" />
       <workItem from="1640255506111" duration="416000" />
       <workItem from="1640314252689" duration="2137000" />
-      <workItem from="1640347561246" duration="33149000" />
+      <workItem from="1640347561246" duration="46983000" />
     </task>
     <servers />
   </component>

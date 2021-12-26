@@ -7,7 +7,7 @@ export async function getContainerList() {
 
 // 启动容器
 export function operatorContainerApi(cId, operator, params, then, error) {
-    return post(`/container/operator/${operator}`, {containerId: cId, params}).then(then).catch(error);
+    return post(`/container/operator/${operator}`, {containerId: cId, properties: params}).then(then).catch(error);
 }
 
 
