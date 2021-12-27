@@ -79,9 +79,9 @@ SimpleDocker 是一个简单的Docker控制面板，致力于可以让用户更�
 
 #### DockerCompose 安装
 
-1. 确保Docker & DockerCompose 已经部署并且启动成功，如果docker-compose 没有安装请参考官网 [https://docs.dockerConfig.com/compose/install/](https://docs.dockerConfig.com/compose/install/) 安装
-2. 通过命令 `dockerConfig-compose version` 验证安装成功     
-3. 在某个目录下创建文件 `dockerConfig-compose.yml` 其内容如下: 
+1. 确保Docker & DockerCompose 已经部署并且启动成功，如果docker-compose 没有安装请参考官网 [https://docs.docker.com/compose/install/](https://docs.docker.com/compose/install/) 安装
+2. 通过命令 `docker-compose version` 验证安装成功     
+3. 在某个目录下创建文件 `docker-compose.yml` 其内容如下: 
 ```yaml
 # yaml 配置实例
 version: '3'
@@ -89,12 +89,12 @@ services:
   redis:
     image: redis:latest
   web:
-    image: registry.cn-hangzhou.aliyuncs.com/seven-tao/simple-dockerConfig:0.0.7.1
+    image: registry.cn-hangzhou.aliyuncs.com/seven-tao/simple-docker:0.0.7.1
     ports:
       - "9091:4050"
     volumes:
-      - /tmp/simple-dockerConfig/back:/tmp/back
-      - /var/run/dockerConfig.sock:/var/run/dockerConfig.sock
+      - /tmp/simple-docker/back:/tmp/back
+      - /var/run/docker.sock:/var/run/docker.sock
     depends_on:
       - redis
 ```   
@@ -102,8 +102,8 @@ services:
 3. 执行下面的脚本，会自动拉取镜像并启动在 9091 端口
 
 ```sh
-dockerConfig-compose up # 前台运行
-dockerConfig-compose up -d # 后台运行
+docker-compose up # 前台运行
+docker-compose up -d # 后台运行
 ```
 
 3. 浏览器访问 http://localhost:9091
@@ -118,7 +118,7 @@ dockerConfig-compose up -d # 后台运行
 ```bash
 git clone https://gitee.com/taoes_admin/SimpleDocker
 cd SimpleDocker
-dockerConfig-compose up -d --build # Build images before starting containers
+docker-compose up -d --build # Build images before starting containers
 ```
 
 #### 手动编译
@@ -189,7 +189,7 @@ yarn install && yarn server
 - [Vuex](https://vuex.vuejs.org/)
 - [VueJs 2.x](https://vuejs.org/)
 - [Ant Design Vue](https://www.antdv.com/docs/vue/introduce-cn/)
-- [Docker API Engine](https://docs.dockerConfig.com/engine/api/sdk/)
+- [Docker API Engine](https://docs.docker.com/engine/api/sdk/)
 
 ## 我的信息
 
