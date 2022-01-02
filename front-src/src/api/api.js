@@ -31,6 +31,10 @@ export function post(url, params = {}) {
     return axios.post(url, params);
 }
 
+// 封装delete 方法
+export function del(url, params = {}) {
+    return axios.delete(url, {data: params});
+}
 
 
 

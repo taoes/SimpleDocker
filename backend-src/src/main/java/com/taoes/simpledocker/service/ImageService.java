@@ -3,7 +3,6 @@ package com.taoes.simpledocker.service;
 import java.util.List;
 
 import com.github.dockerjava.api.command.InspectImageResponse;
-import com.github.dockerjava.api.command.RemoveImageCmd;
 import com.github.dockerjava.api.model.Image;
 
 /**
@@ -42,9 +41,10 @@ public interface ImageService {
      * 移除镜像
      *
      * @param imageId 镜像ID
+     * @param force
      * @return
      */
-    void remove(String imageId);
+    void remove(String imageId, Boolean force);
 
     /**
      * 导出镜像

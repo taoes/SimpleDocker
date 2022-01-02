@@ -11,9 +11,8 @@ import lombok.Data;
 @Data
 public class RemoveImageRequest {
 
-    private String imageId;
 
-    private String imageTag;
+    private Boolean removeParent;
 
-    private boolean force;
+    private Boolean force;
 }

@@ -8,6 +8,7 @@ import com.github.dockerjava.api.model.Image;
 import com.taoes.simpledocker.config.DockerClientFactory;
 import com.taoes.simpledocker.controller.image.PushImageRequest;
 import com.taoes.simpledocker.controller.image.RemoveImageRequest;
+import com.taoes.simpledocker.model.ResponseModel;
 import com.taoes.simpledocker.service.ImageService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -58,10 +59,9 @@ public class ImageController {
         return dockerClient.pushImageCmd(request.getImageId()).exec(null);
     }
 
-    @DeleteMapping
-    public String remove(@RequestBody RemoveImageRequest request) {
-        final DockerClient dockerClient = clientFactory.get();
-        dockerClient.removeImageCmd(request.getImageId()).withForce(request.isForce()).exec();
-        return "OK";
+    @DeleteMapping("/{imageId}")
+    public ResponseModel<String> remove(@PathVariable String imageId, @RequestBody RemoveImageRequest request) {
+        imageService.remove(imageId,request.getForce());
+        return ResponseModel.ok("OK");
     }
 }
