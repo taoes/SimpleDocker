@@ -1,9 +1,15 @@
 package com.taoes.simpledocker.controller;
 
-import com.taoes.simpledocker.config.DockerClientFactory;
+import com.github.dockerjava.api.command.InspectVolumeResponse;
 import com.github.dockerjava.api.command.ListVolumesResponse;
+import com.taoes.simpledocker.controller.volume.CreateVolumeRequest;
+import com.taoes.simpledocker.service.VolumeService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -18,11 +24,26 @@ import org.springframework.web.bind.annotation.RestController;
 public class VolumeController {
 
     @Autowired
-    private DockerClientFactory clientFactory;
+    private VolumeService volumeService;
 
-    @GetMapping("/list")
+    @GetMapping
     public ListVolumesResponse list() {
-        var client = clientFactory.get();
-        return client.listVolumesCmd().exec();
+        return volumeService.list();
     }
+
+    @PostMapping
+    public void create(@RequestBody CreateVolumeRequest request) {
+        volumeService.create(request.getName(), request.getDriver());
+    }
+
+    @GetMapping("/{name}")
+    public InspectVolumeResponse inspect(@PathVariable("name") String name) {
+        return volumeService.inspect(name);
+    }
+
+    @DeleteMapping("/{name}")
+    public void delete(@PathVariable("name") String name) {
+        volumeService.remove(name);
+    }
+
 }

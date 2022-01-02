@@ -5,6 +5,7 @@ import java.util.Map;
 
 import com.github.dockerjava.api.DockerClient;
 import com.github.dockerjava.api.command.CreateContainerResponse;
+import com.github.dockerjava.api.command.InspectContainerResponse;
 import com.github.dockerjava.api.command.TopContainerResponse;
 import com.github.dockerjava.api.model.Bind;
 import com.github.dockerjava.api.model.Container;
@@ -113,5 +114,11 @@ public class ContainerServiceImpl implements ContainerService {
         return dockerClient.topContainerCmd(containerId)
             .withPsArgs(psArgs)
             .exec();
+    }
+
+    @Override
+    public InspectContainerResponse inspect(String containerId) {
+        final DockerClient client = clientFactory.get();
+        return client.inspectContainerCmd(containerId).withSize(Boolean.TRUE).exec();
     }
 }

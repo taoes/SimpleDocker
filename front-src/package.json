@@ -9,11 +9,10 @@
     "@testing-library/user-event": "^12.1.10",
     "antd": "^4.17.2",
     "axios": "^0.24.0",
-    "jsoneditor": "^9.5.7",
-    "jsoneditor-react": "^3.1.1",
     "lodash": "^4.17.21",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
+    "react-json-view": "^1.21.3",
     "react-router-dom": "^6.0.2",
     "react-scripts": "4.0.3",
     "web-vitals": "^1.0.1"

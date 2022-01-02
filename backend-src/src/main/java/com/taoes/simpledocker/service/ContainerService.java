@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.github.dockerjava.api.command.CreateContainerResponse;
+import com.github.dockerjava.api.command.InspectContainerResponse;
 import com.github.dockerjava.api.command.TopContainerResponse;
 import com.github.dockerjava.api.model.Container;
 import com.taoes.simpledocker.controller.container.RunNewContainerRequest;
@@ -82,4 +83,10 @@ public interface ContainerService {
      */
     TopContainerResponse top(String containerId, String psArgs);
 
+    /**
+     * 查询容器详情
+     * @param containerId
+     * @return
+     */
+    InspectContainerResponse inspect(String containerId);
 }

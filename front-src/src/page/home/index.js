@@ -1,9 +1,9 @@
-import {Component} from "react";
-import {JsonEditor as Editor} from 'jsoneditor-react';
+import React, {Component} from "react";
 import 'jsoneditor-react/es/editor.min.css';
 import './index.css'
-import {Button, Descriptions, Modal, Tag} from "antd";
+import {Button, Descriptions, Drawer, Tag} from "antd";
 import {getDockerInfo} from '../../api/InfoApi'
+import ReactJson from "react-json-view";
 
 
 let _ = require('lodash')
@@ -83,18 +83,26 @@ class HomePage extends Component {
                     </Descriptions.Item>
                 </Descriptions>
 
+                <div style={{height: 10}}/>
+                <Descriptions
+                    bordered
+                    size="small"
+                    title="Docker 监控信息">
+                    <h1>待实现</h1>
+                </Descriptions>
 
-                <Modal
+
+                <Drawer
                     title="详情信息"
-                    centered
+                    width="500"
                     visible={this.state.modalVisible} i
-                    onOk={() => this.setModalVisible(false)}
-                    onCancel={() => this.setModalVisible(false)}
-                    width={810}>
-                    <Editor
-                        value={this.state.detailData}
-                    />
-                </Modal>
+                    onClose={() => this.setModalVisible(false)}
+                >
+                    <ReactJson src={this.state.detailData}
+                               displayDataTypes={false}
+                               style={{overflow:'auto'}}
+                               collapsed={1}/>
+                </Drawer>
             </div>
 
         )

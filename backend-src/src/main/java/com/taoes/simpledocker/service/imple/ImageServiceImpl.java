@@ -45,9 +45,9 @@ public class ImageServiceImpl implements ImageService {
     }
 
     @Override
-    public void remove(String imageId) {
+    public void remove(String imageId, Boolean force) {
         final var client = factory.get();
-        client.removeImageCmd(imageId).exec();
+        client.removeImageCmd(imageId).withForce(force).exec();
     }
 
     @Override

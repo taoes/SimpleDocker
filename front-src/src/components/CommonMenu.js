@@ -6,7 +6,6 @@ import {
     DesktopOutlined,
     HddOutlined,
     InsertRowLeftOutlined,
-    LinkOutlined,
     LockOutlined,
     PieChartOutlined,
     RocketOutlined,

@@ -4,11 +4,6 @@ import {notification} from "antd";
 
 
 class AuthRouter extends React.Component {
-    constructor(props) {
-        super(props);
-        console.log(this.props)
-    }
-
     render() {
         let token = localStorage.getItem('TOKEN')
         if (!!token) {

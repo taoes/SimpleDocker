@@ -1,5 +1,5 @@
 export default function dateToStr(timestamp) {
-    if (!timestamp || timestamp === 0){
+    if (!timestamp || timestamp === 0) {
         return ""
     }
     let date = new Date(timestamp);
@@ -8,7 +8,7 @@ export default function dateToStr(timestamp) {
     let d = "0" + date.getDate();
     let h = "0" + date.getHours();
     let M = "0" + date.getMinutes();
-    let s = "0" + date.getSeconds();
+
 
     return y + "-" + m.substring(m.length - 2, m.length) + "-" + d.substring(d.length - 2, d.length)
         + " " + h.substring(h.length - 2, h.length) + ":" + M.substring(M.length - 2, M.length)

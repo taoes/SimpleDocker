@@ -1,10 +1,8 @@
 import React from 'react'
-import {Table} from "antd";
+
 
 class RegistryPage extends React.Component {
-    constructor(props) {
-        super(props);
-    }
+
 
     render() {
         return (

@@ -1,19 +1,15 @@
 import {Component} from "react";
-import {Button, Checkbox, Input, Space, Table, Tag, Modal, message, Menu, Dropdown} from "antd";
-import {getContainerList, operatorContainerApi} from "../../api/container";
+import {Button, Checkbox, Input, Space, Table, Tag, Modal, message, Drawer, Skeleton} from "antd";
+import {list} from "../../api/container";
 import dateToStr from '../../utils/DateTime'
 import {
-    DeleteOutlined,
-    ExportOutlined,
-    InfoCircleOutlined,
     ReloadOutlined,
-    PauseOutlined,
-    CopyOutlined,
-    UnorderedListOutlined
 } from "@ant-design/icons";
 
 
 import domain from "../../config/config"
+import ContainerDetail from "../../components/container/detail";
+import Index from "../../components/container/operator";
 
 const {operatorMap} = require('../../config/containerStatus')
 
@@ -28,9 +24,12 @@ class ContainerPage extends Component {
             containerList: [],
             logModalVisible: false,
             logRecord: [],
-            filterKey: ''
+            filterKey: '',
+            tableLoading: false,
+            cDetailDrawer: false, // 容器详情Drawer状态
+            moreDrawer: false,
+            cId: null // 当前操作的容器ID
         }
-
         this.ws = null
         this.confirm = Modal.confirm
         this.showContainerLog = this.showContainerLog.bind(this)
@@ -41,11 +40,28 @@ class ContainerPage extends Component {
         this.refreshList()
     }
 
-    refreshList = function () {
-        getContainerList().then(resp => {
+    // 刷新容器列表
+    refreshList = () => {
+        this.setState({tableLoading: true})
+        list().then(resp => {
             let containerList = resp.data
-            this.setState({containerList})
+            this.setState({containerList, tableLoading: false})
+        }).catch(() => {
+            message.info("容器列表加载失败，请稍后重试")
+            this.setState({containerList: [], tableLoading: false})
         })
+    }
+
+    // 显示容器详情Modal
+    showContainerModal = function (container) {
+        let {Id} = container
+        this.setState({cDetailDrawer: true, cId: Id});
+    }
+
+    // 显示更多操作的 drawer
+    showMoreOperatorDrawer = function (container) {
+        let {Id} = container
+        this.setState({moreDrawer: true, cId: Id})
     }
 
 
@@ -132,61 +148,12 @@ class ContainerPage extends Component {
             this.refreshList()
         }
 
-        operatorContainerApi(Id, operator, {}, then, error)
+        operator(Id, operator, {}, then, error)
     }
 
 
     render() {
         // 下拉菜单
-        let that = this
-        const menu = (container) => {
-            let {State} = container;
-            let disabled = State !== 'running';
-            return <Menu>
-                <Menu.Item icon={<InfoCircleOutlined/>} onClick={() => message.warning("正在开发中，敬请期待")}>
-                    详情信息
-                </Menu.Item>
-
-                <Menu.Item icon={<InfoCircleOutlined/>} onClick={() => this.showContainerLog(container.Id)}>
-                    容器日志
-                </Menu.Item>
-
-                <Menu.Item icon={<PauseOutlined/>} onClick={() => that.operatorContainer('PAUSE', container)}
-                           disabled={disabled}>
-                    暂停容器
-                </Menu.Item>
-
-                <Menu.Item icon={<CopyOutlined/>} onClick={() => message.warning("暂未实现")}>
-                    复制容器
-                </Menu.Item>
-
-                <Menu.Item icon={<ExportOutlined/>} onClick={() => message.warning("暂未实现")}>
-                    导出容器
-                </Menu.Item>
-
-                <Menu.Item icon={<DeleteOutlined/>} onClick={() => that.operatorContainer('REMOVE', container)} danger>
-                    删除容器
-                </Menu.Item>
-
-                <Menu.Item icon={<DeleteOutlined/>} onClick={() => message.info("开发中")}>
-                    连接网络
-                </Menu.Item>
-
-                <Menu.Item icon={<DeleteOutlined/>} onClick={() => message.info("开发中")}>
-                    容器终端
-                </Menu.Item>
-
-                <Menu.Item icon={<DeleteOutlined/>} onClick={() => message.info("开发中")}>
-                    文件管理
-                </Menu.Item>
-
-                <Menu.Item icon={<DeleteOutlined/>} onClick={() => message.info("开发中")}>
-                    系统监控
-                </Menu.Item>
-
-            </Menu>
-        }
-
         const columns = [
             {
                 title: 'ID',
@@ -244,18 +211,18 @@ class ContainerPage extends Component {
                     let {operate, name} = this.getOperatorInfo(record.State);
                     return <div>
                         <Space>
-                            <Button type="link" onClick={() => message.info("详情信息")} size="small">详情</Button>
-                            <Button type="link" onClick={() => this.operatorContainer(operate, record)} size="small">{name}</Button>
-                            <Dropdown overlay={() => menu(record)} arrow>
-                                <Button type="link" onClick={() => message.info("详情信息")} size="small">更多</Button>
-                            </Dropdown>
+                            <Button type="link" onClick={() => this.operatorContainer(operate, record)}
+                                    size="small">{name}</Button>
+                            <Button type="link" onClick={() => this.showContainerModal(record)} size="small">详情</Button>
+                            <Button type="link" onClick={() => this.showMoreOperatorDrawer(record)}
+                                    size="small">更多</Button>
                         </Space>
                     </div>
                 }
             },
         ];
 
-
+        // 过滤容器
         let containerListOfFilter = this.state.containerList.filter(container => {
             if (!this.state.filterKey) {
                 return true
@@ -263,9 +230,7 @@ class ContainerPage extends Component {
             return container.Id.indexOf(this.state.filterKey) !== -1
                 || container.State.indexOf(this.state.filterKey) !== -1
                 || container.Image.indexOf(this.state.filterKey) !== -1
-                || (JSON.stringify(container.Names).indexOf(this.state.filterKey) !== -1)
-
-                ;
+                || (JSON.stringify(container.Names).indexOf(this.state.filterKey) !== -1);
         });
 
         return (
@@ -279,12 +244,17 @@ class ContainerPage extends Component {
                     <Checkbox checked style={{marginLeft: 10}}>包含未运行容器</Checkbox>
                 </Space>
                 <div style={{height: 10}}/>
-                <Table
-                    bordered
-                    pagination="bottomCenter"
-                    columns={columns}
-                    size="small"
-                    dataSource={containerListOfFilter}/>
+
+                <Skeleton loading={this.state.tableLoading} active>
+                    <Table
+                        bordered
+                        pagination="bottomCenter"
+                        columns={columns}
+                        size="small"
+                        dataSource={containerListOfFilter}/>
+                </Skeleton>
+
+                {/*容器日志Modal*/}
                 <Modal
                     visible={this.state.logModalVisible}
                     width={800}
@@ -302,6 +272,23 @@ class ContainerPage extends Component {
                         </div>
                     }
                 </Modal>
+
+                {/*    容器详情Draw*/}
+                <Drawer title="容器详情"
+                        destroyOnClose={true}
+                        width={500}
+                        onClose={() => this.setState({cDetailDrawer: false})}
+                        visible={this.state.cDetailDrawer}>
+                    <ContainerDetail containerId={this.state.cId}/>
+                </Drawer>
+
+
+                <Drawer title="更多操作"
+                        destroyOnClose={true}
+                        onClose={() => this.setState({moreDrawer: false})}
+                        visible={this.state.moreDrawer}>
+                    <Index id={this.state.cId}/>
+                </Drawer>
             </div>
         )
 

@@ -1,14 +1,13 @@
 import React from 'react'
-import {Form, Input, Steps, Tag, List, Space, Table} from "antd";
+import {Form, Input, Steps, Tag, Table, Button, Space} from "antd";
 import {
     TagOutlined,
     PieChartOutlined,
     ExperimentOutlined
 } from "@ant-design/icons";
 import bytesToSize from "../../../utils/ByteSize";
-import dateToStr from "../../../utils/time";
 import _ from 'lodash'
-import {getImage} from "../../../api/ImageApi";
+import {inspect} from "../../../api/ImageApi";
 import './index.css'
 
 const {Step} = Steps;
@@ -28,13 +27,40 @@ class RunNewContainerStep extends React.Component {
             {
                 title: '环境的键',
                 dataIndex: 'key',
-                key: 'envKey',
+                key: 'key',
             },
             {
                 title: '环境变量',
                 dataIndex: 'value',
-                key: 'envValue'
-            }]
+                key: 'value'
+            }, {
+                title: '操作',
+                dataIndex: 'address',
+                key: 'address 4',
+                fixed: 'right',
+                width: 30,
+                render: (text, env) => {
+                    let del = null
+                    if (!env.default) {
+                        del = <Button size="small" type="link" onClick={() => this.removeEnv(env)}>删除</Button>
+                    }
+
+
+                    return (
+
+                        <Space>
+                            <Button size="small" type="link">编辑</Button>
+                            {
+                                del
+                            }
+                        </Space>
+                    )
+                }
+
+            }
+
+
+        ]
         this.getImageInfo()
     }
 
@@ -44,7 +70,7 @@ class RunNewContainerStep extends React.Component {
     }
 
     getImageInfo = () => {
-        getImage(this.state.imageId).then(resp => {
+        inspect(this.state.imageId).then(resp => {
             let image = resp.data
             let envList = _.get(image, "Config.Env", '[]')
             let tmpEnv = []
@@ -54,7 +80,7 @@ class RunNewContainerStep extends React.Component {
             }
             for (let env of envList) {
                 let envKey = env.split("=")
-                tmpEnv = [...tmpEnv, {key: envKey[0], value: envKey[1]}]
+                tmpEnv = [...tmpEnv, {key: envKey[0], value: envKey[1], default: true}]
             }
             this.setState({envList: tmpEnv, image})
         })
@@ -65,11 +91,28 @@ class RunNewContainerStep extends React.Component {
         return this.state.current === index ? 'block' : 'none'
     }
 
+    addEnv = (values) => {
+        console.log(values)
+        let {envList} = this.state
+        envList = [{key: values.key, value: values.value, default: false}, ...envList]
+        this.setState({envList})
+    }
+
+    removeEnv = (env) => {
+        let {envList} = this.state
+        let newEnv = []
+        envList.forEach(e => {
+            if (e.key !== env.key) {
+                newEnv.push(e)
+            }
+        })
+        this.setState({envList: newEnv})
+    }
+
     render() {
         let Id = this.state.imageId
         let {image} = this.state;
-        let {Created, Size,} = image;
-        let Labels = _.get(image, "Labels", [])
+        let {Size,} = image;
         let maintainer = _.get(image, "Config.Labels.maintainer", '')
         let architecture = _.get(image, "Architecture", '')
         let os = _.get(image, "Os", '')
@@ -132,7 +175,7 @@ class RunNewContainerStep extends React.Component {
                     </div>
 
                     <div id="volumeInfo" style={{display: this.showComponent(1)}}>
-                        
+
                     </div>
 
                     <div id="netInfo" style={{display: this.showComponent(2)}}>
@@ -162,13 +205,30 @@ class RunNewContainerStep extends React.Component {
                     </div>
 
                     <div id="envInfo" style={{display: this.showComponent(3)}}>
+                        <Form layout="inline" style={{marginBottom: 10}} onFinish={this.addEnv}>
+                            <Form.Item name="key" label="环境变量">
+                                <Input placeholder="KEY"/>
+                            </Form.Item>
+
+                            <Form.Item name="value" label="环境变量值">
+                                <Input placeholder="VALUE"/>
+                            </Form.Item>
+
+                            <Form.Item>
+                                <Button type="primary" htmlType="submit">保存</Button>
+                            </Form.Item>
+                        </Form>
                         <Table columns={this.envListColumn} dataSource={this.state.envList} size="small"/>
                     </div>
 
                     <div id="createInfo" style={{display: this.showComponent(4)}}>
-                        <Form>
+                        <Form onValuesChange={(c, a) => console.log(a)}>
                             <Form.Item label="容器别名">
                                 <Input/>
+                            </Form.Item>
+
+                            <Form.Item>
+                                <Button type="primary">创建</Button>
                             </Form.Item>
                         </Form>
                     </div>

@@ -3,6 +3,8 @@ package com.taoes.simpledocker.controller;
 import java.util.List;
 
 import com.github.dockerjava.api.command.CreateContainerResponse;
+import com.github.dockerjava.api.command.InspectContainerResponse;
+import com.github.dockerjava.api.command.TopContainerResponse;
 import com.github.dockerjava.api.model.Container;
 import com.taoes.simpledocker.controller.container.OperateContainerRequest;
 import com.taoes.simpledocker.controller.container.RunNewContainerRequest;
@@ -11,6 +13,7 @@ import com.taoes.simpledocker.model.enums.ContainerOperate;
 import com.taoes.simpledocker.service.ContainerService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import lombok.val;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -32,14 +35,25 @@ public class ContainerController {
 
     private ContainerService service;
 
-    @GetMapping("/list")
+    @GetMapping
     public List<Container> list() {
         return service.list(true);
+    }
+
+    @GetMapping("/{containerId}")
+    public ResponseModel<InspectContainerResponse> inspect(@PathVariable String containerId) {
+        val resp = service.inspect(containerId);
+        return ResponseModel.ok(resp);
     }
 
     @PostMapping("/new")
     public CreateContainerResponse run(@RequestBody RunNewContainerRequest request) {
         return service.run(request);
+    }
+
+    @GetMapping("/{containerId}/top")
+    public TopContainerResponse top(@PathVariable String containerId, String psArgs) {
+        return service.top(containerId, psArgs);
     }
 
     @PostMapping("/operator/{operate}")
