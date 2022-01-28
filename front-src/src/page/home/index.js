@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import 'jsoneditor-react/es/editor.min.css';
+
 import './index.css'
 import {Button, Descriptions, Drawer, Tag} from "antd";
 import {getDockerInfo} from '../../api/InfoApi'

@@ -1,4 +1,4 @@
-import {get, del} from './api'
+import {get, del, post} from './api'
 
 // 镜像列表
 export function list() {
@@ -13,4 +13,9 @@ export function inspect(imageId) {
 // 移除镜像接口
 export function remove(imageId, values) {
     return del(`/images/${imageId}`, values)
+}
+
+// 清理镜像
+export function prune(){
+    return post('/images/prune')
 }

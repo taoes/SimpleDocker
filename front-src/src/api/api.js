@@ -2,7 +2,7 @@ import axios from "axios";
 import domainName from '../config/config'
 
 
-axios.defaults.timeout = 30000
+axios.defaults.timeout = 60000
 axios.defaults.baseURL = domainName.api;
 
 

@@ -1,3 +1,7 @@
 .imageTag{
     margin-bottom: 10px;
 }
+
+#runContainerModal,.ant-modal-body{
+    padding: 0 !important;
+}

@@ -2,10 +2,10 @@ import React, {Component} from "react";
 
 
 import {Button, Checkbox, Drawer, Form, Input, message, Modal, Skeleton, Space, Switch, Table, Tag} from "antd";
-import {BuildOutlined, CloudDownloadOutlined, SyncOutlined} from '@ant-design/icons';
+import {BuildOutlined, CloudDownloadOutlined, SyncOutlined, ScissorOutlined} from '@ant-design/icons';
 
 
-import {list, remove} from "../../api/ImageApi";
+import {list, remove, prune} from "../../api/ImageApi";
 import formatDate from '../../utils/DateTime'
 import bytesToSize from '../../utils/ByteSize'
 import ImagePullModal from '../../components/image/pull'
@@ -47,7 +47,8 @@ class ImagePage extends Component {
         list().then(resp => {
             let imageList = resp.data
             this.setState({imageList, tableLoading: false})
-        }).catch(() => {
+        }).catch((e) => {
+            console.log(e)
             message.info("获取镜像列表请求失败，请稍后重试")
             this.setState({imageList: [], tableLoading: false})
         })
@@ -73,6 +74,27 @@ class ImagePage extends Component {
     // 移除镜像
     showRemoveModal = () => {
         this.setState({showRemoveImageModal: true, removeImageId: this.state.currentImageId})
+    }
+
+    // 清理镜像
+    pureImage = () => {
+        let that = this
+        Modal.confirm({
+            title: '你确定需要清理无用的镜像吗?',
+            icon: <ScissorOutlined/>,
+            content: '清理无用的镜像是个非常危险的操作,请谨慎操作!',
+            okType: 'danger',
+            okText: '确定',
+            cancelText: '取消',
+            onOk() {
+                prune().then(r => {
+                    message.info("清理镜像操作完成")
+                    that.refreshList()
+                }).catch((e)=>{
+                    message.error(`清理镜像操作失败:${e}`)
+                })
+            }
+        });
     }
 
 
@@ -108,6 +130,10 @@ class ImagePage extends Component {
                     title: '镜像标签',
                     dataIndex: 'RepoTags',
                     render: RepoTags => {
+
+                        if (!RepoTags) {
+                            return null
+                        }
                         return RepoTags.map(t => {
                             let color = 'blue'
                             if (t.indexOf('none') !== -1) {
@@ -175,7 +201,7 @@ class ImagePage extends Component {
                         <Button type="primary"
                                 icon={<CloudDownloadOutlined/>}
                                 onClick={() => this.updateImagePullStatus(true)}>拉取</Button>
-                        <Button type="primary" icon={<BuildOutlined/>}>构建</Button>
+                        <Button type="danger" icon={<ScissorOutlined/>} onClick={this.pureImage}>清理</Button>
 
 
                         <Input placeholder="请输入过滤词" style={{width: 400}} allowClear

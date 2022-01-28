@@ -6,6 +6,7 @@ import com.github.dockerjava.api.DockerClient;
 import com.github.dockerjava.api.command.InspectImageResponse;
 import com.github.dockerjava.api.exception.NotFoundException;
 import com.github.dockerjava.api.model.Image;
+import com.github.dockerjava.api.model.PruneType;
 import com.taoes.simpledocker.config.DockerClientFactory;
 import com.taoes.simpledocker.service.ImageService;
 import lombok.RequiredArgsConstructor;
@@ -85,5 +86,11 @@ public class ImageServiceImpl implements ImageService {
         } catch (NotFoundException e) {
             return false;
         }
+    }
+
+    @Override
+    public void pruneImage() {
+        final DockerClient dockerClient = factory.get();
+        dockerClient.pruneCmd(PruneType.IMAGES).exec();
     }
 }
