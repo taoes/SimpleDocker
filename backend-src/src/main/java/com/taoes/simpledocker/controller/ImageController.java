@@ -64,4 +64,10 @@ public class ImageController {
         imageService.remove(imageId,request.getForce());
         return ResponseModel.ok("OK");
     }
+
+    @PostMapping("/prune")
+    public ResponseModel<Boolean> purge(){
+        imageService.pruneImage();
+        return ResponseModel.ok(Boolean.TRUE);
+    }
 }

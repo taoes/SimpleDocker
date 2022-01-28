@@ -5,48 +5,18 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="2e8afb8c-0a7a-4fb7-ad64-90ec4bfdb3a1" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/backend-src/src/main/java/com/taoes/simpledocker/controller/volume/CreateVolumeRequest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/backend-src/src/main/java/com/taoes/simpledocker/service/VolumeService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/backend-src/src/main/java/com/taoes/simpledocker/service/imple/VolumeServiceImpl.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/front-src/src/components/container/detail/index.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/front-src/src/components/container/operator/index.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/front-src/src/components/container/operator/index.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/front-src/src/components/container/process/index.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/front-src/src/components/container/process/index.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/front-src/src/components/volume/detail/index.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend-src/src/main/java/com/taoes/simpledocker/controller/ContainerController.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend-src/src/main/java/com/taoes/simpledocker/controller/ContainerController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/backend-src/src/main/java/com/taoes/simpledocker/controller/ImageController.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend-src/src/main/java/com/taoes/simpledocker/controller/ImageController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend-src/src/main/java/com/taoes/simpledocker/controller/VolumeController.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend-src/src/main/java/com/taoes/simpledocker/controller/VolumeController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend-src/src/main/java/com/taoes/simpledocker/controller/image/RemoveImageRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend-src/src/main/java/com/taoes/simpledocker/controller/image/RemoveImageRequest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend-src/src/main/java/com/taoes/simpledocker/service/ContainerService.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend-src/src/main/java/com/taoes/simpledocker/service/ContainerService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/backend-src/src/main/java/com/taoes/simpledocker/service/ImageService.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend-src/src/main/java/com/taoes/simpledocker/service/ImageService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend-src/src/main/java/com/taoes/simpledocker/service/imple/ContainerServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend-src/src/main/java/com/taoes/simpledocker/service/imple/ContainerServiceImpl.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/backend-src/src/main/java/com/taoes/simpledocker/service/imple/ImageServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend-src/src/main/java/com/taoes/simpledocker/service/imple/ImageServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-src/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/front-src/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-src/public/favicon.ico" beforeDir="false" afterPath="$PROJECT_DIR$/front-src/public/favicon.ico" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-src/public/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/front-src/public/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-src/public/logo192.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-src/public/logo512.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend-src/src/main/java/com/taoes/simpledocker/ws/ImagePullWebSocket.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend-src/src/main/java/com/taoes/simpledocker/ws/ImagePullWebSocket.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/front-src/src/api/ImageApi.js" beforeDir="false" afterPath="$PROJECT_DIR$/front-src/src/api/ImageApi.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-src/src/api/VolumeApi.js" beforeDir="false" afterPath="$PROJECT_DIR$/front-src/src/api/VolumeApi.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/front-src/src/api/api.js" beforeDir="false" afterPath="$PROJECT_DIR$/front-src/src/api/api.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-src/src/api/container.js" beforeDir="false" afterPath="$PROJECT_DIR$/front-src/src/api/container.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-src/src/components/CommonMenu.js" beforeDir="false" afterPath="$PROJECT_DIR$/front-src/src/components/CommonMenu.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-src/src/components/image/detail/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/front-src/src/components/image/detail/index.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-src/src/components/image/pull/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/front-src/src/components/image/pull/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/front-src/src/components/container/process/index.css" beforeDir="false" afterPath="$PROJECT_DIR$/front-src/src/components/container/process/index.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/front-src/src/components/image/run/index.css" beforeDir="false" afterPath="$PROJECT_DIR$/front-src/src/components/image/run/index.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/front-src/src/components/image/run/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/front-src/src/components/image/run/index.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-src/src/page/container/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/front-src/src/page/container/index.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/front-src/src/page/home/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/front-src/src/page/home/index.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-src/src/page/image/index.css" beforeDir="false" afterPath="$PROJECT_DIR$/front-src/src/page/image/index.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/front-src/src/page/image/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/front-src/src/page/image/index.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-src/src/page/security/docker/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/front-src/src/page/security/docker/index.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-src/src/page/security/monit/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/front-src/src/page/security/monit/index.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-src/src/page/security/registry/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/front-src/src/page/security/registry/index.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-src/src/page/security/user/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/front-src/src/page/security/user/index.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-src/src/page/volume/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/front-src/src/page/volume/index.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-src/src/router/AuthRouter.js" beforeDir="false" afterPath="$PROJECT_DIR$/front-src/src/router/AuthRouter.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-src/src/utils/time.js" beforeDir="false" afterPath="$PROJECT_DIR$/front-src/src/utils/time.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -103,6 +73,7 @@
     <setting file="jar://$MAVEN_REPOSITORY$/com/alibaba/alscsalescustomer/alsc-sales-customer-facade/1.0.0.20211208-SNAPSHOT/alsc-sales-customer-facade-1.0.0.20211208-20211208.115228-2-sources.jar!/com/alibaba/alscsalescustomer/dto/contact/enums/ContactBizTypeEnum.java" root0="SKIP_INSPECTION" />
     <setting file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/me.ele.napos/xy-siri-api/1.0.29-RELEASE/850e9a8ae63399709d778bb1d2c0933a03b88632/xy-siri-api-1.0.29-RELEASE-sources.jar!/me/ele/xy/siri/api/enums/visit/KbTargetBizTypeEnum.java" root0="SKIP_INSPECTION" />
     <setting file="jar://$MAVEN_REPOSITORY$/com/github/docker-java/docker-java-api/3.2.12/docker-java-api-3.2.12-sources.jar!/com/github/dockerjava/api/DockerClient.java" root0="SKIP_INSPECTION" />
+    <setting file="jar://$MAVEN_REPOSITORY$/com/github/docker-java/docker-java-api/3.2.12/docker-java-api-3.2.12-sources.jar!/com/github/dockerjava/api/command/PruneCmd.java" root0="SKIP_INSPECTION" />
     <setting file="jar://$MAVEN_REPOSITORY$/com/github/docker-java/docker-java-api/3.2.12/docker-java-api-3.2.12-sources.jar!/com/github/dockerjava/api/command/SyncDockerCmd.java" root0="SKIP_INSPECTION" />
     <setting file="jar://$USER_HOME$/Library/Java/JavaVirtualMachines/openjdk-17.0.1/Contents/Home/lib/src.zip!/java.base/java/io/PipedInputStream.java" root0="SKIP_INSPECTION" />
     <setting file="jar://$MAVEN_REPOSITORY$/com/github/docker-java/docker-java-api/3.2.12/docker-java-api-3.2.12-sources.jar!/com/github/dockerjava/api/command/RemoveContainerCmd.java" root0="SKIP_INSPECTION" />
@@ -150,7 +121,7 @@
     <property name="last_opened_file_path" value="$PROJECT_DIR$/front-src/public" />
     <property name="list.type.of.created.stylesheet" value="CSS" />
     <property name="nodejs_package_manager_path" value="npm" />
-    <property name="settings.editor.selected.configurable" value="reference.settingsdialog.IDE.editor.colors.Color Scheme Font" />
+    <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
     <property name="ts.external.directory.path" value="$APPLICATION_HOME_DIR$/plugins/JavaScriptLanguage/jsLanguageServicesImpl/external" />
     <property name="vue.rearranger.settings.migration" value="true" />
   </component>
@@ -292,7 +263,9 @@
       <workItem from="1640255506111" duration="416000" />
       <workItem from="1640314252689" duration="2137000" />
       <workItem from="1640347561246" duration="47974000" />
-      <workItem from="1640950424235" duration="24822000" />
+      <workItem from="1640950424235" duration="26829000" />
+      <workItem from="1641436716516" duration="787000" />
+      <workItem from="1641629142309" duration="3328000" />
     </task>
     <servers />
   </component>

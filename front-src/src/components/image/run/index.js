@@ -1,5 +1,5 @@
 import React from 'react'
-import {Form, Input, Steps, Tag, Table, Button, Space} from "antd";
+import {Form, Input, Steps, Tag, Table, Button, Space, Tabs, Modal} from "antd";
 import {
     TagOutlined,
     PieChartOutlined,
@@ -11,6 +11,7 @@ import {inspect} from "../../../api/ImageApi";
 import './index.css'
 
 const {Step} = Steps;
+const {TabPane} = Tabs;
 
 
 class RunNewContainerStep extends React.Component {
@@ -18,6 +19,7 @@ class RunNewContainerStep extends React.Component {
         super(props);
         this.state = {
             imageId: this.props.imageId,
+            volumeModal: false,
             current: 0,
             image: {},
             envList: [],
@@ -130,7 +132,7 @@ class RunNewContainerStep extends React.Component {
         ]
 
         return (
-            <div>
+            <div id="runContainerModal">
                 <Steps current={this.state.current}
                        onChange={(current) => this.setState({current})} style={{padding: 20}} size="small">
                     <Step title="基础信息"/>
@@ -150,32 +152,19 @@ class RunNewContainerStep extends React.Component {
                                 <Input value={Id} disabled/>
                             </Form.Item>
 
-
                             <Form.Item label="发布时间">
                                 <Input value={image.Created} disabled/>
                             </Form.Item>
 
-
                             <Form.Item label="维护人员">
                                 <Input value={maintainer} disabled/>
                             </Form.Item>
-
-                            {/*暂不支持的特性，后续支持*/}
-                            {/*<Form.Item label="CPU使用">*/}
-                            {/*    <Input />*/}
-                            {/*</Form.Item>*/}
-
-
-                            {/*<Form.Item label="内存使用">*/}
-                            {/*    <Input />*/}
-                            {/*</Form.Item>*/}
-
-
                         </Form>
                     </div>
 
                     <div id="volumeInfo" style={{display: this.showComponent(1)}}>
-
+                        <Button size="small" onClick={() => this.setState({volumeModal: true})}>配置</Button>
+                        <Table columns={this.envListColumn} dataSource={this.state.envList} size="small"/>
                     </div>
 
                     <div id="netInfo" style={{display: this.showComponent(2)}}>
@@ -233,6 +222,45 @@ class RunNewContainerStep extends React.Component {
                         </Form>
                     </div>
                 </div>
+                <Modal
+                    visible={this.state.volumeModal}
+                    title="挂载配置"
+                    footer={null}
+                    destroyOnClose={true}
+                    onCancel={() => this.setState({volumeModal: false})}>
+                    <Tabs defaultActiveKey="1">
+                        <TabPane tab="挂载宿主机目录" key="1">
+                            <Form layout="inline" style={{marginBottom: 10}} onFinish={this.addEnv}>
+                                <Form.Item name="key" label="宿主机目录">
+                                    <Input placeholder="请输入宿主机目录"/>
+                                </Form.Item>
+
+                                <Form.Item name="value" label="容器目录">
+                                    <Input placeholder="请输入容器目录"/>
+                                </Form.Item>
+
+                                <Form.Item>
+                                    <Button type="primary" htmlType="submit">保存</Button>
+                                </Form.Item>
+                            </Form>
+                        </TabPane>
+                        <TabPane tab="挂载存储卷" key="2">
+                            <Form layout="inline" style={{marginBottom: 10}} onFinish={this.addEnv}>
+                                <Form.Item name="key" label="存储卷">
+                                    <Input placeholder="KEY"/>
+                                </Form.Item>
+
+                                <Form.Item name="value" label="容器目录">
+                                    <Input placeholder="请输入容器目录"/>
+                                </Form.Item>
+
+                                <Form.Item>
+                                    <Button type="primary" htmlType="submit">保存</Button>
+                                </Form.Item>
+                            </Form>
+                        </TabPane>
+                    </Tabs>
+                </Modal>
             </div>
         );
     }

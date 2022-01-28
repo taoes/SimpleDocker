@@ -70,7 +70,7 @@ public class ImagePullWebSocket {
         final var client = clientFactory.get();
         final var callback = new ResultCallback<PullResponseItem>() {
             @Override
-            public void onStart(Closeable closeable) { }
+            public void onStart(Closeable closeable) {}
 
             @Override
             public void onNext(PullResponseItem object) {
@@ -90,7 +90,7 @@ public class ImagePullWebSocket {
             @Override
             public void onComplete() {
                 try {
-                    sendMessage(session,"镜像拉取完成");
+                    sendMessage(session, "镜像拉取完成");
                     session.close();
                 } catch (IOException e) {
                     log.error("发生异常", e);
@@ -106,7 +106,12 @@ public class ImagePullWebSocket {
                 }
             }
         };
-        client.pullImageCmd(imageTag).exec(callback);
+        var images = imageTag.split(":");
+        if (images.length >= 2) {
+            client.pullImageCmd(imageTag).exec(callback);
+        } else {
+            client.pullImageCmd(images[0]).withTag("latest").exec(callback);
+        }
         callbackMap.put(session.getId(), callback);
     }
 
@@ -120,7 +125,7 @@ public class ImagePullWebSocket {
         final var sessionId = session.getId();
         OnlineCount.decrementAndGet();
         final ResultCallback<PullResponseItem> resultCallback = callbackMap.get(sessionId);
-        if (resultCallback != null && session.isOpen()) { resultCallback.close(); }
+        if (resultCallback != null && session.isOpen()) {resultCallback.close();}
         callbackMap.remove(sessionId);
     }
 
@@ -144,7 +149,7 @@ public class ImagePullWebSocket {
         final var sessionId = session.getId();
         log.error("发生错误：{}，Session ID： {}", error.getMessage(), sessionId);
         final var resultCallback = callbackMap.get(sessionId);
-        if (resultCallback != null && session.isOpen()) { resultCallback.close(); }
+        if (resultCallback != null && session.isOpen()) {resultCallback.close();}
         callbackMap.remove(sessionId);
     }
 

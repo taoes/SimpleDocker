@@ -85,4 +85,8 @@ public interface ImageService {
      */
     boolean exist(String imageId);
 
+    /**
+     * 清理镜像
+     */
+    void pruneImage();
 }
