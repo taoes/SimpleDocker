@@ -2,16 +2,11 @@ import React from "react";
 import {Layout} from "antd";
 import LoginPage from "../page/login";
 
-class LoginLayout extends React.Component {
+export default function LoginLayout() {
+    return (
+        <Layout style={{minHeight: '100%'}}>
+            <LoginPage/>
+        </Layout>
 
-    render() {
-        return (
-            <Layout style={{minHeight: '100%'}}>
-                <LoginPage/>
-            </Layout>
-
-        );
-    }
+    );
 }
-
-export default LoginLayout;

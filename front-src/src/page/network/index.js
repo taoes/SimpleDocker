@@ -47,7 +47,7 @@ class NetworkPage extends Component {
             {
                 title: '网关/子网掩码',
                 dataIndex: 'IPAM',
-                key: 'Mountpoint',
+                key: 'Id',
                 render: ipam => {
                     let configs = _.get(ipam, "Config", []);
                     return configs.map(c => {
@@ -94,7 +94,8 @@ class NetworkPage extends Component {
                     bordered
                     pagination="bottomCenter"
                     columns={columns}
-                    dataSource={this.state.networkList} size="small"/>
+                    dataSource={this.state.networkList}
+                    size="small"/>
             </div>
         )
 

@@ -15,6 +15,7 @@ import javax.websocket.OnOpen;
 import javax.websocket.Session;
 import javax.websocket.server.ServerEndpoint;
 
+import com.github.dockerjava.api.DockerClient;
 import com.github.dockerjava.api.async.ResultCallback;
 import com.github.dockerjava.api.model.PullResponseItem;
 import com.taoes.simpledocker.config.DockerClientFactory;
@@ -62,13 +63,13 @@ public class ImagePullWebSocket {
         SessionSet.add(session);
         OnlineCount.incrementAndGet();
 
-        final var imageTag = session.getQueryString().split("=")[1];
+        final String imageTag = session.getQueryString().split("=")[1];
         if (!StringUtils.hasText(imageTag)) {
             sendMessage(session, "无效的标签ID，请正确输入后重试");
             return;
         }
-        final var client = clientFactory.get();
-        final var callback = new ResultCallback<PullResponseItem>() {
+        final DockerClient client = clientFactory.get();
+        final ResultCallback callback = new ResultCallback<PullResponseItem>() {
             @Override
             public void onStart(Closeable closeable) {}
 
@@ -106,7 +107,7 @@ public class ImagePullWebSocket {
                 }
             }
         };
-        var images = imageTag.split(":");
+        String[] images = imageTag.split(":");
         if (images.length >= 2) {
             client.pullImageCmd(imageTag).exec(callback);
         } else {
@@ -122,7 +123,7 @@ public class ImagePullWebSocket {
     @SneakyThrows
     public void onClose(Session session) {
         SessionSet.remove(session);
-        final var sessionId = session.getId();
+        final String sessionId = session.getId();
         OnlineCount.decrementAndGet();
         final ResultCallback<PullResponseItem> resultCallback = callbackMap.get(sessionId);
         if (resultCallback != null && session.isOpen()) {resultCallback.close();}
@@ -146,10 +147,10 @@ public class ImagePullWebSocket {
     @OnError
     @SneakyThrows
     public void onError(Session session, Throwable error) {
-        final var sessionId = session.getId();
+        final String sessionId = session.getId();
         log.error("发生错误：{}，Session ID： {}", error.getMessage(), sessionId);
-        final var resultCallback = callbackMap.get(sessionId);
-        if (resultCallback != null && session.isOpen()) {resultCallback.close();}
+        ResultCallback<PullResponseItem> callback = callbackMap.get(sessionId);
+        if (callback != null && session.isOpen()) {callback.close();}
         callbackMap.remove(sessionId);
     }
 

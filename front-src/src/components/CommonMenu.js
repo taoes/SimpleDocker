@@ -16,7 +16,7 @@ import {Link} from "react-router-dom";
 
 const {SubMenu} = Menu;
 
-class CommonMenu extends React.Component {
+export default class CommonMenu extends React.Component {
     state = {
         collapsed: true,
     };
@@ -27,72 +27,69 @@ class CommonMenu extends React.Component {
                 <Menu
                     defaultSelectedKeys={['1']}
                     mode="inline"
-                    theme="dark"
                 >
-                    <Menu.Item key="1" icon={<PieChartOutlined/>}>
+                    <Menu.Item key="systemInfo" icon={<PieChartOutlined/>}>
                         <Link to='/app'>系统概述</Link>
                     </Menu.Item>
-                    <Menu.Item key="2" icon={<DesktopOutlined/>}>
+                    <Menu.Item key="imageList" icon={<DesktopOutlined/>}>
                         <Link to='/app/image'>镜像管理</Link>
                     </Menu.Item>
-                    <Menu.Item key="3" icon={<RocketOutlined/>}>
+                    <Menu.Item key="containerList" icon={<RocketOutlined/>}>
                         <Link to='/app/container'>容器管理</Link>
                     </Menu.Item>
 
-                    <Menu.Item key="4" icon={<HddOutlined/>}>
+                    <Menu.Item key="storeList" icon={<HddOutlined/>}>
                         <Link to='/app/volume'>存储管理</Link>
                     </Menu.Item>
 
-                    <Menu.Item key="5" icon={<DeploymentUnitOutlined/>}>
+                    <Menu.Item key="networkList" icon={<DeploymentUnitOutlined/>}>
                         <Link to='/app/network'>网络管理</Link>
                     </Menu.Item>
 
-                    <SubMenu key="sub1" icon={<ToolOutlined/>} title="系统设置">
-                        <Menu.Item key="monitorPage" icon={<SettingOutlined/>}>
+                    <SubMenu key="setting" icon={<ToolOutlined/>} title="系统设置">
+                        <Menu.Item key="setting-hook" icon={<SettingOutlined/>}>
                             <Link to='/app/monitor'>
                                 WebHook
                             </Link>
                         </Menu.Item>
 
-                        <Menu.Item key="notificationPage" icon={<SettingOutlined/>}>
+                        <Menu.Item key="setting-notification" icon={<SettingOutlined/>}>
                             <Link to='/app/notification'>
                                 通知配置
                             </Link>
                         </Menu.Item>
 
-                        <Menu.Item to='/app/data' key="13" icon={<SettingOutlined/>}>数据管理</Menu.Item>
+                        <Menu.Item key="setting-data" icon={<SettingOutlined/>}>
+                            <Link to="to='/app/data'">
+                                数据管理
+                            </Link>
+                        </Menu.Item>
                     </SubMenu>
 
-                    <SubMenu key="sub2" icon={<LockOutlined/>} title="安全配置">
+                    <SubMenu key="safe-setting" icon={<LockOutlined/>} title="安全配置">
 
-                        <Menu.Item key="userPage" icon={<InsertRowLeftOutlined/>}>
+                        <Menu.Item key="userList" icon={<InsertRowLeftOutlined/>}>
                             <Link to='/app/user'>
                                 用户管理
                             </Link>
                         </Menu.Item>
 
 
-                        <Menu.Item key="registryPage" icon={<InsertRowLeftOutlined/>}>
+                        <Menu.Item key="registryList" icon={<InsertRowLeftOutlined/>}>
                             <Link to='/app/registry'>
                                 仓库管理
                             </Link>
                         </Menu.Item>
 
 
-                        <Menu.Item key="dockerPage" icon={<InsertRowLeftOutlined/>}>
+                        <Menu.Item key="dockerConnect" icon={<InsertRowLeftOutlined/>}>
                             <Link to='/app/docker'>
                                 连接管理
                             </Link>
                         </Menu.Item>
-
-
                     </SubMenu>
                 </Menu>
             </div>
         )
     }
-
-
 }
-
-export default CommonMenu;

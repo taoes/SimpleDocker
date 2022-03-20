@@ -23,10 +23,10 @@ public class AuthController {
 
     @PostMapping("/login")
     public ResponseModel<String> login(@RequestBody UserLoginRequest loginRequest) {
-        final var username = loginRequest.getUsername();
-        final var password = loginRequest.getPassword();
+        final String username = loginRequest.getUsername();
+        final String password = loginRequest.getPassword();
 
-        var token = this.authService.login(username, password);
+        String token = this.authService.login(username, password);
         return ResponseModel.ok(token);
     }
 

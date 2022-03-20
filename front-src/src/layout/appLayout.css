@@ -21,6 +21,7 @@
 
 .ant-layout-sider {
     line-height: 120px;
+    background-color: white !important;
 }
 
 .ant-layout-content {

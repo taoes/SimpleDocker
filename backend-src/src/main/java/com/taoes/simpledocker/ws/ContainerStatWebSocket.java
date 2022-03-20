@@ -15,6 +15,7 @@ import javax.websocket.OnOpen;
 import javax.websocket.Session;
 import javax.websocket.server.ServerEndpoint;
 
+import com.github.dockerjava.api.DockerClient;
 import com.github.dockerjava.api.async.ResultCallback;
 import com.github.dockerjava.api.model.Statistics;
 import com.taoes.simpledocker.config.DockerClientFactory;
@@ -63,7 +64,7 @@ public class ContainerStatWebSocket {
         // TODO 校验容器存在
 
         final Map<String, String> param = session.getPathParameters();
-        final var client = clientFactory.get();
+        final DockerClient client = clientFactory.get();
         final ResultCallback<Statistics> callback = client.statsCmd(param.get("cId")).exec(
             new ResultCallback<Statistics>() {
                 @Override

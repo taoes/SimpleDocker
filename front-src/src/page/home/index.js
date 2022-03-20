@@ -72,13 +72,13 @@ class HomePage extends Component {
                     <Descriptions.Item label="操作版本">{_.get(this.state.info, "OperatingSystem")}</Descriptions.Item>
                     <Descriptions.Item label="容器架构">{_.get(this.state.info, "Architecture")}</Descriptions.Item>
                     <Descriptions.Item label="容器数目">
-                        总容器数: <Tag key="Containers" color="blue">{_.get(this.state.info, "Containers")}</Tag>
+                        总容器数: <Tag key="TotalContainers" color="blue">{_.get(this.state.info, "Containers")}</Tag>
 
-                        运行容器数: <Tag key="Containers" color="green">{_.get(this.state.info, "ContainersRunning")}</Tag>
+                        运行容器数: <Tag key="RunningContainers" color="green">{_.get(this.state.info, "ContainersRunning")}</Tag>
 
-                        暂停器数: <Tag key="Containers" color="gold">{_.get(this.state.info, "ContainersPaused")}</Tag>
+                        暂停器数: <Tag key="PauseContainers" color="gold">{_.get(this.state.info, "ContainersPaused")}</Tag>
 
-                        停止器数: <Tag key="Containers" color="red">{_.get(this.state.info, "ContainersStopped")}</Tag>
+                        停止器数: <Tag key="StopContainers" color="red">{_.get(this.state.info, "ContainersStopped")}</Tag>
 
                     </Descriptions.Item>
                 </Descriptions>

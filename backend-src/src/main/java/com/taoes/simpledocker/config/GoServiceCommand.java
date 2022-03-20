@@ -60,7 +60,7 @@ public class GoServiceCommand implements ApplicationContextAware, CommandLineRun
         }
 
         DockerClientConfig config = DefaultDockerClientConfig.createDefaultConfigBuilder().build();
-        final var defaultClient = DockerClientBuilder.getInstance(config).build();
+        final DockerClient defaultClient = DockerClientBuilder.getInstance(config).build();
         clientGroup.put("DEFAULT", defaultClient);
         log.info("初始化Client内容完成,clientSize={}", clientGroup.size());
 
