@@ -1,7 +1,5 @@
 package com.taoes.simpledocker.controller;
 
-import java.util.List;
-
 import com.github.dockerjava.api.command.CreateContainerResponse;
 import com.github.dockerjava.api.command.InspectContainerResponse;
 import com.github.dockerjava.api.command.TopContainerResponse;
@@ -14,12 +12,10 @@ import com.taoes.simpledocker.service.ContainerService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.Map;
 
 /**
  * 容器相关服务
@@ -58,11 +54,11 @@ public class ContainerController {
 
     @PostMapping("/operator/{operate}")
     public ResponseModel<Boolean> operateContainer(
-        @PathVariable ContainerOperate operate,
-        @RequestBody OperateContainerRequest request) {
+            @PathVariable ContainerOperate operate,
+            @RequestBody OperateContainerRequest request) {
 
-        final var containerId = request.getContainerId();
-        final var properties = request.findProperties();
+        final String containerId = request.getContainerId();
+        final Map<String, String> properties = request.findProperties();
 
         try {
             switch (operate) {

@@ -6,12 +6,11 @@
       <profile name="Maven default annotation processors profile" enabled="true">
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
-        <outputRelativeToContentRoot value="true" />
         <module name="simpleDocker" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel>
-      <module name="simpleDocker" target="16" />
+    <bytecodeTargetLevel target="8">
+      <module name="simpleDocker" target="8" />
     </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">

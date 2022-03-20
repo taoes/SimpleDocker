@@ -37,7 +37,7 @@ public class ConfigServiceImpl implements ConfigService {
         final Map<String, String> config =
             configList.stream()
                 .collect(Collectors.toMap(ConfigDao::getName, ConfigDao::getValue));
-        final var result = new HashMap<String, String>();
+        final Map<String,String> result = new HashMap<String, String>();
         for (String name : names) {
             String value = config.getOrDefault(name, "");
             result.put(name, value);
@@ -53,11 +53,11 @@ public class ConfigServiceImpl implements ConfigService {
         }
 
         // 清除
-        var cleanKeys = configGroup.keySet();
+        Set<String> cleanKeys = configGroup.keySet();
         this.cleanByKeys(cleanKeys);
 
         // 保存
-        var configDaoList = new ArrayList<ConfigDao>();
+        List<ConfigDao> configDaoList = new ArrayList<ConfigDao>();
         for (Entry<String, String> entry : configGroup.entrySet()) {
             ConfigDao configDao = new ConfigDao();
             configDao.setName(entry.getKey());
@@ -74,7 +74,7 @@ public class ConfigServiceImpl implements ConfigService {
             return;
         }
 
-        var wrapper = new LambdaQueryWrapper<ConfigDao>();
+        LambdaQueryWrapper<ConfigDao> wrapper = new LambdaQueryWrapper<>();
         wrapper.in(ConfigDao::getName, cleanKeys);
         this.configRepository.remove(wrapper);
     }

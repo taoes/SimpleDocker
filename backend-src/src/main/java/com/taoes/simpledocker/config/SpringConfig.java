@@ -28,7 +28,7 @@ public class SpringConfig {
         UrlBasedCorsConfigurationSource configurationSource = new UrlBasedCorsConfigurationSource();
         configurationSource.registerCorsConfiguration("/**",corsConfiguration);
 
-        var bean = new FilterRegistrationBean<>(new CorsFilter(configurationSource));
+        FilterRegistrationBean bean = new FilterRegistrationBean<>(new CorsFilter(configurationSource));
         bean.setOrder(0);
         return bean;
     }

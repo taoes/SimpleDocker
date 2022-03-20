@@ -60,7 +60,7 @@ public class DockerClientFactory implements ApplicationContextAware, CommandLine
         final List<DockerConfig> dockerConfigList = dockerConfigService.list();
         for (DockerConfig dockerConfig : dockerConfigList) {
             DockerClientConfig config = DefaultDockerClientConfig.createDefaultConfigBuilder().build();
-            final var defaultClient = DockerClientBuilder.getInstance(config).build();
+            final DockerClient defaultClient = DockerClientBuilder.getInstance(config).build();
             clientGroup.put("DEFAULT", defaultClient);
 
             // TODO 江南 启动GoLanguage服务

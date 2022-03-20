@@ -13,8 +13,7 @@ import './appLayout.css';
 const {Content, Footer, Header, Sider} = Layout
 
 
-export default class AppLayout extends React.Component {
-    render() {
+export default function AppLayout() {
         return (
             <Layout style={{minHeight: '100%'}}>
                 <Header>
@@ -22,7 +21,7 @@ export default class AppLayout extends React.Component {
                 </Header>
 
                 <Layout>
-                    <Sider>
+                    <Sider collapsed={false}>
                         <CommonMenu/>
                     </Sider>
                     <Content>
@@ -33,9 +32,7 @@ export default class AppLayout extends React.Component {
                     <CommonFooter/>
                 </Footer>
             </Layout>
-
         );
-    }
 }
 
 

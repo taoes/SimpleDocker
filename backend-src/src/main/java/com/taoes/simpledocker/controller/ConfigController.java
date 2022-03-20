@@ -1,9 +1,5 @@
 package com.taoes.simpledocker.controller;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-
 import com.taoes.simpledocker.controller.client.DockerClientConfig;
 import com.taoes.simpledocker.model.ResponseModel;
 import com.taoes.simpledocker.service.ConfigService;
@@ -12,6 +8,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
 
 /**
  * TODO: please input file info
@@ -33,7 +33,7 @@ public class ConfigController {
 
     @GetMapping("/system")
     public ResponseModel<Map<String, String>> getConfigByKeys() {
-        var config = configService.findConfigByKeys(new HashSet<>());
+        Map<String,String> config = configService.findConfigByKeys(new HashSet<>());
         return ResponseModel.ok(config);
     }
 }

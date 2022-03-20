@@ -29,7 +29,7 @@ public class AuthServiceImpl implements AuthService {
     public String login(String username, String password) {
         // 查询用户信息
         final Optional<UserDao> userOptional = userRepository.findByName(username);
-        if (userOptional.isEmpty()) {
+        if (userOptional.isPresent()) {
             log.warn("用户:{}登录失败,该用户不存在", username);
             throw new RuntimeException("用户名和密码不匹配");
         }

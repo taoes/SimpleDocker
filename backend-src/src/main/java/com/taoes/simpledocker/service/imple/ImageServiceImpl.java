@@ -47,7 +47,7 @@ public class ImageServiceImpl implements ImageService {
 
     @Override
     public void remove(String imageId, Boolean force) {
-        final var client = factory.get();
+        final DockerClient client = factory.get();
         client.removeImageCmd(imageId).withForce(force).exec();
     }
 
@@ -63,7 +63,7 @@ public class ImageServiceImpl implements ImageService {
 
     @Override
     public void remove() {
-        final var client = factory.get();
+        final DockerClient client = factory.get();
     }
 
     @Override
