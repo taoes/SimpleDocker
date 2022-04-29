@@ -21,7 +21,7 @@ export default function AppLayout() {
                 </Header>
 
                 <Layout>
-                    <Sider collapsed={false}>
+                    <Sider collapsed={true}>
                         <CommonMenu/>
                     </Sider>
                     <Content>

@@ -1,7 +1,7 @@
 import React from 'react'
 import ReactJson from "react-json-view";
 
-import {inspect} from "../../../api/container";
+import {inspect} from "../../../api/Container";
 import { Spin} from "antd";
 
 /**

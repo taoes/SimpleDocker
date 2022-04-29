@@ -74,7 +74,8 @@ class HomePage extends Component {
                     <Descriptions.Item label="容器数目">
                         总容器数: <Tag key="TotalContainers" color="blue">{_.get(this.state.info, "Containers")}</Tag>
 
-                        运行容器数: <Tag key="RunningContainers" color="green">{_.get(this.state.info, "ContainersRunning")}</Tag>
+                        运行容器数: <Tag key="RunningContainers"
+                                    color="green">{_.get(this.state.info, "ContainersRunning")}</Tag>
 
                         暂停器数: <Tag key="PauseContainers" color="gold">{_.get(this.state.info, "ContainersPaused")}</Tag>
 
@@ -84,23 +85,22 @@ class HomePage extends Component {
                 </Descriptions>
 
                 <div style={{height: 10}}/>
-                <Descriptions
-                    bordered
-                    size="small"
-                    title="Docker 监控信息">
-                    <h1>待实现</h1>
-                </Descriptions>
+                {/*<Descriptions*/}
+                {/*    bordered*/}
+                {/*    size="small"*/}
+                {/*    title="Docker 监控信息">*/}
+                {/*    <h1>待实现</h1>*/}
+                {/*</Descriptions>*/}
 
 
                 <Drawer
                     title="详情信息"
                     width="500"
-                    visible={this.state.modalVisible} i
-                    onClose={() => this.setModalVisible(false)}
-                >
+                    visible={this.state.modalVisible}
+                    onClose={() => this.setModalVisible(false)}>
                     <ReactJson src={this.state.detailData}
                                displayDataTypes={false}
-                               style={{overflow:'auto'}}
+                               style={{overflow: 'auto'}}
                                collapsed={1}/>
                 </Drawer>
             </div>

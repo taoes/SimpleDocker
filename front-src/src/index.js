@@ -20,13 +20,13 @@ import appRouter from "./router/app";
 ReactDOM.render(
     <HashRouter>
         <Routes>
+            <Route path="/" element={<LoginLayout/>}/>
+            <Route path="/login" element={<LoginLayout/>}/>
             <Route path="/app" element={<AppLayout/>}>
                 {
                     appRouter.map(({path, component}) => <Route key={path} path={path} element={component}/>)
                 }
             </Route>
-            <Route path="/login" element={<LoginLayout/>}/>
-            <Route path="/" element={<LoginLayout/>}/>
         </Routes>
     </HashRouter>,
     document.getElementById('root')
