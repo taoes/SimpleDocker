@@ -1,6 +1,6 @@
 import React from 'react'
 import {message, Button, Modal, Divider} from "antd";
-import {inspect, operator as operatorContainer} from "../../../api/container";
+import {inspect, operator as operatorContainer} from "../../../api/Container";
 import ContainerProcess from "../process";
 import './index.css'
 import _ from 'lodash'

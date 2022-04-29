@@ -2,12 +2,10 @@ import React, {Component} from "react";
 
 
 import {Button, Checkbox, Drawer, Form, Input, message, Modal, Skeleton, Space, Switch, Table, Tag} from "antd";
-import {BuildOutlined, CloudDownloadOutlined, SyncOutlined, ScissorOutlined} from '@ant-design/icons';
+import {CloudDownloadOutlined, SyncOutlined, ScissorOutlined} from '@ant-design/icons';
 
 
 import {list, remove, prune} from "../../api/ImageApi";
-import formatDate from '../../utils/DateTime'
-import bytesToSize from '../../utils/ByteSize'
 import ImagePullModal from '../../components/image/pull'
 
 import './index.css'
@@ -15,6 +13,8 @@ import RunNewContainerStep from "../../components/image/run";
 
 
 import ImageDetail from "../../components/image/detail";
+
+import columns from "./column";
 
 /**
  * 主页布局文件
@@ -48,7 +48,6 @@ class ImagePage extends Component {
             let imageList = resp.data
             this.setState({imageList, tableLoading: false})
         }).catch((e) => {
-            console.log(e)
             message.info("获取镜像列表请求失败，请稍后重试")
             this.setState({imageList: [], tableLoading: false})
         })
@@ -116,69 +115,7 @@ class ImagePage extends Component {
     }
 
     render() {
-        const
-            columns = [
-                {
-                    title: '容器ID',
-                    dataIndex: 'Id',
-                    key: 'name',
-                    render: id => <span>{!!id && id.substring(0, 30).replaceAll("sha256:", '')}</span>,
-                    ellipsis: true,
-                    width: 150,
-                },
-                {
-                    title: '镜像标签',
-                    dataIndex: 'RepoTags',
-                    render: RepoTags => {
 
-                        if (!RepoTags) {
-                            return null
-                        }
-                        return RepoTags.map(t => {
-                            let color = 'blue'
-                            if (t.indexOf('none') !== -1) {
-                                color = 'red'
-                            } else if (t.indexOf('latest') !== -1) {
-                                color = 'green'
-                            }
-                            return <Tag key={t} color={color}>{t}</Tag>
-                        })
-                    },
-                    key: 'Size',
-                    width: 700,
-                },
-                {
-                    title: '镜像大小',
-                    dataIndex: 'Size',
-                    render: size => <span>{bytesToSize(size)}</span>,
-                    key: 'Size',
-                    width: 120,
-                },
-                {
-                    title: '创建时间',
-                    dataIndex: 'Created',
-                    key: 'Created',
-                    width: 120,
-                    render: time => <span>{formatDate(time * 1000)}</span>,
-                },
-                {
-                    title: '操作',
-                    dataIndex: 'address',
-                    key: 'address 4',
-                    fixed: 'right',
-                    width: 180,
-                    render: (text, image) => {
-                        return (
-                            <Space>
-                                <Button size="small" type="link" onClick={() => this.showRunModal(image)}>运行</Button>
-                                <Button size="small" type="link" onClick={() => this.showImageDetail(image)}>详情</Button>
-                                <Button size="small" type="link" onClick={() => this.showMoreModal(image)}>更多</Button>
-                            </Space>
-                        )
-                    }
-
-                },
-            ];
 
         let imageListOfFilter = this.state.imageList.filter(image => {
             if (!this.state.filterKey) {
