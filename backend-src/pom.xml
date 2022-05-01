@@ -8,15 +8,24 @@
         <version>2.6.1</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
-    <groupId>com.example</groupId>
-    <artifactId>simpleDocker</artifactId>
+
+    <groupId>com.zhoutao123.simple</groupId>
+    <artifactId>docker</artifactId>
     <version>1.0.0</version>
-    <name>simpleDocker</name>
-    <description>Demo project for Spring Boot</description>
+    <name>backend-src</name>
+    <description>Docker Dashboard</description>
+
+
     <properties>
         <java.version>8</java.version>
+        <lombok.version>1.18.24</lombok.version>
+        <mysql.version>8.0.28</mysql.version>
+        <docker-sdk.version>3.2.12</docker-sdk.version>
     </properties>
+
+
     <dependencies>
+        <!--    SpringBoot 依赖-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
@@ -28,11 +37,15 @@
             <scope>runtime</scope>
             <optional>true</optional>
         </dependency>
+
+        <!--        Lombok-->
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
-            <version>1.18.20</version>
+            <version>${lombok.version}</version>
         </dependency>
+
+        <!--        测试框架-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
@@ -43,15 +56,14 @@
         <dependency>
             <groupId>com.github.docker-java</groupId>
             <artifactId>docker-java</artifactId>
-            <version>3.2.12</version>
+            <version>${docker-sdk.version}</version>
         </dependency>
 
         <!-- https://mvnrepository.com/artifact/com.github.docker-java/docker-java-transport-httpclient5 -->
         <dependency>
             <groupId>com.github.docker-java</groupId>
-            <!--            <artifactId>docker-java-transport-netty</artifactId>-->
             <artifactId>docker-java-transport-httpclient5</artifactId>
-            <version>3.2.12</version>
+            <version>${docker-sdk.version}</version>
         </dependency>
 
         <!-- https://mvnrepository.com/artifact/com.squareup.okhttp3/okhttp -->
@@ -79,7 +91,7 @@
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
-            <version>8.0.18</version>
+            <version>${mysql.version}</version>
         </dependency>
 
 
@@ -89,10 +101,6 @@
             <artifactId>spring-boot-starter-websocket</artifactId>
         </dependency>
 
-<!--        <dependency>-->
-<!--            <groupId>org.springframework.boot</groupId>-->
-<!--            <artifactId>spring-boot-starter-security</artifactId>-->
-<!--        </dependency>-->
 
         <dependency>
             <groupId>io.jsonwebtoken</groupId>
@@ -126,8 +134,8 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <configuration>
-                    <source>16</source>
-                    <target>16</target>
+                    <source>8</source>
+                    <target>8</target>
                 </configuration>
             </plugin>
         </plugins>
