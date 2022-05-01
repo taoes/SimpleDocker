@@ -1,11 +1,11 @@
 package com.taoes.simpledocker.dao.bean;
 
-import java.time.LocalDateTime;
-
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
+
+import java.time.LocalDateTime;
 
 /**
  * 用户DAO对象
@@ -14,7 +14,7 @@ import lombok.Data;
  * @date 2021/12/15 1:11 下午
  */
 @Data
-@TableName("sd_user")
+@TableName("user")
 public class UserDao {
 
     @TableId(type = IdType.AUTO)

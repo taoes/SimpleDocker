@@ -12,7 +12,7 @@ import lombok.Data;
  * @date 2021/12/15 1:11 下午
  */
 @Data
-@TableName("sd_config")
+@TableName("system_config")
 public class ConfigDao {
     @TableId(type = IdType.AUTO)
     private Long id;

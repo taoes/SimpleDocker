@@ -13,7 +13,7 @@ import lombok.Data;
  * @date 2021/12/15 1:11 下午
  */
 @Data
-@TableName("sd_docker")
+@TableName("docker")
 public class DockerConfigDao {
     @TableId(type = IdType.AUTO)
     private Long id;

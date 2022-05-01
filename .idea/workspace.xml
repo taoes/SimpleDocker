@@ -5,21 +5,35 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="2e8afb8c-0a7a-4fb7-ad64-90ec4bfdb3a1" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/front-src/src/page/image/column.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/jarRepositories.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/jarRepositories.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_projectlombok_lombok_1_18_20.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ErrorCode.md" beforeDir="false" afterPath="$PROJECT_DIR$/doc/ErrorCode.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PREVIEW.md" beforeDir="false" afterPath="$PROJECT_DIR$/doc/PREVIEW.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/about/update.md" beforeDir="false" afterPath="$PROJECT_DIR$/doc/update.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend-src/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/backend-src/pom.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/backend-src/simpleDocker.iml" beforeDir="false" afterPath="$PROJECT_DIR$/backend-src/simpleDocker.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-src/src/api/container.js" beforeDir="false" afterPath="$PROJECT_DIR$/front-src/src/api/Container.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-src/src/components/container/detail/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/front-src/src/components/container/detail/index.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-src/src/components/container/operator/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/front-src/src/components/container/operator/index.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-src/src/components/container/process/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/front-src/src/components/container/process/index.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-src/src/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/front-src/src/index.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-src/src/layout/appLayout.js" beforeDir="false" afterPath="$PROJECT_DIR$/front-src/src/layout/appLayout.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-src/src/page/container/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/front-src/src/page/container/index.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-src/src/page/home/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/front-src/src/page/home/index.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-src/src/page/image/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/front-src/src/page/image/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend-src/src/main/java/com/taoes/simpledocker/dao/bean/ConfigDao.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend-src/src/main/java/com/taoes/simpledocker/dao/bean/ConfigDao.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend-src/src/main/java/com/taoes/simpledocker/dao/bean/DockerConfigDao.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend-src/src/main/java/com/taoes/simpledocker/dao/bean/DockerConfigDao.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend-src/src/main/java/com/taoes/simpledocker/dao/bean/UserDao.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend-src/src/main/java/com/taoes/simpledocker/dao/bean/UserDao.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend-src/src/main/resources/application.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/backend-src/src/main/resources/application.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend-src/target/classes/application.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/backend-src/target/classes/application.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build.sh" beforeDir="false" afterPath="$PROJECT_DIR$/build/build.sh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resource/img/container.png" beforeDir="false" afterPath="$PROJECT_DIR$/doc/resource/img/container.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resource/img/containerLog.png" beforeDir="false" afterPath="$PROJECT_DIR$/doc/resource/img/containerLog.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resource/img/container_notify.png" beforeDir="false" afterPath="$PROJECT_DIR$/doc/resource/img/container_notify.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resource/img/file.png" beforeDir="false" afterPath="$PROJECT_DIR$/doc/resource/img/file.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resource/img/home.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/doc/resource/img/home.jpg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resource/img/icon.png" beforeDir="false" afterPath="$PROJECT_DIR$/doc/resource/img/icon.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resource/img/image.png" beforeDir="false" afterPath="$PROJECT_DIR$/doc/resource/img/image.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resource/img/info.png" beforeDir="false" afterPath="$PROJECT_DIR$/doc/resource/img/info.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resource/img/monitor.png" beforeDir="false" afterPath="$PROJECT_DIR$/doc/resource/img/monitor.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resource/img/network.png" beforeDir="false" afterPath="$PROJECT_DIR$/doc/resource/img/network.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resource/img/runContainer.png" beforeDir="false" afterPath="$PROJECT_DIR$/doc/resource/img/runContainer.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resource/img/terminal.png" beforeDir="false" afterPath="$PROJECT_DIR$/doc/resource/img/terminal.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resource/img/volume.png" beforeDir="false" afterPath="$PROJECT_DIR$/doc/resource/img/volume.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/source/.gitkeeper" beforeDir="false" afterPath="$PROJECT_DIR$/database/struct.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/source/api/ImageApi" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -231,10 +245,12 @@
   <component name="ProjectViewState">
     <option name="autoscrollFromSource" value="true" />
     <option name="autoscrollToSource" value="true" />
+    <option name="showExcludedFiles" value="false" />
     <option name="showLibraryContents" value="true" />
     <option name="showVisibilityIcons" value="true" />
   </component>
   <component name="PropertiesComponent">
+    <property name="DatabaseDriversLRU" value="mysql" />
     <property name="Git.Branch.Popup.ShowAllRemotes" value="true" />
     <property name="RequestMappingsPanelOrder0" value="0" />
     <property name="RequestMappingsPanelOrder1" value="1" />
@@ -255,7 +271,7 @@
     <property name="project.structure.last.edited" value="Modules" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
-    <property name="settings.editor.selected.configurable" value="editor.preferences.fonts.default" />
+    <property name="settings.editor.selected.configurable" value="reference.projectsettings.compiler.javacompiler" />
     <property name="ts.external.directory.path" value="$PROJECT_DIR$/admin/node_modules/typescript/lib" />
     <property name="vue.rearranger.settings.migration" value="true" />
   </component>
@@ -274,11 +290,11 @@
       <recent name="$PROJECT_DIR$/front-vue-src/src/pages" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/doc" />
+      <recent name="$PROJECT_DIR$/build" />
       <recent name="$PROJECT_DIR$/admin/src/component/ApplicationToolMenu" />
       <recent name="$PROJECT_DIR$/admin/src/component/index" />
       <recent name="$PROJECT_DIR$/admin/src/component/ApplicationMenu" />
-      <recent name="$PROJECT_DIR$/front-src/src/components/container/detail" />
-      <recent name="$PROJECT_DIR$/front-src/src/components/container/operator" />
     </key>
     <key name="CopyClassDialog.RECENTS_KEY">
       <recent name="com.taoes.simpledocker.service.docker.monitor" />
@@ -405,6 +421,7 @@
       <workItem from="1647786132102" duration="450000" />
       <workItem from="1651245955852" duration="3232000" />
       <workItem from="1651251222752" duration="1257000" />
+      <workItem from="1651423590723" duration="1150000" />
     </task>
     <servers />
   </component>
@@ -503,12 +520,6 @@
           <url>file://$PROJECT_DIR$/backend-src/src/main/java/com/taoes/simpledocker/ws/ImagePullWebSocket.java</url>
           <line>68</line>
           <option name="timeStamp" value="40" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="javascript">
-          <url>file://$PROJECT_DIR$/front-src/src/page/image/column.js</url>
-          <line>5</line>
-          <properties lambdaOrdinal="-1" />
-          <option name="timeStamp" value="41" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

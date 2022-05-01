@@ -11,7 +11,7 @@
 
 + 计划使用Java重写原Go服务，使用SpringBoot框架代替Beego框架。作为一个Java开发者来说,使用Java语言开发更方便，对ISSUE也能更快的响应，虽然Go部署方便，但是一些同学本地开发很不方便
 
-+  使用React重写GUI界面。
++  使用 React + TypeScript 重写GUI界面。
 
 +  原存储服务使用MySQL 代替 Redis，Redis 还是作为缓存较好，作为存储服务还是有点弱。由于新版本将支持大量配置以及监控，日志等，因此使用MySQL这种结构数据库还是比较稳定的。
 
@@ -20,7 +20,7 @@
 Tip: 您可以在Issues中提出需求！[需求 & BUG 管理](https://github.com/taoes/SimpleDocker/issues)
 
 ---
-![xxx](resource/img/icon.png)
+![xxx](doc/resource/img/icon.png)
 ----
 
 SimpleDocker 是一个简单的Docker控制面板，致力于可以让用户更方便、更无障碍、更舒适的使用Docker，其界面简洁、操作便捷，功能强大，可以带来更好地运维体验。
@@ -37,12 +37,6 @@ SimpleDocker 是一个简单的Docker控制面板，致力于可以让用户更�
 
 
 
-## 演示网站
-0. 部署的内容为重构版本，目前可能功能尚未完善，一些功能尚未完善，随着重构进度后面会继续发布
-1. 演示环境 [http://docker.zhoutao123.com/](http://docker.zhoutao123.com/)
-2. 账号: admin 密码: 123456
-3. 演示环境，请勿删除/停止/暂停 容器，否则可能造成服务异常
-4. 如果演示环境无法登录或者无法使用，请及时创建Issue联系我
 
 
 
@@ -73,7 +67,7 @@ SimpleDocker 是一个简单的Docker控制面板，致力于可以让用户更�
 
 ### 📔 更新记录
 
-[SimpleDocker 更新记录](about/update.md)
+[SimpleDocker 更新记录](doc/update.md)
 
 ## 应用安装
 
@@ -145,37 +139,37 @@ yarn install && yarn server
 ## 预览
 
 + 主页
-  ![Docker 信息](resource/img/home.jpg)
+  ![Docker 信息](doc/resource/img/home.jpg)
 
 + Docker 信息
-  ![Docker 信息](resource/img/info.png)
+  ![Docker 信息](doc/resource/img/info.png)
   
 + Image 信息
-  ![Image 信息](resource/img/image.png)
+  ![Image 信息](doc/resource/img/image.png)
 
 + 运行新的容器
-  ![Image 信息](resource/img/runContainer.png)
+  ![Image 信息](doc/resource/img/runContainer.png)
 
 + Container 信息
-  ![Container 信息](resource/img/container.png)
+  ![Container 信息](doc/resource/img/container.png)
 
 + 容器终端在线管理
-  ![终端管理](resource/img/terminal.png)
+  ![终端管理](doc/resource/img/terminal.png)
 
 + 容器文件在线管理
-  ![终端管理](resource/img/file.png)
+  ![终端管理](doc/resource/img/file.png)
 
 + 容器性能监控
-  ![终端监控](resource/img/monitor.png)
+  ![终端监控](doc/resource/img/monitor.png)
 
 + 容器日志以及日志下载
-  ![Image 信息](resource/img/containerLog.png)
+  ![Image 信息](doc/resource/img/containerLog.png)
 
 + Volume 信息
-  ![Volume 信息](resource/img/volume.png)
+  ![Volume 信息](doc/resource/img/volume.png)
 
 + Network 信息
-  ![Network 信息](resource/img/network.png)
+  ![Network 信息](doc/resource/img/network.png)
 
 ## Q & A
 
