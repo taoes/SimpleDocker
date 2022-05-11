@@ -11,8 +11,7 @@ class CommonHead extends React.Component {
             <div>
                 <div id="header">
                     <div style={{marginRight: 'auto', display: 'flex', alignItems: 'center'}}>
-                        <img src={"/icon2.png"} style={{height: 40}} alt=""/>
-                        <h1 id="title">SimpleDocker</h1>
+                        <img src={"/logo.png"} style={{height: 40}} alt=""/>
                     </div>
                     <LoginInfo/>
                 </div>

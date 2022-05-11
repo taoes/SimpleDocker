@@ -13,6 +13,7 @@ import {
     ToolOutlined
 } from '@ant-design/icons';
 import {Link} from "react-router-dom";
+import IconFont from "./IconFont";
 
 const {SubMenu} = Menu;
 
@@ -28,7 +29,7 @@ export default class CommonMenu extends React.Component {
                     defaultSelectedKeys={['1']}
                     mode="inline"
                 >
-                    <Menu.Item key="systemInfo" icon={<PieChartOutlined/>}>
+                    <Menu.Item key="systemInfo" icon={<IconFont type="icon-in"/>}>
                         <Link to='/app'>系统概述</Link>
                     </Menu.Item>
                     <Menu.Item key="imageList" icon={<DesktopOutlined/>}>
