@@ -10,6 +10,7 @@ import AppLayout from "./layout/appLayout";
 
 // 引入 antd css 样式
 import 'antd/dist/antd.css';
+import 'bulma/css/bulma.css'
 import './layout/appLayout.css';
 
 

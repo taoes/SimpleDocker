@@ -132,11 +132,6 @@ public class OSInfo {
         return _instance.platform;
     }
 
-    /**
-     * @param args
-     */
-    public static void main(String[] args) {
-        System.out.println(OSInfo.getOSName());
-    }
+
 
 }

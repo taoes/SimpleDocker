@@ -108,3 +108,4 @@ backend-src/target/
 backend-src/src/main/resources/static/
 
 */node_modules
+front-src/*
