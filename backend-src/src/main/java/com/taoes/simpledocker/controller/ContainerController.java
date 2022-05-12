@@ -11,7 +11,6 @@ import com.taoes.simpledocker.model.enums.ContainerOperate;
 import com.taoes.simpledocker.service.ContainerService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import lombok.val;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -37,9 +36,8 @@ public class ContainerController {
     }
 
     @GetMapping("/{containerId}")
-    public ResponseModel<InspectContainerResponse> inspect(@PathVariable String containerId) {
-        val resp = service.inspect(containerId);
-        return ResponseModel.ok(resp);
+    public InspectContainerResponse inspect(@PathVariable String containerId) {
+        return service.inspect(containerId);
     }
 
     @PostMapping("/new")

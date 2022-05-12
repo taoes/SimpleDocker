@@ -16,7 +16,7 @@ export default function MainLayout() {
                 <Sider>
                     <MainSideMenu/>
                 </Sider>
-                <Content className="m-3 p-2 has-background-white">
+                <Content className="m-3 has-background-white">
                     <Outlet/>
                 </Content>
             </Layout>

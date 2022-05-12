@@ -6,6 +6,8 @@ import NetworkPage from "../page/NetworkPage";
 import HomePage from "../page/HomePage";
 import MonitorPage from "../page/MonitorPage";
 import SettingPage from "../page/SettingPage";
+import UserPage from "../page/UserPage";
+import AboutPage from "../page/AboutPage";
 
 
 export const appRouter: Array<AppRouter> = [
@@ -42,6 +44,16 @@ export const appRouter: Array<AppRouter> = [
     {
         path: '/app/setting',
         component: <SettingPage/>,
+        exact: true
+    },
+    {
+        path: '/app/user',
+        component: <UserPage/>,
+        exact: true
+    },
+    {
+        path: '/app/about',
+        component: <AboutPage/>,
         exact: true
     }
 ]
