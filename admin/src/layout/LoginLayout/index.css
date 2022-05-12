@@ -1,0 +1,25 @@
+#loginPage {
+    display: flex;
+    justify-content: center;
+}
+
+#loginForm {
+    background-color: white;
+    border-radius: 5px;
+    width: 500px;
+    margin-top: 200px;
+    padding: 20px;
+}
+
+
+#loginTitle {
+    margin: 10px;
+    display: flex;
+    justify-content: center;
+    justify-self: center;
+    align-items: center;
+}
+
+.inline{
+    display: flex;
+}

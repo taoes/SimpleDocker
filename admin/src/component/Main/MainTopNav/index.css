@@ -1,0 +1,17 @@
+#title {
+    color: white;
+    font-size: 1.8em;
+    margin: 10px;
+}
+
+#version {
+    color: lightgray;
+    margin-top: 20px;
+}
+
+#header{
+    display: flex;
+    align-items: center;
+    height: 64px;
+
+}

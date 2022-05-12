@@ -5,45 +5,57 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="2e8afb8c-0a7a-4fb7-ad64-90ec4bfdb3a1" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/admin/src/component/Base/IconFont/index.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/admin/src/component/Main/MainFooter/index.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/admin/src/component/Main/MainFooter/index.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/admin/src/component/Main/MainSideMenu/index.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/admin/src/component/Main/MainTopNav/index.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/admin/src/layout/LoginLayout/index.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/admin/src/layout/MainLayout/index.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/admin/src/page/ContainerPage/index.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/admin/src/page/HomePage/index.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/admin/src/page/ImagePage/index.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/admin/src/page/MonitorPage/index.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/admin/src/page/NetworkPage/index.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/admin/src/page/SettingPage/index.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/admin/src/page/VolumePage/index.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/admin/src/router/AppRouter.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/admin/src/router/mainPageRouter.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/backend-src/lombok.config" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/backend-src/src/main/resources/application-dev.yaml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/backend-src/src/main/resources/application-pord.yaml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/backend-src/src/test/java/com/taoes/simpledocker/utils/OSInfoTest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/front-src/public/logo.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/front-src/src/components/Home/AppDescriptions/index.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/front-src/src/components/Home/VersionDescription/index.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/front-src/src/components/IconFont/index.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/admin/public/login-icon.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/admin/public/logo.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/admin/src/api/Api.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/admin/src/api/Container/ContainerApi.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/admin/src/api/Image/ImageApi.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/admin/src/api/Info/Info.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/admin/src/api/Model/ContainerMount.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/admin/src/api/Model/ContainerNetwork.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/admin/src/api/Model/ContainerPort.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/admin/src/api/Model/DockerContainer.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/admin/src/api/Model/DockerImage.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/admin/src/api/Model/DockerInfo.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/admin/src/api/Model/DockerServer.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/admin/src/api/Model/IpamConfig.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/admin/src/api/Model/Network/DockerNetwork.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/admin/src/api/Model/Volumn/InsepectVolume.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/admin/src/api/Model/Volumn/ListVolumes.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/admin/src/api/Network/NetworkApi.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/admin/src/api/Volumes/Volumes.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/admin/src/component/App/Container/ContainerDetailDrawer/index.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/admin/src/component/App/Home/DockerInfoDescription/index.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/admin/src/component/App/Home/DockerVersionDescription/index.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/admin/src/component/App/Image/ImageDetailDrawer/index.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/admin/src/component/Main/MainTopNav/index.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/admin/src/layout/LoginLayout/index.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/admin/src/page/AboutPage/index.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/admin/src/page/SettingPage/DockerServerTab/index.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/admin/src/page/SettingPage/TerminalTab/index.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/admin/src/page/UserPage/index.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/admin/src/utils/ByteSize.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/admin/src/utils/DateTime.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/admin/src/utils/Time.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend-src/src/main/java/com/taoes/simpledocker/dao/bean/DockerConfigDao.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend-src/src/main/java/com/taoes/simpledocker/dao/bean/DockerConfigDao.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend-src/src/main/java/com/taoes/simpledocker/utils/OSInfo.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend-src/src/main/java/com/taoes/simpledocker/utils/OSInfo.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend-src/src/main/resources/application.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/backend-src/src/main/resources/application.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend-src/target/classes/application.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/backend-src/target/classes/application.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-src/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/front-src/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-src/src/api/ImageApi.js" beforeDir="false" afterPath="$PROJECT_DIR$/front-src/src/api/ImageApi.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-src/src/api/InfoApi.js" beforeDir="false" afterPath="$PROJECT_DIR$/front-src/src/api/InfoApi.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-src/src/components/CommonHead/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/front-src/src/components/CommonHead/index.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-src/src/components/CommonMenu.js" beforeDir="false" afterPath="$PROJECT_DIR$/front-src/src/components/CommonMenu.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-src/src/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/front-src/src/index.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-src/src/page/home/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/front-src/src/page/home/index.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-src/src/page/image/column.js" beforeDir="false" afterPath="$PROJECT_DIR$/front-src/src/page/image/column.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-src/src/page/image/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/front-src/src/page/image/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/admin/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/admin/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/public/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/admin/public/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/src/component/Main/MainFooter/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/admin/src/component/Main/MainFooter/index.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/src/component/Main/MainSideMenu/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/admin/src/component/Main/MainSideMenu/index.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/src/component/Main/MainTopNav/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/admin/src/component/Main/MainTopNav/index.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/src/index.css" beforeDir="false" afterPath="$PROJECT_DIR$/admin/src/index.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/src/layout/LoginLayout/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/admin/src/layout/LoginLayout/index.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/src/layout/MainLayout/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/admin/src/layout/MainLayout/index.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/src/page/ContainerPage/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/admin/src/page/ContainerPage/index.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/src/page/HomePage/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/admin/src/page/HomePage/index.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/src/page/ImagePage/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/admin/src/page/ImagePage/index.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/src/page/MonitorPage/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/admin/src/page/MonitorPage/index.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/src/page/NetworkPage/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/admin/src/page/NetworkPage/index.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/src/page/SettingPage/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/admin/src/page/SettingPage/index.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/src/page/VolumePage/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/admin/src/page/VolumePage/index.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/src/router/mainPageRouter.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/admin/src/router/mainPageRouter.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend-src/src/main/java/com/taoes/simpledocker/controller/ContainerController.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend-src/src/main/java/com/taoes/simpledocker/controller/ContainerController.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -66,9 +78,9 @@
         <option value="package.json" />
         <option value="JavaScript File" />
         <option value="JUnit5 Test Class" />
+        <option value="CSS File" />
         <option value="TypeScript JSX File" />
         <option value="TypeScript File" />
-        <option value="CSS File" />
       </list>
     </option>
   </component>
@@ -261,7 +273,6 @@
     </panes>
   </component>
   <component name="ProjectViewState">
-    <option name="autoscrollFromSource" value="true" />
     <option name="autoscrollToSource" value="true" />
     <option name="showExcludedFiles" value="false" />
     <option name="showLibraryContents" value="true" />
@@ -285,7 +296,7 @@
     <property name="go.formatter.settings.were.checked" value="true" />
     <property name="go.import.settings.migrated" value="true" />
     <property name="go.sdk.automatically.set" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/admin/src/page" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/admin/src/page/SettingPage" />
     <property name="list.type.of.created.stylesheet" value="CSS" />
     <property name="nodejs_package_manager_path" value="npm" />
     <property name="project.structure.last.edited" value="Modules" />
@@ -303,18 +314,18 @@
       <recent name="com.taoes.simpledocker.service.imple" />
     </key>
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/admin/src/page/SettingPage" />
       <recent name="$PROJECT_DIR$/admin/src/page" />
+      <recent name="$PROJECT_DIR$/admin/src/utils" />
+      <recent name="$PROJECT_DIR$/admin/public" />
       <recent name="$PROJECT_DIR$/front-src/public" />
-      <recent name="$PROJECT_DIR$/backend-src/src/main/resources" />
-      <recent name="$PROJECT_DIR$/admin/src/component" />
-      <recent name="$PROJECT_DIR$/front-src/src/page/security" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/admin/src/component/App/Image" />
       <recent name="$PROJECT_DIR$/admin/src/layout" />
       <recent name="$PROJECT_DIR$" />
       <recent name="$PROJECT_DIR$/doc" />
       <recent name="$PROJECT_DIR$/build" />
-      <recent name="$PROJECT_DIR$/admin/src/component/ApplicationToolMenu" />
     </key>
     <key name="CreateTestDialog.Recents.Supers">
       <recent name="" />
@@ -434,7 +445,7 @@
       <workItem from="1651251222752" duration="1257000" />
       <workItem from="1651423590723" duration="1150000" />
       <workItem from="1651599490116" duration="3000" />
-      <workItem from="1652284598280" duration="4552000" />
+      <workItem from="1652284598280" duration="34776000" />
     </task>
     <servers />
   </component>
