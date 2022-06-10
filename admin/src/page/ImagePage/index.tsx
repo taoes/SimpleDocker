@@ -1,4 +1,4 @@
-import {Button, Drawer, Space, Table, Tag} from "antd";
+import {Button, Checkbox, Divider, Drawer, message, Space, Table, Tag} from "antd";
 import {useEffect, useState} from "react";
 import {getDockerImages} from "../../api/Image/ImageApi";
 import {ColumnsType} from "antd/es/table";
@@ -6,6 +6,12 @@ import DockerImage from "../../api/Model/DockerImage";
 import bytesToSize from "../../utils/ByteSize";
 import dateToStr from "../../utils/Time";
 import ImageDetailDrawer from "../../component/App/Image/ImageDetailDrawer";
+import {useNavigate} from "react-router-dom";
+import Search from "antd/es/input/Search";
+import {
+    CloudSyncOutlined,
+    ReloadOutlined
+} from "@ant-design/icons";
 
 
 function ImagePage() {
@@ -13,10 +19,15 @@ function ImagePage() {
     let [images, setImages] = useState<Array<DockerImage>>([])
     let [currentImageId, setCurrentImageId] = useState<string>("")
     let [drawerStatus, setDrawerStatus] = useState<boolean>(false)
+    let navigate = useNavigate()
 
     function showDetailDrawer(imageId: string) {
         setCurrentImageId(imageId)
         setDrawerStatus(true)
+    }
+
+    function runImage(Id: string) {
+        navigate(`/app/image/${Id}/run`)
     }
 
     const columns: ColumnsType<DockerImage> = [
@@ -36,16 +47,10 @@ function ImagePage() {
                     return null
                 }
                 return RepoTags.map((t: any) => {
-                    let color = 'blue'
-                    if (t.indexOf('none') !== -1) {
-                        color = 'red'
-                    } else if (t.indexOf('latest') !== -1) {
-                        color = 'green'
-                    }
-                    return <Tag key={t} color={color}>{t}</Tag>
+                    return <span key={t}>{t}</span>
                 })
             },
-            width: 700,
+            width: 300,
         },
         {
             title: '镜像大小',
@@ -79,9 +84,9 @@ function ImagePage() {
             render: (_, image: DockerImage) => {
                 return (
                     <Space>
-                        <Button size="small" type="link">运行</Button>
-                        <Button size="small" type="link" onClick={() => showDetailDrawer(image.Id)}>详情</Button>
-                        <Button size="small" type="link">更多</Button>
+                        <Button onClick={() => runImage(image.Id)} size={"small"}>运行</Button>
+                        <Button onClick={() => showDetailDrawer(image.Id)} size={"small"}>详情</Button>
+                        <Button onClick={() => showDetailDrawer(image.Id)} size={"small"}>更多</Button>
                     </Space>
                 )
             }
@@ -96,11 +101,23 @@ function ImagePage() {
         })
     }, [])
 
+    function refresh() {
+        message.warning('正在刷新镜像列表');
+    }
 
     return (
         <div id="imagePage" className={"box"}>
+            <div>
+                <div className="imageController inline">
+                    <Search placeholder="输入关键字以搜索镜像" style={{width: 400}}/>
+                    <Button onClick={refresh} className="ml-2" icon={<ReloadOutlined/>}>刷新</Button>
+                    <Button className="ml-2" icon={<CloudSyncOutlined/>}>优化</Button>
+                </div>
+            </div>
             <Table
-                columns={columns} dataSource={images}
+                size={"small"}
+                columns={columns}
+                dataSource={images}
                 scroll={{x: 1000}}
                 rowKey={record => record.Id}/>
             <Drawer title="镜像详情"

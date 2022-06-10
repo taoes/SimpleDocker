@@ -1,9 +1,11 @@
-import {Button, Space, Table, Tag} from "antd";
+import {Button, Divider, message, Space, Table, Tag} from "antd";
 import {useEffect, useState} from "react";
+import {CloudSyncOutlined,ReloadOutlined} from '@ant-design/icons'
 import {ColumnsType} from "antd/es/table";
-import dateToStr from "../../utils/DateTime";
 import InspectVolume from "../../api/Model/Volumn/InsepectVolume";
 import {getVolumes} from "../../api/Volumes/Volumes";
+import IconFont from "../../component/Base/IconFont";
+import Search from "antd/es/input/Search";
 
 
 function VolumePage() {
@@ -20,7 +22,7 @@ function VolumePage() {
         {
             title: '作用域',
             dataIndex: 'Scope',
-            render: Scope => <Tag>{Scope.toUpperCase()}</Tag>,
+            render: Scope => <Tag color="blue">{Scope.toUpperCase()}</Tag>,
             key: 'Scope',
             width: 100,
         }, {
@@ -33,7 +35,7 @@ function VolumePage() {
             title: '创建时间',
             dataIndex: 'CreatedAt',
             key: 'CreatedAt',
-            width: 180,
+            width: 200,
             render: CreatedAt => <span>{CreatedAt}</span>,
         },
         {
@@ -41,12 +43,15 @@ function VolumePage() {
             dataIndex: 'address',
             key: 'address 4',
             fixed: 'right',
-            width: 120,
+            width: 200,
             render: (_, image: InspectVolume) => {
                 return (
                     <Space>
-                        <Button size="small" type="link">运行</Button>
-                        <Button size="small" type="link">详情</Button>
+                        <IconFont type={"icon-icon-test19"}/>
+                        <Divider type="vertical"/>
+                        <IconFont type={"icon-icon_xiangqing"}/>
+                        <Divider type="vertical"/>
+                        <IconFont type={"icon-icon_shanchu"}/>
                     </Space>
                 )
             }
@@ -62,10 +67,20 @@ function VolumePage() {
         })
     }, [])
 
+    function refresh() {
+        message.warning('正在刷新储存列表');
+    }
 
     return (
         <div id="imagePage" className={"box"}>
-            <Table columns={columns} dataSource={volumes} size={"small"}/>
+            <div>
+                <div className="imageController inline">
+                    <Search placeholder="input search text" style={{width: 400}}/>
+                    <Button onClick={refresh} className="ml-2" icon={<ReloadOutlined />}>刷新</Button>
+                    <Button danger className="ml-2" icon={<CloudSyncOutlined />}>优化</Button>
+                </div>
+            </div>
+            <Table columns={columns} scroll={{x: 1000}} dataSource={volumes} size={"small"}/>
         </div>
     )
 }

@@ -5,57 +5,39 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="2e8afb8c-0a7a-4fb7-ad64-90ec4bfdb3a1" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/admin/public/login-icon.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/admin/public/logo.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/admin/src/api/Api.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/admin/src/api/Container/ContainerApi.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/admin/src/api/Image/ImageApi.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/admin/src/api/Info/Info.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/admin/src/api/Model/ContainerMount.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/admin/src/api/Model/ContainerNetwork.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/admin/src/api/Model/ContainerPort.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/admin/src/api/Model/DockerContainer.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/admin/src/api/Model/DockerImage.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/admin/src/api/Model/DockerInfo.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/admin/src/api/Model/DockerServer.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/admin/src/api/Model/IpamConfig.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/admin/src/api/Model/Network/DockerNetwork.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/admin/src/api/Model/Volumn/InsepectVolume.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/admin/src/api/Model/Volumn/ListVolumes.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/admin/src/api/Network/NetworkApi.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/admin/src/api/Volumes/Volumes.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/admin/src/component/App/Container/ContainerDetailDrawer/index.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/admin/src/component/App/Home/DockerInfoDescription/index.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/admin/src/component/App/Home/DockerVersionDescription/index.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/admin/src/component/App/Image/ImageDetailDrawer/index.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/admin/src/component/Main/MainTopNav/index.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/admin/src/layout/LoginLayout/index.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/admin/src/page/AboutPage/index.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/admin/src/page/SettingPage/DockerServerTab/index.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/admin/src/page/SettingPage/TerminalTab/index.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/admin/src/page/UserPage/index.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/admin/src/utils/ByteSize.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/admin/src/utils/DateTime.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/admin/src/utils/Time.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/admin/src/api/Model/Image/ImageContainerConfig.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/admin/src/api/WebSocket.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/admin/src/component/App/Home/DockerInfoDrawer/index.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/admin/src/page/ContainerLogPage/ContainerLogPage.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/admin/src/page/CreateContainerPage/index.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/admin/src/router/WithRouter.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/codeStyles/codeStyleConfig.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/codeStyles/codeStyleConfig.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__com_github_docker_java_docker_java_api_3_2_12.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_github_docker_java_docker_java_api_3_2_12.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/admin/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/admin/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/admin/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/admin/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/admin/public/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/admin/public/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/admin/src/component/Main/MainFooter/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/admin/src/component/Main/MainFooter/index.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/admin/src/component/Main/MainSideMenu/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/admin/src/component/Main/MainSideMenu/index.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/admin/src/component/Main/MainTopNav/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/admin/src/component/Main/MainTopNav/index.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/admin/src/index.css" beforeDir="false" afterPath="$PROJECT_DIR$/admin/src/index.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/admin/src/layout/LoginLayout/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/admin/src/layout/LoginLayout/index.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/admin/src/layout/MainLayout/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/admin/src/layout/MainLayout/index.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/src/api/Api.ts" beforeDir="false" afterPath="$PROJECT_DIR$/admin/src/api/Api.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/src/api/Container/ContainerApi.ts" beforeDir="false" afterPath="$PROJECT_DIR$/admin/src/api/Container/ContainerApi.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/src/api/Image/ImageApi.ts" beforeDir="false" afterPath="$PROJECT_DIR$/admin/src/api/Image/ImageApi.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/src/api/Model/DockerImage.ts" beforeDir="false" afterPath="$PROJECT_DIR$/admin/src/api/Model/DockerImage.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/src/component/App/Home/DockerInfoDescription/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/admin/src/component/App/Home/DockerInfoDescription/index.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/src/component/App/Home/DockerVersionDescription/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/admin/src/component/App/Home/DockerVersionDescription/index.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/src/component/Base/IconFont/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/admin/src/component/Base/IconFont/index.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/admin/src/page/ContainerPage/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/admin/src/page/ContainerPage/index.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/admin/src/page/HomePage/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/admin/src/page/HomePage/index.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/admin/src/page/ImagePage/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/admin/src/page/ImagePage/index.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/admin/src/page/MonitorPage/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/admin/src/page/MonitorPage/index.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/admin/src/page/NetworkPage/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/admin/src/page/NetworkPage/index.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/src/page/SettingPage/DockerServerTab/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/admin/src/page/SettingPage/DockerServerTab/index.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/admin/src/page/SettingPage/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/admin/src/page/SettingPage/index.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/admin/src/page/VolumePage/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/admin/src/page/VolumePage/index.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/src/router/AppRouter.ts" beforeDir="false" afterPath="$PROJECT_DIR$/admin/src/router/AppRouter.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/admin/src/router/mainPageRouter.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/admin/src/router/mainPageRouter.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend-src/src/main/java/com/taoes/simpledocker/controller/ContainerController.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend-src/src/main/java/com/taoes/simpledocker/controller/ContainerController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/src/utils/Time.ts" beforeDir="false" afterPath="$PROJECT_DIR$/admin/src/utils/Time.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend-src/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/backend-src/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend-src/simpleDocker.iml" beforeDir="false" afterPath="$PROJECT_DIR$/backend-src/simpleDocker.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend-src/src/main/java/com/taoes/simpledocker/controller/container/RunNewContainerRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend-src/src/main/java/com/taoes/simpledocker/controller/container/RunNewContainerRequest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend-src/src/main/java/com/taoes/simpledocker/service/ContainerService.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend-src/src/main/java/com/taoes/simpledocker/service/ContainerService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend-src/src/main/java/com/taoes/simpledocker/service/imple/ContainerServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend-src/src/main/java/com/taoes/simpledocker/service/imple/ContainerServiceImpl.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -95,6 +77,20 @@
       <filtered-out-file-type name="TAG" />
       <filtered-out-file-type name="COMMIT_BY_MESSAGE" />
     </file-type-list>
+  </component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="jar:///Library/Java/JavaVirtualMachines/jdk1.8.0_202.jdk/Contents/Home/src.zip!/java/util/function/Supplier.java" root0="SKIP_INSPECTION" />
+    <setting file="jar://$USER_HOME$/.ideaLibSources/docker-java-api-3.2.12-sources.jar!/com/github/dockerjava/api/DockerClient.java" root0="SKIP_INSPECTION" />
+    <setting file="jar://$USER_HOME$/.ideaLibSources/docker-java-api-3.2.12-sources.jar!/com/github/dockerjava/api/command/CreateContainerCmd.java" root0="SKIP_INSPECTION" />
+    <setting file="jar://$MAVEN_REPOSITORY$/com/github/docker-java/docker-java-api/3.2.12/docker-java-api-3.2.12.jar!/com/github/dockerjava/api/DockerClient.class" root0="SKIP_INSPECTION" />
+    <setting file="jar://$MAVEN_REPOSITORY$/com/github/docker-java/docker-java-core/3.2.12/docker-java-core-3.2.12.jar!/com/github/dockerjava/core/command/CreateContainerCmdImpl.class" root0="SKIP_INSPECTION" />
+    <setting file="jar://$MAVEN_REPOSITORY$/io/vavr/vavr/1.0.0-alpha-4/vavr-1.0.0-alpha-4-sources.jar!/io/vavr/Function8.java" root0="SKIP_INSPECTION" />
+    <setting file="jar://$MAVEN_REPOSITORY$/io/vavr/vavr/1.0.0-alpha-4/vavr-1.0.0-alpha-4-sources.jar!/io/vavr/Lazy.java" root0="SKIP_INSPECTION" />
+    <setting file="file://$PROJECT_DIR$/admin/node_modules/antd/lib/notification/index.d.ts" root0="SKIP_INSPECTION" />
+    <setting file="file://$PROJECT_DIR$/admin/node_modules/bulma/css/bulma.css" root0="SKIP_INSPECTION" />
+    <setting file="file://$PROJECT_DIR$/admin/node_modules/react-router/index.d.ts" root0="SKIP_INSPECTION" />
+    <setting file="file://$PROJECT_DIR$/admin/node_modules/react-router/lib/components.d.ts" root0="SKIP_INSPECTION" />
+    <setting file="file://$PROJECT_DIR$/admin/node_modules/react-router/lib/hooks.d.ts" root0="SKIP_INSPECTION" />
   </component>
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
@@ -278,34 +274,15 @@
     <option name="showLibraryContents" value="true" />
     <option name="showVisibilityIcons" value="true" />
   </component>
-  <component name="PropertiesComponent">
-    <property name="DatabaseDriversLRU" value="mysql" />
-    <property name="Git.Branch.Popup.ShowAllRemotes" value="true" />
-    <property name="RequestMappingsPanelOrder0" value="0" />
-    <property name="RequestMappingsPanelOrder1" value="1" />
-    <property name="RequestMappingsPanelWidth0" value="75" />
-    <property name="RequestMappingsPanelWidth1" value="75" />
-    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
-    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
-    <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="add_unversioned_files" value="$PROJECT_DIR$/backend-src/src/main/java/com/example/simpledocker/ws/ContainerTerminal2WebSocket.java" />
-    <property name="aspect.path.notification.shown" value="true" />
-    <property name="com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary" value="JUnit5" />
-    <property name="com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5" value="" />
-    <property name="go.format.on.save.advertiser.fired" value="true" />
-    <property name="go.formatter.settings.were.checked" value="true" />
-    <property name="go.import.settings.migrated" value="true" />
-    <property name="go.sdk.automatically.set" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/admin/src/page/SettingPage" />
-    <property name="list.type.of.created.stylesheet" value="CSS" />
-    <property name="nodejs_package_manager_path" value="npm" />
-    <property name="project.structure.last.edited" value="Modules" />
-    <property name="project.structure.proportion" value="0.15" />
-    <property name="project.structure.side.proportion" value="0.2" />
-    <property name="settings.editor.selected.configurable" value="editor.preferences.fonts.default" />
-    <property name="ts.external.directory.path" value="$PROJECT_DIR$/admin/node_modules/typescript/lib" />
-    <property name="vue.rearranger.settings.migration" value="true" />
-  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "WebServerToolWindowFactoryState": "false",
+    "nodejs_package_manager_path": "yarn",
+    "settings.editor.selected.configurable": "preferences.lookFeel",
+    "spring.configuration.checksum": "8b8e6c79d843f8c0453928f77a07b74b",
+    "ts.external.directory.path": "/Users/tao/develop/code/project/SimpleDocker/admin/node_modules/typescript/lib"
+  }
+}]]></component>
   <component name="ReaderModeSettings">
     <option name="showRenderedDocs" value="false" />
   </component>
@@ -410,6 +387,15 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Node.js.index.js" />
+        <item itemvalue="JUnit.OSInfoTest" />
+        <item itemvalue="JUnit.ImageTest.testImageExist" />
+        <item itemvalue="JUnit.ImageTest" />
+        <item itemvalue="JUnit.ContainerTest and 2 more" />
+      </list>
+    </recent_temporary>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="SvnConfiguration">
@@ -446,6 +432,17 @@
       <workItem from="1651423590723" duration="1150000" />
       <workItem from="1651599490116" duration="3000" />
       <workItem from="1652284598280" duration="34776000" />
+      <workItem from="1652408749184" duration="607000" />
+      <workItem from="1652409387273" duration="13591000" />
+      <workItem from="1652699033190" duration="756000" />
+      <workItem from="1652710693912" duration="853000" />
+      <workItem from="1652844085423" duration="592000" />
+      <workItem from="1652845528400" duration="597000" />
+      <workItem from="1652982525040" duration="58000" />
+      <workItem from="1654022606011" duration="4771000" />
+      <workItem from="1654050329666" duration="107000" />
+      <workItem from="1654698278009" duration="182000" />
+      <workItem from="1654885351882" duration="11898000" />
     </task>
     <servers />
   </component>
@@ -510,7 +507,17 @@
         </entry>
       </map>
     </option>
-    <option name="oldMeFiltersMigrated" value="true" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/backend-src/src/main/java/com/taoes/simpledocker/controller/ContainerController.java</url>
+          <line>81</line>
+          <option name="timeStamp" value="2" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

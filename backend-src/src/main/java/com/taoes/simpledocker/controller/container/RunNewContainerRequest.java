@@ -1,8 +1,11 @@
 package com.taoes.simpledocker.controller.container;
 
-import java.util.Map;
-
+import cn.hutool.core.collection.CollUtil;
 import lombok.Data;
+
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
 
 /**
  * 运行新的容器的请求对象
@@ -38,4 +41,25 @@ public class RunNewContainerRequest {
      */
     private String dns;
 
+    /**
+     * 容器别名
+     */
+    private String alias;
+
+    /**
+     * 主机名
+     */
+    private String hostname;
+
+
+    public List<String> findEnvList() {
+        if (CollUtil.isEmpty(this.envGroup)) {
+            return Collections.emptyList();
+        }
+        List<String> envs = CollUtil.newArrayList();
+        for (Map.Entry<String, String> entry : this.envGroup.entrySet()) {
+            envs.add(String.format("%s=%s", entry.getKey(), entry.getValue()));
+        }
+        return envs;
+    }
 }

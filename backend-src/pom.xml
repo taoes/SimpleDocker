@@ -108,12 +108,29 @@
             <version>0.9.1</version>
         </dependency>
 
+        <!-- Lambda 表达式函数 -->
+        <dependency>
+            <groupId>io.vavr</groupId>
+            <artifactId>vavr</artifactId>
+            <version>1.0.0-alpha-4</version>
+        </dependency>
+
+
         <!-- Junit-->
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <scope>test</scope>
         </dependency>
+
+        <!-- 工具库-->
+
+        <dependency>
+            <groupId>cn.hutool</groupId>
+            <artifactId>hutool-core</artifactId>
+            <version>5.8.3</version>
+        </dependency>
+
     </dependencies>
 
     <build>

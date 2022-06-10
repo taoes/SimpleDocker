@@ -13,7 +13,7 @@ function SettingPage() {
     }
 
     return (
-        <div id="SettingPage">
+        <div id="SettingPage" className="m-2">
             <Tabs defaultActiveKey="1">
                 <TabPane tab={createTab('icon-icon-test40', '数据源')} key="1" closeIcon>
                     <DockerServerTab/>
