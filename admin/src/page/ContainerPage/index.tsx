@@ -37,8 +37,6 @@ let portShow = (container: DockerContainer) => {
   return container.Ports.map((p: ContainerPort, index: number) => {
     if (!!p.IP) {
       return <Tag key={index}>{p.IP}:{p.PublicPort}-{p.PrivatePort}/{p.Type.toUpperCase()}</Tag>
-    } else {
-      return <Tag key={index}>{p.PrivatePort}/{p.Type.toUpperCase()}</Tag>
     }
   })
 }
@@ -101,12 +99,7 @@ function ContainerPage() {
       title: '端口映射',
       dataIndex: 'Ports',
       render: (_: any, container: DockerContainer) => portShow(container),
-      width: 400
-    }, {
-      title: '启动脚本',
-      dataIndex: 'Command',
-      render: Command => <span>{Command}</span>,
-      width: 400
+      width: 200
     },
     {
       title: '创建时间',
@@ -118,9 +111,9 @@ function ContainerPage() {
       title: '操作容器',
       dataIndex: '[State,Id]',
       fixed: 'right',
-      width: 250,
+      width: 200,
       render: (_, record) => {
-        let {stateDesc, operateCommon, operateDesc} = getStatusInfo(record.State);
+        let {operateCommon, operateDesc} = getStatusInfo(record.State);
         return <div style={{wordWrap: 'break-word', wordBreak: 'break-word'}}>
           <Space>
             <Button onClick={() => operatorContainer(operateCommon, record.Id)}size={"small"}>{operateDesc}</Button>
@@ -209,6 +202,7 @@ function ContainerPage() {
             <Button className={"m-1"} type="default">容器网络</Button>
             <Button className={"m-1"} type="default">文件管理</Button>
             <Button className={"m-1"} type="default" onClick={()=>update("PAUSE")}>暂停容器</Button>
+            <Button className={"m-1"} type="default" onClick={()=>update("PAUSE")}>重命名容器</Button>
             <Button className={"m-1"} danger onClick={()=>update("REMOVE")}>移除容器</Button>
           </div>
         </Drawer>
