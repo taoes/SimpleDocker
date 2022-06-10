@@ -24,7 +24,11 @@ export default function DockerInfoDescription(props: any) {
     for (let config of configs) {
         let {name, path} = config
         items.push(
-            <Descriptions.Item label={name} key={name}>{_.get(dockerInfo, path)}</Descriptions.Item>
+            <Descriptions.Item
+                label={name}
+                labelStyle={{fontWeight:500}}
+                key={name}>{_.get(dockerInfo, path)}
+            </Descriptions.Item>
         )
     }
 

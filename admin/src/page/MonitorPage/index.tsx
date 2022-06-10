@@ -12,7 +12,7 @@ function MonitorPage() {
     }
 
     return (
-        <div id="MonitorPage">
+        <div id="MonitorPage"  className="m-2">
             <Tabs defaultActiveKey="1">
                 <TabPane tab={createTab('icon-icon-test40', '全局监控记录')} key="1" closeIcon>
                     Content of Tab Pane 1

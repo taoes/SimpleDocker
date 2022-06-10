@@ -6,7 +6,7 @@ function getDockerImages(): Promise<Array<DockerImage>> {
 }
 
 
-function getImageDetail(imageId: string): Promise<DockerImage> {
+function getImageDetail(imageId: any): Promise<DockerImage> {
     return httpRequest.get<DockerImage>(`/images/${imageId}/inspect`).then(data => data.data);
 }
 

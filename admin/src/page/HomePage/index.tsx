@@ -18,12 +18,9 @@ function HomePage() {
     }, [])
 
 
-    let controllerBtn = <Button icon={<IconFont type="icon-icon-test49"/>} onClick={() => {}}>详情信息</Button>
-
-
     return (
         <div id="homePage">
-            <DockerVersionDescription dockerInfo={dockerServiceInfo} extra={controllerBtn}/>
+            <DockerVersionDescription dockerInfo={dockerServiceInfo}/>
             <DockerInfoDescription dockerInfo={dockerServiceInfo}/>
         </div>
     )

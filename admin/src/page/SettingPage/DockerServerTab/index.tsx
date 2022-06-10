@@ -76,7 +76,7 @@ export default function DockerServerTab() {
 
     return (
         <div id="dockerServerTab">
-            <Table className="mt-1 box" columns={columns} dataSource={servers} size={"small"}/>
+            <Table className="box" columns={columns} dataSource={servers} size={"small"}/>
         </div>
     )
 }

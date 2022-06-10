@@ -1,14 +1,18 @@
+import ImageContainerConfig from "./Image/ImageContainerConfig";
+
 interface DockerImage {
-    Created: Number;
+    Created: number;
     Id: string;
     ParentId: String;
     RepoTags: Array<String>;
     RepoDigests: Array<String>
-    Size: Number;
-    VirtualSize: Number;
-    SharedSize: Number;
+    Size: number;
+    VirtualSize: number;
+    SharedSize: number;
     Labels: Map<String, String>;
-    Containers: Number;
+    Containers: number;
+    Architecture: string;
+    Config: ImageContainerConfig;
 
 
 }

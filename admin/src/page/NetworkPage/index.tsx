@@ -1,8 +1,11 @@
-import {Button, Space, Table, Tag} from "antd";
+import {Button, Divider, message, Space, Table, Tag} from "antd";
 import {useEffect, useState} from "react";
 import {ColumnsType} from "antd/es/table";
 import DockerNetwork from "../../api/Model/Network/DockerNetwork";
 import {getNetworkList} from "../../api/Network/NetworkApi";
+import IconFont from "../../component/Base/IconFont";
+import Search from "antd/es/input/Search";
+import {ReloadOutlined} from "@ant-design/icons";
 
 
 function NetworkPage() {
@@ -26,13 +29,13 @@ function NetworkPage() {
         {
             title: '作用域',
             dataIndex: 'Scope',
-            render: Scope => <Tag>{Scope.toUpperCase()}</Tag>,
+            render: Scope => <Tag color="blue">{Scope.toUpperCase()}</Tag>,
             key: 'Scope',
             width: 100,
         }, {
-            title: '网络驱动模式',
+            title: '网络模式',
             dataIndex: 'Driver',
-            render: Driver => <span>{Driver.toUpperCase()}</span>,
+            render: Driver => <Tag color="red">{Driver.toUpperCase()}</Tag>,
             key: 'Driver',
             width: 100
         }, {
@@ -64,8 +67,11 @@ function NetworkPage() {
             render: (_, network: DockerNetwork) => {
                 return (
                     <Space>
-                        <Button size="small" type="link">运行</Button>
-                        <Button size="small" type="link">详情</Button>
+                        <IconFont type={"icon-icon_lianjie"}/>
+                        <Divider type="vertical"/>
+                        <IconFont type={"icon-icon_xiangqing"}/>
+                        <Divider type="vertical"/>
+                        <IconFont type={"icon-icon_shanchu"}/>
                     </Space>
                 )
             }
@@ -82,9 +88,23 @@ function NetworkPage() {
     }, [])
 
 
+    function refresh() {
+        message.warning('正在刷新网络列表');
+    }
+
+
     return (
         <div id="imagePage" className={"box"}>
-            <Table columns={columns} dataSource={networks} size={"small"}/>
+            <div>
+                <div className="imageController inline">
+                    <Search placeholder="input search text" style={{width: 400}}/>
+                    <Button onClick={refresh} className="ml-2" icon={<ReloadOutlined />}>刷新</Button>
+                </div>
+            </div>
+            <Table
+                scroll={{x: 1000}}
+                columns={columns}
+                dataSource={networks} size={"small"}/>
         </div>
     )
 }

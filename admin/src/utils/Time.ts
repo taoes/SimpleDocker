@@ -1,4 +1,4 @@
-export default function dateToStr(timestamp: number): String {
+export default function dateToStr(timestamp: number): string {
     if (!timestamp || timestamp === 0) {
         return ""
     }

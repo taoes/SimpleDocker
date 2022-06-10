@@ -8,6 +8,7 @@
     </JAVADOC>
     <SOURCES>
       <root url="jar://$MAVEN_REPOSITORY$/com/github/docker-java/docker-java-api/3.2.12/docker-java-api-3.2.12-sources.jar!/" />
+      <root url="jar://$USER_HOME$/.ideaLibSources/docker-java-api-3.2.12-sources.jar!/" />
     </SOURCES>
   </library>
 </component>
