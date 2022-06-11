@@ -17,7 +17,7 @@ class ContainerLogPage extends React.Component<any, any> {
   componentDidMount() {
     //  创建日志WS服务
     let that = this;
-    let websocket = new WebSocket(`ws://localhost:3364/api/ws/container/${this.state.containerId}/log`);
+    let websocket = new WebSocket(`ws://192.168.1.103:3364/api/ws/container/${this.state.containerId}/log`);
     websocket.onopen = function () {
 
     };
@@ -34,6 +34,7 @@ class ContainerLogPage extends React.Component<any, any> {
 
   componentWillUnmount() {
     this.state.ws.close()
+    console.log("已关闭WS连接"+this.state.ws.id)
   }
 
   render() {

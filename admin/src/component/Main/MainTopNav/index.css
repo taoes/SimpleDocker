@@ -13,5 +13,17 @@
     display: flex;
     align-items: center;
     height: 64px;
+    justify-content: flex-end;
+}
 
+.ant-layout-header{
+    padding: 0 !important;
+}
+
+.trigger {
+    padding: 0 24px;
+    font-size: 18px;
+    line-height: 64px;
+    cursor: pointer;
+    color: #FEFEFE;
 }

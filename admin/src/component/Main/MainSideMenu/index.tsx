@@ -2,33 +2,52 @@ import {Menu} from "antd";
 import React from "react";
 import IconFont from "../../Base/IconFont";
 import {useNavigate} from "react-router";
-
+import {
+  SettingOutlined,
+  IdcardOutlined,
+  UsergroupAddOutlined,
+  BellOutlined,
+  GlobalOutlined,
+  HddOutlined,
+  AppstoreAddOutlined,
+  BlockOutlined,
+  CompassOutlined,
+  MenuFoldOutlined
+} from '@ant-design/icons'
 
 const style: React.CSSProperties = {
-    backgroundColor: "white"
+  backgroundColor: "white"
 }
 
 const items = [
-    {label: '首页', key: 'home', icon: <IconFont type="icon-icon-test6"/>},
-    {label: '镜像管理', key: 'image', icon: <IconFont type="icon-icon-test34"/>},
-    {label: '容器管理', key: 'container', icon: <IconFont type="icon-icon-test21"/>},
-    {label: '存储管理', key: 'volume', icon: <IconFont type="icon-icon-test34"/>},
-    {label: '网络管理', key: 'network', icon: <IconFont type="icon-icon-test29"/>},
-    {label: '监控设置', key: 'monitor', icon: <IconFont type="icon-icon-test22"/>},
-    {label: '系统设置', key: 'setting', icon: <IconFont type="icon-icon-test16"/>},
-    {label: '账户管理', key: 'user', icon: <IconFont type="icon-icon-test37"/>},
-    {label: '关于界面', key: 'about', icon: <IconFont type="icon-icon-test49"/>},
+  {label: '收起菜单', key: 'menu', icon: <MenuFoldOutlined/>},
+  {label: '信息概述', key: 'home', icon: <CompassOutlined/>},
+  {label: '镜像管理', key: 'image', icon: <BlockOutlined/>},
+  {label: '容器管理', key: 'container', icon: <AppstoreAddOutlined/>},
+  {label: '存储管理', key: 'volume', icon: <HddOutlined/>},
+  {label: '网络管理', key: 'network', icon: <GlobalOutlined/>},
+  {label: '监控设置', key: 'monitor', icon: <BellOutlined/>},
+  {label: '系统设置', key: 'setting', icon: <SettingOutlined/>},
+  {label: '账户管理', key: 'user', icon: <UsergroupAddOutlined/>},
+  {label: '关于界面', key: 'about', icon: <IdcardOutlined/>},
 ];
 
-function MainSideMenu() {
-    let navigate = useNavigate();
-
-    function navigateByKey({key}: any) {
-        navigate(`/app/${key}`)
-    }
-
-
-    return <Menu mode="vertical" items={items} style={style} onClick={navigateByKey}/>;
+interface MainSideMenuProps {
+  updateMainMenuState: Function,
+  mainMenuState: boolean
 }
 
-export default MainSideMenu;
+export default function MainSideMenu(props: MainSideMenuProps) {
+  let navigate = useNavigate();
+
+  function navigateByKey({key}: any) {
+    if (key == 'menu') {
+      props.updateMainMenuState();
+      return
+    }
+    navigate(`/app/${key}`)
+  }
+
+
+  return <Menu mode="vertical" items={items} style={style} onClick={navigateByKey}/>;
+}

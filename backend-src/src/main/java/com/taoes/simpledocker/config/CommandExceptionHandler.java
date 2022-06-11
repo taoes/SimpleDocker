@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 public class CommandExceptionHandler {
 
     @ExceptionHandler(RuntimeException.class)
-    public HttpEntity<ResponseModel> corsFilter(RuntimeException e){
-        return new HttpEntity<>(new ResponseModel<>());
+    public HttpEntity<ResponseModel<?>> corsFilter(RuntimeException e){
+        return new HttpEntity<>(ResponseModel.fail(e.getMessage()).setCode(400));
     }
 }

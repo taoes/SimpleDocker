@@ -23,8 +23,9 @@ public class ResponseModel<T> {
      * @param <T>  泛型
      * @return 失败的包裹数据
      */
-    public static <T> ResponseModel fail(T data) {
-        return new ResponseModel();
+    public static <T> ResponseModel<T> fail(String msg) {
+        final ResponseModel<T> tResponseModel = new ResponseModel<>();
+        return tResponseModel.setMsg(msg);
     }
 
     /**
