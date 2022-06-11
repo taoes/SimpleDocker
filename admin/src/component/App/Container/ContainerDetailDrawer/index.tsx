@@ -18,6 +18,7 @@ function ContainerDetailDrawer(props: ContainerDetailProps) {
         getContainerDetail(containerId).then(data => {
                 setLoading(false)
                 setDetail(data)
+          console.log(data)
             }).catch(() => setLoading(false)
         )
 

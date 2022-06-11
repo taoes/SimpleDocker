@@ -2,12 +2,9 @@ package com.taoes.simpledocker.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
-import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
-import org.springframework.web.cors.CorsConfiguration;
-import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-import org.springframework.web.filter.CorsFilter;
 
 /**
  * TODO: please input file info
@@ -18,25 +15,15 @@ import org.springframework.web.filter.CorsFilter;
 @Component
 public class SpringConfig {
 
-    @Bean
-    public FilterRegistrationBean corsFilter(){
-        CorsConfiguration corsConfiguration = new CorsConfiguration();
-        corsConfiguration.addAllowedOrigin("*");
-        corsConfiguration.addAllowedMethod("*");
-        corsConfiguration.addAllowedHeader("*");
+  @Bean
+  public ObjectMapper objectMapper(){
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS,false);
+    return mapper;
+  }
 
-        UrlBasedCorsConfigurationSource configurationSource = new UrlBasedCorsConfigurationSource();
-        configurationSource.registerCorsConfiguration("/**",corsConfiguration);
-
-        FilterRegistrationBean bean = new FilterRegistrationBean<>(new CorsFilter(configurationSource));
-        bean.setOrder(0);
-        return bean;
-    }
-
-    @Bean
-    public ObjectMapper objectMapper(){
-        ObjectMapper mapper = new ObjectMapper();
-        mapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS,false);
-        return mapper;
-    }
+  @Bean
+  public BCryptPasswordEncoder bCryptPasswordEncoder() {
+    return new BCryptPasswordEncoder();
+  }
 }

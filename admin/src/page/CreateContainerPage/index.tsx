@@ -120,7 +120,7 @@ export default function CreateContainerPage() {
                 subTitle={"使用容器创建工具创建新的容器"}
                 extra={<Button type="primary" onClick={changeCreateMode}>专家模式</Button>}
             />
-            <div className={"box"}>
+            <div>
                 <Steps current={currentStep} onChange={(current) => changeStep(current)}>
                     <Step title="基础信息"/>
 

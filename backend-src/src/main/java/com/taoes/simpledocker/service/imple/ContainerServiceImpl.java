@@ -4,17 +4,25 @@ import com.github.dockerjava.api.DockerClient;
 import com.github.dockerjava.api.command.CreateContainerResponse;
 import com.github.dockerjava.api.command.InspectContainerResponse;
 import com.github.dockerjava.api.command.TopContainerResponse;
-import com.github.dockerjava.api.model.*;
+import com.github.dockerjava.api.model.Bind;
+import com.github.dockerjava.api.model.Container;
+import com.github.dockerjava.api.model.HostConfig;
+import com.github.dockerjava.api.model.Link;
+import com.github.dockerjava.api.model.PortBinding;
 import com.taoes.simpledocker.config.DockerClientFactory;
 import com.taoes.simpledocker.controller.container.RunNewContainerRequest;
+import com.taoes.simpledocker.model.OperateRecord;
+import com.taoes.simpledocker.model.enums.OperatorResource;
 import com.taoes.simpledocker.service.ContainerService;
+import com.taoes.simpledocker.service.OperateRecordService;
 import com.taoes.simpledocker.utils.BooleanUtils;
-import lombok.AllArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Service;
-
+import com.taoes.simpledocker.utils.JsonUtils;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
 
 /**
  * 容器服务实现类
@@ -24,10 +32,12 @@ import java.util.Map;
  */
 @Slf4j
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class ContainerServiceImpl implements ContainerService {
 
-  private DockerClientFactory clientFactory;
+  private final DockerClientFactory clientFactory;
+
+  private final OperateRecordService operateRecordService;
 
   @Override
   public List<Container> list(boolean showAll) {
@@ -58,6 +68,28 @@ public class ContainerServiceImpl implements ContainerService {
     final DockerClient client = clientFactory.get();
     client.startContainerCmd(containerId).exec();
     log.info("启动容器,containerId={}", containerId);
+
+    // 记录日志
+    saveRecord(containerId, "启动容器");
+
+  }
+
+
+  private void saveRecord(String containerId, String type) {
+    try {
+      Map<String, String> param = new HashMap<>();
+      param.put("containerId", containerId);
+      param.put("type", type);
+
+      OperateRecord record = new OperateRecord();
+      record.setUserId(0L)
+          .setClientId(1L)
+          .setContent(JsonUtils.toJsonString(param))
+          .setName("未知")
+          .setResource(OperatorResource.CONTAINER_v1);
+      operateRecordService.add(record);
+    } catch (Exception ignore) {
+    }
   }
 
   @Override
@@ -65,6 +97,7 @@ public class ContainerServiceImpl implements ContainerService {
     final DockerClient client = clientFactory.get();
     client.stopContainerCmd(containerId).exec();
     log.info("停止容器,containerId={}", containerId);
+    saveRecord(containerId, "停止容器");
   }
 
   @Override
@@ -72,6 +105,7 @@ public class ContainerServiceImpl implements ContainerService {
     final DockerClient client = clientFactory.get();
     client.pauseContainerCmd(containerId).exec();
     log.info("暂停容器,containerId={}", containerId);
+    saveRecord(containerId, "暂停容器");
   }
 
   @Override
@@ -79,6 +113,7 @@ public class ContainerServiceImpl implements ContainerService {
     final DockerClient client = clientFactory.get();
     client.unpauseContainerCmd(containerId).exec();
     log.info("继续容器,containerId={}", containerId);
+    saveRecord(containerId, "恢复容器");
   }
 
   @Override
@@ -90,6 +125,8 @@ public class ContainerServiceImpl implements ContainerService {
     client.removeContainerCmd(containerId).withForce(BooleanUtils.parse(force, false))
         .withRemoveVolumes(BooleanUtils.parse(removeVolume, false)).exec();
     log.info("移除容器,containerId={} params={}", containerId, params);
+
+    saveRecord(containerId, "移除容器");
   }
 
   @Override
@@ -97,6 +134,7 @@ public class ContainerServiceImpl implements ContainerService {
     final DockerClient dockerClient = clientFactory.get();
     dockerClient.renameContainerCmd(containerId).withName(newName).exec();
     log.info("重命名容器:[{}]为[{}]", containerId, newName);
+    saveRecord(containerId, "重命名容器");
   }
 
   @Override
@@ -108,6 +146,9 @@ public class ContainerServiceImpl implements ContainerService {
   @Override
   public InspectContainerResponse inspect(String containerId) {
     final DockerClient client = clientFactory.get();
-    return client.inspectContainerCmd(containerId).withSize(Boolean.TRUE).exec();
+    final InspectContainerResponse response =
+        client.inspectContainerCmd(containerId).withSize(Boolean.TRUE).exec();
+    saveRecord(containerId, "Inspect容器");
+    return response;
   }
 }

@@ -1,6 +1,5 @@
 package com.taoes.simpledocker.controller.auth;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 
 /**
@@ -11,10 +10,9 @@ import lombok.Data;
  */
 
 @Data
-@AllArgsConstructor
 public class UserLoginRequest {
 
-    private final String username;
+  private String username;
 
-    private final String password;
+  private String password;
 }

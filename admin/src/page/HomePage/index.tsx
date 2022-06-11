@@ -3,8 +3,9 @@ import {GetDockerInfo} from '../../api/Info/Info'
 import DockerVersionDescription from "../../component/App/Home/DockerVersionDescription";
 import DockerServerInfo from "../../api/Model/DockerInfo";
 import DockerInfoDescription from "../../component/App/Home/DockerInfoDescription";
-import {Button} from "antd";
-import IconFont from "../../component/Base/IconFont";
+import SimpleDockerVersionDescription
+  from "../../component/App/Home/SimpleDockerVersionDescription";
+
 
 
 function HomePage() {
@@ -22,6 +23,7 @@ function HomePage() {
         <div id="homePage">
             <DockerVersionDescription dockerInfo={dockerServiceInfo}/>
             <DockerInfoDescription dockerInfo={dockerServiceInfo}/>
+            <SimpleDockerVersionDescription/>
         </div>
     )
 }

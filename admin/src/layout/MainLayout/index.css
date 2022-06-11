@@ -1,0 +1,8 @@
+.logo {
+  height: 64px;
+  background-color: #001529;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+

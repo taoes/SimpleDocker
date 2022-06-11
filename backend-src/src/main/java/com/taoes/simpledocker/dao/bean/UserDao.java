@@ -33,7 +33,7 @@ public class UserDao {
     /**
      * 加密盐值
      */
-    private String salt;
+    private String saltValue;
 
     /**
      * 创建时间

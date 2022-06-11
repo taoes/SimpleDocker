@@ -1,5 +1,7 @@
 package com.taoes.simpledocker.service.imple;
 
+import com.taoes.simpledocker.config.securoty.JwtTokenUtil;
+import java.util.Collections;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -8,6 +10,7 @@ import com.taoes.simpledocker.dao.responsity.UserRepository;
 import com.taoes.simpledocker.service.AuthService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Service;
 
 //import org.springframework.security.core.GrantedAuthority;
@@ -25,11 +28,13 @@ public class AuthServiceImpl implements AuthService {
 
     private final UserRepository userRepository;
 
+    private final JwtTokenUtil tokenUtil;
+
     @Override
     public String login(String username, String password) {
         // 查询用户信息
         final Optional<UserDao> userOptional = userRepository.findByName(username);
-        if (userOptional.isPresent()) {
+        if (!userOptional.isPresent()) {
             log.warn("用户:{}登录失败,该用户不存在", username);
             throw new RuntimeException("用户名和密码不匹配");
         }
@@ -42,7 +47,7 @@ public class AuthServiceImpl implements AuthService {
         }
 
         // 生成token
-        return "";//createNewToken(username, new ArrayList<>());
+        return tokenUtil.generateToken(new User(username,user.getPassword(), Collections.emptyList()));//createNewToken(username, new ArrayList<>());
     }
 
     @Override
