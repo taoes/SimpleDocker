@@ -1,10 +1,28 @@
 package com.taoes.simpledocker.controller;
 
-/**
- * TODO: please input file info
- *
- * @author 枕上江南 zhoutao925638@vip.qq.com
- * @date 2021/12/5 3:09 下午
- */
+import com.taoes.simpledocker.model.ResponseModel;
+import com.taoes.simpledocker.service.OperateRecordService;
+import java.util.List;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+@RequestMapping("/api/monitor")
 public class MonitorController {
+
+  @Autowired
+  private OperateRecordService recordService;
+
+  @GetMapping("/container")
+  public ResponseModel<List> container() {
+
+    return null;
+  }
+
+  @GetMapping("/image")
+  public ResponseModel<List> image() {
+    return null;
+  }
 }

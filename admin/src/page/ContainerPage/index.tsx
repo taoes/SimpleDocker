@@ -1,4 +1,4 @@
-import {Button, Checkbox, Drawer, message, Space, Table, Tag} from "antd";
+import {Button, Drawer, message, Select, Space, Table, Tag} from "antd";
 import {useEffect, useState} from "react";
 import {ColumnsType} from "antd/es/table";
 import dateToStr from "../../utils/Time";
@@ -25,7 +25,7 @@ let getStatusInfo = function (State: string): ContainerStateText {
   } else if (State === 'exited') {
     return {stateColor: 'red', stateDesc: "已停止", operateCommon: "START", operateDesc: "启动"}
   } else if (State === 'paused') {
-    return {stateColor: 'yellow', stateDesc: "已暂停", operateCommon: "UNPAUSE", operateDesc: "继续"}
+    return {stateColor: 'purple', stateDesc: "已暂停", operateCommon: "UNPAUSE", operateDesc: "恢复"}
   } else if (State === 'created') {
     return {stateColor: 'blue', stateDesc: "已创建", operateCommon: "START", operateDesc: "启动"}
   }
@@ -169,10 +169,15 @@ function ContainerPage() {
         <div className="is-flex">
           <div className="imageController mb-2">
             <Search placeholder="输入关键字已搜索容器" style={{width: 400}}/>
-            <Button  onClick={refresh} className="ml-2" icon={<ReloadOutlined/>}>刷新</Button>
-            <Button className="ml-2" icon={<CloudSyncOutlined/>}>优化</Button>
-            <Checkbox className="ml-1">仅显示运行容器</Checkbox>
-            <Checkbox className="ml-1">自动刷新</Checkbox>
+            <Select defaultValue={["running",'paused']} style={{width:400}} className={"ml-1"}   mode="multiple">
+              <Select.Option value={"running"}>运行中</Select.Option>
+              <Select.Option value={"created"}>已创建</Select.Option>
+              <Select.Option value={"stop"}>已停止</Select.Option>
+              <Select.Option value={"paused"}>暂停中</Select.Option>
+            </Select>
+            <Button  onClick={refresh} className="ml-2" icon={<ReloadOutlined/>} >刷新</Button>
+            <Button className="ml-2" icon={<CloudSyncOutlined/>} danger>优化</Button>
+
           </div>
         </div>
 
