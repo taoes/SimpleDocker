@@ -10,4 +10,24 @@ import lombok.Data;
  */
 @Data
 public class User {
+
+
+  private Long id;
+
+  /**
+   * 用户名
+   */
+  private String username;
+
+
+  /**
+   * 创建时间
+   */
+  private String createdAt;
+
+  /**
+   * 更新时间
+   */
+  private String updatedAt;
+
 }

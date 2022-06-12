@@ -5,8 +5,8 @@ import {
   ForkOutlined,
   GithubOutlined,
   HomeFilled,
-  MenuFoldOutlined,
-  LogoutOutlined
+  UserOutlined,
+  LogoutOutlined,
 } from "@ant-design/icons";
 
 
@@ -55,7 +55,7 @@ export default function MainTopNav() {
   return (
       <div id="header">
         <Menu mode="horizontal" theme={"dark"} selectedKeys={[]}>
-          <Menu.Item icon={<BugFilled/>} onClick={() => menuClick('feedback')} key={"feedback"}>反馈</Menu.Item>
+          <Menu.Item icon={<BugFilled/>} onClick={() => menuClick('feedback')} key={"feedback"}>监测</Menu.Item>
           <Menu.SubMenu title="源码" icon={<HomeFilled/>} key={"sourceCode"}>
             <Menu.Item icon={<GithubOutlined/>}  onClick={() => menuClick('githubSourceCode')} key={"sourceCodeGithub"}>Github</Menu.Item>
             <Menu.Item icon={<ForkOutlined/>} onClick={() => menuClick('giteeSourceCode')} key={"sourceCodeGitee"}>Gitee</Menu.Item>
@@ -63,7 +63,7 @@ export default function MainTopNav() {
 
 
           <Menu.Item icon={<BookFilled/>} onClick={() => menuClick('blog')} key={"blog"}>博客</Menu.Item>
-          <Menu.SubMenu title="账户" icon={<HomeFilled/>} key={"account"}>
+          <Menu.SubMenu title="账户" icon={<UserOutlined />} key={"account"}>
             <Menu.Item onClick={() => menuClick('logout')} icon={<LogoutOutlined/>} key={"exit"}>
               退出
             </Menu.Item>
