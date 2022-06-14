@@ -23,7 +23,7 @@ export default function MainLayout() {
         </Sider>
 
         <Layout>
-          <Header>
+          <Header className={"has-background-white"}>
             <MainTopNav />
           </Header>
           <Content className="m-3 has-background-white">

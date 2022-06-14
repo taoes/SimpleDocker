@@ -1,12 +1,12 @@
 import httpRequest from '../Api'
 import DockerContainer from "../Model/DockerContainer";
-import {createWebSocket, websocket} from "../WebSocket";
+import {Base} from "../Base";
 
 /**
  * 获取容器列表
  */
-function getContainers(): Promise<Array<DockerContainer>> {
-  return httpRequest.get<Array<DockerContainer>>('/container').then(data => data.data);
+function getContainers(): Promise<Base<Array<DockerContainer>>> {
+  return httpRequest.get<Base<Array<DockerContainer>>>('/container').then(data => data.data);
 }
 
 /**

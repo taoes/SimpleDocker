@@ -35,8 +35,9 @@ public class ContainerController extends BaseController {
   private ContainerService service;
 
   @GetMapping
-  public List<Container> list() {
-    return service.list(true);
+  public ResponseModel< List<Container>> list() {
+    final List<Container> containers = service.list(true);
+    return ResponseModel.ok(containers);
   }
 
   @GetMapping("/{containerId}")

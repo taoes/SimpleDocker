@@ -1,8 +1,9 @@
 import httpRequest from '../Api'
 import {DockerVolumes} from "../Model/Volumn/ListVolumes";
+import {Base} from "../Base";
 
-function getVolumes(): Promise<DockerVolumes> {
-    return httpRequest.get<DockerVolumes>('/volume').then(data => data.data);
+function getVolumes(): Promise<Base<DockerVolumes>> {
+    return httpRequest.get<Base<DockerVolumes>>('/volume').then(data => data.data);
 }
 
 export {getVolumes}

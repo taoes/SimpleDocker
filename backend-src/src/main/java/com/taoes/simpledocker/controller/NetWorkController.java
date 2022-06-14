@@ -3,6 +3,7 @@ package com.taoes.simpledocker.controller;
 import com.github.dockerjava.api.DockerClient;
 import com.github.dockerjava.api.model.Network;
 import com.taoes.simpledocker.config.DockerClientFactory;
+import com.taoes.simpledocker.model.ResponseModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,12 +21,13 @@ import java.util.List;
 @RequestMapping("/api/network")
 public class NetWorkController {
 
-    @Autowired
-    private DockerClientFactory clientFactory;
+  @Autowired
+  private DockerClientFactory clientFactory;
 
-    @GetMapping("/list")
-    public List<Network> list() {
-        DockerClient client = clientFactory.get();
-        return client.listNetworksCmd().exec();
-    }
+  @GetMapping("/list")
+  public ResponseModel<List<Network>> list() {
+    DockerClient client = clientFactory.get();
+    final List<Network> exec = client.listNetworksCmd().exec();
+    return ResponseModel.ok(exec);
+  }
 }
