@@ -3,6 +3,7 @@ package com.taoes.simpledocker.controller;
 import com.github.dockerjava.api.command.InspectVolumeResponse;
 import com.github.dockerjava.api.command.ListVolumesResponse;
 import com.taoes.simpledocker.controller.volume.CreateVolumeRequest;
+import com.taoes.simpledocker.model.ResponseModel;
 import com.taoes.simpledocker.service.VolumeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -27,8 +28,8 @@ public class VolumeController {
     private VolumeService volumeService;
 
     @GetMapping
-    public ListVolumesResponse list() {
-        return volumeService.list();
+    public ResponseModel<ListVolumesResponse> list() {
+        return ResponseModel.ok(volumeService.list());
     }
 
     @PostMapping

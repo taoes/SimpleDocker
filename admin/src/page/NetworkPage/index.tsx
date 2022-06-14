@@ -69,7 +69,7 @@ function NetworkPage() {
             <Space>
               <Button size={"small"} type={"ghost"}>连接</Button>
               <Button size={"small"} type={"ghost"}>详情</Button>
-              <Button size={"small"}  danger>删除</Button>
+              <Button size={"small"} danger>删除</Button>
             </Space>
         )
       }
@@ -79,14 +79,18 @@ function NetworkPage() {
 
 
   let [networks, setNetworks] = useState<Array<DockerNetwork>>([])
+
   useEffect(() => {
     refresh()
   }, [])
 
-  function refresh() {
-    message.info('正在加载Docker网络列表').then();
-    getNetworkList().then(data => {
-      setNetworks(data)
+  let refresh = () => {
+    getNetworkList().then(resp => {
+      if (resp.code !== 0) {
+        message.error(`加载网络列表失败:${resp.msg}`).then();
+        return
+      }
+      setNetworks(resp.data)
     })
   }
 

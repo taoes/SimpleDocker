@@ -13,80 +13,80 @@ import com.github.dockerjava.api.model.Image;
  */
 public interface ImageService {
 
-    /**
-     * 获取镜像列表
-     *
-     * @param key 搜索词
-     * @return
-     */
-    List<Image> list(String key);
+  /**
+   * 获取镜像列表
+   *
+   * @param key 搜索词
+   * @return
+   */
+  List<Image> list(String key);
 
-    /**
-     * 通过镜像ID获取镜像
-     *
-     * @param imageId
-     * @return
-     */
-    InspectImageResponse inspect(String imageId);
+  /**
+   * 通过镜像ID获取镜像
+   *
+   * @param imageId
+   * @return
+   */
+  InspectImageResponse inspect(String imageId);
 
-    /**
-     * 重新标记镜像
-     *
-     * @param imageId 镜像ID
-     * @param newTag  新的镜像Tag
-     */
-    void tag(String imageId, String newTag);
+  /**
+   * 重新标记镜像
+   *
+   * @param imageId 镜像ID
+   * @param newTag  新的镜像Tag
+   */
+  void tag(String imageId, String newTag);
 
-    /**
-     * 移除镜像
-     *
-     * @param imageId 镜像ID
-     * @param force
-     * @return
-     */
-    void remove(String imageId, Boolean force);
+  /**
+   * 移除镜像
+   *
+   * @param imageId 镜像ID
+   * @param force
+   * @return
+   */
+  void remove(String imageId, Boolean force);
 
-    /**
-     * 导出镜像
-     *
-     * @param imageId 镜像ID
-     */
-    void export(String imageId);
+  /**
+   * 导出镜像
+   *
+   * @param imageId 镜像ID
+   */
+  void export(String imageId);
 
-    /**
-     * 搜索镜像
-     *
-     * @param key 关键词
-     * @apiNote 仅仅在 Docker hub上搜索
-     */
-    void search(String key);
+  /**
+   * 搜索镜像
+   *
+   * @param key 关键词
+   * @apiNote 仅仅在 Docker hub上搜索
+   */
+  void search(String key);
 
-    /**
-     * 移除未使用的镜像
-     */
-    void remove();
+  /**
+   * 移除未使用的镜像
+   */
+  void remove();
 
-    /**
-     * 通过文件路径导入镜像导入镜像
-     *
-     * @param file 文件路径
-     */
-    void importByFile(String file);
+  /**
+   * 通过文件路径导入镜像导入镜像
+   *
+   * @param file 文件路径
+   */
+  void importByFile(String file);
 
-    /**
-     * 通过Tar文件导入镜像
-     *
-     * @param file
-     */
-    void importByTar(String file);
+  /**
+   * 通过Tar文件导入镜像
+   *
+   * @param file
+   */
+  void importByTar(String file);
 
-    /**
-     * @param imageId
-     */
-    boolean exist(String imageId);
+  /**
+   * @param imageId
+   */
+  boolean exist(String imageId);
 
-    /**
-     * 清理镜像
-     */
-    void pruneImage();
+  /**
+   * 清理镜像
+   */
+  void pruneImage();
 }

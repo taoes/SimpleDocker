@@ -1,12 +1,15 @@
 package com.taoes.simpledocker.config;
 
+import static java.lang.String.format;
+
 import com.github.dockerjava.api.DockerClient;
 import com.github.dockerjava.core.DefaultDockerClientConfig;
+import com.github.dockerjava.core.DefaultDockerClientConfig.Builder;
 import com.github.dockerjava.core.DockerClientBuilder;
-import com.github.dockerjava.core.DockerClientConfig;
-import com.taoes.simpledocker.model.DockerConfig;
+import com.taoes.simpledocker.model.DockerEndpoint;
+import com.taoes.simpledocker.model.enums.DockerEndpointType;
 import com.taoes.simpledocker.model.exception.NotFoundClientException;
-import com.taoes.simpledocker.service.DockerConfigService;
+import com.taoes.simpledocker.service.DockerEndpointService;
 import com.taoes.simpledocker.service.GoProgramRunner;
 import java.util.HashMap;
 import java.util.List;
@@ -31,57 +34,62 @@ import org.springframework.util.StringUtils;
 @Component
 public class DockerClientFactory implements ApplicationContextAware, CommandLineRunner {
 
-    private final Map<String, DockerClient> clientGroup = new HashMap<>();
+  private final Map<String, DockerClient> clientGroup = new HashMap<>();
 
-    private ApplicationContext context;
+  private ApplicationContext context;
 
-    @Autowired
-    private DockerConfigService dockerConfigService;
+  @Autowired
+  private DockerEndpointService dockerEndpointService;
 
-    @Autowired
-    private GoProgramRunner goProgramRunner;
+  @Autowired
+  private GoProgramRunner goProgramRunner;
 
-    public DockerClient get() {
-        final String clientId = DockerClientInterception.clientIdLocal.get();
-        if (!StringUtils.hasText(clientId)) {
-            return clientGroup.get("DEFAULT");
-        }
-        final DockerClient client = clientGroup.get(clientId.toUpperCase(Locale.ROOT));
-        if (client == null) {
-            throw new NotFoundClientException("客户端不存在!");
-        }
-        return client;
+  public DockerClient get() {
+    final String clientId = DockerClientInterception.clientIdLocal.get();
+    if (!StringUtils.hasText(clientId)) {
+      return clientGroup.get("DEFAULT");
+    }
+    final DockerClient client = clientGroup.get(clientId.toUpperCase(Locale.ROOT));
+    if (client == null) {
+      throw new NotFoundClientException("客户端不存在!");
+    }
+    return client;
+  }
+
+  @Override
+  public void run(String... args) throws Exception {
+    // 读取配置
+    final List<DockerEndpoint> endpoints = dockerEndpointService.list();
+    for (DockerEndpoint endpoint : endpoints) {
+      final Builder builder = DefaultDockerClientConfig.createDefaultConfigBuilder();
+      if (endpoint.getType() == DockerEndpointType.LOCAL) {
+        final DockerClient defaultClient = DockerClientBuilder.getInstance(builder.build()).build();
+        clientGroup.put(endpoint.getId(), defaultClient);
+      }
+
+      if (endpoint.getType() == DockerEndpointType.REMOTE) {
+        builder.withDockerHost(format("tcp://%s:%s", endpoint.getHost(), endpoint.getPort()));
+        final DockerClientBuilder instance = DockerClientBuilder.getInstance(builder.build());
+        clientGroup.put(endpoint.getId(), instance.build());
+      }
     }
 
-    @Override
-    public void run(String... args) throws Exception {
-        // 读取配置
-        final List<DockerConfig> dockerConfigList = dockerConfigService.list();
-        for (DockerConfig dockerConfig : dockerConfigList) {
-            DockerClientConfig config = DefaultDockerClientConfig.createDefaultConfigBuilder().build();
-            final DockerClient defaultClient = DockerClientBuilder.getInstance(config).build();
-            clientGroup.put("DEFAULT", defaultClient);
+    log.info("初始化Client内容完成,clientSize={}", clientGroup.size());
 
-            // TODO 江南 启动GoLanguage服务
-            //final Future<?> future = goProgramRunner.asyncRun("./goService", "");
-        }
+  }
 
-        log.info("初始化Client内容完成,clientSize={}", clientGroup.size());
+  @Override
+  public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+    this.context = context;
+  }
 
-    }
-
-    @Override
-    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
-        this.context = context;
-    }
-
-    /**
-     * TODO 通过配置查询到Code
-     *
-     * @param code docker 配置的code
-     * @return 该code对应的客户端
-     */
-    public DockerClient findByCode(String code) {
-        return null;
-    }
+  /**
+   * TODO 通过配置查询到Code
+   *
+   * @param code docker 配置的code
+   * @return 该code对应的客户端
+   */
+  public DockerClient findByCode(String code) {
+    return clientGroup.get(code);
+  }
 }

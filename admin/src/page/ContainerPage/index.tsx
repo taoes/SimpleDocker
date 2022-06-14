@@ -17,26 +17,60 @@ export interface ContainerStateText {
   stateDesc: string
   operateCommon: string
   operateDesc: string
+  operatorColor: string
 }
 
 let getStatusInfo = function (State: string): ContainerStateText {
   if (State === 'running') {
-    return {stateColor: 'green', stateDesc: "运行中", operateCommon: "STOP", operateDesc: "停止"}
+    return {
+      stateColor: 'green',
+      stateDesc: "运行中",
+      operateCommon: "STOP",
+      operateDesc: "停止",
+      operatorColor: 'red'
+    }
   } else if (State === 'exited') {
-    return {stateColor: 'red', stateDesc: "已停止", operateCommon: "START", operateDesc: "启动"}
+    return {
+      stateColor: 'red',
+      stateDesc: "已停止",
+      operateCommon: "START",
+      operateDesc: "启动",
+      operatorColor: 'green'
+    }
   } else if (State === 'paused') {
-    return {stateColor: 'purple', stateDesc: "已暂停", operateCommon: "UNPAUSE", operateDesc: "恢复"}
+    return {
+      stateColor: 'purple',
+      stateDesc: "已暂停",
+      operateCommon: "UNPAUSE",
+      operateDesc: "恢复",
+      operatorColor: 'green'
+    }
   } else if (State === 'created') {
-    return {stateColor: 'blue', stateDesc: "已创建", operateCommon: "START", operateDesc: "启动"}
+    return {
+      stateColor: 'blue',
+      stateDesc: "已创建",
+      operateCommon: "START",
+      operateDesc: "启动",
+      operatorColor: 'green'
+    }
   }
-  return {stateColor: 'lightgray', stateDesc: "未知状态", operateCommon: "STOP", operateDesc: "停止"}
+  return {
+    stateColor: 'lightgray',
+    stateDesc: "未知状态",
+    operateCommon: "STOP",
+    operateDesc: "停止",
+    operatorColor: 'green'
+  }
 }
 
 
 let portShow = (container: DockerContainer) => {
   return container.Ports.map((p: ContainerPort, index: number) => {
     if (!!p.IP) {
-      return <Tag key={index}>{p.IP}:{p.PublicPort}-{p.PrivatePort}/{p.Type.toUpperCase()}</Tag>
+      return <Tag key={index}
+                  className={"mt-1"}>{p.IP}:{p.PublicPort}-{p.PrivatePort}/{p.Type.toUpperCase()}</Tag>
+    } else {
+      return null;
     }
   })
 }
@@ -51,9 +85,8 @@ function ContainerPage() {
 
 
   let operatorContainer = (operate: any, containerId: string) => {
-    updateContainer(containerId, operate).then(data => {
-      message.info("操作完成,开始刷新容器列表")
-      getContainers().then(data => {setContainers(data)})
+    updateContainer(containerId, operate).then(resp => {
+      refresh()
     })
   }
 
@@ -63,27 +96,30 @@ function ContainerPage() {
       title: '容器ID',
       dataIndex: 'Id',
       render: id => <span>{id && id.substring(0, 15)}</span>,
-      ellipsis: true,
-      width: 150,
-      fixed: 'left'
+      width: 180,
+      fixed: 'left',
     },
-    {
-      title: '容器名称',
-      width: 200,
-      render: (_, container: DockerContainer) => {
-        return container.Names.map((name: string) => {
-          return <span key={name} >{name && name.substring(1)}</span>
-        })
 
-      },
-      ellipsis: true,
-    },
     {
       title: '镜像名',
       dataIndex: 'Image',
       render: Image => <span>{Image}</span>,
       ellipsis: true,
       width: 150,
+    },
+    {
+      title: '容器名称',
+      render: (_, container: DockerContainer) => {
+        return container.Names.map((name: string) => {
+          return <span key={name}>{name && name.substring(1)}</span>
+        })
+      },
+    },
+
+    {
+      title: '端口映射',
+      dataIndex: 'Ports',
+      render: (_: any, container: DockerContainer) => portShow(container)
     },
     {
       title: '容器状态',
@@ -96,12 +132,6 @@ function ContainerPage() {
       }
     },
     {
-      title: '端口映射',
-      dataIndex: 'Ports',
-      render: (_: any, container: DockerContainer) => portShow(container),
-      width: 200
-    },
-    {
       title: '创建时间',
       dataIndex: 'Created',
       width: 180,
@@ -111,12 +141,12 @@ function ContainerPage() {
       title: '操作容器',
       dataIndex: '[State,Id]',
       fixed: 'right',
-      width: 200,
+      width: 240,
       render: (_, record) => {
-        let {operateCommon, operateDesc} = getStatusInfo(record.State);
+        let {operateCommon, operateDesc,operatorColor} = getStatusInfo(record.State);
         return <div style={{wordWrap: 'break-word', wordBreak: 'break-word'}}>
           <Space>
-            <Button onClick={() => operatorContainer(operateCommon, record.Id)}size={"small"}>{operateDesc}</Button>
+            <Button onClick={() => operatorContainer(operateCommon, record.Id)} size={"small"} style={{color:operatorColor}}>{operateDesc}</Button>
             <Button onClick={() => navigateLogPage(record)} size={"small"}>日志</Button>
             <Button onClick={() => showDetail(record)} size={"small"}>详情</Button>
             <Button onClick={() => showMoreOperatorDrawer(record)} size={"small"}>更多</Button>
@@ -144,38 +174,45 @@ function ContainerPage() {
   }
 
   /*转到日志页*/
-  let navigateLogPage = (record:DockerContainer)=>{
+  let navigateLogPage = (record: DockerContainer) => {
     navigator(`/app/container/${record.Id}/log`)
   }
 
-  let navigateLogPageByCurrent = ()=>{
+  let navigateLogPageByCurrent = () => {
     navigator(`/app/container/${currentContainerId}/log`)
   }
 
   useEffect(() => refresh(), [])
-  function refresh() {
-    message.info('操作完成,正在刷新容器列表').then();
-    getContainers().then(data => {setContainers(data)})
-  }
 
-  function update(operate:string) {
+  function update(operate: string) {
     setMoreDrawerStatus(false)
-    updateContainer(currentContainerId,operate).then(data => refresh())
+    updateContainer(currentContainerId, operate).then(data => refresh())
   }
 
+
+  let refresh = () => {
+    getContainers().then(resp => {
+      if (resp.code !== 0) {
+        message.error(`加载容器列表失败:${resp.msg}`).then();
+        return
+      }
+      setContainers(resp.data)
+    })
+  }
 
   return (
       <div id="imagePage" className={"box"}>
         <div className="is-flex">
           <div className="imageController mb-2">
             <Search placeholder="输入关键字已搜索容器" style={{width: 400}}/>
-            <Select defaultValue={["running",'paused']} style={{width:400}} className={"ml-1"}   mode="multiple">
+            <Select defaultValue={["running", 'paused']} style={{width: 400}} className={"ml-1"}
+                    mode="multiple">
               <Select.Option value={"running"}>运行中</Select.Option>
               <Select.Option value={"created"}>已创建</Select.Option>
               <Select.Option value={"stop"}>已停止</Select.Option>
               <Select.Option value={"paused"}>暂停中</Select.Option>
             </Select>
-            <Button  onClick={refresh} className="ml-2" icon={<ReloadOutlined/>} >刷新</Button>
+            <Button onClick={refresh} className="ml-2" icon={<ReloadOutlined/>}>刷新</Button>
             <Button className="ml-2" icon={<CloudSyncOutlined/>} danger>优化</Button>
 
           </div>
@@ -203,12 +240,13 @@ function ContainerPage() {
                 visible={moreDrawerStatus}>
           <div className={"flex"}>
             <Button className={"m-1"} type="ghost">容器监控</Button>
-            <Button className={"m-1"} type="default" onClick={navigateLogPageByCurrent}>容器日志</Button>
+            <Button className={"m-1"} type="default"
+                    onClick={navigateLogPageByCurrent}>容器日志</Button>
             <Button className={"m-1"} type="default">容器网络</Button>
             <Button className={"m-1"} type="default">文件管理</Button>
-            <Button className={"m-1"} type="default" onClick={()=>update("PAUSE")}>暂停容器</Button>
-            <Button className={"m-1"} type="default" onClick={()=>update("PAUSE")}>重命名容器</Button>
-            <Button className={"m-1"} danger onClick={()=>update("REMOVE")}>移除容器</Button>
+            <Button className={"m-1"} type="default" onClick={() => update("PAUSE")}>暂停容器</Button>
+            <Button className={"m-1"} type="default" onClick={() => update("PAUSE")}>重命名容器</Button>
+            <Button className={"m-1"} danger onClick={() => update("REMOVE")}>移除容器</Button>
           </div>
         </Drawer>
       </div>

@@ -63,10 +63,13 @@ function VolumePage() {
     refresh()
   }, [])
 
-  function refresh() {
-    message.info('正在加载Docker储存卷列表');
-    getVolumes().then(data => {
-      setVolumes(data.Volumes)
+  let refresh = () => {
+    getVolumes().then(resp => {
+      if (resp.code !== 0) {
+        message.error(`加载储存卷列表失败:${resp.msg}`).then();
+        return
+      }
+      setVolumes(resp.data.Volumes)
     })
   }
 

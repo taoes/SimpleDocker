@@ -1,17 +1,16 @@
 package com.taoes.simpledocker.config;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-
 import com.github.dockerjava.api.DockerClient;
 import com.github.dockerjava.core.DefaultDockerClientConfig;
 import com.github.dockerjava.core.DockerClientBuilder;
 import com.github.dockerjava.core.DockerClientConfig;
-import com.taoes.simpledocker.model.DockerConfig;
+import com.taoes.simpledocker.model.DockerEndpoint;
 import com.taoes.simpledocker.model.exception.NotFoundClientException;
-import com.taoes.simpledocker.service.DockerConfigService;
+import com.taoes.simpledocker.service.DockerEndpointService;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeansException;
@@ -32,45 +31,44 @@ import org.springframework.util.StringUtils;
 @RequiredArgsConstructor
 public class GoServiceCommand implements ApplicationContextAware, CommandLineRunner {
 
-    private final Map<String, DockerClient> clientGroup = new HashMap<>();
+  private final Map<String, DockerClient> clientGroup = new HashMap<>();
 
-    private ApplicationContext context;
+  private ApplicationContext context;
 
-    private final DockerConfigService dockerConfigService;
+  private final DockerEndpointService endpointService;
 
-    public DockerClient get() {
-        final String clientId = DockerClientInterception.clientIdLocal.get();
-        if (!StringUtils.hasText(clientId)) {
-            return clientGroup.get("DEFAULT");
-        }
-        final DockerClient client = clientGroup.get(clientId.toUpperCase(Locale.ROOT));
-        if (client == null) {
-            throw new NotFoundClientException("客户端不存在!");
-        }
-        return client;
+  public DockerClient get() {
+    final String clientId = DockerClientInterception.clientIdLocal.get();
+    if (!StringUtils.hasText(clientId)) {
+      return clientGroup.get("DEFAULT");
+    }
+    final DockerClient client = clientGroup.get(clientId.toUpperCase(Locale.ROOT));
+    if (client == null) {
+      throw new NotFoundClientException("客户端不存在!");
+    }
+    return client;
+  }
+
+  @Override
+  public void run(String... args) throws Exception {
+    // 读取配置
+    final List<DockerEndpoint> endpoints = endpointService.list();
+    for (DockerEndpoint endpoint : endpoints) {
+      // 初始化Docker
+      log.info("初始化:{}", endpoint);
     }
 
-    @Override
-    public void run(String... args) throws Exception {
-        // 读取配置
-        final List<DockerConfig> dockerConfigList = dockerConfigService.list();
-        for (DockerConfig dockerConfig : dockerConfigList) {
-            // 初始化Docker
-            log.info("初始化:{}", dockerConfig);
-        }
-
-        DockerClientConfig config = DefaultDockerClientConfig.createDefaultConfigBuilder().build();
-        final DockerClient defaultClient = DockerClientBuilder.getInstance(config).build();
-        clientGroup.put("DEFAULT", defaultClient);
-        log.info("初始化Client内容完成,clientSize={}", clientGroup.size());
-
-        // 启动GoLanguage服务
+    DockerClientConfig config = DefaultDockerClientConfig.createDefaultConfigBuilder().build();
+    final DockerClient defaultClient = DockerClientBuilder.getInstance(config).build();
+    clientGroup.put("DEFAULT", defaultClient);
+    log.info("初始化Client内容完成,clientSize={}", clientGroup.size());
 
 
-    }
 
-    @Override
-    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
-        this.context = context;
-    }
+  }
+
+  @Override
+  public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+    this.context = context;
+  }
 }

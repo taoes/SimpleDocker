@@ -11,6 +11,8 @@ const httpRequest = axios.create(config);
 httpRequest.interceptors.request.use(function (config) {
   // @ts-ignore
   config.headers.Token = " " + localStorage.getItem('token')
+  // @ts-ignore
+  config.headers.clientId = localStorage.getItem('clientId')
   return config;
 }, function (error) {
   // 对请求错误做些什么

@@ -1,7 +1,7 @@
 package com.taoes.simpledocker.image;
 
 import com.taoes.simpledocker.SimpleDockerApplication;
-import com.taoes.simpledocker.service.DockerClientService;
+import com.taoes.simpledocker.service.DockerTestService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,10 +20,10 @@ import org.springframework.test.context.junit4.SpringRunner;
 public class DockerConfigTest {
 
     @Autowired
-    private DockerClientService clientService;
+    private DockerTestService testService;
 
     @Test
     public void testDocker() {
-        final Void resp = clientService.ping();
+        final Void resp = testService.ping();
     }
 }

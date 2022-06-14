@@ -1,5 +1,6 @@
 package com.taoes.simpledocker.service.imple;
 
+import com.taoes.simpledocker.model.exception.NotFoundClientException;
 import java.util.List;
 
 import com.github.dockerjava.api.DockerClient;
@@ -41,8 +42,12 @@ public class ImageServiceImpl implements ImageService {
 
     @Override
     public void tag(String imageId, String newTag) {
+        final InspectImageResponse image = inspect(imageId);
+        if (image == null){
+            throw new NotFoundClientException("操作失败，镜像不存在");
+        }
         final DockerClient dockerClient = factory.get();
-        dockerClient.tagImageCmd(imageId, "", newTag).exec();
+        dockerClient.tagImageCmd(imageId, image.getRepoTags().get(0), newTag).exec();
     }
 
     @Override
@@ -81,7 +86,6 @@ public class ImageServiceImpl implements ImageService {
         final DockerClient client = factory.get();
         try {
             final InspectImageResponse inspectImage = client.inspectImageCmd(imageId).exec();
-            log.info("获取到信息如下：{}", inspectImage);
             return inspectImage != null;
         } catch (NotFoundException e) {
             return false;
