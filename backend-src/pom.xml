@@ -80,7 +80,7 @@
         <!-- https://mvnrepository.com/artifact/com.github.docker-java/docker-java-transport-httpclient5 -->
         <dependency>
             <groupId>com.github.docker-java</groupId>
-            <artifactId>docker-java-transport-httpclient5</artifactId>
+            <artifactId>docker-java-transport-netty</artifactId>
             <version>${docker-sdk.version}</version>
         </dependency>
 

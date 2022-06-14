@@ -5,55 +5,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="2e8afb8c-0a7a-4fb7-ad64-90ec4bfdb3a1" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/admin/src/api/Base.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/admin/src/api/Client/DockerEndpointApi.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/admin/src/api/Model/DockerEndpoint.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/backend-src/src/main/java/com/taoes/simpledocker/controller/ClientController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/backend-src/src/main/java/com/taoes/simpledocker/controller/image/ImageTagUpdateRequest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/backend-src/src/main/java/com/taoes/simpledocker/converter/DockerEndpointConverter.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/backend-src/src/main/java/com/taoes/simpledocker/dao/bean/DockerEndpointDao.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/backend-src/src/main/java/com/taoes/simpledocker/dao/mapper/DockerEndpointMapper.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/backend-src/src/main/java/com/taoes/simpledocker/dao/responsity/EndpointRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/backend-src/src/main/java/com/taoes/simpledocker/model/DockerEndpoint.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/backend-src/src/main/java/com/taoes/simpledocker/model/enums/DockerEndpointState.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/backend-src/src/main/java/com/taoes/simpledocker/model/enums/DockerEndpointType.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/backend-src/src/main/java/com/taoes/simpledocker/model/exception/BaseBizException.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/backend-src/src/main/java/com/taoes/simpledocker/model/exception/ParamCheckException.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/backend-src/src/main/java/com/taoes/simpledocker/service/DockerEndpointService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/backend-src/src/main/java/com/taoes/simpledocker/service/DockerTestService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/backend-src/src/main/java/com/taoes/simpledocker/service/imple/DockerTestServiceImpl.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend-src/src/main/java/com/taoes/simpledocker/TestTerminal.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__net_java_dev_jna_jna_5_8_0.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/admin/src/api/Api.ts" beforeDir="false" afterPath="$PROJECT_DIR$/admin/src/api/Api.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/admin/src/api/Container/ContainerApi.ts" beforeDir="false" afterPath="$PROJECT_DIR$/admin/src/api/Container/ContainerApi.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/admin/src/api/Image/ImageApi.ts" beforeDir="false" afterPath="$PROJECT_DIR$/admin/src/api/Image/ImageApi.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/admin/src/api/Network/NetworkApi.ts" beforeDir="false" afterPath="$PROJECT_DIR$/admin/src/api/Network/NetworkApi.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/admin/src/api/Volumes/Volumes.ts" beforeDir="false" afterPath="$PROJECT_DIR$/admin/src/api/Volumes/Volumes.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/admin/src/component/Main/MainTopNav/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/admin/src/component/Main/MainTopNav/index.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/admin/src/layout/MainLayout/index.css" beforeDir="false" afterPath="$PROJECT_DIR$/admin/src/layout/MainLayout/index.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/admin/src/layout/MainLayout/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/admin/src/layout/MainLayout/index.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/admin/src/page/ContainerPage/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/admin/src/page/ContainerPage/index.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/admin/src/page/CreateContainerPage/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/admin/src/page/CreateContainerPage/index.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/admin/src/page/ImagePage/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/admin/src/page/ImagePage/index.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/admin/src/page/NetworkPage/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/admin/src/page/NetworkPage/index.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/admin/src/page/SettingPage/DockerServerTab/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/admin/src/page/SettingPage/DockerServerTab/index.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/admin/src/page/VolumePage/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/admin/src/page/VolumePage/index.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend-src/src/main/java/com/taoes/simpledocker/config/AjaxCorsFilter.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend-src/src/main/java/com/taoes/simpledocker/config/AjaxCorsFilter.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend-src/src/main/java/com/taoes/simpledocker/config/CommandExceptionHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend-src/src/main/java/com/taoes/simpledocker/config/CommandExceptionHandler.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend-src/src/main/java/com/taoes/simpledocker/config/DockerClientFactory.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend-src/src/main/java/com/taoes/simpledocker/config/DockerClientFactory.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend-src/src/main/java/com/taoes/simpledocker/config/GoServiceCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend-src/src/main/java/com/taoes/simpledocker/config/GoServiceCommand.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend-src/src/main/java/com/taoes/simpledocker/config/TokenValidateFilter.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend-src/src/main/java/com/taoes/simpledocker/controller/ContainerController.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend-src/src/main/java/com/taoes/simpledocker/controller/ContainerController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend-src/src/main/java/com/taoes/simpledocker/controller/ImageController.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend-src/src/main/java/com/taoes/simpledocker/controller/ImageController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend-src/src/main/java/com/taoes/simpledocker/controller/NetWorkController.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend-src/src/main/java/com/taoes/simpledocker/controller/NetWorkController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend-src/src/main/java/com/taoes/simpledocker/controller/VolumeController.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend-src/src/main/java/com/taoes/simpledocker/controller/VolumeController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend-src/src/main/java/com/taoes/simpledocker/model/exception/NotFoundClientException.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend-src/src/main/java/com/taoes/simpledocker/model/exception/NotFoundClientException.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend-src/src/main/java/com/taoes/simpledocker/service/DockerClientService.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend-src/src/main/java/com/taoes/simpledocker/service/DockerConfigService.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend-src/src/main/java/com/taoes/simpledocker/service/ImageService.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend-src/src/main/java/com/taoes/simpledocker/service/ImageService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend-src/src/main/java/com/taoes/simpledocker/service/imple/DockerClientServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend-src/src/main/java/com/taoes/simpledocker/service/imple/DockerEndpointServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend-src/src/main/java/com/taoes/simpledocker/service/imple/DockerConfigServiceImpl.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend-src/src/main/java/com/taoes/simpledocker/service/imple/ImageServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend-src/src/main/java/com/taoes/simpledocker/service/imple/ImageServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend-src/src/test/java/com/taoes/simpledocker/image/DockerConfigTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend-src/src/test/java/com/taoes/simpledocker/image/DockerConfigTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend-src/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/backend-src/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend-src/simpleDocker.iml" beforeDir="false" afterPath="$PROJECT_DIR$/backend-src/simpleDocker.iml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -294,24 +250,24 @@
     <option name="showLibraryContents" value="true" />
     <option name="showVisibilityIcons" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RequestMappingsPanelOrder0": "0",
-    "RequestMappingsPanelOrder1": "1",
-    "RequestMappingsPanelWidth0": "75",
-    "RequestMappingsPanelWidth1": "75",
-    "WebServerToolWindowFactoryState": "false",
-    "nodejs_package_manager_path": "yarn",
-    "settings.editor.selected.configurable": "editor.preferences.import",
-    "spring.configuration.checksum": "8b8e6c79d843f8c0453928f77a07b74b",
-    "ts.external.directory.path": "/Users/tao/develop/code/project/SimpleDocker/admin/node_modules/typescript/lib"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RequestMappingsPanelOrder0&quot;: &quot;0&quot;,
+    &quot;RequestMappingsPanelOrder1&quot;: &quot;1&quot;,
+    &quot;RequestMappingsPanelWidth0&quot;: &quot;75&quot;,
+    &quot;RequestMappingsPanelWidth1&quot;: &quot;75&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;yarn&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;editor.preferences.import&quot;,
+    &quot;spring.configuration.checksum&quot;: &quot;8b8e6c79d843f8c0453928f77a07b74b&quot;,
+    &quot;ts.external.directory.path&quot;: &quot;/Users/tao/develop/code/project/SimpleDocker/admin/node_modules/typescript/lib&quot;
   },
-  "keyToStringList": {
-    "DatabaseDriversLRU": [
-      "mysql"
+  &quot;keyToStringList&quot;: {
+    &quot;DatabaseDriversLRU&quot;: [
+      &quot;mysql&quot;
     ]
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CreateClassDialog.RecentsKey">
       <recent name="com.taoes.simpledocker.service.imple" />
@@ -333,6 +289,9 @@
     <key name="CreateTestDialog.Recents.Supers">
       <recent name="" />
     </key>
+    <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
+      <recent name="com.taoes.simpledocker" />
+    </key>
     <key name="CreateTestDialog.RecentsKey">
       <recent name="com.taoes.simpledocker.utils" />
     </key>
@@ -344,15 +303,16 @@
       <recent name="com.taoes.simpledocker.dao.mapper" />
     </key>
   </component>
-  <component name="RunManager" selected="Spring Boot.SimpleDockerApplication">
-    <configuration name="ContainerTest and 2 more" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+  <component name="RunManager" selected="应用程序.com.taoes.simpledocker.TestTerminal">
+    <configuration name="com.taoes.simpledocker.TestTerminal" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="com.taoes.simpledocker.TestTerminal" />
       <module name="simpleDocker" />
-      <option name="TEST_OBJECT" value="pattern" />
-      <patterns>
-        <pattern testClass="com.taoes.simpledocker.image.ContainerTest" />
-        <pattern testClass="com.taoes.simpledocker.image.DockerConfigTest" />
-        <pattern testClass="com.taoes.simpledocker.image.ImageTest" />
-      </patterns>
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.taoes.simpledocker.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -372,33 +332,33 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="ImageTest.testImageExist" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="TestTerminal" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="simpleDocker" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="com.taoes.simpledocker.image.*" />
+          <option name="PATTERN" value="com.taoes.simpledocker.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
-      <option name="PACKAGE_NAME" value="com.taoes.simpledocker.image" />
-      <option name="MAIN_CLASS_NAME" value="com.taoes.simpledocker.image.ImageTest" />
-      <option name="METHOD_NAME" value="testImageExist" />
-      <option name="TEST_OBJECT" value="method" />
+      <option name="PACKAGE_NAME" value="com.taoes.simpledocker" />
+      <option name="MAIN_CLASS_NAME" value="com.taoes.simpledocker.TestTerminal" />
+      <option name="TEST_OBJECT" value="class" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="OSInfoTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="TestTerminal.testTerminal" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="simpleDocker" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="com.taoes.simpledocker.config.securoty.*" />
+          <option name="PATTERN" value="com.taoes.simpledocker.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
-      <option name="PACKAGE_NAME" value="com.taoes.simpledocker.utils" />
-      <option name="MAIN_CLASS_NAME" value="com.taoes.simpledocker.utils.OSInfoTest" />
-      <option name="TEST_OBJECT" value="class" />
+      <option name="PACKAGE_NAME" value="com.taoes.simpledocker" />
+      <option name="MAIN_CLASS_NAME" value="com.taoes.simpledocker.TestTerminal" />
+      <option name="METHOD_NAME" value="testTerminal" />
+      <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -415,11 +375,11 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Node.js.index.js" />
-        <item itemvalue="JUnit.OSInfoTest" />
-        <item itemvalue="JUnit.ImageTest.testImageExist" />
+        <item itemvalue="JUnit.TestTerminal.testTerminal" />
         <item itemvalue="JUnit.ImageTest" />
-        <item itemvalue="JUnit.ContainerTest and 2 more" />
+        <item itemvalue="JUnit.TestTerminal" />
+        <item itemvalue="应用程序.com.taoes.simpledocker.TestTerminal" />
+        <item itemvalue="Node.js.index.js" />
       </list>
     </recent_temporary>
   </component>
@@ -470,7 +430,9 @@
       <workItem from="1654698278009" duration="182000" />
       <workItem from="1654885351882" duration="13606000" />
       <workItem from="1654949149507" duration="30000" />
-      <workItem from="1654970543606" duration="24692000" />
+      <workItem from="1654970543606" duration="25092000" />
+      <workItem from="1655215902480" duration="49000" />
+      <workItem from="1655215989988" duration="5040000" />
     </task>
     <servers />
   </component>
@@ -543,6 +505,21 @@
           <url>jar://$MAVEN_REPOSITORY$/com/github/docker-java/docker-java-core/3.2.12/docker-java-core-3.2.12.jar!/com/github/dockerjava/core/DefaultDockerClientConfig.class</url>
           <line>110</line>
           <option name="timeStamp" value="42" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/backend-src/src/main/java/com/taoes/simpledocker/TestTerminal.java</url>
+          <line>18</line>
+          <option name="timeStamp" value="45" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/backend-src/src/main/java/com/taoes/simpledocker/TestTerminal.java</url>
+          <line>17</line>
+          <option name="timeStamp" value="46" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/backend-src/src/main/java/com/taoes/simpledocker/TestTerminal.java</url>
+          <line>63</line>
+          <option name="timeStamp" value="59" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
