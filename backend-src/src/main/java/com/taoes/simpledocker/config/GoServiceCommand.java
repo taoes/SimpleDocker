@@ -2,8 +2,9 @@ package com.taoes.simpledocker.config;
 
 import com.github.dockerjava.api.DockerClient;
 import com.github.dockerjava.core.DefaultDockerClientConfig;
+import com.github.dockerjava.core.DefaultDockerClientConfig.Builder;
 import com.github.dockerjava.core.DockerClientBuilder;
-import com.github.dockerjava.core.DockerClientConfig;
+import com.github.dockerjava.netty.NettyDockerCmdExecFactory;
 import com.taoes.simpledocker.model.DockerEndpoint;
 import com.taoes.simpledocker.model.exception.NotFoundClientException;
 import com.taoes.simpledocker.service.DockerEndpointService;
@@ -58,9 +59,14 @@ public class GoServiceCommand implements ApplicationContextAware, CommandLineRun
       log.info("初始化:{}", endpoint);
     }
 
-    DockerClientConfig config = DefaultDockerClientConfig.createDefaultConfigBuilder().build();
-    final DockerClient defaultClient = DockerClientBuilder.getInstance(config).build();
-    clientGroup.put("DEFAULT", defaultClient);
+    NettyDockerCmdExecFactory factory = new NettyDockerCmdExecFactory();
+    Builder configBuilder = new DefaultDockerClientConfig.Builder()
+        .withDockerTlsVerify(false)
+        .withDockerHost("tcp://192.168.1.104:8082");
+    DockerClient client = DockerClientBuilder.getInstance(configBuilder)
+        .withDockerCmdExecFactory(factory)
+        .build();
+    clientGroup.put("DEFAULT",client);
     log.info("初始化Client内容完成,clientSize={}", clientGroup.size());
 
 
