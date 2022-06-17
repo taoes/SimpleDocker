@@ -58,6 +58,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         //跨域请求会先进行一次options请求
         .antMatchers(HttpMethod.OPTIONS)
         .permitAll()
+        //对于WS请求全部放过
+        .antMatchers("/api/ws/**")
+        .permitAll()
         .anyRequest()// 除上面外的所有请求全部需要鉴权认证
         .authenticated();
     // 禁用缓存
