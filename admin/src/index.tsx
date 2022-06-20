@@ -9,6 +9,7 @@ import MainLayout from "./layout/MainLayout";
 import appRouter from './router/mainPageRouter'
 
 import './index.css';
+import TerminalLayout from "./layout/TerminalLayout";
 
 const root = ReactDOM.createRoot(
     document.getElementById('root') as HTMLElement
@@ -17,14 +18,16 @@ const root = ReactDOM.createRoot(
 
 root.render(
     <HashRouter>
-        <Routes>
-            <Route path="/" element={<LoginLayout/>}/>
-            <Route path="/login" element={<LoginLayout/>}/>
-            <Route path="/app" element={<MainLayout/>}>
-                {
-                    appRouter.map(({path, component}) => <Route key={path} path={path} element={component}/>)
-                }
-            </Route>
-        </Routes>
+      <Routes>
+        <Route path="/" element={<LoginLayout/>}/>
+        <Route path="/login" element={<LoginLayout/>}/>
+        <Route path="/terminal" element={<TerminalLayout/>}/>
+        <Route path="/app" element={<MainLayout/>}>
+          {
+            appRouter.map(({path, component}) => <Route key={path} path={path} element={component}/>)
+          }
+        </Route>
+
+      </Routes>
     </HashRouter>,
 );

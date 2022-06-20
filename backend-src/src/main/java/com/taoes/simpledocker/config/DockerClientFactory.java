@@ -56,6 +56,14 @@ public class DockerClientFactory implements ApplicationContextAware, CommandLine
     return client;
   }
 
+  public DockerClient get(String clientId) {
+    final DockerClient client = clientGroup.get(clientId.toUpperCase(Locale.ROOT));
+    if (client == null) {
+      throw new NotFoundClientException("客户端不存在!");
+    }
+    return client;
+  }
+
   @Override
   public void run(String... args) throws Exception {
     // 读取配置

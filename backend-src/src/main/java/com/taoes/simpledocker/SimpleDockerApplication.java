@@ -6,7 +6,10 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class SimpleDockerApplication {
 
-    public static void main(String[] args) {
-        SpringApplication.run(SimpleDockerApplication.class, args);
-    }
+  /**
+   * 梦开始的地方
+   */
+  public static void main(String[] args) {
+    SpringApplication.run(SimpleDockerApplication.class, args);
+  }
 }

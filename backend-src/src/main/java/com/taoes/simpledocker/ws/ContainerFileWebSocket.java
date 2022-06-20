@@ -30,15 +30,15 @@ import org.springframework.stereotype.Component;
  */
 @Slf4j
 @Component
-@ServerEndpoint("/api/ws/container/{containerId}/terminal")
-public class ContainerTerminalWebSocket {
+@ServerEndpoint("/api/ws/container/{containerId}/fs")
+public class ContainerFileWebSocket {
 
 
   private static DockerClientFactory clientFactory;
 
   @Autowired
   public void setChatService(DockerClientFactory clientFactory) {
-    ContainerTerminalWebSocket.clientFactory = clientFactory;
+    ContainerFileWebSocket.clientFactory = clientFactory;
   }
 
   // 当前在线数
@@ -132,6 +132,4 @@ public class ContainerTerminalWebSocket {
   public void onError(Session session, Throwable error) {
     log.error("发生错误：{}，Session ID： {}", error.getMessage(), session.getId());
   }
-
-
 }

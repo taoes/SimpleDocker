@@ -3,7 +3,7 @@ import WithRouter from "../router/WithRouter";
 import {message} from "antd";
 
 let config: AxiosRequestConfig = {
-  baseURL: 'http://192.168.1.103:3364/api'
+  baseURL: 'http://192.168.1.102:3364/api'
 }
 const httpRequest = axios.create(config);
 

@@ -20,7 +20,7 @@
         <java.version>8</java.version>
         <lombok.version>1.18.24</lombok.version>
         <mysql.version>8.0.28</mysql.version>
-        <docker-sdk.version>3.2.12</docker-sdk.version>
+        <docker-sdk.version>3.2.13</docker-sdk.version>
     </properties>
 
 
@@ -71,18 +71,20 @@
         </dependency>
 
         <!-- Docker 依赖-->
+        <!-- https://mvnrepository.com/artifact/com.github.docker-java/docker-java -->
         <dependency>
             <groupId>com.github.docker-java</groupId>
             <artifactId>docker-java</artifactId>
-            <version>${docker-sdk.version}</version>
+            <version>3.2.13</version>
         </dependency>
 
-        <!-- https://mvnrepository.com/artifact/com.github.docker-java/docker-java-transport-httpclient5 -->
+        <!-- https://mvnrepository.com/artifact/com.github.docker-java/docker-java-transport-netty -->
         <dependency>
             <groupId>com.github.docker-java</groupId>
-            <artifactId>docker-java-transport-netty</artifactId>
-            <version>${docker-sdk.version}</version>
+            <artifactId>docker-java-transport-httpclient5</artifactId>
+            <version>3.2.13</version>
         </dependency>
+
 
         <!-- https://mvnrepository.com/artifact/com.squareup.okhttp3/okhttp -->
         <dependency>
@@ -147,6 +149,13 @@
             <groupId>cn.hutool</groupId>
             <artifactId>hutool-core</artifactId>
             <version>5.8.3</version>
+        </dependency>
+
+      <!--        输入输出流-->
+        <dependency>
+            <groupId>org.ostermiller</groupId>
+            <artifactId>utils</artifactId>
+            <version>1.07.00</version>
         </dependency>
 
     </dependencies>

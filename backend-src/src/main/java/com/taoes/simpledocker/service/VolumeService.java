@@ -11,31 +11,28 @@ import com.github.dockerjava.api.command.ListVolumesResponse;
  * @date 2022/1/1 3:47 PM
  */
 public interface VolumeService {
-    /**
-     * 卷列表
-     *
-     * @return
-     */
-    ListVolumesResponse list();
 
-    /**
-     * 创建新的存储卷
-     * @return
-     */
-    CreateVolumeResponse create(String name, String driver);
+  /**
+   * 卷列表
+   */
+  ListVolumesResponse list();
 
-    /**
-     * 卷详情
-     *
-     * @param name 卷名
-     * @return
-     */
-    InspectVolumeResponse inspect(String name);
+  /**
+   * 创建新的存储卷
+   */
+  CreateVolumeResponse create(String name, String driver);
 
-    /**
-     * 移除卷
-     *
-     * @param name 卷名称
-     */
-    void remove(String name);
+  /**
+   * 卷详情
+   *
+   * @param name 卷名
+   */
+  InspectVolumeResponse inspect(String name);
+
+  /**
+   * 移除卷
+   *
+   * @param name 卷名称
+   */
+  void remove(String name);
 }
