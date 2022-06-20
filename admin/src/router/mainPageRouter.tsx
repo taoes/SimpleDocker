@@ -10,6 +10,7 @@ import UserPage from "../page/UserPage";
 import AboutPage from "../page/AboutPage";
 import CreateContainerPage from "../page/CreateContainerPage";
 import ContainerLogPage from "../page/ContainerLogPage/ContainerLogPage";
+import ContainerTerminal from "../page/ContainerTerminal";
 
 
 export const appRouter: Array<AppRouter> = [

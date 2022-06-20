@@ -7,6 +7,7 @@ import React, {useState} from "react";
 
 import './index.css'
 import {MenuFoldOutlined} from "@ant-design/icons";
+
 const {Header, Sider, Content, Footer} = Layout;
 
 export default function MainLayout() {
@@ -17,22 +18,23 @@ export default function MainLayout() {
 
   return (
       <Layout>
-        <Sider trigger={null}  collapsible collapsed={mainMenuState} style={{}}>
-          <div className={"logo"} />
-          <MainSideMenu updateMainMenuState={updateMainMenuState} mainMenuState/>
-        </Sider>
+        <Header className={"has-background-white"}>
+          <MainTopNav/>
+        </Header>
 
         <Layout>
-          <Header className={"has-background-white"}>
-            <MainTopNav />
-          </Header>
-          <Content className="m-3 has-background-white">
+          <Sider trigger={null} collapsible collapsed={mainMenuState} style={{}}>
+            <MainSideMenu updateMainMenuState={updateMainMenuState} mainMenuState/>
+          </Sider>
+
+          <Content className="m-2 has-background-white">
             <Outlet/>
           </Content>
-          <Footer>
-            <MainFooter/>
-          </Footer>
+
         </Layout>
+        <Footer>
+          <MainFooter/>
+        </Footer>
       </Layout>
   )
 }
