@@ -27,7 +27,7 @@ export default function MainLayout() {
             <MainSideMenu updateMainMenuState={updateMainMenuState} mainMenuState/>
           </Sider>
 
-          <Content className="m-2 has-background-white">
+          <Content className="m-2 has-background-white" style={{height:'100%'}}>
             <Outlet/>
           </Content>
 

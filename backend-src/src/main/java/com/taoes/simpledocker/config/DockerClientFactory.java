@@ -3,14 +3,14 @@ package com.taoes.simpledocker.config;
 import static java.lang.String.format;
 
 import com.github.dockerjava.api.DockerClient;
-import com.github.dockerjava.core.DefaultDockerClientConfig;
-import com.github.dockerjava.core.DefaultDockerClientConfig.Builder;
 import com.github.dockerjava.core.DockerClientBuilder;
+import com.github.dockerjava.httpclient5.ApacheDockerHttpClient;
 import com.taoes.simpledocker.model.DockerEndpoint;
 import com.taoes.simpledocker.model.enums.DockerEndpointType;
 import com.taoes.simpledocker.model.exception.NotFoundClientException;
 import com.taoes.simpledocker.service.DockerEndpointService;
 import com.taoes.simpledocker.service.GoProgramRunner;
+import java.net.URI;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -69,16 +69,21 @@ public class DockerClientFactory implements ApplicationContextAware, CommandLine
     // 读取配置
     final List<DockerEndpoint> endpoints = dockerEndpointService.list();
     for (DockerEndpoint endpoint : endpoints) {
-      final Builder builder = DefaultDockerClientConfig.createDefaultConfigBuilder();
       if (endpoint.getType() == DockerEndpointType.LOCAL) {
-        final DockerClient defaultClient = DockerClientBuilder.getInstance(builder.build()).build();
-        clientGroup.put(endpoint.getId(), defaultClient);
+        ApacheDockerHttpClient httpClient = new ApacheDockerHttpClient.Builder()
+            .dockerHost(new URI("unix:///var/run/docker.sock"))
+            .build();
+        DockerClient client = DockerClientBuilder.getInstance().withDockerHttpClient(httpClient).build();
+        clientGroup.put(endpoint.getId(), client);
       }
 
       if (endpoint.getType() == DockerEndpointType.REMOTE) {
-        builder.withDockerHost(format("tcp://%s:%s", endpoint.getHost(), endpoint.getPort()));
-        final DockerClientBuilder instance = DockerClientBuilder.getInstance(builder.build());
-        clientGroup.put(endpoint.getId(), instance.build());
+        ApacheDockerHttpClient httpClient = new ApacheDockerHttpClient.Builder()
+            .dockerHost(new URI(format("tcp://%s:%s", endpoint.getHost(), endpoint.getPort())))
+
+            .build();
+        DockerClient client = DockerClientBuilder.getInstance().withDockerHttpClient(httpClient).build();
+        clientGroup.put(endpoint.getId(), client);
       }
     }
 

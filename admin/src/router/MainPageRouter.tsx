@@ -9,8 +9,7 @@ import SettingPage from "../page/SettingPage";
 import UserPage from "../page/UserPage";
 import AboutPage from "../page/AboutPage";
 import CreateContainerPage from "../page/CreateContainerPage";
-import ContainerLogPage from "../page/ContainerLogPage/ContainerLogPage";
-import ContainerTerminal from "../page/ContainerTerminal";
+import ContainerLogPage from "../page/ContainerLogPage";
 
 
 export const appRouter: Array<AppRouter> = [
@@ -29,7 +28,6 @@ export const appRouter: Array<AppRouter> = [
     component: <ContainerPage/>,
     exact: true
   },
-
   {
     path: '/app/container/:containerId/log',
     component: <ContainerLogPage/>,

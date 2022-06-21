@@ -4,7 +4,17 @@ import {FitAddon} from "xterm-addon-fit";
 import {AttachAddon} from "xterm-addon-attach";
 import React from "react";
 import './index.css'
-import {Affix, notification} from "antd";
+import {Affix, Button, Checkbox, notification, PageHeader, Space} from "antd";
+import WithRouter from "../../router/WithRouter";
+import {
+  SettingOutlined,
+  ReloadOutlined,
+  ArrowUpOutlined,
+  ArrowDownOutlined,
+  FileZipOutlined,
+  HomeOutlined,
+  DeleteOutlined
+} from "@ant-design/icons";
 
 const style = {
   foreground: "#FFFFFF",
@@ -28,14 +38,15 @@ const style = {
   brightWhite: "#ffffff",
 };
 
-export default class ContainerTerminal extends React.Component {
+class ContainerTerminal extends React.Component {
 
   constructor(props) {
     super(props);
-    this.socket = null;
+    this.containerId =  props.router.params.containerId;
+    this.clientId = props.router.params.clientId;
+    this.socket =null
     this.term = null;
-    this.socketUrl = "ws://192.168.1.102:3364/api/ws/container/9e57d5dc961b/terminal"
-    // this.socketUrl = "ws://192.168.1.102:3364/api/ws/container/test"
+    this.socketUrl = `ws://192.168.1.102:3364/api/ws/container/${this.containerId}/terminal`
   }
 
   componentDidMount() {
@@ -48,23 +59,26 @@ export default class ContainerTerminal extends React.Component {
     this.socket.onopen = () => {
       notification['success']({
         message: '连接提醒',
-        description: "终端Socket连接成功,您可以在界面输入一些命令查看容器信息"
+        description: "终端Socket连接成功,您可以在界面输入一些命令查看容器信息",
+        placement: 'bottomRight'
       });
       this.initTerm()
     }
 
-    this.socket.onerror = (e) => {
+    this.socket.error = (e) => {
       console.error(`容器终端连接出现异常${e}`)
       notification['error']({
         message: '连接异常',
-        description: "终端Socket连接出现异常,详情信息请查看控制台"
+        description: "终端Socket连接出现异常,详情信息请查看控制台",
+        placement: 'bottomRight'
       });
     }
 
     this.socket.onclose = () => {
       notification['error']({
         message: '连接关闭',
-        description: "终端Socket连接已关闭"
+        description: "终端Socket连接已关闭",
+        placement: 'bottomRight'
       });
     }
   }
@@ -75,9 +89,9 @@ export default class ContainerTerminal extends React.Component {
           convertEol: false, //启用时，光标将设置为下一行的开头
           disableStdin: false, //是否应禁用输入。
           cursorStyle: 'block', //光标样式
-          bellStyle: 'sound',
+
           cursorBlink: true,
-          style: style
+          theme: style
         }
     );
 
@@ -108,22 +122,27 @@ export default class ContainerTerminal extends React.Component {
     return (
         <>
           <Affix offsetTop={0}>
-            <div style={{
-              width: '100%',
-              height: '32px',
-            }}>
-              <button onClick={() => this.cls()}>清屏</button>
-              <button onClick={() => this.home()}>HOME</button>
-              <button onClick={() => this.term.selectAll()}>全选</button>
-              <button onClick={() => this.term.scrollToBottom()}>滚动到底部</button>
-              <button onClick={() => this.term.scrollToTop()}>回到顶部</button>
-              <button onClick={() => this.term.refresh()}>刷新</button>
-              <button>切换主题</button>
-            </div>
+
+            <PageHeader
+                className="site-page-header"
+                title="容器日志页面"
+                onBack={() => this.props.router.navigate(-1)}
+                subTitle="查看容器日志信息"
+                extra={
+                  <>
+                    <Button icon={<DeleteOutlined/>} onClick={() => this.cls()}>清屏</Button>
+                    <Button icon={<HomeOutlined/>} onClick={() => this.home()}>命令</Button>
+                    <Button icon={<ArrowUpOutlined/>} onClick={() => this.term.scrollToTop()}>顶部</Button>
+                    <Button icon={<ArrowDownOutlined/>} onClick={() => this.term.scrollToBottom()}>底部</Button>
+                    <Button icon={<ReloadOutlined/>} onClick={() => this.term.refresh()}>刷新</Button>
+                    <Button icon={<SettingOutlined/>}>主题</Button>
+                  </>
+                }/>
           </Affix>
           <div id="terminal" style={{height: "99%", width: '100%'}}/>
         </>
     )
   }
-
 }
+
+export default WithRouter(ContainerTerminal)

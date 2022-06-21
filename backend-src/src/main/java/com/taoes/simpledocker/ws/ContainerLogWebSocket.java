@@ -1,12 +1,14 @@
 package com.taoes.simpledocker.ws;
 
-import java.io.Closeable;
+import com.github.dockerjava.api.DockerClient;
+import com.github.dockerjava.api.async.ResultCallback;
+import com.github.dockerjava.api.model.Frame;
+import com.taoes.simpledocker.config.DockerClientFactory;
+import com.taoes.simpledocker.ws.callback.ContainerLogResultCallback;
 import java.io.IOException;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.CopyOnWriteArraySet;
 import java.util.concurrent.atomic.AtomicInteger;
-
 import javax.annotation.PostConstruct;
 import javax.websocket.OnClose;
 import javax.websocket.OnError;
@@ -14,11 +16,6 @@ import javax.websocket.OnMessage;
 import javax.websocket.OnOpen;
 import javax.websocket.Session;
 import javax.websocket.server.ServerEndpoint;
-
-import com.github.dockerjava.api.DockerClient;
-import com.taoes.simpledocker.config.DockerClientFactory;
-import com.github.dockerjava.api.async.ResultCallback;
-import com.github.dockerjava.api.model.Frame;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,10 +40,7 @@ public class ContainerLogWebSocket {
     }
 
     // 当前在线数
-    private AtomicInteger OnlineCount = new AtomicInteger(0);
-
-    // Session保存
-    private CopyOnWriteArraySet<Session> SessionSet = new CopyOnWriteArraySet<Session>();
+    private final static AtomicInteger OnlineCount = new AtomicInteger(0);
 
     private Map<String, ResultCallback<Frame>> callbackMap = new ConcurrentHashMap<>();
 
@@ -57,51 +51,18 @@ public class ContainerLogWebSocket {
 
     @OnOpen
     public void onOpen(Session session) {
-        SessionSet.add(session);
         final int i = OnlineCount.incrementAndGet();
         log.info("有连接接入，当前连接数为：{}", i);
 
-        // TODO 校验容器存在 & 优化
-
         final Map<String, String> param = session.getPathParameters();
-        final DockerClient client = clientFactory.get();
+        final DockerClient client = clientFactory.get("DEFAULT");
         final ResultCallback<Frame> callback = client
             .logContainerCmd(param.get("cId"))
             .withFollowStream(true)
             .withStdErr(true)
             .withStdOut(true)
-            .withTail(100)
-            .exec(new ResultCallback<Frame>() {
-                @Override
-                public void onStart(Closeable closeable) {
-
-                }
-
-                @Override
-                public void onNext(Frame frame) {
-                    final byte[] payload = frame.getPayload();
-                    SendMessage(session, new String(payload));
-                }
-
-                @Override
-                @SneakyThrows
-                public void onError(Throwable throwable) {
-                    SendMessage(session, throwable.getMessage());
-                    session.close();
-                }
-
-                @Override
-                @SneakyThrows
-                public void onComplete() {
-                    SendMessage(session, "获取日志结束,链接关闭!");
-                    session.close();
-                }
-
-                @Override
-                public void close() throws IOException {
-
-                }
-            });
+            .withTail(1000)
+            .exec(new ContainerLogResultCallback(session));
         callbackMap.put(session.getId(), callback);
     }
 
@@ -111,7 +72,6 @@ public class ContainerLogWebSocket {
     @OnClose
     @SneakyThrows
     public void onClose(Session session) {
-        SessionSet.remove(session);
         int cnt = OnlineCount.decrementAndGet();
         final ResultCallback<Frame> resultCallback = callbackMap.get(session.getId());
         if (resultCallback != null && session.isOpen()) { resultCallback.close(); }

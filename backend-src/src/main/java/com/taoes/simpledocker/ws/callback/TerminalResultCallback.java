@@ -1,6 +1,5 @@
 package com.taoes.simpledocker.ws.callback;
 
-import com.github.dockerjava.api.async.ResultCallback;
 import com.github.dockerjava.api.model.Frame;
 import java.io.Closeable;
 import java.io.IOException;
@@ -10,7 +9,7 @@ import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-public class TerminalResultCallback extends ResultCallback.Adapter<Frame> {
+public class TerminalResultCallback extends AbstractResultCallback {
 
   private final Session session;
 
@@ -19,15 +18,15 @@ public class TerminalResultCallback extends ResultCallback.Adapter<Frame> {
   }
 
   private final static String BANNER_CONTENT =
-      "\\033[33m   _____ _                 __        ____             __\\r\\n \n"
-          + "\\033[33m  / ___/(_)___ ___  ____  / /__     / __ \\\\____  _____/ /_____  _____\\r\\n\n"
-          + "\\033[33m  \\\\__ \\\\/ / __ `__ \\\\/ __ \\\\/ / _ \\\\   / / / / __ \\\\/ ___/ //_/ _ \\\\/ ___/\\r\\n\n"
-          + "\\033[33m ___/ / / / / / / / /_/ / /  __/  / /_/ / /_/ / /__/ ,< /  __/ /    \\r\\n\n"
-          + "\\033[33m/____/_/_/ /_/ /_/ .___/_/\\\\___/  /_____/\\\\____/\\\\___/_/|_|\\\\___/_/     \\r\\n\n"
-          + "\\033[33m                /_/                               \t\t\t\t\t   \\r\\n\\r\\n\n"
-          + "\\033[32m 欢迎您使用 SimpleDocker, 容器终端已为您连接成功 ...............  \\033[0m \\r\\n \\r\\n \n"
-          + "\\033[37m 程序默认使用 \\033[31m /bin/sh \\033[0m 连接，如有必要请手动切换到 /bin/bash 或者其他 shell 环境  \\033[0m \\r\\n \\r\\n\n"
-          + "\\033[37m 如遇BUG或者Issue 欢迎访问 https://github.com/taoes  或者  https://gitee.com/taoes_admin  联系作者  \\033[0m \\r\\n \\r\\n";
+            "\033[31m   _____ _                 __        ____             __\r\n"
+          + "\033[31m  / ___/(_)___ ___  ____  / /__     / __ \\____  _____/ /_____  _____\r\n"
+          + "\033[31m  \\__ \\/ / __ `__ \\/ __ \\/ / _ \\   / / / / __ \\/ ___/ //_/ _ \\/ ___/\r\n"
+          + "\033[31m ___/ / / / / / / / /_/ / /  __/  / /_/ / /_/ / /__/ ,< /  __/ /    \r\n"
+          + "\033[31m/____/_/_/ /_/ /_/ .___/_/\\___/  /_____/\\____/\\___/_/|_|\\___/_/     \r\n"
+          + "\033[31m                /_/                               \t\t\t\t\t   \r\n\r\n"
+          + "\033[32m 欢迎您使用 SimpleDocker, 容器终端已为您连接成功 ...............  \033[0m \r\n \r\n "
+          + "\033[37m 程序默认使用 \033[32m /bin/sh \033[0m 连接，如有必要请手动切换到 /bin/bash 或者其他 shell 环境  \033[0m \r\n \r\n"
+          + "\033[37m 如遇BUG或者Issue 欢迎访问 https://github.com/taoes  或者  https://gitee.com/taoes_admin  联系作者  \033[0m \r\n";
 
   @SneakyThrows
   @Override
@@ -61,22 +60,5 @@ public class TerminalResultCallback extends ResultCallback.Adapter<Frame> {
     session.close();
   }
 
-  /**
-   * 发送消息
-   */
-  public void sendMessage(Session session, String message) {
-    try {
-      session.getBasicRemote().sendText(message);
-    } catch (Exception e) {
-      log.error("发送消息出错：{}", e.getMessage());
-    }
-  }
 
-  public void sendMessage(Session session, ByteBuffer message) {
-    try {
-      session.getBasicRemote().sendBinary(message);
-    } catch (Exception e) {
-      log.error("发送消息出错：{}", e.getMessage());
-    }
-  }
 }
