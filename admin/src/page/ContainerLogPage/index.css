@@ -1,0 +1,7 @@
+.xterm-viewport {
+  width: 100% !important;
+}
+
+.xterm .xterm-screen canvas{
+  padding: 5px;
+}

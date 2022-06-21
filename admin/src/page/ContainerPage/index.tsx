@@ -143,10 +143,11 @@ function ContainerPage() {
       fixed: 'right',
       width: 240,
       render: (_, record) => {
-        let {operateCommon, operateDesc,operatorColor} = getStatusInfo(record.State);
+        let {operateCommon, operateDesc, operatorColor} = getStatusInfo(record.State);
         return <div style={{wordWrap: 'break-word', wordBreak: 'break-word'}}>
           <Space>
-            <Button onClick={() => operatorContainer(operateCommon, record.Id)} size={"small"} style={{color:operatorColor}}>{operateDesc}</Button>
+            <Button onClick={() => operatorContainer(operateCommon, record.Id)} size={"small"}
+                    style={{color: operatorColor}}>{operateDesc}</Button>
             <Button onClick={() => navigateLogPage(record)} size={"small"}>日志</Button>
             <Button onClick={() => showDetail(record)} size={"small"}>详情</Button>
             <Button onClick={() => showMoreOperatorDrawer(record)} size={"small"}>更多</Button>
@@ -200,6 +201,10 @@ function ContainerPage() {
     })
   }
 
+  let openTerminal = () => {
+    navigator(`/terminal/container/${currentContainerId}/client/DEFAULT`)
+  }
+
   return (
       <div id="imagePage" className={"box"}>
         <div className="is-flex">
@@ -240,6 +245,7 @@ function ContainerPage() {
                 visible={moreDrawerStatus}>
           <div className={"flex"}>
             <Button className={"m-1"} type="ghost">容器监控</Button>
+            <Button className={"m-1"} type="ghost" onClick={() => openTerminal()}>容器终端</Button>
             <Button className={"m-1"} type="default"
                     onClick={navigateLogPageByCurrent}>容器日志</Button>
             <Button className={"m-1"} type="default">容器网络</Button>

@@ -7,10 +7,7 @@ import com.taoes.simpledocker.ws.callback.TerminalResultCallback;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Map;
-import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.CopyOnWriteArraySet;
-import java.util.concurrent.atomic.AtomicInteger;
 import javax.websocket.OnClose;
 import javax.websocket.OnError;
 import javax.websocket.OnMessage;
@@ -41,11 +38,6 @@ public class ContainerTerminalWebSocket {
     ContainerTerminalWebSocket.clientFactory = clientFactory;
   }
 
-  // 当前在线数
-  private static final AtomicInteger OnlineCount = new AtomicInteger(0);
-
-  // Session保存
-  private static final Set<Session> SessionSet = new CopyOnWriteArraySet<Session>();
 
   /**
    * 输入流，用于接收WebSocket的输入，转发给 ExecStartCmd
@@ -54,18 +46,16 @@ public class ContainerTerminalWebSocket {
 
   private static final Map<String, OutputStream> outs = new ConcurrentHashMap<>();
 
+  private static final Map<String, TerminalResultCallback> backs = new ConcurrentHashMap<>();
+
 
   @OnOpen
   @SneakyThrows
   public void onOpen(Session session) {
     final Map<String, String> parameters = session.getPathParameters();
-    SessionSet.add(session);
-    OnlineCount.incrementAndGet();
 
     final String containerId = parameters.get("containerId");
-    final String clientId = parameters.get("clientId");
-
-    final DockerClient client = clientFactory.get(clientId);
+    final DockerClient client = clientFactory.get("DEFAULT");
 
     // 创建命令
     final String execId = client.execCreateCmd(containerId)
@@ -73,7 +63,6 @@ public class ContainerTerminalWebSocket {
         .withAttachStdin(true)
         .withAttachStdout(true)
         .withAttachStderr(true)
-        .withPrivileged(true)
         .withTty(true)
         .exec().getId();
 
@@ -86,9 +75,11 @@ public class ContainerTerminalWebSocket {
     outs.put(session.getId(), out);
 
     // 执行命令
-    client.execStartCmd(execId)
+    final TerminalResultCallback callback = client.execStartCmd(execId)
         .withStdIn(in)
+        .withTty(true)
         .exec(new TerminalResultCallback(session));
+    backs.put(session.getId(), callback);
   }
 
   /**
@@ -97,22 +88,17 @@ public class ContainerTerminalWebSocket {
   @OnClose
   @SneakyThrows
   public void onClose(Session session) {
-    SessionSet.remove(session);
-    try (InputStream stream = ins.get(session.getId())) {
-      if (stream != null && session.isOpen()) {
-        stream.close();
-      }
+    try (TerminalResultCallback callback = backs.get(session.getId());
+        InputStream inputStream = ins.get(session.getId());
+        OutputStream outputStream = outs.get(session.getId());
+    ) {
+
       ins.remove(session.getId());
-    }
-
-    try (OutputStream stream = outs.get(session.getId())) {
-      if (stream != null && session.isOpen()) {
-        stream.close();
-      }
       outs.remove(session.getId());
+      session.close();
     }
 
-    OnlineCount.decrementAndGet();
+
   }
 
   /**
@@ -129,8 +115,19 @@ public class ContainerTerminalWebSocket {
    * 出现错误
    */
   @OnError
+  @SneakyThrows
   public void onError(Session session, Throwable error) {
     log.error("发生错误：{}，Session ID： {}", error.getMessage(), session.getId());
+
+    try (TerminalResultCallback callback = backs.get(session.getId());
+        InputStream inputStream = ins.get(session.getId());
+        OutputStream outputStream = outs.get(session.getId());
+    ) {
+
+      ins.remove(session.getId());
+      outs.remove(session.getId());
+      session.close();
+    }
   }
 
 

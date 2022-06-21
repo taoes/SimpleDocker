@@ -6,7 +6,8 @@ import {HashRouter, Route, Routes} from "react-router-dom";
 import LoginLayout from "./layout/LoginLayout";
 import MainLayout from "./layout/MainLayout";
 
-import appRouter from './router/mainPageRouter'
+import appRouter from './router/MainPageRouter'
+import terminalRouter from './router/TerminalPageRouter'
 
 import './index.css';
 import TerminalLayout from "./layout/TerminalLayout";
@@ -21,10 +22,16 @@ root.render(
       <Routes>
         <Route path="/" element={<LoginLayout/>}/>
         <Route path="/login" element={<LoginLayout/>}/>
-        <Route path="/terminal" element={<TerminalLayout/>}/>
+        <Route path="/terminal" element={<TerminalLayout/>}>
+          {
+            terminalRouter.map(({path, component}) =>
+                <Route key={path} path={path} element={component}/>)
+          }
+        </Route>
         <Route path="/app" element={<MainLayout/>}>
           {
-            appRouter.map(({path, component}) => <Route key={path} path={path} element={component}/>)
+            appRouter.map(({path, component}) =>
+                <Route key={path} path={path} element={component}/>)
           }
         </Route>
 
