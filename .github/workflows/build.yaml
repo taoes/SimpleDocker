@@ -5,6 +5,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
        - uses: actions/checkout@v3
-       - run: cd admin && npm install –legacy-peer-deps && npm install yarn -g
+       - run: cd admin && npm install --force && npm install yarn -g
        - run: yarn install
        - run: echo 'build complete!'
