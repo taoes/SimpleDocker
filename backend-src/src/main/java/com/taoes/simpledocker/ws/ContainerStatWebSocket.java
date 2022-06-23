@@ -46,7 +46,7 @@ public class ContainerStatWebSocket {
     private AtomicInteger OnlineCount = new AtomicInteger(0);
 
     // Session保存
-    private CopyOnWriteArraySet<Session> SessionSet = new CopyOnWriteArraySet<Session>();
+    private static CopyOnWriteArraySet<Session> SessionSet = new CopyOnWriteArraySet<Session>();
 
     private Map<String, ResultCallback<Statistics>> callbackMap = new ConcurrentHashMap<>();
 
