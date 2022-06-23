@@ -5,9 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="2e8afb8c-0a7a-4fb7-ad64-90ec4bfdb3a1" name="Default Changelist" comment="Default Changelist">
-      <change afterPath="$PROJECT_DIR$/.github/workflows/build.sh" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/build.sh" beforeDir="false" afterPath="$PROJECT_DIR$/build/build.sh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.github/workflows/build.sh" beforeDir="false" afterPath="$PROJECT_DIR$/.github/workflows/build.yaml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
