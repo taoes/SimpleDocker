@@ -55,7 +55,7 @@ public class ContainerLogWebSocket {
         log.info("有连接接入，当前连接数为：{}", i);
 
         final Map<String, String> param = session.getPathParameters();
-        final DockerClient client = clientFactory.get("DEFAULT");
+        final DockerClient client = clientFactory.get("DEFAULT2");
         final ResultCallback<Frame> callback = client
             .logContainerCmd(param.get("cId"))
             .withFollowStream(true)

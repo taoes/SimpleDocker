@@ -55,7 +55,7 @@ public class ContainerTerminalWebSocket {
     final Map<String, String> parameters = session.getPathParameters();
 
     final String containerId = parameters.get("containerId");
-    final DockerClient client = clientFactory.get("DEFAULT");
+    final DockerClient client = clientFactory.get("DEFAULT2");
 
     // 创建命令
     final String execId = client.execCreateCmd(containerId)

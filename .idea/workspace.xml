@@ -5,23 +5,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="2e8afb8c-0a7a-4fb7-ad64-90ec4bfdb3a1" name="Default Changelist" comment="Default Changelist">
-      <change afterPath="$PROJECT_DIR$/admin/src/page/ContainerLogPage/index.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/admin/src/page/ContainerLogPage/index.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/admin/src/router/TerminalPageRouter.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/backend-src/src/main/java/com/taoes/simpledocker/ws/callback/AbstractResultCallback.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/backend-src/src/main/java/com/taoes/simpledocker/ws/callback/ContainerLogResultCallback.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/admin/src/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/admin/src/index.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/admin/src/layout/MainLayout/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/admin/src/layout/MainLayout/index.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/admin/src/layout/TerminalLayout/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/admin/src/layout/TerminalLayout/index.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/admin/src/page/ContainerLogPage/ContainerLogPage.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/admin/src/page/ContainerPage/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/admin/src/page/ContainerPage/index.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/admin/src/page/ContainerTerminal/index.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/admin/src/page/ContainerTerminal/index.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/admin/src/router/mainPageRouter.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/admin/src/router/MainPageRouter.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend-src/src/main/java/com/taoes/simpledocker/config/DockerClientFactory.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend-src/src/main/java/com/taoes/simpledocker/config/DockerClientFactory.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/src/page/ContainerLogPage/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/admin/src/page/ContainerLogPage/index.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/backend-src/src/main/java/com/taoes/simpledocker/ws/ContainerLogWebSocket.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend-src/src/main/java/com/taoes/simpledocker/ws/ContainerLogWebSocket.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend-src/src/main/java/com/taoes/simpledocker/ws/ContainerStatWebSocket.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend-src/src/main/java/com/taoes/simpledocker/ws/ContainerStatWebSocket.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/backend-src/src/main/java/com/taoes/simpledocker/ws/ContainerTerminalWebSocket.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend-src/src/main/java/com/taoes/simpledocker/ws/ContainerTerminalWebSocket.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend-src/src/main/java/com/taoes/simpledocker/ws/callback/TerminalResultCallback.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend-src/src/main/java/com/taoes/simpledocker/ws/callback/TerminalResultCallback.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -446,7 +434,7 @@
       <workItem from="1655397288462" duration="3063000" />
       <workItem from="1655480297393" duration="10209000" />
       <workItem from="1655578571447" duration="3596000" />
-      <workItem from="1655732855674" duration="13983000" />
+      <workItem from="1655732855674" duration="15530000" />
     </task>
     <servers />
   </component>
@@ -530,11 +518,6 @@
           <url>jar://$MAVEN_REPOSITORY$/com/github/docker-java/docker-java-core/3.2.12/docker-java-core-3.2.12.jar!/com/github/dockerjava/core/DefaultDockerClientConfig.class</url>
           <line>110</line>
           <option name="timeStamp" value="42" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/backend-src/src/main/java/com/taoes/simpledocker/ws/ContainerTerminalWebSocket.java</url>
-          <line>128</line>
-          <option name="timeStamp" value="83" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/backend-src/src/main/java/com/taoes/simpledocker/ws/ContainerTerminalWebSocket.java</url>
