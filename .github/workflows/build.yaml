@@ -1,4 +1,4 @@
-name: 构建
+name: build_pront_end
 on: [push]
 jobs:
   check_and_test:
@@ -6,5 +6,5 @@ jobs:
     steps:
        - uses: actions/checkout@v3
        - run: cd admin && npm install --force && npm install yarn -g
-       - run: yarn install
+       - run: yarn install && yarn build
        - run: echo 'build complete!'
