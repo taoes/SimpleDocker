@@ -49,5 +49,5 @@ export default function MainSideMenu(props: MainSideMenuProps) {
   }
 
 
-  return <Menu mode="vertical" items={items} style={style} onClick={navigateByKey}/>;
+  return <Menu defaultSelectedKeys={["home"]} mode="vertical" items={items} style={style} onClick={navigateByKey}/>;
 }

@@ -11,7 +11,7 @@ import {MenuFoldOutlined} from "@ant-design/icons";
 const {Header, Sider, Content, Footer} = Layout;
 
 export default function MainLayout() {
-  let [mainMenuState, setMainMenuState] = useState<boolean>(true)
+  let [mainMenuState, setMainMenuState] = useState<boolean>(false)
   let updateMainMenuState = () => {
     setMainMenuState(!mainMenuState)
   }

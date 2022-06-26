@@ -1,5 +1,6 @@
 package com.taoes.simpledocker.controller;
 
+import cn.hutool.core.util.StrUtil;
 import com.github.dockerjava.api.DockerClient;
 import com.github.dockerjava.api.command.InspectImageResponse;
 import com.github.dockerjava.api.model.Image;
@@ -9,6 +10,7 @@ import com.taoes.simpledocker.controller.image.PushImageRequest;
 import com.taoes.simpledocker.controller.image.RemoveImageRequest;
 import com.taoes.simpledocker.model.ResponseModel;
 import com.taoes.simpledocker.service.ImageService;
+import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -37,10 +39,27 @@ public class ImageController {
   private final ImageService imageService;
 
   @GetMapping("/list")
-  public ResponseModel<List<Image>> list() {
+  public ResponseModel<List<Image>> list(@RequestParam(required = false) String searchKey) {
     final DockerClient dockerClient = clientFactory.get();
-    final List<Image> exec = dockerClient.listImagesCmd().withShowAll(true).exec();
-    return ResponseModel.ok(exec);
+    final List<Image> images = dockerClient.listImagesCmd().withShowAll(true).exec();
+    if (StrUtil.isBlank(searchKey)) {
+      return ResponseModel.ok(images);
+    }
+
+    final List<Image> result = new ArrayList<>();
+    for (Image image : images) {
+      final String[] tags = image.getRepoTags();
+      if (tags == null || tags.length == 0) {
+        continue;
+      }
+      for (String tag : tags) {
+        if (tag != null && tag.contains(searchKey)) {
+          result.add(image);
+        }
+      }
+    }
+
+    return ResponseModel.ok(result);
   }
 
   @GetMapping("/{imageId}/inspect")

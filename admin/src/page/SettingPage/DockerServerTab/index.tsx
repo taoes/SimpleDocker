@@ -77,6 +77,11 @@ export default function DockerServerTab() {
 
   return (
       <div id="dockerServerTab">
+        <Space id={"dockerEndpoint"}>
+          <Button>新增</Button>
+          <Button>帮助</Button>
+        </Space>
+
         <Table className="box" columns={columns} dataSource={endpoints} size={"small"}
                scroll={{x: 1000}}
                rowKey={record => record.id}/>
