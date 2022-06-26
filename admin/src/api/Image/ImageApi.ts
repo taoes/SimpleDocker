@@ -3,8 +3,8 @@ import DockerImage from "../Model/DockerImage";
 import {Base} from "../Base";
 
 /* 获取所有的镜像列表 */
-function getDockerImages(): Promise<Base<Array<DockerImage>>> {
-  return httpRequest.get<Base<Array<DockerImage>>>('/images/list').then(data => data.data);
+function getDockerImages(searchKey:string): Promise<Base<Array<DockerImage>>> {
+  return httpRequest.get<Base<Array<DockerImage>>>(`/images/list?searchKey=${searchKey}`).then(data => data.data);
 }
 
 
@@ -14,8 +14,8 @@ function getImageDetail(imageId: any): Promise<DockerImage> {
 }
 
 /* 给镜像重新标记 */
-function reTagImage(imageId: String, newTag: string): Promise<Base<Boolean>> {
-  return httpRequest.post("/images/update/tag", {imageId, newTag}).then(resp => resp.data)
+async function  reTagImage(imageId: String, newTag: string): Promise<Base<Boolean>> {
+  return await httpRequest.post("/images/update/tag", {imageId, newTag})
 }
 
 

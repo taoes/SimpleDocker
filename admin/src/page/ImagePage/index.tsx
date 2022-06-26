@@ -1,60 +1,63 @@
 import {
   Button,
-  Checkbox,
-  Divider,
   Drawer,
   Form,
   Input,
   message,
   Modal,
-  Space, Switch,
+  Space,
   Table,
   Tag
 } from "antd";
-import {useEffect, useState} from "react";
+import React from "react";
 import {getDockerImages, reTagImage} from "../../api/Image/ImageApi";
 import {ColumnsType} from "antd/es/table";
 import DockerImage from "../../api/Model/DockerImage";
 import bytesToSize from "../../utils/ByteSize";
 import dateToStr from "../../utils/Time";
+
+import _ from 'lodash'
+import Search from "antd/lib/input/Search";
 import ImageDetailDrawer from "../../component/App/Image/ImageDetailDrawer";
-import {useNavigate} from "react-router-dom";
-import Search from "antd/es/input/Search";
+
 import {
-  CloudSyncOutlined,
-  ReloadOutlined
-} from "@ant-design/icons";
+  CloudSyncOutlined, ReloadOutlined
+
+} from '@ant-design/icons'
+import WithRouter from "../../router/WithRouter";
+import {RouterProps} from "react-router";
+
+interface ImagePageProps {
+  router: RouterProps
+}
+
+interface ImagePageState {
+  images: Array<DockerImage>,
+  searchKey: string,
+  currentImageId: string,
+  detailDrawerStatus: boolean,
+  moreDrawerStatus: boolean,
+  renameModalState: boolean,
+}
 
 
-export default function ImagePage() {
+class ImagePage extends React.Component<ImagePageProps, ImagePageState> {
+  private renameData: { newTag: string; imageId: string };
 
-  let [images, setImages] = useState<Array<DockerImage>>([])
-  let [currentImageId, setCurrentImageId] = useState<string>("")
-  let [detailDrawerStatus, setDetailDrawerStatus] = useState<boolean>(false)
-  let [moreDrawerStatus, setMoreDrawerStatus] = useState<boolean>(false)
-  let [renameModalState, setRenameModalState] = useState<boolean>(false)
-  let navigate = useNavigate()
-  let renameData = {imageId: '', newTag: ''}
-
-  /**
-   * 显示镜像详情
-   * @param imageId
-   */
-  function showDetailDrawer(imageId: string) {
-    setCurrentImageId(imageId)
-    setDetailDrawerStatus(true)
+  constructor(props: ImagePageProps) {
+    super(props);
+    this.renameData = {imageId: '', newTag: ''}
+    this.state = {
+      images: [],
+      searchKey: '',
+      currentImageId: '',
+      detailDrawerStatus: false,
+      moreDrawerStatus: false,
+      renameModalState: false,
+    }
   }
 
-  let showMoreDrawer = (imageId: string) => {
-    setCurrentImageId(imageId)
-    setMoreDrawerStatus(true)
-  }
-
-  function runImage(Id: string) {
-    navigate(`/app/image/${Id}/run`)
-  }
-
-  const columns: ColumnsType<DockerImage> = [
+  columns: ColumnsType<DockerImage> = [
     {
       title: '容器ID',
       dataIndex: 'Id',
@@ -100,9 +103,9 @@ export default function ImagePage() {
       render: (_, image: DockerImage) => {
         return (
             <Space>
-              <Button onClick={() => runImage(image.Id)} size={"small"} type={"primary"}>运行</Button>
-              <Button onClick={() => showDetailDrawer(image.Id)} size={"small"}>详情</Button>
-              <Button onClick={() => showMoreDrawer(image.Id)} size={"small"}>更多</Button>
+              <Button onClick={() => this.runImage(image.Id)} size={"small"}>运行</Button>
+              <Button onClick={() => this.showDetailDrawer(image.Id)} size={"small"}>详情</Button>
+              <Button onClick={() => this.showMoreDrawer(image.Id)} size={"small"}>更多</Button>
             </Space>
         )
       }
@@ -110,122 +113,158 @@ export default function ImagePage() {
     },
   ];
 
+  componentDidMount() {
+    this.loadImages(this.state.searchKey)
+  }
 
-  useEffect(() => {
-    refresh()
-  }, [])
+  /**
+   * 显示镜像详情
+   */
+  showDetailDrawer(imageId: string) {
+    this.setState({currentImageId: imageId})
+    this.setState({detailDrawerStatus: true})
+  }
+
+  /**
+   * 显示更多侧边栏
+   * @param imageId
+   */
+  showMoreDrawer = (imageId: string) => {
+    this.setState({currentImageId: imageId})
+    this.setState({moreDrawerStatus: true})
+  }
+
+  runImage = (imageId: string) => {
+    //@ts-ignore
+    this.props.router.navigate(`/app/image/${imageId}/run`)
+  }
+
 
   /* 刷新镜像列表 */
-  let refresh = () => {
-    getDockerImages().then(resp => {
+  loadImages = (searchKey: string) => {
+    getDockerImages(searchKey).then(resp => {
       if (resp.code !== 0) {
         message.error(`镜像列表加载失败:${resp.msg}`).then();
         return
       }
-      setImages(resp.data)
+      this.setState({images: resp.data})
     })
   }
+
+
+  updateValue(value: string) {
+    _.debounce(function () {
+      console.log(value)
+    }, 1000)
+  }
+
 
   /**
    * 显示重命名的Modal 并且 关闭更多侧边栏
    */
-  let showRenameModal = () => {
-    setRenameModalState(true);
-    setMoreDrawerStatus(false);
+  showRenameModal = () => {
+    this.setState({
+      renameModalState: true,
+      moreDrawerStatus: false
+    })
+  }
+
+  deleteImage = () => {
   }
 
   /**
    * 重命名镜像
    */
-  let renameImageTag = () => {
-    reTagImage(renameData.imageId, renameData.newTag).then(data => {
-      if (data.code != 0) {
-        message.error(`操作失败,异常信息:${data.msg}`).then();
-        return
-      }
-      setRenameModalState(false)
-      message.info(`操作成功,正在更新镜像列表`).then();
-      refresh()
+  renameImageTag = async () => {
+    let that = this;
+    let resp = await reTagImage(this.renameData.imageId, this.renameData.newTag);
+    if (resp.code != 0) {
+      message.error(`操作失败,异常信息:${resp.msg}`).then();
+      return
+    }
+    that.setState({
+      renameModalState: false
     })
-
-  }
-
-  let updateReTagData = (data: any, allData: any) => {
-    renameData = allData
+    message.info(`操作成功,正在更新镜像列表`).then();
+    this.loadImages(this.state.searchKey)
   }
 
 
-  /* 删除镜像 */
-  let deleteImage = () => {
-
+  updateReTagData = (data: any, allData: any) => {
+    this.renameData = allData
   }
-  return (
-      <div id="imagePage" className={"box"}>
-        <div>
-          <div className="imageController inline">
-            <Search placeholder="输入关键字以搜索镜像" style={{width: 400}}/>
-            <Button onClick={()=>refresh()} className="ml-2" icon={<ReloadOutlined/>}
-                    type={"primary"}>刷新</Button>
-            <Button className="ml-2" icon={<CloudSyncOutlined/>} danger type={"primary"}>优化</Button>
+
+  render() {
+    return (
+        <div id="imagePage" className={"box"}>
+          <div>
+            <div className="imageController inline">
+              <Search placeholder="输入关键字以搜索镜像" style={{width: 400}}
+                      onChange={e => this.setState({searchKey: e.target.value})}/>
+              <Button onClick={() => this.loadImages(this.state.searchKey)} className="ml-2"
+                      icon={<ReloadOutlined/>}>刷新</Button>
+              <Button className="ml-2" icon={<CloudSyncOutlined/>} danger>清理</Button>
+            </div>
           </div>
+
+          <Table
+              size={"small"}
+              columns={this.columns}
+              dataSource={this.state.images}
+              scroll={{x: 1000}}
+              rowSelection={{fixed: 'left', type: 'checkbox'}}
+              rowKey={record => record.Id}/>
+          <Drawer title="镜像详情"
+                  destroyOnClose={true}
+                  width={"50%"}
+                  onClose={() => this.setState({detailDrawerStatus: false})}
+                  visible={this.state.detailDrawerStatus}>
+            <ImageDetailDrawer imageId={this.state.currentImageId}/>
+          </Drawer>
+
+          <Drawer title="更多操作"
+                  destroyOnClose={true}
+                  width={350}
+                  onClose={() => this.setState({moreDrawerStatus: false})}
+                  visible={this.state.moreDrawerStatus}>
+            <div className={"flex"}>
+              <Button className={"m-1"} danger onClick={() => this.deleteImage()}>删除镜像</Button>
+              <Button className={"m-1"} onClick={() => this.showRenameModal()}>重新标记</Button>
+              <Button className={"m-1"}>备份镜像</Button>
+            </div>
+          </Drawer>
+
+          <Modal title="重命名镜像" visible={this.state.renameModalState}
+                 okText={"重命名"}
+                 cancelText={"取消"}
+                 onOk={() => this.renameImageTag()}
+                 onCancel={() => this.setState({renameModalState: false})}>
+            <Form
+                name="basic"
+                labelCol={{span: 4}}
+                wrapperCol={{span: 20}}
+                initialValues={{imageId: this.state.currentImageId, newTag: ''}}
+                autoComplete="off"
+                onValuesChange={this.updateReTagData}
+            >
+              <Form.Item
+                  label="镜像ID"
+                  name="imageId"
+                  rules={[{required: true, message: 'imageId'}]}>
+                <Input readOnly/>
+              </Form.Item>
+
+              <Form.Item
+                  label="新标签"
+                  name="newTag"
+                  rules={[{required: true, message: '请输入新的标签名'}]}>
+                <Input allowClear/>
+              </Form.Item>
+            </Form>
+          </Modal>
         </div>
-        <Table
-            size={"small"}
-            columns={columns}
-            dataSource={images}
-            scroll={{x: 1000}}
-            rowKey={record => record.Id}/>
-        <Drawer title="镜像详情"
-                destroyOnClose={true}
-                width={"50%"}
-                onClose={() => setDetailDrawerStatus(false)}
-                visible={detailDrawerStatus}>
-          <ImageDetailDrawer imageId={currentImageId}/>
-        </Drawer>
-
-        <Drawer title="更多操作"
-                destroyOnClose={true}
-                width={350}
-                onClose={() => setMoreDrawerStatus(false)}
-                visible={moreDrawerStatus}>
-          <div className={"flex"}>
-            <Button className={"m-1"} danger onClick={() => deleteImage()}>删除镜像</Button>
-            <Button className={"m-1"} type="default"
-                    onClick={() => showRenameModal()}>重新标记</Button>
-            <Button className={"m-1"} type="default">备份镜像</Button>
-          </div>
-        </Drawer>
-
-        <Modal title="重命名镜像" visible={renameModalState}
-               okText={"重命名"}
-               cancelText={"取消"}
-               onOk={() => renameImageTag()}
-               onCancel={() => setRenameModalState(false)}>
-          <Form
-              name="basic"
-              labelCol={{span: 4}}
-              wrapperCol={{span: 20}}
-              initialValues={{imageId: currentImageId, newTag: ''}}
-              autoComplete="off"
-              onValuesChange={updateReTagData}
-          >
-            <Form.Item
-                label="镜像ID"
-                name="imageId"
-                rules={[{required: true, message: 'imageId'}]}>
-              <Input readOnly/>
-            </Form.Item>
-
-            <Form.Item
-                label="新标签"
-                name="newTag"
-                rules={[{required: true, message: '请输入新的标签名'}]}>
-              <Input allowClear/>
-            </Form.Item>
-          </Form>
-
-
-        </Modal>
-      </div>
-  )
+    )
+  }
 }
+
+export default WithRouter(ImagePage);

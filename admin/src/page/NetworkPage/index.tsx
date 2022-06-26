@@ -5,14 +5,14 @@ import DockerNetwork from "../../api/Model/Network/DockerNetwork";
 import {getNetworkList} from "../../api/Network/NetworkApi";
 import IconFont from "../../component/Base/IconFont";
 import Search from "antd/es/input/Search";
-import {ReloadOutlined} from "@ant-design/icons";
+import {AppstoreAddOutlined, ReloadOutlined} from "@ant-design/icons";
 
 
 function NetworkPage() {
 
   const columns: ColumnsType<DockerNetwork> = [
     {
-      title: '容器ID',
+      title: 'ID',
       dataIndex: 'Id',
       key: 'Id',
       render: Id => <span>{!!Id && Id.substring(0, 10)}</span>,
@@ -55,7 +55,6 @@ function NetworkPage() {
       title: '创建时间',
       dataIndex: 'Created',
       key: 'Created',
-      width: 180,
       render: Created => <span>{Created}</span>,
     },
     {
@@ -99,14 +98,16 @@ function NetworkPage() {
       <div id="imagePage" className={"box"}>
         <div>
           <div className="imageController inline">
-            <Search placeholder="input search text" style={{width: 400}}/>
-            <Button onClick={refresh} className="ml-2" icon={<ReloadOutlined/>}
-                    type={"primary"}>刷新</Button>
+            <Search placeholder="输入关键字以搜索网络" style={{width: 400}}/>
+            <Button onClick={refresh} className="ml-2" icon={<ReloadOutlined/>}>刷新</Button>
+            <Button className="ml-2" icon={<AppstoreAddOutlined/>} >新增</Button>
           </div>
         </div>
         <Table
+            className={"mt-2"}
             scroll={{x: 1000}}
             columns={columns}
+            rowSelection={{fixed: 'left', type: 'checkbox'}}
             dataSource={networks} size={"small"}/>
       </div>
   )

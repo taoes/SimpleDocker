@@ -19,7 +19,7 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class VolumeServiceImpl implements VolumeService {
 
-  private DockerClientFactory clientFactory;
+  private final DockerClientFactory clientFactory;
 
   @Override
   public ListVolumesResponse list() {

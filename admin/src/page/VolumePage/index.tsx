@@ -1,6 +1,6 @@
 import {Button, Divider, message, Space, Table, Tag} from "antd";
 import {useEffect, useState} from "react";
-import {CloudSyncOutlined, ReloadOutlined} from '@ant-design/icons'
+import {AppstoreAddOutlined, CloudSyncOutlined, ReloadOutlined} from '@ant-design/icons'
 import {ColumnsType} from "antd/es/table";
 import InspectVolume from "../../api/Model/Volumn/InsepectVolume";
 import {getVolumes} from "../../api/Volumes/Volumes";
@@ -12,9 +12,10 @@ function VolumePage() {
 
   const columns: ColumnsType<InspectVolume> = [
     {
-      title: '容器ID',
+      title: 'ID',
       dataIndex: 'Name',
       key: 'Name',
+      fixed:'left',
       render: Name => <span>{!!Name && Name.substring(0, 10)}</span>,
       ellipsis: true,
       width: 150,
@@ -29,6 +30,7 @@ function VolumePage() {
       title: '挂载点',
       dataIndex: 'Mountpoint',
       render: Mountpoint => <span>{Mountpoint}</span>,
+      ellipsis:true,
       key: 'Mountpoint'
     },
     {
@@ -78,12 +80,17 @@ function VolumePage() {
         <div>
           <div className="imageController inline">
             <Search placeholder="input search text" style={{width: 400}}/>
-            <Button onClick={refresh} className="ml-2" icon={<ReloadOutlined/>}
-                    type={"primary"}>刷新</Button>
-            <Button className="ml-2" icon={<CloudSyncOutlined/>} danger type={"primary"}>优化</Button>
+            <Button onClick={refresh} className="ml-2" icon={<ReloadOutlined/>}>刷新</Button>
+            <Button className="ml-2" icon={<AppstoreAddOutlined/>} >新增</Button>
+            <Button className="ml-2" icon={<CloudSyncOutlined/>} danger>清理</Button>
           </div>
         </div>
-        <Table columns={columns} scroll={{x: 1000}} dataSource={volumes} size={"small"}/>
+        <Table
+            columns={columns}
+            rowSelection={{fixed: 'left', type: 'checkbox'}}
+            scroll={{x: 1000}}
+            dataSource={volumes}
+            size={"small"}/>
       </div>
   )
 }
