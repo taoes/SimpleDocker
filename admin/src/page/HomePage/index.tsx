@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React from "react";
 import {GetDockerInfo} from '../../api/Info/Info'
 import DockerVersionDescription from "../../component/App/Home/DockerVersionDescription";
 import DockerServerInfo from "../../api/Model/DockerInfo";
@@ -6,26 +6,40 @@ import DockerInfoDescription from "../../component/App/Home/DockerInfoDescriptio
 import SimpleDockerVersionDescription
   from "../../component/App/Home/SimpleDockerVersionDescription";
 
+interface HomePageProps {
+}
+
+interface HomePageState {
+  dockerServiceInfo: DockerServerInfo
+}
 
 
-function HomePage() {
+class HomePage extends React.Component<HomePageProps, HomePageState> {
 
-    let [dockerServiceInfo, setDockerServiceInfo] = useState<DockerServerInfo>()
+  constructor(props: HomePageProps) {
+    super(props);
+    this.state = {
+      dockerServiceInfo: {version: null, info: null}
+    }
+  }
 
-    useEffect(() => {
-        GetDockerInfo().then(data => {
-            setDockerServiceInfo(data)
-        })
-    }, [])
+  componentDidMount() {
+    GetDockerInfo().then(data => {
+      this.setState({dockerServiceInfo: data})
+    })
+  }
 
 
+  render() {
     return (
         <div id="homePage">
-            <DockerVersionDescription dockerInfo={dockerServiceInfo}/>
-            <DockerInfoDescription dockerInfo={dockerServiceInfo}/>
-            <SimpleDockerVersionDescription/>
+          <DockerVersionDescription dockerInfo={this.state.dockerServiceInfo}/>
+          <DockerInfoDescription dockerInfo={this.state.dockerServiceInfo}/>
+          <SimpleDockerVersionDescription/>
         </div>
     )
+  }
+
 }
 
 export default HomePage;
