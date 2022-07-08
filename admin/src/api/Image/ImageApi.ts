@@ -15,12 +15,21 @@ function getImageDetail(imageId: any): Promise<DockerImage> {
 
 /* 给镜像重新标记 */
 async function  reTagImage(imageId: String, newTag: string): Promise<Base<Boolean>> {
-  return await httpRequest.post("/images/update/tag", {imageId, newTag})
+  return await httpRequest.post("/images/update/tag", {imageId, newTag}).then(data => data.data);
+}
+
+/**
+ * 删除镜像
+ */
+
+function removeImage(imageId:string,force:boolean) :Promise<Base<Boolean>>{
+  return httpRequest.delete(`/images/${imageId}?force=${force}`).then(data => data.data);
 }
 
 
 export {
   getDockerImages,
   getImageDetail,
-  reTagImage
+  reTagImage,
+  removeImage
 }

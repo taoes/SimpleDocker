@@ -7,7 +7,6 @@ import com.github.dockerjava.api.model.Image;
 import com.taoes.simpledocker.config.DockerClientFactory;
 import com.taoes.simpledocker.controller.image.ImageTagUpdateRequest;
 import com.taoes.simpledocker.controller.image.PushImageRequest;
-import com.taoes.simpledocker.controller.image.RemoveImageRequest;
 import com.taoes.simpledocker.model.ResponseModel;
 import com.taoes.simpledocker.service.ImageService;
 import java.util.ArrayList;
@@ -80,9 +79,8 @@ public class ImageController {
   }
 
   @DeleteMapping("/{imageId}")
-  public ResponseModel<String> remove(@PathVariable String imageId,
-      @RequestBody RemoveImageRequest request) {
-    imageService.remove(imageId, request.getForce());
+  public ResponseModel<String> remove(@PathVariable String imageId,@RequestParam(defaultValue = "false") Boolean force) {
+    imageService.remove(imageId, force);
     return ResponseModel.ok("OK");
   }
 

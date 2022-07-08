@@ -23,16 +23,16 @@ interface Props {
 
 interface State {
   drawerState: boolean
+  dockerInfo: DockerServerInfo
 }
 
 
 class DockerVersionDescription extends React.Component<Props, State> {
-  private dockerInfo: DockerServerInfo
 
   constructor(props: Props) {
     super(props);
-    this.dockerInfo = this.props.dockerInfo
     this.state = {
+      dockerInfo: this.props.dockerInfo,
       drawerState: false
     }
   }
@@ -45,7 +45,7 @@ class DockerVersionDescription extends React.Component<Props, State> {
       let {name, path} = config
       items.push(
           <Descriptions.Item label={name}
-                             key={name}>{_.get(this.dockerInfo, path)}</Descriptions.Item>
+                             key={name}>{_.get(this.state.dockerInfo, path)}</Descriptions.Item>
       )
     }
 
@@ -70,7 +70,7 @@ class DockerVersionDescription extends React.Component<Props, State> {
                   width={720}
                   onClose={() => this.setState({drawerState: false})}
                   visible={this.state.drawerState}>
-            <DockerInfoDrawer dockerInfo={this.dockerInfo}/>
+            <DockerInfoDrawer dockerInfo={this.state.dockerInfo}/>
           </Drawer>
         </div>
     )
