@@ -5,22 +5,17 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="2e8afb8c-0a7a-4fb7-ad64-90ec4bfdb3a1" name="Default Changelist" comment="Default Changelist">
-      <change afterPath="$PROJECT_DIR$/admin/.env" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/admin/.env.prod" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/admin/src/router/Router.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/admin/src/page/ContainerPage/ports.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/admin/src/page/ContainerPage/status.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/admin/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/admin/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/admin/src/api/Api.ts" beforeDir="false" afterPath="$PROJECT_DIR$/admin/src/api/Api.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/admin/src/api/Image/ImageApi.ts" beforeDir="false" afterPath="$PROJECT_DIR$/admin/src/api/Image/ImageApi.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/admin/src/component/Main/MainSideMenu/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/admin/src/component/Main/MainSideMenu/index.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/admin/src/layout/MainLayout/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/admin/src/layout/MainLayout/index.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/src/component/App/Home/DockerInfoDescription/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/admin/src/component/App/Home/DockerInfoDescription/index.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/src/component/App/Home/DockerVersionDescription/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/admin/src/component/App/Home/DockerVersionDescription/index.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/src/component/App/Home/SimpleDockerVersionDescription/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/admin/src/component/App/Home/SimpleDockerVersionDescription/index.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/admin/src/page/ContainerPage/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/admin/src/page/ContainerPage/index.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/admin/src/page/ImagePage/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/admin/src/page/ImagePage/index.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/admin/src/page/NetworkPage/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/admin/src/page/NetworkPage/index.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/admin/src/page/SettingPage/DockerServerTab/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/admin/src/page/SettingPage/DockerServerTab/index.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/admin/src/page/VolumePage/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/admin/src/page/VolumePage/index.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/backend-src/src/main/java/com/taoes/simpledocker/controller/ImageController.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend-src/src/main/java/com/taoes/simpledocker/controller/ImageController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend-src/src/main/java/com/taoes/simpledocker/service/imple/VolumeServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend-src/src/main/java/com/taoes/simpledocker/service/imple/VolumeServiceImpl.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -43,9 +38,9 @@
         <option value="CSS File" />
         <option value="Interface" />
         <option value="Enum" />
-        <option value="TypeScript JSX File" />
         <option value="Class" />
         <option value="TypeScript File" />
+        <option value="TypeScript JSX File" />
       </list>
     </option>
   </component>
@@ -69,7 +64,9 @@
     <setting file="jar://$MAVEN_REPOSITORY$/io/vavr/vavr/1.0.0-alpha-4/vavr-1.0.0-alpha-4-sources.jar!/io/vavr/Lazy.java" root0="SKIP_INSPECTION" />
     <setting file="jar://$MAVEN_REPOSITORY$/org/springframework/security/spring-security-core/5.6.0/spring-security-core-5.6.0.jar!/org/springframework/security/core/userdetails/UserDetailsService.class" root0="SKIP_INSPECTION" />
     <setting file="file://$USER_HOME$/Library/Caches/JetBrains/IntelliJIdea2022.1/javascript/typings/react-router-dom/5.3.3/node_modules/@types/react-router/index.d.ts" root0="SKIP_INSPECTION" />
+    <setting file="file://$PROJECT_DIR$/admin/node_modules/@ant-design/icons/lib/icons/CloudSyncOutlined.d.ts" root0="SKIP_INSPECTION" />
     <setting file="file://$PROJECT_DIR$/admin/node_modules/@types/react/index.d.ts" root0="SKIP_INSPECTION" />
+    <setting file="file://$PROJECT_DIR$/admin/node_modules/antd/es/table/interface.d.ts" root0="SKIP_INSPECTION" />
     <setting file="file://$PROJECT_DIR$/admin/node_modules/antd/lib/button/button.d.ts" root0="SKIP_INSPECTION" />
     <setting file="file://$PROJECT_DIR$/admin/node_modules/antd/lib/notification/index.d.ts" root0="SKIP_INSPECTION" />
     <setting file="file://$PROJECT_DIR$/admin/node_modules/bulma/css/bulma.css" root0="SKIP_INSPECTION" />
@@ -254,7 +251,6 @@
     </panes>
   </component>
   <component name="ProjectViewState">
-    <option name="autoscrollFromSource" value="true" />
     <option name="showExcludedFiles" value="false" />
     <option name="showLibraryContents" value="true" />
     <option name="showVisibilityIcons" value="true" />
@@ -267,6 +263,10 @@
     "RequestMappingsPanelWidth1": "75",
     "WebServerToolWindowFactoryState": "false",
     "last_opened_file_path": "/Users/tao/develop/code/project/SimpleDocker/admin",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "yarn",
     "settings.editor.selected.configurable": "preferences.lookFeel",
     "spring.configuration.checksum": "8b8e6c79d843f8c0453928f77a07b74b",
@@ -385,11 +385,11 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="JUnit.TestTerminal.testTerminal" />
-        <item itemvalue="JUnit.ImageTest" />
-        <item itemvalue="JUnit.TestTerminal" />
-        <item itemvalue="应用程序.com.taoes.simpledocker.TestTerminal" />
         <item itemvalue="Node.js.index.js" />
+        <item itemvalue="JUnit.TestTerminal.testTerminal" />
+        <item itemvalue="JUnit.TestTerminal" />
+        <item itemvalue="JUnit.ImageTest" />
+        <item itemvalue="Application.com.taoes.simpledocker.TestTerminal" />
       </list>
     </recent_temporary>
   </component>
@@ -448,7 +448,10 @@
       <workItem from="1655578571447" duration="3596000" />
       <workItem from="1655732855674" duration="15530000" />
       <workItem from="1656229252477" duration="1080000" />
-      <workItem from="1656257022227" duration="1544000" />
+      <workItem from="1656257022227" duration="3540000" />
+      <workItem from="1656771706206" duration="482000" />
+      <workItem from="1656772639780" duration="1617000" />
+      <workItem from="1656841534144" duration="3322000" />
     </task>
     <servers />
   </component>

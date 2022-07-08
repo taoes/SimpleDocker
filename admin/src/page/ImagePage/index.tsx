@@ -10,7 +10,7 @@ import {
   Tag
 } from "antd";
 import React from "react";
-import {getDockerImages, reTagImage} from "../../api/Image/ImageApi";
+import {getDockerImages, reTagImage,removeImage} from "../../api/Image/ImageApi";
 import {ColumnsType} from "antd/es/table";
 import DockerImage from "../../api/Model/DockerImage";
 import bytesToSize from "../../utils/ByteSize";
@@ -21,7 +21,7 @@ import Search from "antd/lib/input/Search";
 import ImageDetailDrawer from "../../component/App/Image/ImageDetailDrawer";
 
 import {
-  CloudSyncOutlined, ReloadOutlined
+  CloudSyncOutlined, ReloadOutlined, ExclamationCircleOutlined
 
 } from '@ant-design/icons'
 import WithRouter from "../../router/WithRouter";
@@ -37,12 +37,18 @@ interface ImagePageState {
   currentImageId: string,
   detailDrawerStatus: boolean,
   moreDrawerStatus: boolean,
-  renameModalState: boolean,
+  renameModalStatus: boolean,
 }
 
 
 class ImagePage extends React.Component<ImagePageProps, ImagePageState> {
   private renameData: { newTag: string; imageId: string };
+
+  /**
+   * 镜像表格的数据
+   * @private
+   */
+  private readonly columns: ColumnsType<DockerImage>;
 
   constructor(props: ImagePageProps) {
     super(props);
@@ -53,67 +59,68 @@ class ImagePage extends React.Component<ImagePageProps, ImagePageState> {
       currentImageId: '',
       detailDrawerStatus: false,
       moreDrawerStatus: false,
-      renameModalState: false,
+      renameModalStatus: false,
     }
+    this.columns = [
+      {
+        title: '容器ID',
+        dataIndex: 'Id',
+        render: id => <span>{!!id && id.substring(0, 17).replaceAll("sha256:", '')}</span>,
+        width: 150,
+      },
+      {
+        title: '镜像标签',
+        dataIndex: 'RepoTags',
+        render: (_, image: DockerImage) => {
+          let RepoTags: Array<String> = image.RepoTags;
+          if (!RepoTags) {
+            return null
+          }
+          return RepoTags.map((t: any) => {
+            return <span key={t}>{t}</span>
+          })
+        }
+      },
+      {
+        title: '镜像大小',
+        dataIndex: 'Size',
+        render: size => <span>{bytesToSize(size)}</span>,
+        width: 120,
+      },
+      {
+        title: '虚拟镜像大小',
+        dataIndex: 'VirtualSize',
+        render: VirtualSize => <span>{bytesToSize(VirtualSize)}</span>,
+        width: 120,
+      },
+      {
+        title: '创建时间',
+        dataIndex: 'Created',
+        width: 180,
+        render: time => <span>{dateToStr(time * 1000)}</span>,
+      },
+      {
+        title: '操作',
+        dataIndex: 'address',
+        fixed: 'right',
+        width: 180,
+        render: (_, image: DockerImage) => {
+          return (
+              <Space>
+                <Button onClick={() => this.runImage(image.Id)} size={"small"}>运行</Button>
+                <Button onClick={() => this.showDetailDrawer(image.Id)} size={"small"}>详情</Button>
+                <Button onClick={() => this.showMoreDrawer(image.Id)} size={"small"}>更多</Button>
+              </Space>
+          )
+        }
+
+      },
+    ];
   }
 
-  columns: ColumnsType<DockerImage> = [
-    {
-      title: '容器ID',
-      dataIndex: 'Id',
-      render: id => <span>{!!id && id.substring(0, 17).replaceAll("sha256:", '')}</span>,
-      width: 150,
-    },
-    {
-      title: '镜像标签',
-      dataIndex: 'RepoTags',
-      render: (_, image: DockerImage) => {
-        let RepoTags: Array<String> = image.RepoTags;
-        if (!RepoTags) {
-          return null
-        }
-        return RepoTags.map((t: any) => {
-          return <span key={t}>{t}</span>
-        })
-      }
-    },
-    {
-      title: '镜像大小',
-      dataIndex: 'Size',
-      render: size => <span>{bytesToSize(size)}</span>,
-      width: 120,
-    },
-    {
-      title: '虚拟镜像大小',
-      dataIndex: 'VirtualSize',
-      render: VirtualSize => <span>{bytesToSize(VirtualSize)}</span>,
-      width: 120,
-    },
-    {
-      title: '创建时间',
-      dataIndex: 'Created',
-      width: 180,
-      render: time => <span>{dateToStr(time * 1000)}</span>,
-    },
-    {
-      title: '操作',
-      dataIndex: 'address',
-      fixed: 'right',
-      width: 180,
-      render: (_, image: DockerImage) => {
-        return (
-            <Space>
-              <Button onClick={() => this.runImage(image.Id)} size={"small"}>运行</Button>
-              <Button onClick={() => this.showDetailDrawer(image.Id)} size={"small"}>详情</Button>
-              <Button onClick={() => this.showMoreDrawer(image.Id)} size={"small"}>更多</Button>
-            </Space>
-        )
-      }
-
-    },
-  ];
 
   componentDidMount() {
+    // 当组件挂载的时候加载镜像列表
     this.loadImages(this.state.searchKey)
   }
 
@@ -121,17 +128,14 @@ class ImagePage extends React.Component<ImagePageProps, ImagePageState> {
    * 显示镜像详情
    */
   showDetailDrawer(imageId: string) {
-    this.setState({currentImageId: imageId})
-    this.setState({detailDrawerStatus: true})
+    this.setState({currentImageId: imageId, detailDrawerStatus: true})
   }
 
   /**
    * 显示更多侧边栏
-   * @param imageId
    */
   showMoreDrawer = (imageId: string) => {
-    this.setState({currentImageId: imageId})
-    this.setState({moreDrawerStatus: true})
+    this.setState({currentImageId: imageId, moreDrawerStatus: true})
   }
 
   runImage = (imageId: string) => {
@@ -164,12 +168,34 @@ class ImagePage extends React.Component<ImagePageProps, ImagePageState> {
    */
   showRenameModal = () => {
     this.setState({
-      renameModalState: true,
+      renameModalStatus: true,
       moreDrawerStatus: false
     })
   }
 
   deleteImage = () => {
+    this.setState({moreDrawerStatus: false})
+    let imageId = this.state.currentImageId
+    let refreshImage = this.loadImages
+    Modal.confirm({
+      title: `您确认删除该镜像吗？`,
+      icon: <ExclamationCircleOutlined/>,
+      content: '此操作不可逆，请谨慎操作!!!',
+      okText:'确定',
+      cancelText:'取消',
+      onOk() {
+        removeImage(imageId,false).then(resp=>{
+          if (resp.code !== 0) {
+            message.error(`镜像删除失败:${resp.msg}`).then();
+            return
+          }else{
+            message.error(`镜像删除成功`).then();
+            refreshImage("")
+          }
+        })
+      }
+    });
+
   }
 
   /**
@@ -183,7 +209,7 @@ class ImagePage extends React.Component<ImagePageProps, ImagePageState> {
       return
     }
     that.setState({
-      renameModalState: false
+      renameModalStatus: false
     })
     message.info(`操作成功,正在更新镜像列表`).then();
     this.loadImages(this.state.searchKey)
@@ -234,11 +260,11 @@ class ImagePage extends React.Component<ImagePageProps, ImagePageState> {
             </div>
           </Drawer>
 
-          <Modal title="重命名镜像" visible={this.state.renameModalState}
+          <Modal title="重命名镜像" visible={this.state.renameModalStatus}
                  okText={"重命名"}
                  cancelText={"取消"}
                  onOk={() => this.renameImageTag()}
-                 onCancel={() => this.setState({renameModalState: false})}>
+                 onCancel={() => this.setState({renameModalStatus: false})}>
             <Form
                 name="basic"
                 labelCol={{span: 4}}

@@ -21,15 +21,17 @@ interface Props {
 }
 
 interface State {
+  dockerInfo: DockerServerInfo
 }
 
 class DockerInfoDescription extends React.Component<Props, State> {
 
-  private readonly dockerInfo: DockerServerInfo
 
   constructor(props: Props) {
     super(props);
-    this.dockerInfo = props.dockerInfo
+    this.state = {
+      dockerInfo: this.props.dockerInfo
+    }
   }
 
 
@@ -42,7 +44,7 @@ class DockerInfoDescription extends React.Component<Props, State> {
           <Descriptions.Item
               label={name}
               labelStyle={{fontWeight: 500}}
-              key={name}>{_.get(this.dockerInfo, path)}
+              key={name}>{_.get(this.state.dockerInfo, path)}
           </Descriptions.Item>
       )
     }

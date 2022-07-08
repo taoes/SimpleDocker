@@ -1,16 +1,14 @@
 import {Button, Drawer, message, Select, Space, Table, Tag} from "antd";
-import {useEffect, useState} from "react";
 import {ColumnsType} from "antd/es/table";
 import dateToStr from "../../utils/Time";
 import DockerContainer from "../../api/Model/DockerContainer";
 import {getContainers, updateContainer} from "../../api/Container/ContainerApi";
 import ContainerDetailDrawer from "../../component/App/Container/ContainerDetailDrawer";
-import ContainerPort from "../../api/Model/ContainerPort";
+import portShow from "./ports";
 import Search from "antd/es/input/Search";
 import {CloudSyncOutlined, ReloadOutlined} from "@ant-design/icons";
-import {useNavigate} from "react-router-dom";
 import React from "react";
-import {RouterProps} from "react-router";
+import getStatusInfo from "./status";
 import {NavigateFunction} from "react-router/lib/hooks";
 import RouterInfo from "../../router/Router";
 import WithRouter from "../../router/WithRouter";
@@ -25,60 +23,6 @@ export interface ContainerStateText {
   operatorColor: string
 }
 
-let getStatusInfo = function (State: string): ContainerStateText {
-  if (State === 'running') {
-    return {
-      stateColor: 'green',
-      stateDesc: "运行中",
-      operateCommon: "STOP",
-      operateDesc: "停止",
-      operatorColor: 'red'
-    }
-  } else if (State === 'exited') {
-    return {
-      stateColor: 'red',
-      stateDesc: "已停止",
-      operateCommon: "START",
-      operateDesc: "启动",
-      operatorColor: 'green'
-    }
-  } else if (State === 'paused') {
-    return {
-      stateColor: 'purple',
-      stateDesc: "已暂停",
-      operateCommon: "UNPAUSE",
-      operateDesc: "恢复",
-      operatorColor: 'green'
-    }
-  } else if (State === 'created') {
-    return {
-      stateColor: 'blue',
-      stateDesc: "已创建",
-      operateCommon: "START",
-      operateDesc: "启动",
-      operatorColor: 'green'
-    }
-  }
-  return {
-    stateColor: 'lightgray',
-    stateDesc: "未知状态",
-    operateCommon: "STOP",
-    operateDesc: "停止",
-    operatorColor: 'green'
-  }
-}
-
-
-let portShow = (container: DockerContainer) => {
-  return container.Ports.map((p: ContainerPort, index: number) => {
-    if (!!p.IP) {
-      return <Tag key={index}
-                  className={"mt-1"}>{p.IP}:{p.PublicPort}-{p.PrivatePort}/{p.Type.toUpperCase()}</Tag>
-    } else {
-      return null;
-    }
-  })
-}
 
 interface Props {
   router: RouterInfo
