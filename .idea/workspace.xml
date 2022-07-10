@@ -4,19 +4,7 @@
     <option name="autoReloadType" value="ALL" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="2e8afb8c-0a7a-4fb7-ad64-90ec4bfdb3a1" name="Default Changelist" comment="Default Changelist">
-      <change afterPath="$PROJECT_DIR$/admin/src/page/ContainerPage/ports.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/admin/src/page/ContainerPage/status.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/admin/src/api/Image/ImageApi.ts" beforeDir="false" afterPath="$PROJECT_DIR$/admin/src/api/Image/ImageApi.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/admin/src/component/App/Home/DockerInfoDescription/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/admin/src/component/App/Home/DockerInfoDescription/index.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/admin/src/component/App/Home/DockerVersionDescription/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/admin/src/component/App/Home/DockerVersionDescription/index.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/admin/src/component/App/Home/SimpleDockerVersionDescription/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/admin/src/component/App/Home/SimpleDockerVersionDescription/index.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/admin/src/page/ContainerPage/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/admin/src/page/ContainerPage/index.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/admin/src/page/ImagePage/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/admin/src/page/ImagePage/index.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/admin/src/page/SettingPage/DockerServerTab/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/admin/src/page/SettingPage/DockerServerTab/index.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend-src/src/main/java/com/taoes/simpledocker/controller/ImageController.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend-src/src/main/java/com/taoes/simpledocker/controller/ImageController.java" afterDir="false" />
-    </list>
+    <list default="true" id="2e8afb8c-0a7a-4fb7-ad64-90ec4bfdb3a1" name="Default Changelist" comment="Default Changelist" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -255,29 +243,29 @@
     <option name="showLibraryContents" value="true" />
     <option name="showVisibilityIcons" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RequestMappingsPanelOrder0": "0",
-    "RequestMappingsPanelOrder1": "1",
-    "RequestMappingsPanelWidth0": "75",
-    "RequestMappingsPanelWidth1": "75",
-    "WebServerToolWindowFactoryState": "false",
-    "last_opened_file_path": "/Users/tao/develop/code/project/SimpleDocker/admin",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "yarn",
-    "settings.editor.selected.configurable": "preferences.lookFeel",
-    "spring.configuration.checksum": "8b8e6c79d843f8c0453928f77a07b74b",
-    "ts.external.directory.path": "/Users/tao/develop/code/project/SimpleDocker/admin/node_modules/typescript/lib"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RequestMappingsPanelOrder0&quot;: &quot;0&quot;,
+    &quot;RequestMappingsPanelOrder1&quot;: &quot;1&quot;,
+    &quot;RequestMappingsPanelWidth0&quot;: &quot;75&quot;,
+    &quot;RequestMappingsPanelWidth1&quot;: &quot;75&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/Users/tao/develop/code/project/SimpleDocker/admin&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;yarn&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.lookFeel&quot;,
+    &quot;spring.configuration.checksum&quot;: &quot;8b8e6c79d843f8c0453928f77a07b74b&quot;,
+    &quot;ts.external.directory.path&quot;: &quot;/Users/tao/develop/code/project/SimpleDocker/admin/node_modules/typescript/lib&quot;
   },
-  "keyToStringList": {
-    "DatabaseDriversLRU": [
-      "mysql"
+  &quot;keyToStringList&quot;: {
+    &quot;DatabaseDriversLRU&quot;: [
+      &quot;mysql&quot;
     ]
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CreateClassDialog.RecentsKey">
       <recent name="com.taoes.simpledocker.service.imple" />
@@ -451,7 +439,7 @@
       <workItem from="1656257022227" duration="3540000" />
       <workItem from="1656771706206" duration="482000" />
       <workItem from="1656772639780" duration="1617000" />
-      <workItem from="1656841534144" duration="3322000" />
+      <workItem from="1656841534144" duration="3610000" />
     </task>
     <servers />
   </component>
