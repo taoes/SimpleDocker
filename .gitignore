@@ -100,7 +100,9 @@ fabric.properties
 # Android studio 3.1+ serialized cache file
 .idea/caches/build_file_checksums.ser
 
-.idea/
+**/.idea
+**/target
+
 lastupdate.tmp
 yarn.lock
 SimpleDocker.tar.gz
@@ -110,3 +112,4 @@ backend-src/src/main/resources/static/
 */node_modules
 front-src/*
 admin/build
+/backend-src/docker.iml
