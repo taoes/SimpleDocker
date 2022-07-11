@@ -6,18 +6,27 @@
 
 
 
-
 由于原架构对新特性的开发支持并不是特别好，原代码结构混乱，打包方式不易，对读者部署阅读均不合适，因此计划重构。
 
 + 计划使用Java重写原Go服务，使用SpringBoot框架代替Beego框架。作为一个Java开发者来说,使用Java语言开发更方便，对ISSUE也能更快的响应，虽然Go部署方便，但是一些同学本地开发很不方便
 
 +  使用 React + TypeScript 重写GUI界面。
 
-+  原存储服务使用MySQL 代替 Redis，Redis 还是作为缓存较好，作为存储服务还是有点弱。由于新版本将支持大量配置以及监控，日志等，因此使用MySQL这种结构数据库还是比较稳定的。
++  原存储服务使用 MySQL 代替 Redis，Redis 还是作为缓存较好，作为存储服务还是有点弱。由于新版本将支持大量配置以及监控，日志等，因此使用MySQL这种结构数据库还是比较稳定的。
 
 + 重构方便偏向于安全、多Docker客户端、监控、提升稳定性
 
-Tip: 您可以在Issues中提出需求！[需求 & BUG 管理](https://github.com/taoes/SimpleDocker/issues)
+Tip: 您可以在Issues中提出需求！[需求 & BUG 管理](https://github.com/taoes/SimpleDocker/issues) 
+
+<span style='color:red'>如过您计划贡献代码，可以查看[加入我们](./join.md) 查看如何贡献代码，我们鼓励并感谢您为开源做出的贡献 🌹 </span>
+
+## 贡献者名单
+
++ [Taoes](https://toscode.gitee.com/taoes_admin)
++ [K8Scat](https://toscode.gitee.com/k8scat)
++ [Aweew](https://toscode.gitee.com/aweew)
++ [kevin_yin](https://toscode.gitee.com/kevin_yin)
+
 
 ---
 ![xxx](doc/resource/img/icon.png)
@@ -25,7 +34,7 @@ Tip: 您可以在Issues中提出需求！[需求 & BUG 管理](https://github.co
 
 SimpleDocker 是一个简单的Docker控制面板，致力于可以让用户更方便、更无障碍、更舒适的使用Docker，其界面简洁、操作便捷，功能强大，可以带来更好地运维体验。
 
-**个人开发维护不易，求给个 Star ✨ 鼓励一下作者,您的鼓励是我最大的动力 💪🏻 ！！！**
+**开发维护不易，求给个 Star ✨ 鼓励一下作者,您的鼓励是我最大的动力 💪🏻 ！！！**
 
 
 
@@ -34,9 +43,6 @@ SimpleDocker 是一个简单的Docker控制面板，致力于可以让用户更�
 + Docker是目前一种非常主流的容器化方案，支持非常多的特性，给开发者带来便利，但是 Docker 镜像以及容器管理复杂的参数让新手望而却步，基于此开发 SimpleDocker 控制面板，方便新手和相关的运维同学使用!!!
 
 + 本项目是基于学习的目的的，致力于提供一个 界面清晰、免费的、简单的、专注于 Docker 服务管理的控制面板(当然也会持续开发下去~)，目的只想做一个适合自己的管理软件！！！
-
-
-
 
 
 
@@ -136,40 +142,10 @@ yarn install && yarn server
 
 4. 打开相应的前端端口，即可访问，调试
 
-## 预览
 
-+ 主页
-  ![Docker 信息](doc/resource/img/home.jpg)
+## 界面预览
+您可以访问[界面预览](./preview.md) 查看项目的界面以及功能
 
-+ Docker 信息
-  ![Docker 信息](doc/resource/img/info.png)
-  
-+ Image 信息
-  ![Image 信息](doc/resource/img/image.png)
-
-+ 运行新的容器
-  ![Image 信息](doc/resource/img/runContainer.png)
-
-+ Container 信息
-  ![Container 信息](doc/resource/img/container.png)
-
-+ 容器终端在线管理
-  ![终端管理](doc/resource/img/terminal.png)
-
-+ 容器文件在线管理
-  ![终端管理](doc/resource/img/file.png)
-
-+ 容器性能监控
-  ![终端监控](doc/resource/img/monitor.png)
-
-+ 容器日志以及日志下载
-  ![Image 信息](doc/resource/img/containerLog.png)
-
-+ Volume 信息
-  ![Volume 信息](doc/resource/img/volume.png)
-
-+ Network 信息
-  ![Network 信息](doc/resource/img/network.png)
 
 ## Q & A
 
@@ -177,23 +153,12 @@ yarn install && yarn server
 
 > 忘记密码时候，你可以通过访问Redis服务的1号数据库，移除  `KEY=SIMPLE:DOCKER:AUTH:*`的所有KEY即可恢复默认密码
 
-## 相关依赖
 
-- [GoLang](https://golang.org/)
-- [Vuex](https://vuex.vuejs.org/)
-- [VueJs 2.x](https://vuejs.org/)
-- [Ant Design Vue](https://www.antdv.com/docs/vue/introduce-cn/)
-- [Docker API Engine](https://docs.docker.com/engine/api/sdk/)
 
-## 我的信息
-
-+ [燕归来兮的 GitEE ](https://gitee.com/taoes_admin)
-+ [燕归来兮的 GitHub](https://github.com/taoes)
-+ [燕归来兮的技术博客](https://www.zhoutao123.com)
 
 ## 讨论
 
-本项目完全开源，如有任何需求或者BUG反馈，欢迎提交Issue[Open an issue](https://github.com/taoes/SimpleDocker/issues/new) 或者提交PR！
+本项目完全开源，如有任何需求或者BUG反馈，欢迎提交Issue[Open an issue](https://github.com/taoes/SimpleDocker/issues/new) 或者提交PR！ 欢迎添加微信 `zhoutao825638` 或者邮件联系我 `zhoutao825638@vip.qq.com`
 
 ## 开源方案
 
