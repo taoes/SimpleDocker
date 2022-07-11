@@ -112,3 +112,4 @@ backend-src/src/main/resources/static/
 */node_modules
 front-src/*
 admin/build
+/backend-src/docker.iml
