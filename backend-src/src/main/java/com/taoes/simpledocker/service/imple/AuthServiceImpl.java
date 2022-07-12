@@ -1,17 +1,18 @@
 package com.taoes.simpledocker.service.imple;
 
-import com.taoes.simpledocker.config.securoty.JwtTokenUtil;
-import java.util.Collections;
-import java.util.Objects;
-import java.util.Optional;
-
+import cn.dev33.satoken.stp.StpUtil;
+import com.taoes.simpledocker.auth.exception.AuthFailException;
 import com.taoes.simpledocker.dao.bean.UserDao;
 import com.taoes.simpledocker.dao.responsity.UserRepository;
+import com.taoes.simpledocker.model.exception.DataNotFoundException;
 import com.taoes.simpledocker.service.AuthService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.core.userdetails.User;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
+
+import java.util.Objects;
+import java.util.Optional;
 
 //import org.springframework.security.core.GrantedAuthority;
 
@@ -28,52 +29,48 @@ public class AuthServiceImpl implements AuthService {
 
     private final UserRepository userRepository;
 
-    private final JwtTokenUtil tokenUtil;
-
     @Override
     public String login(String username, String password) {
         // 查询用户信息
         final Optional<UserDao> userOptional = userRepository.findByName(username);
         if (!userOptional.isPresent()) {
             log.warn("用户:{}登录失败,该用户不存在", username);
-            throw new RuntimeException("用户名和密码不匹配");
+            throw new DataNotFoundException("用户名和密码不匹配");
         }
         final UserDao user = userOptional.get();
 
         // 比对用户信息
         if (!Objects.equals(user.getPassword(), password)) {
             log.warn("用户:{}登录失败，密码不正确", username);
-            throw new RuntimeException("用户名和密码不匹配");
+            throw new AuthFailException("用户名和密码不匹配");
         }
-
-        // 生成token
-        return tokenUtil.generateToken(new User(username,user.getPassword(), Collections.emptyList()));//createNewToken(username, new ArrayList<>());
+        StpUtil.login(user.getId());
+        return StpUtil.getTokenValue();
     }
 
     @Override
-    public void reset(String username, String password, String newPassword) {
-        log.info("准备重置密码：{}", username);
-        // TODO 江南 重置密码
+    public void logout() {
+        log.info("id = {} 退出登录", StpUtil.getLoginIdDefaultNull());
+        StpUtil.logout();
     }
 
-    //private String createNewToken(String username, Collection<? extends GrantedAuthority> authorities) {
-    //    // 定义存放角色集合的对象
-    //    List<String> roleList = new ArrayList<>();
-    //    for (GrantedAuthority grantedAuthority : authorities) {
-    //        roleList.add(grantedAuthority.getAuthority());
-    //    }
-    //
-    //    // 生成token start
-    //    Calendar calendar = Calendar.getInstance();
-    //    Date now = calendar.getTime();
-    //    calendar.setTime(new Date());
-    //    calendar.add(Calendar.HOUR, 2);
-    //    Date time = calendar.getTime();
-    //    return Jwts.builder()
-    //        .setSubject(username)
-    //        .setIssuedAt(now)
-    //        .setExpiration(time)
-    //        .signWith(SignatureAlgorithm.HS512, "SIGNING_KEY")
-    //        .compact();
-    //}
+
+    @Override
+    public void reset(String username, String password, String newPassword) {
+        final Optional<UserDao> userOptional = userRepository.findByName(username);
+        if (!userOptional.isPresent()) {
+            log.warn("用户:{}登录失败,该用户不存在", username);
+            throw new DataNotFoundException("用户不存在或已删除");
+        }
+        final UserDao user = userOptional.get();
+        if (!StringUtils.equals(user.getPassword(), password)) {
+            log.warn("用户:{} 密码验证失败", username);
+            throw new AuthFailException("原始密码不正确");
+        }
+        user.setPassword(newPassword);
+        userRepository.updatePasswd(user);
+        StpUtil.logout();
+    }
+
+
 }

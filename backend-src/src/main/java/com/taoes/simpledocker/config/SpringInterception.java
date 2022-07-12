@@ -1,5 +1,6 @@
 package com.taoes.simpledocker.config;
 
+import com.taoes.simpledocker.auth.interceptor.UserLoginInterceptor;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
@@ -27,5 +28,8 @@ public class SpringInterception implements WebMvcConfigurer {
             "/**/*.woff",
             "/**/*.ttf"
         );
+        registry.addInterceptor(new UserLoginInterceptor())
+                .addPathPatterns("/**")
+                .excludePathPatterns("/api/auth/login");
     }
 }

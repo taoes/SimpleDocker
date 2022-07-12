@@ -12,4 +12,8 @@ public abstract class BaseBizException extends RuntimeException {
   public BaseBizException(String message) {
     super(message);
   }
+
+  public BaseBizException(String message, Throwable cause) {
+    super(message, cause);
+  }
 }

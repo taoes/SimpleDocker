@@ -2,6 +2,7 @@ package com.taoes.simpledocker.dao.responsity;
 
 import java.util.Optional;
 
+import cn.hutool.core.lang.Assert;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.taoes.simpledocker.dao.bean.UserDao;
@@ -28,5 +29,10 @@ public class UserRepository extends ServiceImpl<UserMapper, UserDao> {
         wrapper.eq(UserDao::getUsername, username);
         wrapper.orderByDesc(UserDao::getId);
         return Optional.ofNullable(this.getOne(wrapper));
+    }
+
+    public boolean updatePasswd(UserDao user) {
+        Assert.notNull(user.getId());
+        return updateById(user);
     }
 }

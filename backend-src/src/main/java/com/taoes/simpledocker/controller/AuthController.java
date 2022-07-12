@@ -32,6 +32,12 @@ public class AuthController {
         return ResponseModel.ok(token);
     }
 
+    @PostMapping("/logout")
+    public ResponseModel<Boolean> logout() {
+        this.authService.logout();
+        return ResponseModel.ok(Boolean.TRUE);
+    }
+
     /**
      * 重置密码
      */
