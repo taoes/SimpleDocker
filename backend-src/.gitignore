@@ -102,15 +102,3 @@ fabric.properties
 
 **/.idea
 **/target
-
-lastupdate.tmp
-yarn.lock
-SimpleDocker.tar.gz
-backend-src/target/
-backend-src/src/main/resources/static/
-
-*/node_modules
-front-src/*
-admin/build
-/backend-src/docker.iml
-/backend-src/src/main/resources/application-local.yaml
