@@ -113,3 +113,4 @@ backend-src/src/main/resources/static/
 front-src/*
 admin/build
 /backend-src/docker.iml
+/backend-src/src/main/resources/application-local.yaml
