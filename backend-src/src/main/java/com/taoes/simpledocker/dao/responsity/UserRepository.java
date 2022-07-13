@@ -1,13 +1,14 @@
 package com.taoes.simpledocker.dao.responsity;
 
-import java.util.Optional;
-
 import cn.hutool.core.lang.Assert;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.taoes.simpledocker.dao.bean.UserDao;
 import com.taoes.simpledocker.dao.mapper.UserMapper;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
+import java.util.Optional;
 
 /**
  * UserRepository 对象¬
@@ -26,13 +27,20 @@ public class UserRepository extends ServiceImpl<UserMapper, UserDao> {
      */
     public Optional<UserDao> findByName(String username) {
         LambdaQueryWrapper<UserDao> wrapper = new LambdaQueryWrapper<UserDao>();
-        wrapper.eq(UserDao::getUsername, username);
+        wrapper.eq(UserDao::getAccount, username);
         wrapper.orderByDesc(UserDao::getId);
         return Optional.ofNullable(this.getOne(wrapper));
     }
 
     public boolean updatePasswd(UserDao user) {
         Assert.notNull(user.getId());
-        return updateById(user);
+        return this.updateById(user);
+    }
+
+    public boolean updateRole(Long userId, List<Integer> roleIds) {
+        UserDao userDao = new UserDao();
+        userDao.setId(userId);
+        userDao.setRoleIds(UserDao.convertRoleList2Str(roleIds));
+        return this.updateById(userDao);
     }
 }

@@ -12,22 +12,27 @@ import lombok.Data;
 public class User {
 
 
-  private Long id;
+    private Long id;
 
-  /**
-   * 用户名
-   */
-  private String username;
+    /**
+     * 用户账号
+     */
+    private String account;
+
+    /**
+     * 用户名
+     */
+    private String name;
 
 
-  /**
-   * 创建时间
-   */
-  private String createdAt;
+    /**
+     * 创建时间
+     */
+    private String createdAt;
 
-  /**
-   * 更新时间
-   */
-  private String updatedAt;
+    /**
+     * 更新时间
+     */
+    private String updatedAt;
 
 }

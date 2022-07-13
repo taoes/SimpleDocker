@@ -1,6 +1,7 @@
 package com.taoes.simpledocker.config;
 
-import com.taoes.simpledocker.auth.interceptor.UserLoginInterceptor;
+import cn.dev33.satoken.interceptor.SaAnnotationInterceptor;
+import com.taoes.simpledocker.config.interceptor.UserLoginInterceptor;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
@@ -22,14 +23,17 @@ public class SpringInterception implements WebMvcConfigurer {
         InterceptorRegistration registration = registry.addInterceptor(new DockerClientInterception());
         registration.addPathPatterns("/**");
         registration.excludePathPatterns(
-            "/**/*.html",
-            "/**/*.js",
-            "/**/*.css",
-            "/**/*.woff",
-            "/**/*.ttf"
+                "/**/*.html",
+                "/**/*.js",
+                "/**/*.css",
+                "/**/*.woff",
+                "/**/*.ttf"
         );
         registry.addInterceptor(new UserLoginInterceptor())
-                .addPathPatterns("/**")
+                .addPathPatterns("/api/**")
                 .excludePathPatterns("/api/auth/login");
+
+        registry.addInterceptor(new SaAnnotationInterceptor())
+                .addPathPatterns("/api/**");
     }
 }

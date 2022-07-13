@@ -1,4 +1,4 @@
-package com.taoes.simpledocker.auth.exception;
+package com.taoes.simpledocker.model.exception;
 
 import com.taoes.simpledocker.model.exception.BaseBizException;
 import lombok.Data;

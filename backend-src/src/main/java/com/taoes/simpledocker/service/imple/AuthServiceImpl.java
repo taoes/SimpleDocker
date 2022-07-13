@@ -1,7 +1,7 @@
 package com.taoes.simpledocker.service.imple;
 
 import cn.dev33.satoken.stp.StpUtil;
-import com.taoes.simpledocker.auth.exception.AuthFailException;
+import com.taoes.simpledocker.model.exception.AuthFailException;
 import com.taoes.simpledocker.dao.bean.UserDao;
 import com.taoes.simpledocker.dao.responsity.UserRepository;
 import com.taoes.simpledocker.model.exception.DataNotFoundException;

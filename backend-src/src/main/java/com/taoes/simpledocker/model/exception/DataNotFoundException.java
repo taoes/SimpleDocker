@@ -1,7 +1,7 @@
 package com.taoes.simpledocker.model.exception;
 
 /**
- * 参数检查异常
+ * 数据未查到错误
  */
 public class DataNotFoundException extends BaseBizException {
 

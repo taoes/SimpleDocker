@@ -1,6 +1,9 @@
 spring:
   profiles:
     active: @profile.active@
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
 
 # Sa-Token配置
 sa-token:
@@ -20,3 +23,4 @@ sa-token:
   is-log: false
   # token前缀
   token-prefix: Bearer
+

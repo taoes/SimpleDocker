@@ -1,6 +1,7 @@
 package com.taoes.simpledocker.service;
 
 
+import com.taoes.simpledocker.model.Role;
 import com.taoes.simpledocker.model.User;
 import java.util.List;
 
@@ -35,4 +36,8 @@ public interface UserService {
   void enabled(Long id);
 
   List<User> list();
+
+  void authRole(Long userId, List<Integer> roleIds);
+
+  List<Role> getUserRoles(Long userId);
 }
