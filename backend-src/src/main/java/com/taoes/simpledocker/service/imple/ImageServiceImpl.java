@@ -1,5 +1,6 @@
 package com.taoes.simpledocker.service.imple;
 
+import cn.hutool.core.date.DateUtil;
 import com.github.dockerjava.api.command.SaveImageCmd;
 import com.taoes.simpledocker.model.exception.NotFoundClientException;
 
@@ -18,6 +19,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -110,18 +112,18 @@ public class ImageServiceImpl implements ImageService {
         final DockerClient dockerClient = factory.get();
         String[] nameTagArr = nameTag.split("\\:");
         //docker save
-        InputStream input = dockerClient.saveImageCmd(nameTagArr[0]).withTag(nameTagArr[1]).exec();
-        try {
-            response.setContentType("application/ms-excel;charset=UTF-8");
-            response.setHeader("Content-Disposition","attachment;filename="+nameTag+".zip");
+        SaveImageCmd saveImage = dockerClient.saveImageCmd(nameTagArr[0]).withTag(nameTagArr[1]);
+        try (InputStream input = saveImage.exec();
+             ServletOutputStream output = response.getOutputStream()) {
+            String curentTime = DateUtil.format(DateUtil.date(), "yyyyMMdd_HHmmss_");
+            response.setContentType("application/x-zip-compressed;charset=UTF-8");
+            response.setHeader("Content-Disposition","attachment;filename=" + curentTime + nameTag + ".zip");
             // 循环取出流中的数据
             byte[] b = new byte[1024];
             int len;
             while ((len = input.read(b)) > 0) {
-                response.getOutputStream().write(b, 0, len);
+                output.write(b, 0, len);
             }
-            input.close();
-            response.getOutputStream().close();
         } catch (IOException e) {
             e.printStackTrace();
         }
