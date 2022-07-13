@@ -103,6 +103,9 @@ public class ImageController {
     return ResponseModel.ok(true);
   }
 
+  /**
+   * 保存镜像
+   */
   @GetMapping("/save/{nameTag}")
   public ResponseModel<String> save(@PathVariable String nameTag, HttpServletRequest request,HttpServletResponse response) {
     imageService.save(nameTag,request,response);
