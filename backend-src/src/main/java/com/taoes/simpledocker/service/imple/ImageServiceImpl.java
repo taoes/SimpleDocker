@@ -1,6 +1,10 @@
 package com.taoes.simpledocker.service.imple;
 
+import com.github.dockerjava.api.command.SaveImageCmd;
 import com.taoes.simpledocker.model.exception.NotFoundClientException;
+
+import java.io.*;
+import java.net.URLEncoder;
 import java.util.List;
 
 import com.github.dockerjava.api.DockerClient;
@@ -13,6 +17,9 @@ import com.taoes.simpledocker.service.ImageService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * 镜像相关服务实现
@@ -96,5 +103,27 @@ public class ImageServiceImpl implements ImageService {
     public void pruneImage() {
         final DockerClient dockerClient = factory.get();
         dockerClient.pruneCmd(PruneType.IMAGES).exec();
+    }
+
+    @Override
+    public void save(String nameTag, HttpServletRequest request,HttpServletResponse response) {
+        final DockerClient dockerClient = factory.get();
+        String[] nameTagArr = nameTag.split("\\:");
+        //docker save
+        InputStream input = dockerClient.saveImageCmd(nameTagArr[0]).withTag(nameTagArr[1]).exec();
+        try {
+            response.setContentType("application/ms-excel;charset=UTF-8");
+            response.setHeader("Content-Disposition","attachment;filename="+nameTag+".zip");
+            // 循环取出流中的数据
+            byte[] b = new byte[1024];
+            int len;
+            while ((len = input.read(b)) > 0) {
+                response.getOutputStream().write(b, 0, len);
+            }
+            input.close();
+            response.getOutputStream().close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
