@@ -5,6 +5,9 @@ import java.util.List;
 import com.github.dockerjava.api.command.InspectImageResponse;
 import com.github.dockerjava.api.model.Image;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 /**
  * 镜像相关服务
  *
@@ -89,4 +92,9 @@ public interface ImageService {
    * 清理镜像
    */
   void pruneImage();
+
+  /**
+   * 镜像导出
+   */
+    void save(String nameTag, HttpServletRequest request,HttpServletResponse response);
 }
