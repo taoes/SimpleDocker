@@ -94,7 +94,12 @@ public interface ImageService {
   void pruneImage();
 
   /**
-   * 镜像导出
+   * 镜像保存
    */
     void save(String nameTag, HttpServletRequest request,HttpServletResponse response);
+
+  /**
+   * 批量镜像保存
+   */
+  void saveBatch(List<String> nameTagList, HttpServletRequest request, HttpServletResponse response);
 }

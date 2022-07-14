@@ -2,6 +2,7 @@ package com.taoes.simpledocker.service.imple;
 
 import cn.hutool.core.date.DateUtil;
 import com.github.dockerjava.api.command.SaveImageCmd;
+import com.github.dockerjava.api.command.SaveImagesCmd;
 import com.taoes.simpledocker.model.exception.NotFoundClientException;
 
 import java.io.*;
@@ -118,6 +119,31 @@ public class ImageServiceImpl implements ImageService {
             String curentTime = DateUtil.format(DateUtil.date(), "yyyyMMdd_HHmmss_");
             response.setContentType("application/x-zip-compressed;charset=UTF-8");
             response.setHeader("Content-Disposition","attachment;filename=" + curentTime + nameTag + ".zip");
+            // 循环取出流中的数据
+            byte[] b = new byte[1024];
+            int len;
+            while ((len = input.read(b)) > 0) {
+                output.write(b, 0, len);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void saveBatch(List<String> nameTagList, HttpServletRequest request, HttpServletResponse response) {
+        final DockerClient dockerClient = factory.get();
+        //docker save
+        SaveImagesCmd saveImages = dockerClient.saveImagesCmd();
+        for (String nameTag : nameTagList) {
+           String[] nameTagArr = nameTag.split("\\:");
+           saveImages.withImage(nameTagArr[0],nameTagArr[1]);
+        }
+        try (InputStream input = saveImages.exec();
+             ServletOutputStream output = response.getOutputStream()) {
+            String curentTime = DateUtil.format(DateUtil.date(), "yyyyMMdd_HHmmss");
+            response.setContentType("application/x-zip-compressed;charset=UTF-8");
+            response.setHeader("Content-Disposition","attachment;filename=" + curentTime + ".zip");
             // 循环取出流中的数据
             byte[] b = new byte[1024];
             int len;

@@ -110,4 +110,11 @@ public class ImageController {
   public void save(@PathVariable String nameTag, HttpServletRequest request,HttpServletResponse response) {
     imageService.save(nameTag,request,response);
   }
+  /**
+   * 批量保存镜像
+   */
+  @PostMapping("/saveBatch")
+  public void saveBatch(@RequestBody List<String> nameTagList, HttpServletRequest request,HttpServletResponse response) {
+    imageService.saveBatch(nameTagList,request,response);
+  }
 }
