@@ -24,7 +24,7 @@ import org.springframework.stereotype.Component;
 /**
  * 容器日志服务
  *
- * @author 枕上江南 zhoutao925638@vip.qq.com
+ * @author 枕上江南 zhoutao825638@vip.qq.com
  * @date 2021/12/5 1:33 上午
  */
 @Slf4j

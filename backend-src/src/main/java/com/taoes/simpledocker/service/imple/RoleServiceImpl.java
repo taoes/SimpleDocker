@@ -17,6 +17,8 @@ import com.taoes.simpledocker.model.exception.DataNotFoundException;
 import com.taoes.simpledocker.model.exception.OperateFailException;
 import com.taoes.simpledocker.model.exception.ParamCheckException;
 import com.taoes.simpledocker.service.RoleService;
+import java.util.Optional;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -28,6 +30,7 @@ import java.util.stream.Collectors;
  * @author manwang (569258yin)
  * @date 2022/7/13 21:53
  */
+@Slf4j
 @Service
 public class RoleServiceImpl implements RoleService {
 
@@ -46,6 +49,12 @@ public class RoleServiceImpl implements RoleService {
 
     @Override
     public void addRole(Role role) {
+        final int countByName = roleRepository.countByName(role.getName());
+        if (countByName>0){
+            log.warn("创建角色:{}失败,当前角色已存在",role.getName());
+            throw new OperateFailException("角色已存在");
+        }
+
         boolean result = roleRepository.insertRole(role.convertRoleDao());
         if (!result) {
             throw new OperateFailException("保存角色失败");

@@ -12,7 +12,7 @@ import com.taoes.simpledocker.controller.container.RunNewContainerRequest;
 /**
  * 容器服务接口
  *
- * @author 枕上江南 zhoutao925638@vip.qq.com
+ * @author 枕上江南 zhoutao825638@vip.qq.com
  * @date 2021/12/10 11:31 下午
  */
 public interface ContainerService {

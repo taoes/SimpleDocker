@@ -16,7 +16,11 @@ import java.util.Map;
 public enum PermissionGroupEnum {
 
     ADMIN(0, "超级管理员"),
-    DOCKER_ENDPOINT(1, "容器资源"),
+    DOCKER_ENDPOINT(10, "节点"),
+    IMAGE(11, "镜像"),
+    CONTAINER(12, "容器"),
+    VOLUME(13, "储存"),
+    NETWORK(14, "网络"),
     USER(21, "用户"),
     ROLE(22, "角色"),
     ;

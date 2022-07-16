@@ -1,11 +1,12 @@
 package com.taoes.simpledocker.model;
 
+import com.taoes.simpledocker.model.enums.ErrorCode;
 import lombok.Data;
 
 /**
  * TODO: please input file info
  *
- * @author 枕上江南 zhoutao925638@vip.qq.com
+ * @author 枕上江南 zhoutao825638@vip.qq.com
  * @date 2021/12/5 12:26 上午
  */
 @Data
@@ -14,7 +15,22 @@ public class ResponseModel<T> {
 
     private T data;
 
+    /**
+     *   错误代码
+     * @apiNote 代码400表示登录异常，会被剔除出系统
+     */
     private int code;
+
+
+    public ResponseModel<T> setCode(int code) {
+        this.code = code;
+      return this;
+    }
+
+    public ResponseModel<T> setErrorCode(ErrorCode errorCode){
+        this.code = errorCode.getCode();
+        return this;
+    }
 
     /**
      * 失败的数据

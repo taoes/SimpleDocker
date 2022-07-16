@@ -4,6 +4,7 @@ import cn.hutool.core.collection.CollUtil;
 import com.taoes.simpledocker.dao.bean.PermissionDao;
 import com.taoes.simpledocker.dao.bean.RoleDao;
 import com.taoes.simpledocker.model.enums.PermissionEnum;
+import java.time.LocalDateTime;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -27,6 +28,8 @@ public class Role {
     private Integer id;
     private String name;
     private String comment;
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
     private List<PermissionEnum> permissions;
 
 
@@ -44,6 +47,8 @@ public class Role {
         role.setName(roleDao.getName());
         role.setComment(roleDao.getComment());
         role.setPermissions(Collections.emptyList());
+        role.setCreatedAt(roleDao.getCreatedAt());
+        role.setUpdatedAt(roleDao.getUpdatedAt());
         return role;
     }
 
@@ -52,6 +57,8 @@ public class Role {
         role.setId(roleDao.getId());
         role.setName(roleDao.getName());
         role.setComment(roleDao.getComment());
+        role.setCreatedAt(roleDao.getCreatedAt());
+        role.setUpdatedAt(roleDao.getUpdatedAt());
         role.setPermissions(convertPermission2Enum(permissions));
         return role;
     }
