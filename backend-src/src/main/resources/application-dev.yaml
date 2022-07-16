@@ -6,3 +6,6 @@ spring:
     username: root
     password: admin123
     driver-class-name: com.mysql.cj.jdbc.Driver
+
+swagger:
+  production: false

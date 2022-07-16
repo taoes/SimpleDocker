@@ -19,7 +19,7 @@ public class UserConverter extends AbstractConverter<UserDao, User> {
   public User from(UserDao userDao) {
     return new User()
         .setId(userDao.getId())
-        .setUsername(userDao.getUsername())
+        .setAccount(userDao.getAccount())
         .setCreatedAt(TimeUtils.format(userDao.getCreatedAt()))
         .setUpdatedAt(TimeUtils.format(userDao.getUpdatedAt()));
   }
