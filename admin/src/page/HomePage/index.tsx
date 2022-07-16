@@ -19,7 +19,7 @@ class HomePage extends React.Component<HomePageProps, HomePageState> {
   constructor(props: HomePageProps) {
     super(props);
     this.state = {
-      dockerServiceInfo: {version: null, info: null}
+      dockerServiceInfo: {}
     }
   }
 
@@ -27,6 +27,11 @@ class HomePage extends React.Component<HomePageProps, HomePageState> {
     GetDockerInfo().then(data => {
       this.setState({dockerServiceInfo: data})
     })
+  }
+
+  componentWillReceiveProps(nextProps:HomePageProps){
+    console.log(nextProps)
+    this.setState(nextProps)
   }
 
 

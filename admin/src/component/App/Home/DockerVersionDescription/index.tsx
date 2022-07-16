@@ -37,9 +37,12 @@ class DockerVersionDescription extends React.Component<Props, State> {
     }
   }
 
+  componentWillReceiveProps(nextProps:Props){
+    this.setState({dockerInfo:nextProps.dockerInfo})
+  }
+
 
   render() {
-
     let items: Array<ReactNode> = new Array<React.ReactNode>();
     for (let config of configs) {
       let {name, path} = config
