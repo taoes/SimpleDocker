@@ -1,6 +1,12 @@
 package com.taoes.simpledocker.service.imple;
 
+import cn.hutool.core.date.DateUtil;
+import com.github.dockerjava.api.command.SaveImageCmd;
+import com.github.dockerjava.api.command.SaveImagesCmd;
 import com.taoes.simpledocker.model.exception.NotFoundClientException;
+
+import java.io.*;
+import java.net.URLEncoder;
 import java.util.List;
 
 import com.github.dockerjava.api.DockerClient;
@@ -13,6 +19,10 @@ import com.taoes.simpledocker.service.ImageService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * 镜像相关服务实现
@@ -96,5 +106,52 @@ public class ImageServiceImpl implements ImageService {
     public void pruneImage() {
         final DockerClient dockerClient = factory.get();
         dockerClient.pruneCmd(PruneType.IMAGES).exec();
+    }
+
+    @Override
+    public void save(String nameTag, HttpServletRequest request,HttpServletResponse response) {
+        final DockerClient dockerClient = factory.get();
+        String[] nameTagArr = nameTag.split("\\:");
+        //docker save
+        SaveImageCmd saveImage = dockerClient.saveImageCmd(nameTagArr[0]).withTag(nameTagArr[1]);
+        try (InputStream input = saveImage.exec();
+             ServletOutputStream output = response.getOutputStream()) {
+            String curentTime = DateUtil.format(DateUtil.date(), "yyyyMMdd_HHmmss_");
+            response.setContentType("application/x-zip-compressed;charset=UTF-8");
+            response.setHeader("Content-Disposition","attachment;filename=" + curentTime + nameTag + ".zip");
+            // 循环取出流中的数据
+            byte[] b = new byte[1024];
+            int len;
+            while ((len = input.read(b)) > 0) {
+                output.write(b, 0, len);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void saveBatch(List<String> nameTagList, HttpServletRequest request, HttpServletResponse response) {
+        final DockerClient dockerClient = factory.get();
+        //docker save
+        SaveImagesCmd saveImages = dockerClient.saveImagesCmd();
+        for (String nameTag : nameTagList) {
+           String[] nameTagArr = nameTag.split("\\:");
+           saveImages.withImage(nameTagArr[0],nameTagArr[1]);
+        }
+        try (InputStream input = saveImages.exec();
+             ServletOutputStream output = response.getOutputStream()) {
+            String curentTime = DateUtil.format(DateUtil.date(), "yyyyMMdd_HHmmss");
+            response.setContentType("application/x-zip-compressed;charset=UTF-8");
+            response.setHeader("Content-Disposition","attachment;filename=" + curentTime + ".zip");
+            // 循环取出流中的数据
+            byte[] b = new byte[1024];
+            int len;
+            while ((len = input.read(b)) > 0) {
+                output.write(b, 0, len);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

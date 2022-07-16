@@ -22,6 +22,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 /**
  * TODO: please input file info
  *
@@ -98,5 +101,20 @@ public class ImageController {
     req.check();
     imageService.tag(req.getImageId(),req.getNewTag());
     return ResponseModel.ok(true);
+  }
+
+  /**
+   * 保存镜像
+   */
+  @GetMapping("/save/{nameTag}")
+  public void save(@PathVariable String nameTag, HttpServletRequest request,HttpServletResponse response) {
+    imageService.save(nameTag,request,response);
+  }
+  /**
+   * 批量保存镜像
+   */
+  @PostMapping("/saveBatch")
+  public void saveBatch(@RequestBody List<String> nameTagList, HttpServletRequest request,HttpServletResponse response) {
+    imageService.saveBatch(nameTagList,request,response);
   }
 }
