@@ -47,4 +47,11 @@ public interface UserService {
    * @param user 用户
    */
   void create(User user);
+
+  /**
+   * 删除用户
+   *
+   * @param userId
+   */
+  void delete(Long userId);
 }

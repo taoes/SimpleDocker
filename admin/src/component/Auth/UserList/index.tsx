@@ -4,63 +4,13 @@ import {CloudSyncOutlined, ReloadOutlined, DeleteOutlined, UserSwitchOutlined} f
 import {ColumnsType} from "antd/es/table";
 import User from "../../../api/Model/User";
 import React, {useEffect, useState} from "react";
-import {userList, createNewUser} from "../../../api/User/UserApi";
+import {userList, createNewUser, removeUserApi} from "../../../api/User/UserApi";
 import UserCreate from "../../../component/App/User/UserCreate";
 import UserCreatedRequest from "../../../api/Model/Auth/UserCreatedRequest";
 import Role from "../../../api/Model/Auth/Role";
 import {roleList} from "../../../api/Auth/RoleApi";
 
-const columns: ColumnsType<User> = [
-    {
-        title: '用户ID',
-        dataIndex: 'id',
-        render: id => <span>{id}</span>,
-        ellipsis: true,
-        width: 150,
-    },
-    {
-        title: '用户名',
-        dataIndex: 'account',
-        render: account => <span>{account}</span>,
-        ellipsis: true,
-        width: 150,
-    },
-    {
-        title: '角色',
-        dataIndex: 'role',
-        render: role => <span>ADMIN</span>,
-        ellipsis: true,
-        width: 150,
-    },
-    {
-        title: '创建时间',
-        dataIndex: 'createdAt',
-        render: createdAt => <span>{createdAt}</span>,
-        ellipsis: true,
-        width: 150,
-    },
-    {
-        title: '更新时间',
-        dataIndex: 'updatedAt',
-        render: updatedAt => <span>{updatedAt}</span>,
-        ellipsis: true,
-        width: 150,
-    }, {
-        title: '操作',
-        dataIndex: 'address',
-        fixed: 'right',
-        width: 80,
-        render: (_, user: User) => {
-            return (
-                <Space>
-                    <Button size={"small"} danger icon={<DeleteOutlined/>}>删除</Button>
-                    <Button size={"small"} icon={<UserSwitchOutlined/>}>角色</Button>
-                </Space>
-            )
-        }
 
-    }
-]
 
 interface Props {
 
@@ -77,12 +27,66 @@ export default class UserList extends React.Component<Props, State> {
 
     private roles: Array<Role> = []
 
+    private readonly columns:ColumnsType<User> =[];
+
     constructor(props: Props) {
         super(props);
         this.state = {
             users: [],
             modalOfCreateUser: false
         }
+
+        this.columns = [
+            {
+                title: '用户ID',
+                dataIndex: 'id',
+                render: id => <span>{id}</span>,
+                ellipsis: true,
+                width: 150,
+            },
+            {
+                title: '用户名',
+                dataIndex: 'account',
+                render: account => <span>{account}</span>,
+                ellipsis: true,
+                width: 150,
+            },
+            {
+                title: '角色',
+                dataIndex: 'role',
+                render: role => <span>ADMIN</span>,
+                ellipsis: true,
+                width: 150,
+            },
+            {
+                title: '创建时间',
+                dataIndex: 'createdAt',
+                render: createdAt => <span>{createdAt}</span>,
+                ellipsis: true,
+                width: 150,
+            },
+            {
+                title: '更新时间',
+                dataIndex: 'updatedAt',
+                render: updatedAt => <span>{updatedAt}</span>,
+                ellipsis: true,
+                width: 150,
+            }, {
+                title: '操作',
+                dataIndex: 'address',
+                fixed: 'right',
+                width: 80,
+                render: (_, user: User) => {
+                    return (
+                        <Space>
+                            <Button size={"small"} danger icon={<DeleteOutlined/>} onClick={()=>this.removeUser(user)}>删除</Button>
+                            <Button size={"small"} icon={<UserSwitchOutlined/>}>角色</Button>
+                        </Space>
+                    )
+                }
+
+            }
+        ]
     }
 
     componentDidMount() {
@@ -136,13 +140,22 @@ export default class UserList extends React.Component<Props, State> {
             message.info(`创建用户成功`).then();
             this.hideCreateUserModal()
         })
-
-
     }
 
     createUserInfoChange = (_: any, value: UserCreatedRequest) => {
         this.newUserInfo = value
         console.log(this.newUserInfo)
+    }
+
+    removeUser = (user: User) => {
+        removeUserApi(user.id).then(resp => {
+            if (resp.code !== 0) {
+                message.error(`删除用户失败,${resp.msg}`).then();
+                return
+            }
+            message.info('删除用户完成').then();
+            this.refresh(true);
+        });
     }
 
     render() {
@@ -159,7 +172,7 @@ export default class UserList extends React.Component<Props, State> {
                 </div>
                 <Table
                     size={"small"}
-                    columns={columns}
+                    columns={this.columns}
                     dataSource={this.state.users}
                     scroll={{x: 1000}}
                     rowKey={record => record.id}/>
@@ -191,7 +204,7 @@ export default class UserList extends React.Component<Props, State> {
                             name="roleIds"
                             rules={[{required: true}]}
                         >
-                            <Select  mode="multiple"  allowClear>
+                            <Select mode="multiple" allowClear>
                                 {
                                     this.roles.map(r => {
                                         return <Select.Option key={r.id}>{r.name}</Select.Option>

@@ -23,4 +23,12 @@ function createNewUser(req: UserCreatedRequest): Promise<Base<Boolean>> {
     return httpRequest.post<Base<Boolean>>(`/user`, req).then(data => data.data);
 }
 
-export {userList,createNewUser}
+
+/**
+ * 移除用户
+ */
+function removeUserApi(id: number): Promise<Base<Boolean>> {
+    return httpRequest.delete(`/user/${id}`).then(data => data.data);
+}
+
+export {userList, createNewUser,removeUserApi}

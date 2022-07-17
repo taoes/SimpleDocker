@@ -107,5 +107,9 @@ public class UserServiceImpl implements UserService {
     }
 
 
-
+    @Override
+    public void delete(Long userId) {
+        userRepository.removeById(userId);
+        log.info("删除用户:{}",userId);
+    }
 }

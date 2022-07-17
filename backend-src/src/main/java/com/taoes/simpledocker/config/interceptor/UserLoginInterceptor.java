@@ -16,7 +16,7 @@ public class UserLoginInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        log.info("url={}",request.getRequestURL().toString());
+        log.info("url={}", request.getRequestURL().toString());
         StpUtil.checkLogin();
         return HandlerInterceptor.super.preHandle(request, response, handler);
     }
