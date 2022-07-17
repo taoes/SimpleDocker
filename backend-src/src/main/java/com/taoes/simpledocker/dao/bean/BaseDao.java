@@ -16,4 +16,8 @@ public class BaseDao {
     protected Integer id;
     @TableLogic
     protected Integer deleted;
+
+    public boolean deleted(){
+        return this.deleted == 1;
+    }
 }

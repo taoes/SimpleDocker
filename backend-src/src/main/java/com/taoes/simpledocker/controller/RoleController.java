@@ -8,7 +8,9 @@ import com.taoes.simpledocker.controller.request.role.RolePermissionSaveRequest;
 import com.taoes.simpledocker.controller.request.role.RoleUpdateRequest;
 import com.taoes.simpledocker.controller.response.role.PermissionGroupResponse;
 import com.taoes.simpledocker.controller.response.role.PermissionResponse;
+import com.taoes.simpledocker.controller.response.role.PermissionTreeResponse;
 import com.taoes.simpledocker.controller.response.role.RoleResponse;
+import com.taoes.simpledocker.controller.response.tree.DataNode;
 import com.taoes.simpledocker.model.PageModel;
 import com.taoes.simpledocker.model.ResponseModel;
 import com.taoes.simpledocker.model.Role;
@@ -18,6 +20,9 @@ import com.taoes.simpledocker.model.exception.DataNotFoundException;
 import com.taoes.simpledocker.service.RoleService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import java.util.ArrayList;
+import java.util.Set;
+import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -120,6 +125,15 @@ public class RoleController {
         return ResponseModel.ok(
                 role.getPermissions().stream().map(PermissionResponse::valueOf).collect(Collectors.toList())
         );
+    }
+
+
+    @ApiOperation("获取当前角色下已配置的权限树(包含已有权限)")
+    @SaCheckPermission(value = "role:permission:query", orRole = Role.ADMIN_ROLE_NAME)
+    @GetMapping("/permission/{id}/tree")
+    public ResponseModel<PermissionTreeResponse> getPermissionTreeByRoleId(@PathVariable("id") Integer id) {
+        final PermissionTreeResponse tree = roleService.createPermissionTree(id);
+        return ResponseModel.ok(tree);
     }
 
     @ApiOperation("变更角色权限")

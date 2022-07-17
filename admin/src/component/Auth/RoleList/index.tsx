@@ -1,12 +1,16 @@
 import React from "react";
 import Role from "../../../api/Model/Auth/Role";
-import {createNewRole, deleteRole, getPermissionGroup, roleList} from "../../../api/Auth/RoleApi";
-import {Button, Checkbox, Form, Input, message, Modal, Space, Table, Tabs} from "antd";
+import {
+    createNewRole,
+    deleteRole,
+    getPermissionOfRole,
+    roleList, saveRolePermission
+} from "../../../api/Auth/RoleApi";
+import {Button, Form, Input, message, Modal, Space, Table, Tree} from "antd";
 import {ColumnsType} from "antd/es/table";
-import {ReloadOutlined, CloudSyncOutlined, ExclamationCircleOutlined} from '@ant-design/icons'
-import Search from "antd/es/input/Search";
+import type {DataNode} from "antd/es/tree";
+import {ReloadOutlined, CloudSyncOutlined, ExclamationCircleOutlined,DeleteOutlined,UnlockOutlined} from '@ant-design/icons'
 import RoleCreatedRequest from "../../../api/Model/Auth/RoleCreatedRequest";
-import PermissionGroup from "../../../api/Model/Auth/PermissionGroup";
 import './index.css'
 
 interface Props {
@@ -19,7 +23,9 @@ interface State {
     modalForPermission: boolean,
     currentRoleId: number,
     newRoleReq: RoleCreatedRequest,
-    permissionConfig: Array<PermissionGroup>
+    permissionTree: Array<DataNode>,
+    selectPermissions: Array<string>
+
 }
 
 const {confirm} = Modal;
@@ -32,7 +38,8 @@ export default class RoleList extends React.Component<Props, State> {
             modalForCreateRole: false,
             modalForPermission: false,
             roleList: [],
-            permissionConfig: [],
+            permissionTree: [],
+            selectPermissions: [],
             currentRoleId: 0,
             newRoleReq: {name: '', comment: ''}
         }
@@ -55,12 +62,6 @@ export default class RoleList extends React.Component<Props, State> {
             }
             this.setState({roleList: data.results})
         })
-
-        getPermissionGroup().then(resp => {
-            if (resp.code === 0) {
-                this.setState({permissionConfig: resp.data})
-            }
-        });
     }
 
 
@@ -80,7 +81,6 @@ export default class RoleList extends React.Component<Props, State> {
                 message.info(`创建失败，${msg}`);
                 return
             }
-            message.info(`创建成功，正在刷新角色列表`)
             this.setState({modalForCreateRole: false, newRoleReq: {name: '', comment: ''}})
             this.refresh()
         })
@@ -89,6 +89,16 @@ export default class RoleList extends React.Component<Props, State> {
      * 保存权限
      */
     savePermission = () => {
+        saveRolePermission(this.state.currentRoleId, this.state.selectPermissions)
+            .then(resp => {
+                if (resp.code !== 0) {
+                    message.error(`配置权限出现错误:${resp.msg}`).then()
+                    return
+                }
+
+                message.info(`权限保存成功`).then()
+                this.setState({modalForPermission: false, selectPermissions: []})
+            })
     }
 
 
@@ -124,10 +134,24 @@ export default class RoleList extends React.Component<Props, State> {
             currentRoleId: role.id,
             modalForPermission: true
         })
+
+        // 查询权限详情
+        getPermissionOfRole(role.id).then(resp => {
+            if (resp.code !== 0) {
+                message.error(`查询角色信息出现异常,${resp.msg}`).then();
+                return
+            }
+            this.setState({...resp.data})
+        })
     }
 
     onRoleChange = (_: any, value: RoleCreatedRequest) => {
         this.setState({newRoleReq: value})
+    }
+
+
+    onCheck = (e: { checked: boolean, checkedNodes: Array<DataNode> }) => {
+        this.setState({selectPermissions: e.checkedNodes.map(p => p.key.toString())})
     }
 
     render() {
@@ -171,28 +195,25 @@ export default class RoleList extends React.Component<Props, State> {
                 title: '操作',
                 dataIndex: 'id',
                 fixed: 'right',
-                width: 180,
+                width: 80,
                 render: (_, role: Role) => {
                     return (
                         <Space>
-                            <Button size={"small"} danger onClick={() => this.deleteRole(role)}>删除</Button>
-                            <Button size={"small"}>禁用</Button>
-                            <Button size={"small"} onClick={() => this.updatePermission(role)}>权限</Button>
+                            <Button size={"small"} danger onClick={() => this.deleteRole(role)} icon={<DeleteOutlined />}>删除</Button>
+                            <Button size={"small"} onClick={() => this.updatePermission(role)} icon={<UnlockOutlined />}>权限</Button>
                         </Space>
                     )
                 }
             }
         ]
 
+
         return (
             <div id="authPageForRole" className={"box"}>
                 <div>
                     <div className="imageController inline">
-                        <Search placeholder="输入关键字以搜索镜像" style={{width: 400}}/>
-                        <Button className="ml-2" onClick={() => this.refresh}
-                                icon={<ReloadOutlined/>}>刷新</Button>
-                        <Button className="ml-2" onClick={() => this.setState({modalForCreateRole: true})}
-                                icon={<CloudSyncOutlined/>}>创建</Button>
+                        <Button className="ml-2" onClick={() => this.refresh()} icon={<ReloadOutlined/>}>刷新</Button>
+                        <Button className="ml-2" onClick={() => this.setState({modalForCreateRole: true})} icon={<CloudSyncOutlined/>}>创建</Button>
                     </div>
                 </div>
                 <Table
@@ -231,21 +252,15 @@ export default class RoleList extends React.Component<Props, State> {
                            visible={this.state.modalForPermission}
                            onOk={() => this.savePermission()}
                            onCancel={() => this.setState({modalForPermission: false})}
-                           footer={null}
                     >
-                        <Tabs>
-                            {
-                                this.state.permissionConfig.map(group => {
-                                    return <Tabs.TabPane tab={group.groupName} key={group.groupId}>
-                                        {
-                                            group.permissions.map(p => {
-                                                return <Checkbox className={"m-1"}>{p.permissionName}</Checkbox>
-                                            })
-                                        }
-                                    </Tabs.TabPane>
-                                })
-                            }
-                        </Tabs>
+
+                        <Tree
+                            checkable
+                            height={600}
+                            onCheck={(x, t) => this.onCheck(t)}
+                            checkedKeys={this.state.selectPermissions}
+                            treeData={this.state.permissionTree}
+                        />
                     </Modal>
                 </div>
             </div>

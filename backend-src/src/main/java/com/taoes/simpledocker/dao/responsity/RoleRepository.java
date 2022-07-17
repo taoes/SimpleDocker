@@ -50,9 +50,9 @@ public class RoleRepository extends ServiceImpl<RoleMapper, RoleDao> {
     return this.baseMapper.selectList(wrapper);
   }
 
-  public int countByName(String name) {
+  public RoleDao findByName(String name) {
     LambdaQueryWrapper<RoleDao> wrapper = new LambdaQueryWrapper<>();
     wrapper.eq(RoleDao::getName, name);
-    return this.count(wrapper);
+    return this.baseMapper.selectOne(wrapper);
   }
 }

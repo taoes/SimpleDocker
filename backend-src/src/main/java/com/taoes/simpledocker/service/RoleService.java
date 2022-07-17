@@ -1,5 +1,6 @@
 package com.taoes.simpledocker.service;
 
+import com.taoes.simpledocker.controller.response.role.PermissionTreeResponse;
 import com.taoes.simpledocker.model.PageModel;
 import com.taoes.simpledocker.model.Role;
 
@@ -25,4 +26,12 @@ public interface RoleService {
 
 
     void savePermission(Integer roleId, List<String> permissions);
+
+    /**
+     * 创建角色树信息
+     *
+     * @param id 角色ID
+     * @return
+     */
+    PermissionTreeResponse createPermissionTree(Integer id);
 }

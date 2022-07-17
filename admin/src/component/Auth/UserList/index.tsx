@@ -1,6 +1,6 @@
 import Search from "antd/es/input/Search";
 import {Button, message, Modal, Space, Table} from "antd";
-import {CloudSyncOutlined, ReloadOutlined} from "@ant-design/icons";
+import {CloudSyncOutlined, ReloadOutlined,DeleteOutlined,UserSwitchOutlined} from "@ant-design/icons";
 import {ColumnsType} from "antd/es/table";
 import User from "../../../api/Model/User";
 import {useEffect, useState} from "react";
@@ -46,13 +46,12 @@ const columns: ColumnsType<User> = [
         title: '操作',
         dataIndex: 'address',
         fixed: 'right',
-        width: 120,
+        width: 80,
         render: (_, user: User) => {
             return (
                 <Space>
-                    <Button size={"small"} danger>禁用</Button>
-                    <Button size={"small"}>详情</Button>
-                    <Button size={"small"}>角色</Button>
+                    <Button size={"small"} danger icon={<DeleteOutlined />}>删除</Button>
+                    <Button size={"small"} icon={<UserSwitchOutlined />}>角色</Button>
                 </Space>
             )
         }

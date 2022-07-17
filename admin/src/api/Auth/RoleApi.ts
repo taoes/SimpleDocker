@@ -1,12 +1,13 @@
 import httpRequest from '../Api'
-import DockerContainer from "../Model/DockerContainer";
-import UserLoginRequest from "../Model/Auth/UserLoginRequest";
 import Role from "../Model/Auth/Role";
 import {Base} from "../Base";
 import {Page} from "../Page";
 import RoleCreatedRequest from "../Model/Auth/RoleCreatedRequest";
 import RoleUpdateRequest from "../Model/Auth/RoleUpdateRequest";
 import PermissionGroup from "../Model/Auth/PermissionGroup";
+import Permission from "../Model/Auth/Permission";
+import type {DataNode} from 'antd/es/tree'
+import PermissionTree from "../Model/Auth/PermissionTree";
 
 /**
  * 获取角色列表
@@ -36,12 +37,16 @@ function deleteRole(id: number): Promise<Base<Boolean>> {
     return httpRequest.delete<Base<Boolean>>(`/role?id=${id}`).then(data => data.data);
 }
 
-
 /**
- * 获取权限组配置
+ * 查询角色的权限树
+ * @param id
  */
-function getPermissionGroup(): Promise<Base<Array<PermissionGroup>>> {
-    return httpRequest.get<Base<Array<PermissionGroup>>>('/role/permission/config').then(data => data.data);
+function getPermissionOfRole(id: number): Promise<Base<PermissionTree>> {
+    return httpRequest.get<Base<PermissionTree>>(`/role/permission/${id}/tree`).then(data => data.data);
 }
 
-export {roleList, createNewRole, updateRole, deleteRole,getPermissionGroup}
+function saveRolePermission(roleId: number, permissions: Array<string>): Promise<Base<Boolean>> {
+    return httpRequest.post(`/role/permission`, {roleId, permissions}).then(data => data.data);
+}
+
+export {roleList, createNewRole, updateRole, deleteRole, getPermissionOfRole, saveRolePermission}
