@@ -27,7 +27,7 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * 镜像相关服务实现
  *
- * @author 枕上江南 zhoutao925638@vip.qq.com
+ * @author 枕上江南 zhoutao825638@vip.qq.com
  * @date 2021/12/15 7:32 下午
  */
 

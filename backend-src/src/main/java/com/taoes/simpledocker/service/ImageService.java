@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * 镜像相关服务
  *
- * @author 枕上江南 zhoutao925638@vip.qq.com
+ * @author 枕上江南 zhoutao825638@vip.qq.com
  * @date 2021/12/5 12:47 上午
  */
 public interface ImageService {

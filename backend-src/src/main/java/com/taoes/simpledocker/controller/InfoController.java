@@ -1,9 +1,14 @@
 package com.taoes.simpledocker.controller;
 
+import cn.dev33.satoken.annotation.SaCheckPermission;
 import com.github.dockerjava.api.DockerClient;
 import com.github.dockerjava.api.model.Info;
 import com.github.dockerjava.api.model.Version;
 import com.taoes.simpledocker.config.DockerClientFactory;
+import com.taoes.simpledocker.model.Role;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,16 +20,19 @@ import java.util.Map;
 /**
  * TODO: please input file info
  *
- * @author 枕上江南 zhoutao925638@vip.qq.com
+ * @author 枕上江南 zhoutao825638@vip.qq.com
  * @date 2021/12/4 11:35 下午
  */
+@Api(tags = "Docker信息")
 @RestController
 @RequestMapping("/api/info")
+@RequiredArgsConstructor
 public class InfoController {
 
-    @Autowired
-    private DockerClientFactory clientFactory;
+    private final DockerClientFactory clientFactory;
 
+    @ApiOperation("查看Docker信息")
+    @SaCheckPermission(value = "docker:query",orRole = Role.ADMIN_ROLE_NAME)
     @GetMapping
     public Map<String, Object> info() {
         final DockerClient client = clientFactory.get();

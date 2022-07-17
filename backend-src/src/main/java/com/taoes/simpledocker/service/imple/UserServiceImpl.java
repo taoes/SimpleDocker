@@ -1,6 +1,7 @@
 package com.taoes.simpledocker.service.imple;
 
 import cn.hutool.core.collection.CollUtil;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.taoes.simpledocker.converter.UserConverter;
 import com.taoes.simpledocker.dao.bean.RoleDao;
 import com.taoes.simpledocker.dao.bean.UserDao;
@@ -23,7 +24,7 @@ import java.util.stream.Collectors;
 /**
  * 用户服务实现
  *
- * @author 枕上江南 zhoutao925638@vip.qq.com
+ * @author 枕上江南 zhoutao825638@vip.qq.com
  * @date 2021/12/15 1:29 下午
  */
 @Slf4j
@@ -42,7 +43,7 @@ public class UserServiceImpl implements UserService {
     private RoleRepository roleRepository;
 
     @Override
-    public User findByName(String username) {
+    public User findByAccount(String username) {
 
         return null;
     }
@@ -59,7 +60,10 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<User> list() {
-        return userRepository.list().stream().map(userConverter::from).collect(Collectors.toList());
+        LambdaQueryWrapper<UserDao> wrapper = new LambdaQueryWrapper<>();
+        wrapper.orderByDesc(UserDao::getId);
+        final List<UserDao> userList = this.userRepository.list(wrapper);
+        return userList.stream().map(userConverter::from).collect(Collectors.toList());
     }
 
     @Override
@@ -88,5 +92,24 @@ public class UserServiceImpl implements UserService {
             return Collections.emptyList();
         }
         return roleService.getByIds(roleIds);
+    }
+
+    @Override
+    public void create(User user) {
+        final String account = user.getAccount();
+        final User userOfExist = this.findByAccount(account);
+        if (userOfExist != null){
+            throw new ParamCheckException("用户名已存在");
+        }
+
+        final UserDao userDao = userConverter.to(user);
+        userRepository.save(userDao);
+    }
+
+
+    @Override
+    public void delete(Long userId) {
+        userRepository.removeById(userId);
+        log.info("删除用户:{}",userId);
     }
 }

@@ -34,6 +34,10 @@ class DockerInfoDescription extends React.Component<Props, State> {
     }
   }
 
+  componentWillReceiveProps(nextProps:Props){
+    this.setState({dockerInfo:nextProps.dockerInfo})
+  }
+
 
   render() {
     let items = []

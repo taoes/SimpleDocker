@@ -28,7 +28,7 @@ const items = [
   {label: '网络管理', key: 'network', icon: <GlobalOutlined/>},
   {label: '监控设置', key: 'monitor', icon: <BellOutlined/>},
   {label: '系统设置', key: 'setting', icon: <SettingOutlined/>},
-  {label: '账户管理', key: 'user', icon: <UsergroupAddOutlined/>},
+  {label: '授权管理', key: 'auth', icon: <UsergroupAddOutlined/>},
   {label: '关于界面', key: 'about', icon: <IdcardOutlined/>},
 ];
 

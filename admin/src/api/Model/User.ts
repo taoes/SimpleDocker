@@ -1,6 +1,6 @@
 export default interface User {
   id: number
-  name: string
+  account: string
   createdAt: string
   updatedAt: string
 }

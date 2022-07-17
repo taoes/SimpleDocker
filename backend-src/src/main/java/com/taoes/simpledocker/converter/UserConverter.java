@@ -26,6 +26,11 @@ public class UserConverter extends AbstractConverter<UserDao, User> {
 
   @Override
   public UserDao to(User user) {
-    return null;
+    return new UserDao()
+        .setAccount(user.getAccount())
+        .setName(user.getName())
+        .setPassword(user.getAccount())
+        .setRoleIds(user.getRoleIds())
+        .setSaltValue(user.getAccount());
   }
 }

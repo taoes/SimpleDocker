@@ -1,6 +1,7 @@
 package com.taoes.simpledocker.dao.bean;
 
 import com.baomidou.mybatisplus.annotation.TableName;
+import java.time.LocalDateTime;
 import lombok.Data;
 
 /**
@@ -11,6 +12,8 @@ import lombok.Data;
 @TableName("role")
 public class RoleDao extends BaseDao {
 
-    private String comment;
-    private String name;
+  private String comment;
+  private String name;
+  private LocalDateTime createdAt;
+  private LocalDateTime updatedAt;
 }

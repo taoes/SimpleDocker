@@ -5,7 +5,7 @@ import lombok.Data;
 /**
  * 用户对象
  *
- * @author 枕上江南 zhoutao925638@vip.qq.com
+ * @author 枕上江南 zhoutao825638@vip.qq.com
  * @date 2021/12/15 1:26 下午
  */
 @Data
@@ -24,6 +24,10 @@ public class User {
      */
     private String name;
 
+    /**
+     * 角色信息
+     */
+    private String roleIds;
 
     /**
      * 创建时间

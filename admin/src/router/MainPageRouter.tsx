@@ -6,10 +6,11 @@ import NetworkPage from "../page/NetworkPage";
 import HomePage from "../page/HomePage";
 import MonitorPage from "../page/MonitorPage";
 import SettingPage from "../page/SettingPage";
-import UserPage from "../page/UserPage";
+import UserPage from "../page/AuthPage";
 import AboutPage from "../page/AboutPage";
 import CreateContainerPage from "../page/CreateContainerPage";
 import ContainerLogPage from "../page/ContainerLogPage";
+import AuthPage from "../page/AuthPage";
 
 
 export const appRouter: Array<AppRouter> = [
@@ -54,8 +55,8 @@ export const appRouter: Array<AppRouter> = [
     exact: true
   },
   {
-    path: '/app/user',
-    component: <UserPage/>,
+    path: '/app/auth',
+    component: <AuthPage/>,
     exact: true
   },
   {

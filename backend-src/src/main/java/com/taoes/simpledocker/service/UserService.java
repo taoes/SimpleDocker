@@ -8,7 +8,7 @@ import java.util.List;
 /**
  * 用户服务
  *
- * @author 枕上江南 zhoutao925638@vip.qq.com
+ * @author 枕上江南 zhoutao825638@vip.qq.com
  * @date 2021/12/15 1:23 下午
  */
 public interface UserService {
@@ -19,7 +19,7 @@ public interface UserService {
    * @param username 账户民
    * @return 生成的token
    */
-  User findByName(String username);
+  User findByAccount(String username);
 
   /**
    * 禁用用户
@@ -40,4 +40,18 @@ public interface UserService {
   void authRole(Long userId, List<Integer> roleIds);
 
   List<Role> getUserRoles(Long userId);
+
+  /**
+   * 创建新用户
+   *
+   * @param user 用户
+   */
+  void create(User user);
+
+  /**
+   * 删除用户
+   *
+   * @param userId
+   */
+  void delete(Long userId);
 }

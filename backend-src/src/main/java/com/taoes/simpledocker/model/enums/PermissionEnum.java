@@ -24,6 +24,20 @@ public enum PermissionEnum {
     DOCKER_ENDPOINT_DELETE(PermissionGroupEnum.DOCKER_ENDPOINT.getId(), "docker:endpoint:delete", "删除docker节点"),
     DOCKER_ENDPOINT_QUERY(PermissionGroupEnum.DOCKER_ENDPOINT.getId(), "docker:endpoint:query", "查看docker节点"),
 
+
+    IMAGE_BUILD(PermissionGroupEnum.IMAGE.getId(),"image:build","构建镜像"),
+    IMAGE_PUSH(PermissionGroupEnum.IMAGE.getId(),"image:push","推送镜像"),
+    IMAGE_DELETE(PermissionGroupEnum.IMAGE.getId(),"image:delete","删除镜像"),
+    IMAGE_TAG(PermissionGroupEnum.IMAGE.getId(),"image:tag","标记镜像"),
+    IMAGE_BACK(PermissionGroupEnum.IMAGE.getId(),"image:back","备份镜像"),
+    IMAGE_EXPORT(PermissionGroupEnum.IMAGE.getId(),"image:export","导出镜像"),
+
+
+    CONTAINER_CREATE(PermissionGroupEnum.CONTAINER.getId(), "container:create","创建容器"),
+    CONTAINER_OPERATOR(PermissionGroupEnum.CONTAINER.getId(), "container:operator","操作容器"),
+    CONTAINER_FILE(PermissionGroupEnum.CONTAINER.getId(), "container:file","容器文件"),
+    CONTAINER_TERMINAL(PermissionGroupEnum.CONTAINER.getId(), "container:terminal","容器终端"),
+
     USER_ADD(PermissionGroupEnum.USER.getId(), "user:add", "新增用户"),
     USER_UPDATE(PermissionGroupEnum.USER.getId(), "user:update", "修改用户"),
     USER_DELETE(PermissionGroupEnum.USER.getId(), "user:delete", "删除用户"),
