@@ -19,7 +19,7 @@ public interface UserService {
    * @param username 账户民
    * @return 生成的token
    */
-  User findByName(String username);
+  User findByAccount(String username);
 
   /**
    * 禁用用户
@@ -40,4 +40,11 @@ public interface UserService {
   void authRole(Long userId, List<Integer> roleIds);
 
   List<Role> getUserRoles(Long userId);
+
+  /**
+   * 创建新用户
+   *
+   * @param user 用户
+   */
+  void create(User user);
 }

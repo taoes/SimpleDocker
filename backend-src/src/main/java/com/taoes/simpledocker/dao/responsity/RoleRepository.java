@@ -4,6 +4,7 @@ import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.taoes.simpledocker.dao.bean.BaseDao;
 import com.taoes.simpledocker.dao.bean.RoleDao;
 import com.taoes.simpledocker.dao.mapper.RoleMapper;
 import com.taoes.simpledocker.model.Role;
@@ -25,6 +26,7 @@ public class RoleRepository extends ServiceImpl<RoleMapper, RoleDao> {
 
   public List<RoleDao> getAll() {
     LambdaQueryWrapper<RoleDao> wrapper = new LambdaQueryWrapper<>();
+    wrapper.orderByDesc(BaseDao::getId);
     return this.baseMapper.selectList(wrapper);
   }
 

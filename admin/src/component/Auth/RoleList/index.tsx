@@ -4,14 +4,22 @@ import {
     createNewRole,
     deleteRole,
     getPermissionOfRole,
-    roleList, saveRolePermission
+    roleList, saveRolePermission, updateRole
 } from "../../../api/Auth/RoleApi";
 import {Button, Form, Input, message, Modal, Space, Table, Tree} from "antd";
 import {ColumnsType} from "antd/es/table";
 import type {DataNode} from "antd/es/tree";
-import {ReloadOutlined, CloudSyncOutlined, ExclamationCircleOutlined,DeleteOutlined,UnlockOutlined} from '@ant-design/icons'
+import {
+    ReloadOutlined,
+    CloudSyncOutlined,
+    ExclamationCircleOutlined,
+    DeleteOutlined,
+    UnlockOutlined,
+    CloudUploadOutlined
+} from '@ant-design/icons'
 import RoleCreatedRequest from "../../../api/Model/Auth/RoleCreatedRequest";
 import './index.css'
+import RoleUpdateRequest from "../../../api/Model/Auth/RoleUpdateRequest";
 
 interface Props {
 
@@ -21,6 +29,7 @@ interface State {
     roleList: Array<Role>,
     modalForCreateRole: boolean,
     modalForPermission: boolean,
+    modalForUpdateRole: boolean,
     currentRoleId: number,
     newRoleReq: RoleCreatedRequest,
     permissionTree: Array<DataNode>,
@@ -32,11 +41,14 @@ const {confirm} = Modal;
 
 export default class RoleList extends React.Component<Props, State> {
 
+    private updateRoleReq: RoleUpdateRequest = {}
+
     constructor(props: Props) {
         super(props);
         this.state = {
             modalForCreateRole: false,
             modalForPermission: false,
+            modalForUpdateRole: false,
             roleList: [],
             permissionTree: [],
             selectPermissions: [],
@@ -71,20 +83,45 @@ export default class RoleList extends React.Component<Props, State> {
     saveRole = () => {
         // 检查数据
         let data = this.state.newRoleReq;
-        if (data.name?.trim() === '' || data.comment?.trim() === '') {
-            message.error(`创建失败，角色信息不能为空`)
+        let dataUndefine = !data.name || !data.comment
+        if (dataUndefine || data.name?.trim() === '' || data.comment?.trim() === '') {
+            message.error(`创建失败，角色信息不能为空`).then();
             return
         }
         createNewRole(data).then(resp => {
             let {code, msg} = resp;
             if (code !== 0) {
-                message.info(`创建失败，${msg}`);
+                message.info(`创建失败，${msg}`).then();
                 return
             }
             this.setState({modalForCreateRole: false, newRoleReq: {name: '', comment: ''}})
             this.refresh()
         })
     }
+
+    /**
+     * 保存角色
+     */
+    updateRoleInfo = () => {
+        // 检查数据
+        let data = this.updateRoleReq;
+        let dataUndefine = !data.name || !data.comment
+        if (dataUndefine || data.name === '' || data.comment === '') {
+            message.error(`更新失败，角色信息不能为空`).then()
+            return
+        }
+
+        updateRole(data).then(resp => {
+            let {code, msg} = resp;
+            if (code !== 0) {
+                message.info(`更新失败，${msg}`).then();
+                return
+            }
+            this.setState({modalForUpdateRole: false})
+            this.refresh()
+        })
+    }
+
     /**
      * 保存权限
      */
@@ -129,6 +166,10 @@ export default class RoleList extends React.Component<Props, State> {
         });
     }
 
+    /**
+     * 更新角色权限
+     * @param role
+     */
     updatePermission = (role: Role) => {
         this.setState({
             currentRoleId: role.id,
@@ -147,6 +188,18 @@ export default class RoleList extends React.Component<Props, State> {
 
     onRoleChange = (_: any, value: RoleCreatedRequest) => {
         this.setState({newRoleReq: value})
+    }
+
+    showUpdateModal = (role: Role) => {
+        this.setState({
+            currentRoleId: role.id,
+            modalForUpdateRole: true
+        })
+    }
+
+    onUpdateRoleChange = (_: any, value: RoleUpdateRequest) => {
+        value.id = this.state.currentRoleId
+        this.updateRoleReq = value;
     }
 
 
@@ -173,8 +226,8 @@ export default class RoleList extends React.Component<Props, State> {
             {
                 title: '角色描述',
                 dataIndex: 'comment',
-                render: comment => <span>{comment}</span>,
                 ellipsis: true,
+                render: comment => <span>{comment}</span>,
                 width: 150,
             },
             {
@@ -195,12 +248,16 @@ export default class RoleList extends React.Component<Props, State> {
                 title: '操作',
                 dataIndex: 'id',
                 fixed: 'right',
-                width: 80,
+                width: 120,
                 render: (_, role: Role) => {
                     return (
                         <Space>
-                            <Button size={"small"} danger onClick={() => this.deleteRole(role)} icon={<DeleteOutlined />}>删除</Button>
-                            <Button size={"small"} onClick={() => this.updatePermission(role)} icon={<UnlockOutlined />}>权限</Button>
+                            <Button size={"small"} danger onClick={() => this.deleteRole(role)}
+                                    icon={<DeleteOutlined/>}>删除</Button>
+                            <Button size={"small"} type={"primary"} onClick={() => this.showUpdateModal(role)}
+                                    icon={<CloudUploadOutlined/>}>更新</Button>
+                            <Button size={"small"} onClick={() => this.updatePermission(role)}
+                                    icon={<UnlockOutlined/>}>权限</Button>
                         </Space>
                     )
                 }
@@ -213,7 +270,8 @@ export default class RoleList extends React.Component<Props, State> {
                 <div>
                     <div className="imageController inline">
                         <Button className="ml-2" onClick={() => this.refresh()} icon={<ReloadOutlined/>}>刷新</Button>
-                        <Button className="ml-2" onClick={() => this.setState({modalForCreateRole: true})} icon={<CloudSyncOutlined/>}>创建</Button>
+                        <Button className="ml-2" onClick={() => this.setState({modalForCreateRole: true})}
+                                icon={<CloudSyncOutlined/>}>创建</Button>
                     </div>
                 </div>
                 <Table
@@ -227,6 +285,31 @@ export default class RoleList extends React.Component<Props, State> {
                        onOk={() => this.saveRole()}
                        onCancel={() => this.setState({modalForCreateRole: false})}>
                     <Form onValuesChange={this.onRoleChange}>
+                        <Form.Item
+                            label="角色名称"
+                            name="name"
+                            rules={[{required: true, message: '请输入角色名称!'}]}
+                        >
+                            <Input/>
+                        </Form.Item>
+
+
+                        <Form.Item
+                            label="角色描述"
+                            name="comment"
+                            rules={[{required: true, message: '请输入角色的描述信息!'}]}
+                        >
+                            <Input/>
+                        </Form.Item>
+
+                    </Form>
+                </Modal>
+
+
+                <Modal title="更新角色" visible={this.state.modalForUpdateRole}
+                       onOk={() => this.updateRoleInfo()}
+                       onCancel={() => this.setState({modalForUpdateRole: false})}>
+                    <Form onValuesChange={this.onUpdateRoleChange}>
                         <Form.Item
                             label="角色名称"
                             name="name"

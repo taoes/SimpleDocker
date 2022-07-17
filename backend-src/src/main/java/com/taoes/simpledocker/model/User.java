@@ -24,6 +24,10 @@ public class User {
      */
     private String name;
 
+    /**
+     * 角色信息
+     */
+    private String roleIds;
 
     /**
      * 创建时间

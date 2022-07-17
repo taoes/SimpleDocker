@@ -1,11 +1,14 @@
 package com.taoes.simpledocker.controller;
 
 import cn.dev33.satoken.annotation.SaCheckPermission;
+import com.taoes.simpledocker.controller.auth.UserCreateRequest;
+import com.taoes.simpledocker.controller.auth.UserResetRequest;
 import com.taoes.simpledocker.controller.request.user.UserAuthRoleRequest;
 import com.taoes.simpledocker.model.ResponseModel;
 import com.taoes.simpledocker.model.Role;
 import com.taoes.simpledocker.model.User;
 import com.taoes.simpledocker.service.UserService;
+import com.taoes.simpledocker.utils.JsonUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,6 +39,16 @@ public class UserController {
     public ResponseModel<List<User>> list() {
         final List<User> list = userService.list();
         return ResponseModel.ok(list);
+    }
+
+    @PostMapping
+    public ResponseModel<Boolean> create(@RequestBody UserCreateRequest request){
+        User user = new User();
+        user.setAccount(request.getAccount())
+            .setName(request.getName())
+            .setRoleIds(JsonUtils.toJsonString(request.getRoleIds()));
+        userService.create(user);
+        return ResponseModel.ok(true);
     }
 
     @ApiOperation("配置用户角色")

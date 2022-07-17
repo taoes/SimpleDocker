@@ -1,17 +1,26 @@
 import httpRequest from '../Api'
 import User from "../Model/User";
+import UserCreatedRequest from "../Model/Auth/UserCreatedRequest";
+import {Base} from "../Base";
 
 interface UserResp {
-  code:number
-  data:Array<User>
-  msg:string
+    code: number
+    data: Array<User>
+    msg: string
 }
 
 /**
- * 获取容器列表
+ * 获取用户列表
  */
-function userList(): Promise<UserResp> {
-  return httpRequest.get<UserResp>('/user').then(data => data.data);
+function userList(): Promise<Base<Array<User>>> {
+    return httpRequest.get<Base<Array<User>>>('/user').then(data => data.data);
 }
 
-export {userList}
+/**
+ * 创建新的用户
+ */
+function createNewUser(req: UserCreatedRequest): Promise<Base<Boolean>> {
+    return httpRequest.post<Base<Boolean>>(`/user`, req).then(data => data.data);
+}
+
+export {userList,createNewUser}
