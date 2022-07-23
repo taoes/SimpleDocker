@@ -5,6 +5,7 @@ import com.github.dockerjava.api.async.ResultCallback;
 import com.github.dockerjava.api.model.Frame;
 import com.taoes.simpledocker.config.DockerClientFactory;
 import com.taoes.simpledocker.ws.callback.ContainerLogResultCallback;
+
 import java.io.IOException;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -16,6 +17,7 @@ import javax.websocket.OnMessage;
 import javax.websocket.OnOpen;
 import javax.websocket.Session;
 import javax.websocket.server.ServerEndpoint;
+
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,8 +31,8 @@ import org.springframework.stereotype.Component;
  */
 @Slf4j
 @Component
-@ServerEndpoint("/api/ws/container/{cId}/log")
-public class ContainerLogWebSocket {
+@ServerEndpoint("/api/ws/client/{clientId}/container/{containerId}/log")
+public class ContainerLogWebSocket extends AbstractWebSocket {
 
     private static DockerClientFactory clientFactory;
 
@@ -39,88 +41,33 @@ public class ContainerLogWebSocket {
         ContainerLogWebSocket.clientFactory = clientFactory;
     }
 
-    // 当前在线数
-    private final static AtomicInteger OnlineCount = new AtomicInteger(0);
-
-    private Map<String, ResultCallback<Frame>> callbackMap = new ConcurrentHashMap<>();
-
     @PostConstruct
-    public void init() {
-        log.info("容器日志 WS 初始化 OK！");
+    public void printWsStartInfo() {
+        log.info("容器日志WebSocket初始化完成！");
     }
+
 
     @OnOpen
     public void onOpen(Session session) {
-        final int i = OnlineCount.incrementAndGet();
-        log.info("有连接接入，当前连接数为：{}", i);
-
         final Map<String, String> param = session.getPathParameters();
-        final DockerClient client = clientFactory.get("DEFAULT2");
-        final ResultCallback<Frame> callback = client
-            .logContainerCmd(param.get("cId"))
-            .withFollowStream(true)
-            .withStdErr(true)
-            .withStdOut(true)
-            .withTail(1000)
-            .exec(new ContainerLogResultCallback(session));
-        callbackMap.put(session.getId(), callback);
-    }
 
-    /**
-     * 连接关闭调用的方法
-     */
-    @OnClose
-    @SneakyThrows
-    public void onClose(Session session) {
-        int cnt = OnlineCount.decrementAndGet();
-        final ResultCallback<Frame> resultCallback = callbackMap.get(session.getId());
-        if (resultCallback != null && session.isOpen()) { resultCallback.close(); }
-        log.info("有连接关闭，当前连接数为：{}", cnt);
-    }
+        // todo 燕归来兮 检查参数
+        final String containerId = param.get("containerId");
+        final String clientId = param.get("clientId");
 
-    /**
-     * 收到客户端消息后调用的方法
-     *
-     * @param message 客户端发送过来的消息
-     */
-    @OnMessage
-    public void onMessage(String message, Session session) {
-        System.out.println("ContainerLogWebSocket.onMessage");
-        SendMessage(session, "收到消息，消息内容：" + message);
-
-    }
-
-    /**
-     * 出现错误
-     *
-     * @param session
-     * @param error
-     */
-    @OnError
-    @SneakyThrows
-    public void onError(Session session, Throwable error) {
-        System.out.println("ContainerLogWebSocket.onError");
-        log.error("发生错误：{}，Session ID： {}", error.getMessage(), session.getId());
-
-        final ResultCallback<Frame> resultCallback = callbackMap.get(session.getId());
-        if (resultCallback != null && session.isOpen()) { resultCallback.close(); }
-    }
-
-    /**
-     * 发送消息
-     *
-     * @param session
-     * @param message
-     */
-    public void SendMessage(Session session, String message) {
-        if (!session.isOpen()) {
-            return;
-        }
         try {
-            session.getBasicRemote().sendText(message);
-        } catch (IOException e) {
-            log.error("发送消息出错：{}", e.getMessage());
+            final DockerClient client = clientFactory.get(clientId);
+            this.init(session);
+            final ResultCallback.Adapter<Frame> callback = client
+                    .logContainerCmd(containerId)
+                    .withFollowStream(true)
+                    .withStdErr(true)
+                    .withStdOut(true)
+                    .withTail(1000)
+                    .exec(new ContainerLogResultCallback(session));
+            this.addCallback(session, callback);
+        } catch (Exception e) {
+            this.onClose(session);
         }
     }
-
 }

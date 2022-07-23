@@ -32,20 +32,20 @@ class ContainerLogPage extends React.Component<any, any> {
   term: Terminal | null = null
   socket: WebSocket | null = null
 
-  constructor(props: any, context: any) {
-    super(props, context);
+  constructor(props: any) {
+    super(props);
     this.state = {
       containerId: props.router.params.containerId,
       log: [],
-      ws: null
+      ws: `ws://192.168.1.102:3364/api/ws/client/${localStorage.getItem('clientId')}/container/${props.router.params.containerId}/log`
+ 
     }
   }
 
 
   componentDidMount() {
     //  创建日志WS服务
-    let that = this;
-    let websocket = new WebSocket(`ws://192.168.1.102:3364/api/ws/container/${this.state.containerId}/log`);
+    let websocket = new WebSocket(this.state.ws);
     websocket.onopen = function () {
 
     };
@@ -121,7 +121,7 @@ class ContainerLogPage extends React.Component<any, any> {
                     </Space>
                   }/>
 
-          <div id="terminal" style={{width: '100%', height: '80%'}}/>
+          <div id="terminal" style={{width: '100%', height: '100%'}}/>
         </div>
     )
   }
