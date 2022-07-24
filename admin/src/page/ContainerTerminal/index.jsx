@@ -11,7 +11,6 @@ import {
   ReloadOutlined,
   ArrowUpOutlined,
   ArrowDownOutlined,
-  FileZipOutlined,
   HomeOutlined,
   DeleteOutlined
 } from "@ant-design/icons";
@@ -46,7 +45,8 @@ class ContainerTerminal extends React.Component {
     this.clientId = props.router.params.clientId;
     this.socket =null
     this.term = null;
-    this.socketUrl = `ws://192.168.1.102:3364/api/ws/container/${this.containerId}/terminal`
+
+    this.socketUrl = `ws://192.168.1.102:3364/api/ws/client/${localStorage.getItem('clientId')}/container/${this.containerId}/terminal`
   }
 
   componentDidMount() {

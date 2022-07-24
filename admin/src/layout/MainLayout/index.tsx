@@ -22,8 +22,8 @@ export default function MainLayout() {
           <MainTopNav/>
         </Header>
 
-        <Layout>
-          <Sider trigger={null} collapsible collapsed={mainMenuState} style={{}}>
+        <Layout style={{height:'100%'}}>
+          <Sider trigger={null} collapsible collapsed={mainMenuState} style={{height:'100%'}}>
             <MainSideMenu updateMainMenuState={updateMainMenuState} mainMenuState/>
           </Sider>
 
