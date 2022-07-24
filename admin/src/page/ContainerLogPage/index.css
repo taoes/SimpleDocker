@@ -5,3 +5,7 @@
 .xterm .xterm-screen canvas{
   padding: 5px;
 }
+
+#terminal div{
+  height: 100%;
+}

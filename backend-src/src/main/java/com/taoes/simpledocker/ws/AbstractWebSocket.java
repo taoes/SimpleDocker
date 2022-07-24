@@ -1,6 +1,8 @@
 package com.taoes.simpledocker.ws;
 
 
+import cn.dev33.satoken.session.SaSession;
+import cn.dev33.satoken.stp.StpUtil;
 import cn.hutool.core.map.MapUtil;
 import cn.hutool.core.util.StrUtil;
 import com.github.dockerjava.api.async.ResultCallbackTemplate;
@@ -133,5 +135,7 @@ public abstract class AbstractWebSocket extends AbstractSocketStream {
         idAndSessionGroup.remove(sessionId);
         sessionSet.remove(sessionOfExist);
     }
+
+
 
 }

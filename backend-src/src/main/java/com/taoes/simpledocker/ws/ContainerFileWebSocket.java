@@ -3,6 +3,7 @@ package com.taoes.simpledocker.ws;
 import com.Ostermiller.util.CircularByteBuffer;
 import com.github.dockerjava.api.DockerClient;
 import com.taoes.simpledocker.config.DockerClientFactory;
+import com.taoes.simpledocker.ws.callback.FileManagementCallback;
 import com.taoes.simpledocker.ws.callback.TerminalResultCallback;
 
 import java.io.InputStream;
@@ -72,14 +73,22 @@ public class ContainerFileWebSocket extends AbstractWebSocket {
                     .withTty(true)
                     .exec().getId();
 
-
             // 执行命令
-            final TerminalResultCallback callback = client.execStartCmd(execId)
+            final FileManagementCallback callback = client.execStartCmd(execId)
                     .withStdIn(this.getInput(session))
-                    .exec(new TerminalResultCallback(session));
+                    .exec(new FileManagementCallback(session));
             this.addCallback(session, callback);
         } catch (Exception e) {
             this.onClose(session);
         }
+    }
+
+    /**
+     * 收到客户端消息后写入输出流
+     */
+    @SneakyThrows
+    @OnMessage
+    public void onMessage(String message, Session session) {
+        super.write(session, (message + "\n").getBytes());
     }
 }

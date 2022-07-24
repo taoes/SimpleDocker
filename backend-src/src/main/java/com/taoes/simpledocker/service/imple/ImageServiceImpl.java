@@ -6,7 +6,6 @@ import com.github.dockerjava.api.command.SaveImagesCmd;
 import com.taoes.simpledocker.model.exception.NotFoundClientException;
 
 import java.io.*;
-import java.net.URLEncoder;
 import java.util.List;
 
 import com.github.dockerjava.api.DockerClient;
@@ -109,25 +108,12 @@ public class ImageServiceImpl implements ImageService {
     }
 
     @Override
-    public void save(String nameTag, HttpServletRequest request,HttpServletResponse response) {
+    public InputStream save(String nameTag) {
         final DockerClient dockerClient = factory.get();
         String[] nameTagArr = nameTag.split("\\:");
         //docker save
         SaveImageCmd saveImage = dockerClient.saveImageCmd(nameTagArr[0]).withTag(nameTagArr[1]);
-        try (InputStream input = saveImage.exec();
-             ServletOutputStream output = response.getOutputStream()) {
-            String curentTime = DateUtil.format(DateUtil.date(), "yyyyMMdd_HHmmss_");
-            response.setContentType("application/x-zip-compressed;charset=UTF-8");
-            response.setHeader("Content-Disposition","attachment;filename=" + curentTime + nameTag + ".zip");
-            // 循环取出流中的数据
-            byte[] b = new byte[1024];
-            int len;
-            while ((len = input.read(b)) > 0) {
-                output.write(b, 0, len);
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        return saveImage.exec();
     }
 
     @Override

@@ -1,6 +1,7 @@
 package com.taoes.simpledocker.controller;
 
 import cn.dev33.satoken.annotation.SaCheckPermission;
+import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.StrUtil;
 import com.github.dockerjava.api.DockerClient;
 import com.github.dockerjava.api.command.InspectImageResponse;
@@ -13,6 +14,9 @@ import com.taoes.simpledocker.model.Role;
 import com.taoes.simpledocker.service.ImageService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -26,6 +30,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -128,8 +133,21 @@ public class ImageController {
   @ApiOperation("导出镜像")
   @SaCheckPermission(value = "image:export",orRole = Role.ADMIN_ROLE_NAME)
   @GetMapping("/save/{nameTag}")
-  public void save(@PathVariable String nameTag, HttpServletRequest request,HttpServletResponse response) {
-    imageService.save(nameTag,request,response);
+  public void save(@PathVariable String nameTag,HttpServletResponse response) {
+    try (InputStream input = imageService.save(nameTag);
+         ServletOutputStream output = response.getOutputStream()) {
+      String currentTime = DateUtil.format(DateUtil.date(), "yyyyMMdd_HHmmss_");
+      response.setContentType("application/x-zip-compressed;charset=UTF-8");
+      response.setHeader("Content-Disposition","attachment;filename=" + currentTime + nameTag + ".zip");
+      // 循环取出流中的数据
+      byte[] b = new byte[1024];
+      int len;
+      while ((len = input.read(b)) > 0) {
+        output.write(b, 0, len);
+      }
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
   }
   /**
    * 批量保存镜像

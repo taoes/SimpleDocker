@@ -39,8 +39,7 @@ public abstract class AbstractSocketStream {
             log.error("回话:{}已关闭，停止写入数据", sessionId);
             return;
         }
-        final String sessionId = session.getId();
-        final OutputStream stream = outs.get(sessionId);
+        final OutputStream stream = outs.get(session.getId());
         if (stream == null) {
             return;
         }
