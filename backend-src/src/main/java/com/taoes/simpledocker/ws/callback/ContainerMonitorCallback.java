@@ -28,7 +28,6 @@ public class ContainerMonitorCallback extends AbstractResultCallback<Statistics>
     @SneakyThrows
     @Override
     public void onNext(Statistics statistics) {
-        log.debug("接收到消息:{}", JsonUtils.toJsonString(statistics));
         sendMessage(JsonUtils.toJsonString(statistics));
     }
 
