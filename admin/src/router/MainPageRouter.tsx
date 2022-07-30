@@ -11,61 +11,70 @@ import AboutPage from "../page/AboutPage";
 import CreateContainerPage from "../page/CreateContainerPage";
 import ContainerLogPage from "../page/ContainerLogPage";
 import AuthPage from "../page/AuthPage";
+import ContainerStat from "../component/App/Container/ContainerStat";
+import ContainerStatPage from "../page/ContainerStatPage";
 
 
 export const appRouter: Array<AppRouter> = [
   {
     path: '/app/home',
-    component: <HomePage/>,
+    component: <HomePage />,
     exact: true
   },
   {
     path: '/app/image',
-    component: <ImagePage/>,
+    component: <ImagePage />,
     exact: true
   },
   {
     path: '/app/container',
-    component: <ContainerPage/>,
+    component: <ContainerPage />,
     exact: true
   },
   {
     path: '/app/container/:containerId/log',
-    component: <ContainerLogPage/>,
+    component: <ContainerLogPage />,
     exact: true
   },
   {
+    path: '/app/container/:containerId/stat',
+    component: <ContainerStatPage />
+  },
+
+
+
+  {
     path: '/app/volume',
-    component: <VolumePage/>,
+    component: <VolumePage />,
     exact: true
   },
   {
     path: '/app/network',
-    component: <NetworkPage/>,
+    component: <NetworkPage />,
     exact: true
   },
   {
     path: '/app/monitor',
-    component: <MonitorPage/>,
+    component: <MonitorPage />,
     exact: true
   },
   {
     path: '/app/setting',
-    component: <SettingPage/>,
+    component: <SettingPage />,
     exact: true
   },
   {
     path: '/app/auth',
-    component: <AuthPage/>,
+    component: <AuthPage />,
     exact: true
   },
   {
     path: '/app/about',
-    component: <AboutPage/>,
+    component: <AboutPage />,
     exact: true
   }, {
     path: '/app/image/:imageId/run',
-    component: <CreateContainerPage/>,
+    component: <CreateContainerPage />,
     exact: true
   }
 ]

@@ -1,17 +1,18 @@
-import {Button, Drawer, message, Select, Space, Table, Tag} from "antd";
-import {ColumnsType} from "antd/es/table";
+import { Button, Drawer, message, Select, Space, Table, Tag } from "antd";
+import { ColumnsType } from "antd/es/table";
 import dateToStr from "../../utils/Time";
 import DockerContainer from "../../api/Model/DockerContainer";
-import {getContainers, updateContainer} from "../../api/Container/ContainerApi";
+import { getContainers, updateContainer } from "../../api/Container/ContainerApi";
 import ContainerDetailDrawer from "../../component/App/Container/ContainerDetailDrawer";
 import portShow from "./ports";
 import Search from "antd/es/input/Search";
-import {CloudSyncOutlined, ReloadOutlined} from "@ant-design/icons";
+import { CloudSyncOutlined, ReloadOutlined } from "@ant-design/icons";
 import React from "react";
 import getStatusInfo from "./status";
-import {NavigateFunction} from "react-router/lib/hooks";
+import { NavigateFunction } from "react-router/lib/hooks";
 import RouterInfo from "../../router/Router";
 import WithRouter from "../../router/WithRouter";
+import ContainerFileManagement from "../../component/App/Container/ContainerFileManagement";
 
 
 /* 容器标识文案 */
@@ -32,6 +33,7 @@ interface State {
   currentContainerId: string,
   detailDrawerStatus: boolean,
   moreDrawerStatus: boolean,
+  fmDrawerStatus: boolean,
   filterStates: Array<string>,
   containers: Array<DockerContainer>
 }
@@ -47,6 +49,7 @@ class ContainerPage extends React.Component<Props, State> {
       currentContainerId: '',
       detailDrawerStatus: false,
       moreDrawerStatus: false,
+      fmDrawerStatus: false,
       containers: [],
       filterStates: []
     }
@@ -105,7 +108,7 @@ class ContainerPage extends React.Component<Props, State> {
       width: 100,
       render: (State) => {
         let statusInfo = getStatusInfo(State);
-        return <span style={{color: statusInfo.stateColor}}>{statusInfo.stateDesc}</span>
+        return <span style={{ color: statusInfo.stateColor }}>{statusInfo.stateDesc}</span>
       }
     },
     {
@@ -120,11 +123,11 @@ class ContainerPage extends React.Component<Props, State> {
       fixed: 'right',
       width: 240,
       render: (_, record) => {
-        let {operateCommon, operateDesc, operatorColor} = getStatusInfo(record.State);
-        return <div style={{wordWrap: 'break-word', wordBreak: 'break-word'}}>
+        let { operateCommon, operateDesc, operatorColor } = getStatusInfo(record.State);
+        return <div style={{ wordWrap: 'break-word', wordBreak: 'break-word' }}>
           <Space>
             <Button onClick={() => this.operatorContainer(operateCommon, record.Id)} size={"small"}
-                    style={{color: operatorColor}}>{operateDesc}</Button>
+              style={{ color: operatorColor }}>{operateDesc}</Button>
             <Button onClick={() => this.navigateLogPage(record.Id)} size={"small"}>日志</Button>
             <Button onClick={() => this.showDetail(record)} size={"small"}>详情</Button>
             <Button onClick={() => this.showMoreOperatorDrawer(record)} size={"small"}>更多</Button>
@@ -149,6 +152,15 @@ class ContainerPage extends React.Component<Props, State> {
       currentContainerId: record.Id,
       detailDrawerStatus: true
     })
+  }
+
+  // 隐藏文件管理器
+  hideFm = () => {
+    this.setState({ fmDrawerStatus: false })
+  }
+
+  showFm = () => {
+    this.setState({ fmDrawerStatus: true })
   }
 
   // 显示更多
@@ -189,70 +201,81 @@ class ContainerPage extends React.Component<Props, State> {
         message.error(`加载容器列表失败:${resp.msg}`).then();
         return
       }
-      this.setState({containers: resp.data})
+      this.setState({ containers: resp.data })
     })
   }
 
 
   openTerminal = () => {
-    this.navigate(`/terminal/container/${this.state.currentContainerId}/client/DEFAULT`)
+    let clientId = localStorage.getItem('clientId')
+    this.navigate(`/terminal/container/${this.state.currentContainerId}/client/${clientId}`)
+  }
+
+
+  openContainerStat = ()=>{
+    this.navigate(`/app/container/${this.state.currentContainerId}/stat`)
   }
 
   render() {
     return (
-        <div id="imagePage" className={"box"}>
-          <div className="is-flex">
-            <div className="imageController mb-2">
-              <Search placeholder="输入关键字已搜索容器" style={{width: 400}}/>
-              <Select defaultValue={[]} style={{width: 400}} className={"ml-1"} mode="multiple">
-                <Select.Option value={"running"}>运行中</Select.Option>
-                <Select.Option value={"created"}>已创建</Select.Option>
-                <Select.Option value={"stop"}>已停止</Select.Option>
-                <Select.Option value={"paused"}>暂停中</Select.Option>
-              </Select>
-              <Button onClick={() => this.loadContainer()} className="ml-2" icon={<ReloadOutlined/>}>刷新</Button>
-              <Button className="ml-2" icon={<CloudSyncOutlined/>} danger>清理</Button>
-            </div>
+      <div id="imagePage" className={"box"}>
+        <div className="is-flex">
+          <div className="imageController mb-2">
+            <Search placeholder="输入关键字已搜索容器" style={{ width: 400 }} />
+            <Select defaultValue={[]} style={{ width: 400 }} className={"ml-1"} mode="multiple">
+              <Select.Option value={"running"}>运行中</Select.Option>
+              <Select.Option value={"created"}>已创建</Select.Option>
+              <Select.Option value={"stop"}>已停止</Select.Option>
+              <Select.Option value={"paused"}>暂停中</Select.Option>
+            </Select>
+            <Button onClick={() => this.loadContainer()} className="ml-2" icon={<ReloadOutlined />}>刷新</Button>
+            <Button className="ml-2" icon={<CloudSyncOutlined />} danger>清理</Button>
           </div>
-
-          <Table
-              size={"small"}
-              rowKey={record => record.Id}
-              rowSelection={{fixed: 'left', type: 'checkbox'}}
-              columns={this.columns} dataSource={this.state.containers}
-              scroll={{x: 1000}}/>
-
-          <Drawer title="容器详情"
-                  destroyOnClose={true}
-                  width={"50%"}
-                  onClose={() => this.hideDetail()}
-                  visible={this.state.detailDrawerStatus}>
-            <ContainerDetailDrawer containerId={this.state.currentContainerId}/>
-          </Drawer>
-
-
-          <Drawer title="更多操作"
-                  destroyOnClose={true}
-                  width={350}
-                  onClose={() => this.hideMoreOperatorDrawer()}
-                  visible={this.state.moreDrawerStatus}>
-            <div className={"flex"}>
-              <Button className={"m-1"} type="ghost">容器监控</Button>
-              <Button className={"m-1"} type="ghost"
-                      onClick={() => this.openTerminal()}>容器终端</Button>
-              <Button className={"m-1"} type="default"
-                      onClick={() => this.navigateLogPage(null)}>容器日志</Button>
-              <Button className={"m-1"} type="default">容器网络</Button>
-              <Button className={"m-1"} type="default">文件管理</Button>
-              <Button className={"m-1"} type="default"
-                      onClick={() => this.operatorContainer("PAUSE", null)}>暂停容器</Button>
-              <Button className={"m-1"} type="default"
-                      onClick={() => this.operatorContainer("PAUSE", null)}>重命名容器</Button>
-              <Button className={"m-1"} danger
-                      onClick={() => this.operatorContainer("REMOVE", null)}>移除容器</Button>
-            </div>
-          </Drawer>
         </div>
+
+        <Table
+          size={"small"}
+          rowKey={record => record.Id}
+          rowSelection={{ fixed: 'left', type: 'checkbox' }}
+          columns={this.columns} dataSource={this.state.containers}
+          scroll={{ x: 1000 }} />
+
+        <Drawer title="容器详情"
+          destroyOnClose={true}
+          width={"50%"}
+          onClose={() => this.hideDetail()}
+          visible={this.state.detailDrawerStatus}>
+          <ContainerDetailDrawer containerId={this.state.currentContainerId} />
+        </Drawer>
+
+
+        <Drawer title="文件管理"
+          destroyOnClose={true}
+          width={"50%"}
+          onClose={this.hideFm}
+          visible={this.state.fmDrawerStatus}>
+          <ContainerFileManagement containerId={this.state.currentContainerId} />
+        </Drawer>
+
+
+
+        <Drawer title="更多操作"
+          destroyOnClose={true}
+          width={350}
+          onClose={() => this.hideMoreOperatorDrawer()}
+          visible={this.state.moreDrawerStatus}>
+          <div className={"flex"}>
+            <Button className={"m-1"} type="ghost" onClick={this.openContainerStat}>容器监控</Button>
+            <Button className={"m-1"} type="ghost" onClick={this.openTerminal}>容器终端</Button>
+            <Button className={"m-1"} type="default" onClick={() => this.navigateLogPage(null)}>容器日志</Button>
+            <Button className={"m-1"} type="default">容器网络</Button>
+            <Button className={"m-1"} type="default" onClick={this.showFm}>文件管理</Button>
+            <Button className={"m-1"} type="default" onClick={() => this.operatorContainer("PAUSE", null)}>暂停容器</Button>
+            <Button className={"m-1"} type="default" onClick={() => this.operatorContainer("PAUSE", null)}>重命名容器</Button>
+            <Button className={"m-1"} danger onClick={() => this.operatorContainer("REMOVE", null)}>移除容器</Button>
+          </div>
+        </Drawer>
+      </div>
     );
 
   }

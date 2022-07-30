@@ -4,6 +4,8 @@ import WithRouter from "../../router/WithRouter";
 import {ITheme, Terminal} from "xterm";
 import {AttachAddon} from "xterm-addon-attach";
 import {FitAddon} from "xterm-addon-fit";
+
+import './index.css'
 import 'xterm/css/xterm.css';
 
 const style: ITheme = {
@@ -102,7 +104,7 @@ class ContainerLogPage extends React.Component<any, any> {
 
   render() {
     return (
-        <div>
+        <div style={{height:'90%'}}>
           <PageHeader
               className="site-page-header"
               title="容器日志页面"

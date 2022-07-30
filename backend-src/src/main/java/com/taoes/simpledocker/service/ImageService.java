@@ -1,5 +1,6 @@
 package com.taoes.simpledocker.service;
 
+import java.io.InputStream;
 import java.util.List;
 
 import com.github.dockerjava.api.command.InspectImageResponse;
@@ -95,8 +96,10 @@ public interface ImageService {
 
   /**
    * 镜像保存
+   *
+   * @return
    */
-    void save(String nameTag, HttpServletRequest request,HttpServletResponse response);
+    InputStream save(String nameTag);
 
   /**
    * 批量镜像保存

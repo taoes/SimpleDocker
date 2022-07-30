@@ -125,9 +125,9 @@ class ContainerTerminal extends React.Component {
 
             <PageHeader
                 className="site-page-header"
-                title="容器日志页面"
+                title="容器终端页面"
                 onBack={() => this.props.router.navigate(-1)}
-                subTitle="查看容器日志信息"
+                subTitle="查看容器终端"
                 extra={
                   <>
                     <Button icon={<DeleteOutlined/>} onClick={() => this.cls()}>清屏</Button>
@@ -136,6 +136,7 @@ class ContainerTerminal extends React.Component {
                     <Button icon={<ArrowDownOutlined/>} onClick={() => this.term.scrollToBottom()}>底部</Button>
                     <Button icon={<ReloadOutlined/>} onClick={() => this.term.refresh()}>刷新</Button>
                     <Button icon={<SettingOutlined/>}>主题</Button>
+                    <Button icon={<SettingOutlined/>}>Shell</Button>
                   </>
                 }/>
           </Affix>
