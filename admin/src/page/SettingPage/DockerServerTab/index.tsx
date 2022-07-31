@@ -1,8 +1,9 @@
 import {Button, message, Space, Table, Tag} from "antd";
 import {ColumnsType} from "antd/es/table";
-import React, {useEffect, useState} from "react";
+import React from "react";
 import DockerEndpoint from "../../../api/Model/DockerEndpoint";
-import {endpointList} from "../../../api/Client/DockerEndpointApi";
+import {endpointList,testEndpoint} from "../../../api/Client/DockerEndpointApi";
+import { idText } from "typescript";
 
 
 interface Props {
@@ -85,9 +86,13 @@ export default class DockerServerTab extends React.Component<Props, State> {
   testEndpoint = (endpoint:DockerEndpoint) => {
     let key = new Date().getTime();
     message.loading({content:'正在测试Docker服务端连通性，请稍后.....', key}).then();
-    setTimeout(() => {
-      message.error({ content: '很遗憾，该Endpoint授权失败，请检查授权配置是否正确', key, duration: 5 }).then();
-    }, 1000);
+    testEndpoint(endpoint.id).then(resp=>{
+      if(resp.code === 0){
+        message.info({ content: '恭喜,该Endpoint已经正常连接!', key, duration: 5 }).then();
+        return
+      }
+      message.error({ content: `抱歉,连接失败:${resp.msg}`, key, duration: 5 }).then();
+    })
   }
 
 

@@ -1,6 +1,7 @@
 package com.taoes.simpledocker.service;
 
 import com.taoes.simpledocker.model.DockerEndpoint;
+
 import java.util.List;
 
 /**
@@ -12,14 +13,14 @@ import java.util.List;
 public interface DockerEndpointService {
 
 
+    /**
+     * 监控服务
+     */
+    void monitor();
 
-  /**
-   * 监控服务
-   */
-  void monitor();
+    /**
+     * docker 端列表
+     */
+    List<DockerEndpoint> list();
 
-  /**
-   * docker 端列表
-   */
-  List<DockerEndpoint> list();
 }

@@ -4,7 +4,7 @@ import {FitAddon} from "xterm-addon-fit";
 import {AttachAddon} from "xterm-addon-attach";
 import React from "react";
 import './index.css'
-import {Affix, Button, Checkbox, notification, PageHeader, Space} from "antd";
+import {Affix, Button, notification, PageHeader} from "antd";
 import WithRouter from "../../router/WithRouter";
 import {
   SettingOutlined,
@@ -46,7 +46,9 @@ class ContainerTerminal extends React.Component {
     this.socket =null
     this.term = null;
 
-    this.socketUrl = `ws://192.168.1.102:3364/api/ws/client/${localStorage.getItem('clientId')}/container/${this.containerId}/terminal`
+    let WS_URL_PREFIX = process.env.REACT_APP_WS_URL
+    let clientId = localStorage.getItem('clientId')
+    this.socketUrl = `${WS_URL_PREFIX}/api/ws/client/${clientId}/container/${this.containerId}/terminal`
   }
 
   componentDidMount() {
@@ -89,7 +91,6 @@ class ContainerTerminal extends React.Component {
           convertEol: false, //启用时，光标将设置为下一行的开头
           disableStdin: false, //是否应禁用输入。
           cursorStyle: 'block', //光标样式
-
           cursorBlink: true,
           theme: style
         }
