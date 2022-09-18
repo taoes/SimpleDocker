@@ -1,9 +1,8 @@
-import {Button, message, Space, Table, Tag} from "antd";
-import {ColumnsType} from "antd/es/table";
+import { Button, message, Space, Table, Tag } from "antd";
+import { ColumnsType } from "antd/es/table";
 import React from "react";
 import DockerEndpoint from "../../../api/Model/DockerEndpoint";
-import {endpointList,testEndpoint} from "../../../api/Client/DockerEndpointApi";
-import { idText } from "typescript";
+import { endpointList, testEndpoint } from "../../../api/Client/DockerEndpointApi";
 
 
 interface Props {
@@ -66,12 +65,12 @@ export default class DockerServerTab extends React.Component<Props, State> {
         width: 220,
         render: (_, server: DockerEndpoint) => {
           return (
-              <Space>
-                <Button size="small" onClick={()=>this.testEndpoint(server)}>测试</Button>
-                <Button size="small">详情</Button>
-                <Button size="small" danger>禁用</Button>
-                <Button size="small" danger>删除</Button>
-              </Space>
+            <Space>
+              <Button size="small" onClick={() => this.testEndpoint(server)}>测试</Button>
+              <Button size="small">详情</Button>
+              <Button size="small" danger>禁用</Button>
+              <Button size="small" danger>删除</Button>
+            </Space>
           )
         }
       }]
@@ -83,44 +82,44 @@ export default class DockerServerTab extends React.Component<Props, State> {
     this.loadDockerEndpoint()
   }
 
-  testEndpoint = (endpoint:DockerEndpoint) => {
+  testEndpoint = (endpoint: DockerEndpoint) => {
     let key = new Date().getTime();
-    message.loading({content:'正在测试Docker服务端连通性，请稍后.....', key}).then();
-    testEndpoint(endpoint.id).then(resp=>{
-      if(resp.code === 0){
+    message.loading({ content: '正在测试Docker服务端连通性，请稍后.....', key, duration: 15 }).then();
+    testEndpoint(endpoint.id).then(resp => {
+      if (resp.code === 0) {
         message.info({ content: '恭喜,该Endpoint已经正常连接!', key, duration: 5 }).then();
         return
       }
-      message.error({ content: `抱歉,连接失败:${resp.msg}`, key, duration: 5 }).then();
+      message.error({ content: `抱歉,无法连接${endpoint.id}-${endpoint.name},异常信息:${resp.msg}`, key, duration: 10 }).then();
     })
   }
 
 
   loadDockerEndpoint = () => {
     endpointList()
-    .then(resp => {
-      if (resp.code !== 0) {
-        message.error("Docker端点服务列表加载失败，请检查服务是否正常").then();
-        return
-      }
-      this.setState({endpoints: resp.data})
-    })
+      .then(resp => {
+        if (resp.code !== 0) {
+          message.error("Docker端点服务列表加载失败，请检查服务是否正常").then();
+          return
+        }
+        this.setState({ endpoints: resp.data })
+      })
   }
 
 
   render() {
     return (
-        <div id="dockerServerTab">
-          <Space id={"dockerEndpoint"}>
-            <Button>新增</Button>
-            <Button>帮助</Button>
-          </Space>
+      <div id="dockerServerTab">
+        <Space id={"dockerEndpoint"}>
+          <Button>新增</Button>
+          <Button>帮助</Button>
+        </Space>
 
-          <Table className="box" columns={this.columns}
-                 dataSource={this.state.endpoints} size={"small"}
-                 scroll={{x: 1000}}
-                 rowKey={record => record.id}/>
-        </div>
+        <Table className="box" columns={this.columns}
+          dataSource={this.state.endpoints} size={"small"}
+          scroll={{ x: 1000 }}
+          rowKey={record => record.id} />
+      </div>
     )
   }
 }

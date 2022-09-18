@@ -76,9 +76,8 @@ export default function MainTopNav() {
 
 
   return (
-      <div id="header">
-        <div/>
-        <Menu mode="horizontal" theme={"dark"} selectedKeys={[]} style={{width:'100%'}}>
+      <div id="header" style={{backgroundColor:'#001529'}}>
+        <Menu mode="horizontal" theme={"dark"} selectedKeys={[]}>
           <Menu.SubMenu title="源码" icon={<HomeFilled/>} key={"sourceCode"}>
             <Menu.Item icon={<GithubOutlined/>} onClick={() => menuClick('githubSourceCode')}
                        key={"sourceCodeGithub"}>Github</Menu.Item>

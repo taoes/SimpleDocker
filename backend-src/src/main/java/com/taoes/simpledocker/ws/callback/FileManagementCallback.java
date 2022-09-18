@@ -1,5 +1,6 @@
 package com.taoes.simpledocker.ws.callback;
 
+import cn.hutool.core.util.StrUtil;
 import com.github.dockerjava.api.model.Frame;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
@@ -24,8 +25,22 @@ public class FileManagementCallback extends AbstractResultCallback<Frame> {
     @SneakyThrows
     @Override
     public void onNext(Frame object) {
-        System.out.println(new String(object.getPayload()));
-        sendMessage(new String(object.getPayload()));
+
+        final String content = new String(object.getPayload());
+
+        if (StrUtil.isBlank(content)){
+            return;
+        }
+
+        if (StrUtil.startWith(content,"ls ")){
+            return;
+        }
+
+        if (StrUtil.startWith(content,"# ")){
+            return;
+        }
+
+        sendMessage(content);
     }
 
     @Override

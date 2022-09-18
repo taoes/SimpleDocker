@@ -70,7 +70,7 @@ class DockerVersionDescription extends React.Component<Props, State> {
 
           <Drawer title="镜像详情"
                   destroyOnClose={true}
-                  width={720}
+                  width={'50%'}
                   onClose={() => this.setState({drawerState: false})}
                   visible={this.state.drawerState}>
             <DockerInfoDrawer dockerInfo={this.state.dockerInfo}/>

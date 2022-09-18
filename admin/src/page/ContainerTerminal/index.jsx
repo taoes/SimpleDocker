@@ -1,10 +1,10 @@
-import {Terminal} from 'xterm'
+import { Terminal } from 'xterm'
 import 'xterm/css/xterm.css';
-import {FitAddon} from "xterm-addon-fit";
-import {AttachAddon} from "xterm-addon-attach";
+import { FitAddon } from "xterm-addon-fit";
+import { AttachAddon } from "xterm-addon-attach";
 import React from "react";
 import './index.css'
-import {Affix, Button, notification, PageHeader} from "antd";
+import { Affix, Button, notification, PageHeader } from "antd";
 import WithRouter from "../../router/WithRouter";
 import {
   SettingOutlined,
@@ -41,9 +41,9 @@ class ContainerTerminal extends React.Component {
 
   constructor(props) {
     super(props);
-    this.containerId =  props.router.params.containerId;
+    this.containerId = props.router.params.containerId;
     this.clientId = props.router.params.clientId;
-    this.socket =null
+    this.socket = null
     this.term = null;
 
     let WS_URL_PREFIX = process.env.REACT_APP_WS_URL
@@ -87,13 +87,14 @@ class ContainerTerminal extends React.Component {
 
   initTerm = () => {
     this.term = new Terminal({
-          rendererType: "canvas", //渲染类型
-          convertEol: false, //启用时，光标将设置为下一行的开头
-          disableStdin: false, //是否应禁用输入。
-          cursorStyle: 'block', //光标样式
-          cursorBlink: true,
-          theme: style
-        }
+      rendererType: "canvas", //渲染类型
+      convertEol: false, //启用时，光标将设置为下一行的开头
+      disableStdin: false, //是否应禁用输入。
+      cursorStyle: 'block', //光标样式
+      cursorBlink: true,
+      fontFamily: 'Monaco',
+      theme: style
+    }
     );
 
     let termContainer = document.getElementById('terminal')
@@ -121,28 +122,28 @@ class ContainerTerminal extends React.Component {
 
   render() {
     return (
-        <>
-          <Affix offsetTop={0}>
+      <>
+        <Affix offsetTop={0}>
 
-            <PageHeader
-                className="site-page-header"
-                title="容器终端页面"
-                onBack={() => this.props.router.navigate(-1)}
-                subTitle="查看容器终端"
-                extra={
-                  <>
-                    <Button icon={<DeleteOutlined/>} onClick={() => this.cls()}>清屏</Button>
-                    <Button icon={<HomeOutlined/>} onClick={() => this.home()}>命令</Button>
-                    <Button icon={<ArrowUpOutlined/>} onClick={() => this.term.scrollToTop()}>顶部</Button>
-                    <Button icon={<ArrowDownOutlined/>} onClick={() => this.term.scrollToBottom()}>底部</Button>
-                    <Button icon={<ReloadOutlined/>} onClick={() => this.term.refresh()}>刷新</Button>
-                    <Button icon={<SettingOutlined/>}>主题</Button>
-                    <Button icon={<SettingOutlined/>}>Shell</Button>
-                  </>
-                }/>
-          </Affix>
-          <div id="terminal" style={{height: "99%", width: '100%'}}/>
-        </>
+          <PageHeader
+            className="site-page-header"
+            title="容器终端页面"
+            onBack={() => this.props.router.navigate(-1)}
+            extra={
+              <>
+                <Button icon={<DeleteOutlined />} onClick={() => this.cls()}>清屏</Button>
+                <Button icon={<HomeOutlined />} onClick={() => this.home()}>命令</Button>
+                <Button icon={<ArrowUpOutlined />} onClick={() => this.term.scrollToTop()}>顶部</Button>
+                <Button icon={<ArrowDownOutlined />} onClick={() => this.term.scrollToBottom()}>底部</Button>
+                <Button icon={<ReloadOutlined />} onClick={() => this.term.refresh()}>刷新</Button>
+                <Button icon={<SettingOutlined />}>主题</Button>
+                <Button icon={<SettingOutlined />}>文件</Button>
+                <Button icon={<SettingOutlined />}>信息</Button>
+              </>
+            } />
+        </Affix>
+        <div id="terminal" style={{ height: "99%", width: '100%' }} />
+      </>
     )
   }
 }

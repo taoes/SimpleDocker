@@ -39,7 +39,7 @@ class ContainerLogPage extends React.Component<any, any> {
     this.state = {
       containerId: props.router.params.containerId,
       log: [],
-      ws: `ws://192.168.1.102:3364/api/ws/client/${localStorage.getItem('clientId')}/container/${props.router.params.containerId}/log`
+      ws: `ws://localhost:3364/api/ws/client/${localStorage.getItem('clientId')}/container/${props.router.params.containerId}/log`
  
     }
   }

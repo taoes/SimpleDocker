@@ -1,5 +1,6 @@
 package com.taoes.simpledocker.ws;
 
+import cn.hutool.core.util.StrUtil;
 import com.Ostermiller.util.CircularByteBuffer;
 import com.github.dockerjava.api.DockerClient;
 import com.taoes.simpledocker.config.DockerClientFactory;
@@ -60,9 +61,9 @@ public class ContainerFileWebSocket extends AbstractWebSocket {
         final String containerId = parameters.get("containerId");
         final String clientId = parameters.get("clientId");
 
-        final DockerClient client = clientFactory.get(clientId);
-
         try {
+            final DockerClient client = clientFactory.get(clientId);
+            this.init(session);
             // 创建命令
             final String execId = client.execCreateCmd(containerId)
                     .withCmd("sh")
@@ -89,6 +90,6 @@ public class ContainerFileWebSocket extends AbstractWebSocket {
     @SneakyThrows
     @OnMessage
     public void onMessage(String message, Session session) {
-        super.write(session, (message + "\n").getBytes());
+        super.write(session, (message + "\r\n").getBytes());
     }
 }

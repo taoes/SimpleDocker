@@ -1,74 +1,189 @@
-import { Button, Descriptions, Input, List, PageHeader, Space } from "antd";
-import { UploadOutlined, FolderAddOutlined, RollbackOutlined } from '@ant-design/icons'
+import { Button, Input, List, PageHeader, message } from "antd";
+import { UploadOutlined, FolderAddOutlined } from '@ant-design/icons'
 import React from "react";
 import WithRouter from "../../../../router/WithRouter";
 import './index.css'
 import IconFont from "../../../Base/IconFont";
+import path from "path";
 
 interface Props { }
 
 interface State {
-    fsList: Array<File>
+    fsList: Array<ContainerFileDesc>
+    content: string
+    currentPath: string
 }
 
-interface File {
-    name: string
-    type?: string
+
+// drwxr-xr-x   2 root  root  4.0K Apr 18 00:00 lib64
+interface ContainerFileDesc {
+    // 文件属性 0
+    attrFlag: string,
+    // 文件硬链接数 1 
+    fileHardLinkCount: number,
+    // 文件/目录 所有者 2 
+    owner?: string | null,
+    //  文件/目录 所在组 3
+    group?: string,
+    // 文件大小 4 
+    size?: string,
+    // 修改时间 5,6,7
+    modify?: string,
+    // 文件名 8
+    name?: string
 }
 
 class ContainerFileManagement extends React.Component<Props, State>{
 
+    ws: WebSocket | null = null
+
     constructor(prop: Props) {
         super(prop);
+
         this.state = {
-            fsList: [{ name: "文件1", type: 'category' }, { name: "文件2", type: 'file' }, { name: "文件3", type: 'picture' }, { name: "文件4" }]
+            currentPath: "/",
+            content: '',
+            fsList: []
         }
     }
 
     componentDidMount() {
         this.initSocket()
-
+    }
+    componentWillUnmount() {
+        this.ws?.close()
+        message.info("文件管理服务连接已关闭");
     }
 
-    initSocket = () => { }
+    initSocket = () => {
+        this.ws = new WebSocket('ws://localhost:3364//api/ws/client/DEFAULT/container/7307128bfd3221e0386efa49d2654029abc271f7ae5a62df64255054d9b61903/fs')
+        this.ws.onopen = () => {
+            message.info("WS服务连接成功....");
+            this.ws?.send(`ls ${this.state.currentPath} -lah`)
+        }
 
+        this.ws.onmessage = (data: MessageEvent): any => {
+            // 解析WebSocket的返回数据
+            let content = this.state.content + data.data
+            // 解析WebSocket数据
+            this.parseContentList(content);
+            return 0;
+        }
+    }
 
-    fsToItem = (fs: File) => {
-        let { type, name } = fs
-        if (type === 'category') {
+    // 接收到WebSocket数据之后尝试解析数据
+    parseContentList = (content: string) => {
+        let fsList: Array<ContainerFileDesc> = []
+        let splitResult: string[] = content.split("\r\n")
+        splitResult.forEach(row => {
+            if (!row) {
+                return
+            }
+            this.setState({ content })
+            let fields = row.split(" ")
+            if (fields.length <= 8) {
+                return
+            }
+
+            let fs: ContainerFileDesc = { attrFlag: '', fileHardLinkCount: 0 }
+            let feIndex = 0;
+            fields.forEach((fe) => {
+                if (!fe || fe.trim().length === 0) {
+                    return
+                }
+                switch (feIndex) {
+                    case 0:
+                        fs.attrFlag = fe;
+                        break;
+                    case 1:
+                        fs.fileHardLinkCount = 0;
+                        break;
+                    case 2:
+                        fs.group = fe;
+                        break;
+                    case 3:
+                        fs.owner = fe;
+                        break;
+                    case 4:
+                        fs.size = fe;
+                        break;
+                    case 5:
+                    case 6:
+                    case 7:
+                        fs.modify = fe;
+                        break;
+                    case 8:
+                        fs.name = fe;
+                        break;
+                }
+                feIndex++;
+            })
+            fsList.push(fs)
+        })
+        this.setState({ fsList })
+        console.log(this.state.fsList)
+    }
+
+    // 点击按钮之后刷新结果
+    resetContentList = () => {
+        this.setState({ fsList: [], content: '' })
+    }
+
+    // 打开新的文件夹
+    openDir = (name: any) => {
+        if (!name) {
+            return
+        }
+        name = name.trim()
+        let currentPath = this.state.currentPath + name + "/"
+        if (name === "/") {
+            currentPath = "/"
+        } else if (name === ".") {
+            // 刷新列表
+        } else if (name === "..") {
+            // ToDo 返回上一层
+        }
+        this.resetContentList()
+        this.ws?.send(`ls ${currentPath} -lah`)
+        this.setState({ currentPath })
+    }
+
+    fsToItem = (fs: ContainerFileDesc) => {
+        let { attrFlag, name } = fs
+        if (attrFlag.startsWith('d')) {
             return (
-                <List.Item actions={[<a>删除</a>]}>
+                <List.Item actions={[<Button  type="link" onClick={() => this.openDir(name)}>访问</Button>]}>
                     <List.Item.Meta
                         avatar={<IconFont type="icon-icon_wenjianjia_kai" style={{ fontSize: 30 }} />}
                         title={name}
-                        description="Ant Design, a design language for background applications, is refined by Ant UED Team"
                     />
                 </List.Item>
             )
         }
 
 
-        if (type === 'file') {
+        if (attrFlag.startsWith('-')) {
+
+            if (!!name && name.trim().endsWith('png')) {
+                return (
+                    <List.Item actions={[<a>下载</a>, <a>删除</a>]}>
+                        <List.Item.Meta
+                            avatar={<IconFont type="icon-icon_wenjian_tupian" style={{ fontSize: 30 }} />}
+                            title={name}
+                        />
+                    </List.Item>)
+            }
+
             return (
                 <List.Item actions={[<a>下载</a>, <a>删除</a>]}>
                     <List.Item.Meta
                         avatar={<IconFont type="icon-icon_wenjian_qita" style={{ fontSize: 30 }} />}
                         title={name}
-                        description="Ant Design, a design language for background applications, is refined by Ant UED Team"
                     />
                 </List.Item>)
         }
 
-        if (type === 'picture') {
-            return (
-                <List.Item actions={[<a>下载</a>, <a>删除</a>]}>
-                    <List.Item.Meta
-                        avatar={<IconFont type="icon-icon_wenjian_tupian" style={{ fontSize: 30 }} />}
-                        title={name}
-                        description="Ant Design, a design language for background applications, is refined by Ant UED Team"
-                    />
-                </List.Item>)
-        }
+ 
 
 
         return (
@@ -76,7 +191,6 @@ class ContainerFileManagement extends React.Component<Props, State>{
                 <List.Item.Meta
                     avatar={<IconFont type="icon-icon_wenjian_qita" style={{ fontSize: 30 }} />}
                     title={name}
-                    description="Ant Design, a design language for background applications, is refined by Ant UED Team"
                 />
             </List.Item>
         )
@@ -93,10 +207,11 @@ class ContainerFileManagement extends React.Component<Props, State>{
 
                     <PageHeader
                         ghost={false}
-                        onBack={() => window.history.back()}
+                        onBack={() => this.openDir("..")}
                         extra={[
                             <Button id="uploadFile" icon={<UploadOutlined />}>上传</Button>,
                             <Button id="newCategory" icon={<FolderAddOutlined />}>新目录</Button>,
+                            <Button id="newCategory" icon={<FolderAddOutlined />} onClick={() => this.openDir("/")}>根目录</Button>,
                             <Input placeholder="请输入文件名" style={{ width: 200 }} />
                         ]}
                     >
