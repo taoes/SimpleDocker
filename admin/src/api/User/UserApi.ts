@@ -31,4 +31,4 @@ function removeUserApi(id: number): Promise<Base<Boolean>> {
     return httpRequest.delete(`/user/${id}`).then(data => data.data);
 }
 
-export {userList, createNewUser,removeUserApi}
+export {userList, createNewUser, removeUserApi}

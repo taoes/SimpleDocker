@@ -8,14 +8,12 @@ export interface ContainerStatInfo {
 }
 
 
-
 export interface MemoryStats {
     // 已使用内存
     usage: number
     // 可用内存
     limit: number
 }
-
 
 
 export interface CpuStats {

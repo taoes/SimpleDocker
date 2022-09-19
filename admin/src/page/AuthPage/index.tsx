@@ -28,13 +28,13 @@ export default class AuthPage extends React.Component<Props, State> {
         return (
             <div className={"m-2"}>
                 <Tabs>
-                    <TabPane tab={this.createTab('icon-icon-test40',"用户列表")} key={"user"}>
+                    <TabPane tab={this.createTab('icon-icon-test40', "用户列表")} key={"user"}>
                         <UserList/>
                     </TabPane>
-                    <TabPane tab={this.createTab('icon-icon-test56',"角色列表")} key={"role"}>
+                    <TabPane tab={this.createTab('icon-icon-test56', "角色列表")} key={"role"}>
                         <RoleList/>
                     </TabPane>
-                    <TabPane tab={this.createTab('icon-icon-test5',"权限列表")} key={"permission"}>
+                    <TabPane tab={this.createTab('icon-icon-test5', "权限列表")} key={"permission"}>
                         <PermissionList/>
                     </TabPane>
                 </Tabs>

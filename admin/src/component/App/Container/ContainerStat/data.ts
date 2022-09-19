@@ -34,41 +34,41 @@ const memoryStst = {
 }
 
 const cpuCoreStat =
-{
-    title: {
-        text: 'CPU 可用核心数',
-        textALign: 'center'
-    },
-    toolbox: {
-        feature: {
-            saveAsImage: {}
-        }
-    },
-    tooltip: {
-        formatter: '{a} <br/>{b} : {c}%'
-    },
-    series: [
-        {
-            name: 'Pressure',
-            type: 'gauge',
-            max: 20,
-            detail: {
-                formatter: '{value}'
-            },
-            progress: {
-                show: true,
-                width: 18
-            },
-            data: [
-                {
-                    value: 0,
-                    name: '核心数'
-                }
-            ]
-        }
+    {
+        title: {
+            text: 'CPU 可用核心数',
+            textALign: 'center'
+        },
+        toolbox: {
+            feature: {
+                saveAsImage: {}
+            }
+        },
+        tooltip: {
+            formatter: '{a} <br/>{b} : {c}%'
+        },
+        series: [
+            {
+                name: 'Pressure',
+                type: 'gauge',
+                max: 20,
+                detail: {
+                    formatter: '{value}'
+                },
+                progress: {
+                    show: true,
+                    width: 18
+                },
+                data: [
+                    {
+                        value: 0,
+                        name: '核心数'
+                    }
+                ]
+            }
 
-    ]
-}
+        ]
+    }
 
 const cpuUsageLineStat = {
     title: {
@@ -96,7 +96,6 @@ const cpuUsageLineStat = {
         }
     ]
 }
-
 
 
 const memoryUsageRateStat = {
@@ -136,7 +135,7 @@ const memoryUsageCountStat = {
     },
     legend: {
         data: ['内存使用量(Kb)']
-      },
+    },
     toolbox: {
         feature: {
             saveAsImage: {}
@@ -154,7 +153,7 @@ const memoryUsageCountStat = {
     },
     series: [
         {
-            color:'lightgreen',
+            color: 'lightgreen',
             data: [],
             type: 'line',
             smooth: true

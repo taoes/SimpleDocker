@@ -5,7 +5,9 @@ import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.StrUtil;
 import com.github.dockerjava.api.DockerClient;
 import com.github.dockerjava.api.command.InspectImageResponse;
+import com.github.dockerjava.api.command.SearchImagesCmd;
 import com.github.dockerjava.api.model.Image;
+import com.github.dockerjava.api.model.SearchItem;
 import com.taoes.simpledocker.config.DockerClientFactory;
 import com.taoes.simpledocker.controller.image.ImageTagUpdateRequest;
 import com.taoes.simpledocker.controller.image.PushImageRequest;
@@ -89,6 +91,15 @@ public class ImageController {
   public Object pull(@RequestParam String imageTag) {
     final DockerClient dockerClient = clientFactory.get();
     return dockerClient.pullImageCmd(imageTag).exec(null);
+  }
+
+  @ApiOperation("搜索镜像")
+  @SaCheckPermission(value = "image:search",orRole = Role.ADMIN_ROLE_NAME)
+  @PostMapping("/search")
+  public ResponseModel<List<SearchItem>> searchImage(String term){
+    final DockerClient client = clientFactory.get();
+    final List<SearchItem> exec = client.searchImagesCmd(term).withLimit(10).exec();
+    return ResponseModel.ok(exec);
   }
 
   @ApiOperation("推送镜像")

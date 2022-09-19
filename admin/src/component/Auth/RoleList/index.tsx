@@ -4,18 +4,20 @@ import {
     createNewRole,
     deleteRole,
     getPermissionOfRole,
-    roleList, saveRolePermission, updateRole
+    roleList,
+    saveRolePermission,
+    updateRole
 } from "../../../api/Auth/RoleApi";
 import {Button, Form, Input, message, Modal, Space, Table, Tree} from "antd";
 import {ColumnsType} from "antd/es/table";
 import type {DataNode} from "antd/es/tree";
 import {
-    ReloadOutlined,
     CloudSyncOutlined,
-    ExclamationCircleOutlined,
+    CloudUploadOutlined,
     DeleteOutlined,
-    UnlockOutlined,
-    CloudUploadOutlined
+    ExclamationCircleOutlined,
+    ReloadOutlined,
+    UnlockOutlined
 } from '@ant-design/icons'
 import RoleCreatedRequest from "../../../api/Model/Auth/RoleCreatedRequest";
 import './index.css'

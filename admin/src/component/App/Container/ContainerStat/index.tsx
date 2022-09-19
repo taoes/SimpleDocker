@@ -1,14 +1,14 @@
-import { Button, Col, Empty, PageHeader, Row } from "antd";
+import {Button, Col, PageHeader, Row} from "antd";
 import React from "react";
-import { RouterProps } from "react-router";
+import {RouterProps} from "react-router";
 import WithRouter from "../../../../router/WithRouter";
 import './index.css'
 import _ from 'lodash'
 import * as echarts from 'echarts';
-import { ContainerStatInfo } from "./model";
-import { formatterTime } from "../../../../utils/DateTime";
-import { memoryStst, cpuCoreStat, cpuUsageLineStat, memoryUsageCountStat, memoryUsageRateStat, netLineStat } from './data'
-import { FifoCache } from "../../../../utils/FifoArray";
+import {ContainerStatInfo} from "./model";
+import {formatterTime} from "../../../../utils/DateTime";
+import {cpuCoreStat, cpuUsageLineStat, memoryStst, memoryUsageCountStat, memoryUsageRateStat, netLineStat} from './data'
+import {FifoCache} from "../../../../utils/FifoArray";
 
 
 interface Props {
@@ -22,8 +22,7 @@ interface State {
 }
 
 
-
-class ContainerStat extends React.Component<Props, State>{
+class ContainerStat extends React.Component<Props, State> {
 
     private containerId: string = ""
 
@@ -69,7 +68,6 @@ class ContainerStat extends React.Component<Props, State>{
         let netLineUsage = echarts.init(document.getElementById('networkLineUsageChart'))
 
 
-
         memory.setOption(memoryStst)
         cpuCore.setOption(cpuCoreStat)
         cpuLineUsage.setOption(cpuUsageLineStat)
@@ -83,7 +81,6 @@ class ContainerStat extends React.Component<Props, State>{
         this.charts[3] = memoryUsageRateChart
         this.charts[4] = memoryUsageCountChart
         this.charts[5] = netLineUsage
-
 
 
         // 加载数据
@@ -228,34 +225,34 @@ class ContainerStat extends React.Component<Props, State>{
         return (
             <PageHeader className="site-page-header"
 
-                onBack={this.back}
-                title="返回容器列表"
-                subTitle="查看容器Stat数据信息"
-                extra={[
-                    <Button key="3">刷新</Button>,
-                    <Button key="1" type="primary" onClick={this.switchStateData}>
-                        {
-                            this.state.pause ? "继续" : "暂停"
-                        }
-                    </Button>,
-                ]}
+                        onBack={this.back}
+                        title="返回容器列表"
+                        subTitle="查看容器Stat数据信息"
+                        extra={[
+                            <Button key="3">刷新</Button>,
+                            <Button key="1" type="primary" onClick={this.switchStateData}>
+                                {
+                                    this.state.pause ? "继续" : "暂停"
+                                }
+                            </Button>,
+                        ]}
             >
 
-                <div style={{ overflow: 'auto', height: '700px' }}>
+                <div style={{overflow: 'auto', height: '700px'}}>
                     <Row>
 
                         <Col span={6} className="box">
-                            <div id="memoryUsageChart" style={{ height: 300 }}></div>
+                            <div id="memoryUsageChart" style={{height: 300}}></div>
                         </Col>
 
 
                         <Col span={6} className="box">
-                            <div id="cpuCoreChart" style={{ height: 300 }}></div>
+                            <div id="cpuCoreChart" style={{height: 300}}></div>
                         </Col>
 
 
                         <Col span={12} className="box">
-                            <div id="cpuUsageChart" style={{ height: 300 }}></div>
+                            <div id="cpuUsageChart" style={{height: 300}}></div>
                         </Col>
 
 
@@ -264,25 +261,25 @@ class ContainerStat extends React.Component<Props, State>{
 
                     <Row className="mt-4">
                         <Col span={12} className="box">
-                            <div id="memoryUsageRateChart" style={{ height: 300 }}></div>
+                            <div id="memoryUsageRateChart" style={{height: 300}}></div>
                         </Col>
 
                         <Col span={12} className="box">
-                            <div id="memoryUsageCountChart" style={{ height: 300 }}></div>
+                            <div id="memoryUsageCountChart" style={{height: 300}}></div>
                         </Col>
                     </Row>
 
                     <Row className="mt-4">
                         <Col span={12} className="box">
-                            <div id="networkLineUsageChart" style={{ height: 300 }}></div>
+                            <div id="networkLineUsageChart" style={{height: 300}}></div>
                         </Col>
 
                         <Col span={12} className="box">
-                            <div id="2networkLineUsageChart" style={{ height: 300 }}></div>
+                            <div id="2networkLineUsageChart" style={{height: 300}}></div>
                         </Col>
                     </Row>
                 </div>
-            </PageHeader >
+            </PageHeader>
         )
     }
 }

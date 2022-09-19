@@ -4,9 +4,6 @@ import {Base} from "../Base";
 import {Page} from "../Page";
 import RoleCreatedRequest from "../Model/Auth/RoleCreatedRequest";
 import RoleUpdateRequest from "../Model/Auth/RoleUpdateRequest";
-import PermissionGroup from "../Model/Auth/PermissionGroup";
-import Permission from "../Model/Auth/Permission";
-import type {DataNode} from 'antd/es/tree'
 import PermissionTree from "../Model/Auth/PermissionTree";
 
 /**

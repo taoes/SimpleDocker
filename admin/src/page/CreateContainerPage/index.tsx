@@ -1,7 +1,7 @@
 // 创建容器向导
 
 
-import {Button, Form, Input, PageHeader, Space, Steps, Table,message} from "antd";
+import {Button, Form, Input, message, PageHeader, Space, Steps, Table} from "antd";
 import {useNavigate, useParams} from "react-router-dom";
 import React, {useEffect, useState} from "react";
 import {ColumnsType} from "antd/es/table";
@@ -9,7 +9,6 @@ import {getImageDetail} from "../../api/Image/ImageApi";
 import dateToStr from "../../utils/Time";
 import type {FormInstance} from 'antd/es/form';
 import bytesToSize from "../../utils/ByteSize";
-
 
 
 const {Step} = Steps;
@@ -22,7 +21,6 @@ interface VolumeConfig {
     host: string
     volumeId: string
 }
-
 
 
 const volumeColumns: ColumnsType<VolumeConfig> = [
@@ -68,8 +66,6 @@ const volumeColumns: ColumnsType<VolumeConfig> = [
 ]
 
 
-
-
 export default function CreateContainerPage() {
     const {imageId} = useParams<{ imageId: string }>();
 
@@ -106,8 +102,9 @@ export default function CreateContainerPage() {
     /**
      * 切换容器创建的模式
      */
-    function changeCreateMode(){
-        message.error('很抱歉，该功能正在开发中，暂时实现').then(r => {});
+    function changeCreateMode() {
+        message.error('很抱歉，该功能正在开发中，暂时实现').then(r => {
+        });
     }
 
 

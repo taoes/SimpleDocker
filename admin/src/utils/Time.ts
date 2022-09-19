@@ -3,7 +3,7 @@ export default function dateToStr(timestamp: number): string {
         return ""
     }
     let date = new Date(timestamp);
-    let y =  date.getFullYear();
+    let y = date.getFullYear();
     let m = "0" + (date.getMonth() + 1);
     let d = "0" + date.getDate();
     let h = "0" + date.getHours();

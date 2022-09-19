@@ -1,6 +1,5 @@
 import {Descriptions} from "antd";
 import React from "react";
-import _ from "lodash";
 
 interface Config {
     name: string

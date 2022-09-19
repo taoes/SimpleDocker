@@ -1,12 +1,12 @@
-import { Button, Input, List, PageHeader, message } from "antd";
-import { UploadOutlined, FolderAddOutlined } from '@ant-design/icons'
+import {Button, Input, List, message, PageHeader} from "antd";
+import {FolderAddOutlined, UploadOutlined} from '@ant-design/icons'
 import React from "react";
 import WithRouter from "../../../../router/WithRouter";
 import './index.css'
 import IconFont from "../../../Base/IconFont";
-import path from "path";
 
-interface Props { }
+interface Props {
+}
 
 interface State {
     fsList: Array<ContainerFileDesc>
@@ -33,7 +33,7 @@ interface ContainerFileDesc {
     name?: string
 }
 
-class ContainerFileManagement extends React.Component<Props, State>{
+class ContainerFileManagement extends React.Component<Props, State> {
 
     ws: WebSocket | null = null
 
@@ -50,6 +50,7 @@ class ContainerFileManagement extends React.Component<Props, State>{
     componentDidMount() {
         this.initSocket()
     }
+
     componentWillUnmount() {
         this.ws?.close()
         message.info("文件管理服务连接已关闭");
@@ -79,13 +80,13 @@ class ContainerFileManagement extends React.Component<Props, State>{
             if (!row) {
                 return
             }
-            this.setState({ content })
+            this.setState({content})
             let fields = row.split(" ")
             if (fields.length <= 8) {
                 return
             }
 
-            let fs: ContainerFileDesc = { attrFlag: '', fileHardLinkCount: 0 }
+            let fs: ContainerFileDesc = {attrFlag: '', fileHardLinkCount: 0}
             let feIndex = 0;
             fields.forEach((fe) => {
                 if (!fe || fe.trim().length === 0) {
@@ -120,13 +121,13 @@ class ContainerFileManagement extends React.Component<Props, State>{
             })
             fsList.push(fs)
         })
-        this.setState({ fsList })
+        this.setState({fsList})
         console.log(this.state.fsList)
     }
 
     // 点击按钮之后刷新结果
     resetContentList = () => {
-        this.setState({ fsList: [], content: '' })
+        this.setState({fsList: [], content: ''})
     }
 
     // 打开新的文件夹
@@ -145,16 +146,16 @@ class ContainerFileManagement extends React.Component<Props, State>{
         }
         this.resetContentList()
         this.ws?.send(`ls ${currentPath} -lah`)
-        this.setState({ currentPath })
+        this.setState({currentPath})
     }
 
     fsToItem = (fs: ContainerFileDesc) => {
-        let { attrFlag, name } = fs
+        let {attrFlag, name} = fs
         if (attrFlag.startsWith('d')) {
             return (
-                <List.Item actions={[<Button  type="link" onClick={() => this.openDir(name)}>访问</Button>]}>
+                <List.Item actions={[<Button type="link" onClick={() => this.openDir(name)}>访问</Button>]}>
                     <List.Item.Meta
-                        avatar={<IconFont type="icon-icon_wenjianjia_kai" style={{ fontSize: 30 }} />}
+                        avatar={<IconFont type="icon-icon_wenjianjia_kai" style={{fontSize: 30}}/>}
                         title={name}
                     />
                 </List.Item>
@@ -168,7 +169,7 @@ class ContainerFileManagement extends React.Component<Props, State>{
                 return (
                     <List.Item actions={[<a>下载</a>, <a>删除</a>]}>
                         <List.Item.Meta
-                            avatar={<IconFont type="icon-icon_wenjian_tupian" style={{ fontSize: 30 }} />}
+                            avatar={<IconFont type="icon-icon_wenjian_tupian" style={{fontSize: 30}}/>}
                             title={name}
                         />
                     </List.Item>)
@@ -177,19 +178,17 @@ class ContainerFileManagement extends React.Component<Props, State>{
             return (
                 <List.Item actions={[<a>下载</a>, <a>删除</a>]}>
                     <List.Item.Meta
-                        avatar={<IconFont type="icon-icon_wenjian_qita" style={{ fontSize: 30 }} />}
+                        avatar={<IconFont type="icon-icon_wenjian_qita" style={{fontSize: 30}}/>}
                         title={name}
                     />
                 </List.Item>)
         }
 
- 
-
 
         return (
             <List.Item actions={[<a>下载</a>, <a>删除</a>]}>
                 <List.Item.Meta
-                    avatar={<IconFont type="icon-icon_wenjian_qita" style={{ fontSize: 30 }} />}
+                    avatar={<IconFont type="icon-icon_wenjian_qita" style={{fontSize: 30}}/>}
                     title={name}
                 />
             </List.Item>
@@ -197,8 +196,6 @@ class ContainerFileManagement extends React.Component<Props, State>{
     }
 
     render() {
-
-
 
 
         return (
@@ -209,10 +206,11 @@ class ContainerFileManagement extends React.Component<Props, State>{
                         ghost={false}
                         onBack={() => this.openDir("..")}
                         extra={[
-                            <Button id="uploadFile" icon={<UploadOutlined />}>上传</Button>,
-                            <Button id="newCategory" icon={<FolderAddOutlined />}>新目录</Button>,
-                            <Button id="newCategory" icon={<FolderAddOutlined />} onClick={() => this.openDir("/")}>根目录</Button>,
-                            <Input placeholder="请输入文件名" style={{ width: 200 }} />
+                            <Button id="uploadFile" icon={<UploadOutlined/>}>上传</Button>,
+                            <Button id="newCategory" icon={<FolderAddOutlined/>}>新目录</Button>,
+                            <Button id="newCategory" icon={<FolderAddOutlined/>}
+                                    onClick={() => this.openDir("/")}>根目录</Button>,
+                            <Input placeholder="请输入文件名" style={{width: 200}}/>
                         ]}
                     >
                         {/* <Descriptions size="small" column={5} bordered={true}>
@@ -229,12 +227,12 @@ class ContainerFileManagement extends React.Component<Props, State>{
                 <div id="fmContent">
                     <List
                         bordered split
-                        locale={{ emptyText: "暂无文件" }}
+                        locale={{emptyText: "暂无文件"}}
                         size="small"
                         className="demo-loadmore-list"
                         itemLayout="horizontal"
                         dataSource={this.state.fsList}
-                        renderItem={this.fsToItem} />
+                        renderItem={this.fsToItem}/>
                 </div>
             </div>
         )

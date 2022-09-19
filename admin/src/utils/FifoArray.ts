@@ -1,5 +1,4 @@
-
-export class FifoCache<K, V>{
+export class FifoCache<K, V> {
 
     private limit: number = 10
     private keys: Array<K> = []

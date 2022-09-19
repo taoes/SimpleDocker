@@ -9,8 +9,8 @@ interface State {
 }
 
 
-export default class PermissionList extends React.Component<Props, State>{
-    constructor(props:Props) {
+export default class PermissionList extends React.Component<Props, State> {
+    constructor(props: Props) {
         super(props);
     }
 

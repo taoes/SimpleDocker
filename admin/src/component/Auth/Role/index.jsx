@@ -1,3 +1,2 @@
-
-
-export default class RoleList extends React.Component{}
+export default class RoleList extends React.Component {
+}

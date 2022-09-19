@@ -3,7 +3,7 @@ import ContainerStat from "../../component/App/Container/ContainerStat";
 import WithRouter from "../../router/WithRouter";
 
 
-class ContainerStatPage extends React.Component<any, any>{
+class ContainerStatPage extends React.Component<any, any> {
 
     render() {
         return (
@@ -13,7 +13,7 @@ class ContainerStatPage extends React.Component<any, any>{
                 </div>
 
                 <div id="containerStatPageContent">
-                    <ContainerStat containerId="2" />
+                    <ContainerStat containerId="2"/>
                 </div>
             </div>
         )

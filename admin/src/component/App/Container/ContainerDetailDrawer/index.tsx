@@ -16,10 +16,10 @@ function ContainerDetailDrawer(props: ContainerDetailProps) {
 
     useEffect(() => {
         getContainerDetail(containerId).then(data => {
-                setLoading(false)
-                setDetail(data)
-          console.log(data)
-            }).catch(() => setLoading(false)
+            setLoading(false)
+            setDetail(data)
+            console.log(data)
+        }).catch(() => setLoading(false)
         )
 
     }, [])

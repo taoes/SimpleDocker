@@ -1,15 +1,13 @@
 import Search from "antd/es/input/Search";
 import {Button, Form, Input, message, Modal, Select, Space, Table} from "antd";
-import {CloudSyncOutlined, ReloadOutlined, DeleteOutlined, UserSwitchOutlined} from "@ant-design/icons";
+import {CloudSyncOutlined, DeleteOutlined, ReloadOutlined, UserSwitchOutlined} from "@ant-design/icons";
 import {ColumnsType} from "antd/es/table";
 import User from "../../../api/Model/User";
-import React, {useEffect, useState} from "react";
-import {userList, createNewUser, removeUserApi} from "../../../api/User/UserApi";
-import UserCreate from "../../../component/App/User/UserCreate";
+import React from "react";
+import {createNewUser, removeUserApi, userList} from "../../../api/User/UserApi";
 import UserCreatedRequest from "../../../api/Model/Auth/UserCreatedRequest";
 import Role from "../../../api/Model/Auth/Role";
 import {roleList} from "../../../api/Auth/RoleApi";
-
 
 
 interface Props {
@@ -27,7 +25,7 @@ export default class UserList extends React.Component<Props, State> {
 
     private roles: Array<Role> = []
 
-    private readonly columns:ColumnsType<User> =[];
+    private readonly columns: ColumnsType<User> = [];
 
     constructor(props: Props) {
         super(props);
@@ -79,7 +77,8 @@ export default class UserList extends React.Component<Props, State> {
                 render: (_, user: User) => {
                     return (
                         <Space>
-                            <Button size={"small"} danger icon={<DeleteOutlined/>} onClick={()=>this.removeUser(user)}>删除</Button>
+                            <Button size={"small"} danger icon={<DeleteOutlined/>}
+                                    onClick={() => this.removeUser(user)}>删除</Button>
                             <Button size={"small"} icon={<UserSwitchOutlined/>}>角色</Button>
                         </Space>
                     )

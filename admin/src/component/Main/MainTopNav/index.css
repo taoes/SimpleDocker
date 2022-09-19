@@ -9,14 +9,14 @@
     margin-top: 20px;
 }
 
-#header{
+#header {
     display: flex;
     align-items: center;
     height: 64px;
     justify-content: flex-end;
 }
 
-.ant-layout-header{
+.ant-layout-header {
     padding: 0 !important;
 }
 
