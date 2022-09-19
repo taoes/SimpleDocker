@@ -11,14 +11,12 @@ import com.taoes.simpledocker.model.ResponseModel;
 import com.taoes.simpledocker.model.Role;
 import com.taoes.simpledocker.model.enums.ContainerOperate;
 import com.taoes.simpledocker.service.ContainerService;
-import com.taoes.simpledocker.service.DockerFileService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 
 import java.util.List;
 import java.util.Map;
 
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -43,7 +41,6 @@ public class ContainerController extends BaseController {
 
     private final ContainerService service;
 
-    private final DockerFileService fileService;
 
     @GetMapping
     @ApiOperation("容器列表")
