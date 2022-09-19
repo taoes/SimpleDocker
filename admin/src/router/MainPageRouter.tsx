@@ -12,6 +12,7 @@ import NetworkPage from "../page/NetworkPage";
 import SettingPage from "../page/SettingPage";
 import VolumePage from "../page/VolumePage";
 import AppRouter from "./AppRouter";
+import TemplatePage from "../page/TemplatePage";
 
 
 export const appRouter: Array<AppRouter> = [
@@ -55,6 +56,11 @@ export const appRouter: Array<AppRouter> = [
     {
         path: '/app/network',
         component: <NetworkPage/>,
+        exact: true
+    },
+    {
+        path: '/app/template',
+        component: <TemplatePage/>,
         exact: true
     },
     {

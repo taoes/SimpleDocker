@@ -9,6 +9,7 @@ import {getImageDetail} from "../../api/Image/ImageApi";
 import dateToStr from "../../utils/Time";
 import type {FormInstance} from 'antd/es/form';
 import bytesToSize from "../../utils/ByteSize";
+import {CloudUploadOutlined, ToolOutlined} from '@ant-design/icons'
 
 
 const {Step} = Steps;
@@ -115,7 +116,12 @@ export default function CreateContainerPage() {
                 onBack={() => navigate(-1)}
                 title="容器创建向导"
                 subTitle={"使用容器创建工具创建新的容器"}
-                extra={<Button type="primary" onClick={changeCreateMode}>专家模式</Button>}
+                extra={
+                    <Space>
+                        <Button onClick={changeCreateMode} icon={<ToolOutlined/>}>专家模式</Button>
+                        <Button onClick={changeCreateMode} icon={<CloudUploadOutlined/>}>载入配置</Button>
+                    </Space>
+                }
             />
             <div className={"box"}>
                 <Steps current={currentStep} onChange={(current) => changeStep(current)}>

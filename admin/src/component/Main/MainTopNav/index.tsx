@@ -75,6 +75,11 @@ export default function MainTopNav() {
 
     return (
         <div id="header" style={{backgroundColor: '#001529'}}>
+            <div style={{flexGrow: 1}}>
+                <h1 style={{color: "white", marginLeft: 20, fontSize: 25, fontWeight: 'bolder'}}>
+                    SimpleDocker 开发版
+                </h1>
+            </div>
             <Menu mode="horizontal" theme={"dark"} selectedKeys={[]}>
                 <Menu.SubMenu title="源码" icon={<HomeFilled/>} key={"sourceCode"}>
                     <Menu.Item icon={<GithubOutlined/>} onClick={() => menuClick('githubSourceCode')}

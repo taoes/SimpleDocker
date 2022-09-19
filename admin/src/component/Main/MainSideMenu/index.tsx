@@ -10,6 +10,7 @@ import {
     HddOutlined,
     IdcardOutlined,
     MenuFoldOutlined,
+    PrinterOutlined,
     SettingOutlined,
     UsergroupAddOutlined
 } from '@ant-design/icons'
@@ -25,6 +26,7 @@ const items = [
     {label: '容器管理', key: 'container', icon: <AppstoreAddOutlined/>},
     {label: '存储管理', key: 'volume', icon: <HddOutlined/>},
     {label: '网络管理', key: 'network', icon: <GlobalOutlined/>},
+    {label: '模板管理', key: 'template', icon: <PrinterOutlined/>},
     {label: '监控设置', key: 'monitor', icon: <BellOutlined/>},
     {label: '系统设置', key: 'setting', icon: <SettingOutlined/>},
     {label: '授权管理', key: 'auth', icon: <UsergroupAddOutlined/>},
@@ -48,6 +50,6 @@ export default function MainSideMenu(props: MainSideMenuProps) {
     }
 
 
-    return <Menu defaultSelectedKeys={["home"]} mode="vertical" items={items} theme="dark" onClick={navigateByKey}
+    return <Menu defaultSelectedKeys={["home"]} mode="vertical" items={items} theme="light" onClick={navigateByKey}
                  style={{height: '100%'}}/>;
 }
