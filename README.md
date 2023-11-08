@@ -158,7 +158,7 @@ yarn install && yarn server
 
 ## 讨论
 
-本项目完全开源，如有任何需求或者BUG反馈，欢迎提交Issue[Open an issue](https://github.com/taoes/SimpleDocker/issues/new) 或者提交PR！ 欢迎添加微信 `zhoutao825638` 或者邮件联系我 `zhoutao825638@vip.qq.com`
+本项目完全开源，如有任何需求或者BUG反馈，欢迎提交Issue[Open an issue](https://github.com/taoes/SimpleDocker/issues/new) 或者提交PR！ 
 
 ## 开源方案
 
