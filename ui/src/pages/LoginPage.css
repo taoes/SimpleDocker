@@ -1,0 +1,23 @@
+#loginPage {
+    width: 100vw;
+    height: calc(100vh - 100px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#loginForm {
+    width: 600px;
+    height: 400px;
+    padding: 20px;
+    border-radius: 20px;
+    -webkit-box-shadow: 7px 5px 123px 0px rgba(62, 66, 66, 0.05);
+    -moz-box-shadow: 7px 5px 123px 0px rgba(62, 66, 66, 0.05);
+    box-shadow: 7px 5px 123px 0px rgba(62, 66, 66, 0.05);
+}
+
+#loginForm:hover {
+    -webkit-box-shadow: 7px 5px 123px 11px rgba(62, 66, 66, 0.09);
+    -moz-box-shadow: 7px 5px 123px 11px rgba(62, 66, 66, 0.09);
+    box-shadow: 7px 5px 123px 11px rgba(62, 66, 66, 0.09);
+}

@@ -1,0 +1,27 @@
+.demo-logo {
+    /* width: 120px; */
+    min-width: 120px;
+    height: 32px;
+    /* background: rgba(255, 255, 255, .2); */
+    border-radius: 6px;
+    margin-inline-end: 14px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.title {
+    color: white;
+    font-weight: 800;
+    font-size: 15px;
+    font-style: italic;
+}
+
+.title:hover {
+    color: wheat;
+}
+
+.ant-layout-sider-trigger {
+    color: black !important;
+    background-color: white !important;
+}
